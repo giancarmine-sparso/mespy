@@ -1,3 +1,6 @@
+# Variabili d'ambiente locali
+.env
+
 # Python
 __pycache__/
 *.py[cod]
