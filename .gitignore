@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Dati grezzi potenzialmente sensibili o pesanti
+data/raw/
+data/processed/
+
+# Output grafici generati automaticamente
+figures/
+
+# Editor e OS
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Distribuzione
+*.egg
