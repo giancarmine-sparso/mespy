@@ -27,6 +27,13 @@ data/processed/
 # Output grafici generati automaticamente
 figures/
 
+# References
+references/
+
+# LaTeX minted cache
+_minted-*/
+*.pygstyle
+
 # LaTeX
 *.aux
 *.log

@@ -1,0 +1,17 @@
+% !TEX root = ../main.tex
+
+\textit{Mech Lab Tools} è una toolbox in Python che sto sviluppando per le esperienze di laboratorio del primo anno di fisica. L'obiettivo è fornire una base modulare e riutilizzabile per le operazioni ricorrenti nell'analisi dei dati sperimentali: statistica descrittiva, gestione delle incertezze, adattamento di curve ai dati e produzione di grafici.
+
+Il progetto è organizzato in moduli distinti, ciascuno con un compito preciso, in modo che le stesse funzioni possano essere impiegate in esperienze diverse senza duplicazione di codice. I criteri guida dello sviluppo sono la trasparenza dei passaggi matematici, la riproducibilità dei risultati e la crescita graduale della toolbox man mano che le esigenze del corso aumentano.
+
+Questa documentazione ha lo scopo di descrivere ogni modulo in dettaglio: le funzioni implementate, le formule matematiche sottostanti, i parametri accettati e i valori restituiti. Dando anche uno sguardo alla teoria dietro le funzioni. Costituisce un riferimento sia per l'utilizzo corretto degli strumenti sia per la verifica della correttezza delle implementazioni. 
+
+
+Gli snippet di codice sono formattati usando lo stile \texttt{gruvbox-light}.
+
+Una riga ricorrente all'inizio di quasi tutte le funzioni è:
+\begin{minted}{python}
+x = np.asarray(x, dtype=float)
+\end{minted}
+Questa istruzione converte l'argomento \texttt{x} in un array NumPy di numeri in virgola mobile (\texttt{float64}), indipendentemente dal tipo con cui viene passato (lista, tupla, array intero, ecc.). Ciò garantisce che le operazioni vettoriali di NumPy funzionino correttamente e previene errori di tipo nelle divisioni o nelle operazioni matematiche. È una pratica difensiva comune nelle librerie numeriche in Python.
+\hfill

@@ -1,1 +1,187 @@
 % !TEX root = ../main.tex
+Il file \textit{stats\_utils.py} raccoglie le funzioni statistiche di base utilizzate nell'analisi dei dati sperimentali. Le funzioni supportano pesi opzionali $w_i = 1/\sigma_i^2$, utili quando le misure hanno incertezze diverse.
+
+Le funzioni disponibili sono:
+\begin{itemize}
+    \item \texttt{median(x)}: calcola la mediana di un array di dati;
+    \item \texttt{weighted\_mean(x, w)}: calcola la media aritmetica, opzionalmente pesata;
+    \item \texttt{variance(x, w)}: calcola la varianza tramite la formula $\text{Var}(x) = E[x^2] - E[x]^2$;
+    \item \texttt{covariance(x, y, w)}: calcola la covarianza tra due variabili tramite la formula $\text{Cov}(x,y) = E[xy] - E[x]E[y]$;
+    \item \texttt{standard\_deviation(x, w)}: calcola la deviazione standard come $\sqrt{\text{Var}(x)}$.
+\end{itemize}
+
+\section{median(x)}
+
+\begin{description}
+  \item[\textbf{Parametri}]
+    \texttt{x}: array-like (lista, tupla, array NumPy) $\to$ convertito in \texttt{float64}.
+  \item[\textbf{Vincoli}]
+    Nessun vincolo aggiuntivo.
+  \item[\textbf{Restituisce}]
+    \texttt{float}: mediana di \texttt{x}.
+  \item[\textbf{Errori}]
+    Nessuno.
+\end{description}
+
+La funzione \textbf{median(x)}, come suggerisce il nome, calcola la mediana di un array di dati.
+\begin{minted}{python}
+def median(x):
+    x = np.asarray(x, dtype=float)
+    return np.median(x)
+\end{minted}
+
+la funzione prima si assicura che l'input (x) sia un array che contiene float e poi restituisce la mediana calcolata con la funzione della libreria numpy.
+\newpage
+\section{weighted\_mean(x, w=None)}
+
+\begin{description}
+  \item[\textbf{Parametri}]
+    \texttt{x}: array-like $\to$ convertito in \texttt{float64};
+    \texttt{w}: array-like o \texttt{None} (default: \texttt{None}).
+  \item[\textbf{Vincoli}]
+    Se \texttt{w} $\neq$ \texttt{None}, i pesi devono essere pre-calcolati come
+    $w_i = 1/\sigma_i^2$. Se \texttt{w = None}, si usa $w_i = 1$ per tutti gli $i$.
+  \item[\textbf{Restituisce}]
+    \texttt{float}: media (pesata) di \texttt{x}.
+  \item[\textbf{Errori}]
+    Nessuno.
+\end{description}
+
+Questa funzione serve a calcolare una media con possibilità di essere pesata.
+\begin{minted}{python}
+def weighted_mean(x, w=None):
+    x = np.asarray(x, dtype=float)
+    if w is None:
+        w = np.ones(len(x))
+    else:
+        w = np.asarray(w, dtype=float)
+    return np.sum(x * w) / np.sum(w)
+\end{minted}
+
+se non si passa un valore \textit{'w'} crea un array di tutti \text{1}, quindi ogni dato pesa uguale e si ottiene la media aritmetica classica:
+$$\overline{x} = \frac{1}{N} \sum_i x_i$$
+
+Se vengono passati i pesi $\frac{1}{\sigma^2_i}$, calcola la media pesata:
+$$\overline{x}_w = \frac{\sum_i w_i x_i}{\sum_i w_i}$$
+dove i punti con incertezza minore (peso maggiore) contano di più.
+
+\section{variance(x, w=None)}
+
+\begin{description}
+  \item[\textbf{Parametri}]
+    \texttt{x}: array-like $\to$ convertito in \texttt{float64};
+    \texttt{w}: array-like o \texttt{None} (default: \texttt{None}).
+  \item[\textbf{Vincoli}]
+    Se \texttt{w} $\neq$ \texttt{None}, i pesi devono essere pre-calcolati come
+    $w_i = 1/\sigma_i^2$. Se \texttt{w = None}, si usa $w_i = 1$ per tutti gli $i$.
+  \item[\textbf{Restituisce}]
+    \texttt{float}: varianza di \texttt{x}.
+  \item[\textbf{Errori}]
+    Nessuno.
+\end{description}
+
+La funzione \textbf{variance(x, w=None)} calcola la varianza sfruttanto la funzione \textbf{weighted\_mean(x, w=None)} della sezione precedente.
+\begin{minted}{python}
+def variance(x, w=None):
+    x = np.asarray(x, dtype=float)
+    return weighted_mean(x**2, w) - weighted_mean(x, w)**2
+\end{minted}
+
+per farlo sfrutta l'identità:
+$$\text{Var}(x) = \overline{x^2} - \overline{x}^2$$
+cioè la media dei quadrati meno il quadrato della media. Quindi la formula completa è:
+$$\text{Var}_w(x) = \frac{\sum_i w_i x_i^2}{\sum_i w_i} - \left( \frac{\sum_i w_i x_i}{\sum_i w_i} \right)^2$$
+Senza pesi ($w_i = 1$ per tutti) si ritorna alla forma più classica:
+$$\text{Var}(x) = \frac{1}{N} \sum_i (x_i - \overline{x})^2$$
+
+
+
+
+\section{covariance(x, y, w=None)}
+
+\begin{description}
+  \item[\textbf{Parametri}]
+    \texttt{x}, \texttt{y}: array-like $\to$ convertiti in \texttt{float64};
+    \texttt{w}: array-like o \texttt{None} (default: \texttt{None}).
+  \item[\textbf{Vincoli}]
+    \texttt{x} e \texttt{y} devono avere la stessa lunghezza.
+    Se \texttt{w} $\neq$ \texttt{None}, i pesi devono essere pre-calcolati come
+    $w_i = 1/\sigma_i^2$.
+  \item[\textbf{Restituisce}]
+    \texttt{float}: covarianza tra \texttt{x} e \texttt{y}.
+  \item[\textbf{Errori}]
+    \texttt{ValueError} se \texttt{len(x) != len(y)}.
+\end{description}
+
+La funzione \textbf{covariance(x,y, w=None)} esegue lo stesso ragionamento della funzione per la varianza.
+
+\begin{minted}{python}
+def covariance(x, y, w=None):
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+    if len(x) != len(y):
+        raise ValueError("x and y must have the same length")
+    return weighted_mean(x * y, w) - weighted_mean(x, w) * weighted_mean(y, w)
+\end{minted}
+per farlo sfrutta l'identità:
+$$\text{Cov}(x,y) = \overline{xy} - \overline{x}\,\overline{y}$$
+
+I tre pezzi nel codice:
+
+\texttt{weighted\_mean(x * y, w)} calcola $\overline{xy}_w$:
+
+\[
+\overline{xy}_w = \frac{\sum_i w_i \, x_i \, y_i}{\sum_i w_i}
+\]
+
+\texttt{weighted\_mean(x, w) * weighted\_mean(y, w)} calcola $\bar{x}_w \, \bar{y}_w$:
+
+\[
+\bar{x}_w \, \bar{y}_w = \frac{\sum_i w_i \, x_i}{\sum_i w_i} \cdot \frac{\sum_i w_i \, y_i}{\sum_i w_i}
+\]
+
+Il risultato è:
+
+\[
+\text{Cov}_w(x,y) = \frac{\sum_i w_i \, x_i \, y_i}{\sum_i w_i} - \frac{\sum_i w_i \, x_i}{\sum_i w_i} \cdot \frac{\sum_i w_i \, y_i}{\sum_i w_i}
+\]
+
+Equivalente alla forma classica:
+
+\[
+\text{Cov}_w(x,y) = \frac{\sum_i w_i (x_i - \bar{x}_w)(y_i - \bar{y}_w)}{\sum_i w_i}
+\]
+
+\newpage
+\section{standard\_deviation(x, w=None)}
+
+\begin{description}
+  \item[\textbf{Parametri}]
+    \texttt{x}: array-like $\to$ convertito in \texttt{float64};
+    \texttt{w}: array-like o \texttt{None} (default: \texttt{None}).
+  \item[\textbf{Vincoli}]
+    \texttt{x} non deve essere vuoto ($N \geq 1$).
+    Se \texttt{w} $\neq$ \texttt{None}, i pesi devono essere pre-calcolati come
+    $w_i = 1/\sigma_i^2$.
+  \item[\textbf{Restituisce}]
+    \texttt{float}: deviazione standard di \texttt{x}.
+  \item[\textbf{Errori}]
+    \texttt{ValueError} se \texttt{x} è vuoto.
+\end{description}S
+La funzione \textbf{standard\_deviation(x, w=None)} calcola la deviazione standard
+come radice quadrata della varianza, sfruttando la funzione \textbf{variance(x, w=None)}.
+\begin{minted}{python}
+def standard_deviation(x, w=None):
+    x = np.asarray(x, dtype=float)
+    if len(x) == 0:
+        raise ValueError("x must contain at least one value")
+    return np.sqrt(variance(x, w))
+\end{minted}
+prima di procedere, controlla che \texttt{x} non sia vuoto, e poi restituisce la
+deviazione standard usando l'identità:
+$$\sigma(x) = \sqrt{\text{Var}(x)}$$
+cioè la radice quadrata della varianza. La formula completa con pesi è:
+$$\sigma_w(x) = \sqrt{\frac{\sum_i w_i x_i^2}{\sum_i w_i} - \left( \frac{\sum_i w_i x_i}{\sum_i w_i} \right)^2}$$
+\enlargethispage{2\baselineskip}
+Senza pesi ($w_i = 1$ per tutti) si ritorna alla forma classica:
+$$\sigma(x) = \sqrt{\frac{1}{N} \sum_i (x_i - \overline{x})^2}$$

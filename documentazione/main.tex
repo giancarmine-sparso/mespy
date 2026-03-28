@@ -3,28 +3,11 @@
 % ============================================================
 % Encoding & Language
 % ============================================================
-\usepackage[T1]{fontenc}
 \usepackage{fontspec}
 \usepackage[italian]{babel}
+\usepackage{minted} % per snippet di codice
+\usemintedstyle{gruvbox-light}
 
-% ============================================================
-% References and citations
-% ============================================================
-\usepackage{csquotes}
-
-\usepackage[
-    backend=biber,
-    style=numeric,
-    sorting=none,
-    doi=false,
-    isbn=false,
-    url=false,
-    eprint=false,
-    maxbibnames=3,
-    giveninits=true
-]{biblatex}
-
-\addbibresource{mech-lab-tools.bib}
 
 % ============================================================
 % Page layout
@@ -37,7 +20,6 @@
 \renewcommand{\epigraphsize}{\small\itshape}
 \renewcommand{\epigraphflush}{flushright}
 \renewcommand{\sourceflush}{flushright}
-\renewcommand{\epigraphsize}{\itshape\small}
 
 % ============================================================
 % Mathematics
@@ -89,12 +71,18 @@
 \clearpage
 
 % ============================================================
+% INTRODUZIONE
+% ============================================================
+
+\chapter*{Introduzione}
+\addcontentsline{toc}{chapter}{Introduzione}
+\input{sezioni/introduzione}
+
+% ============================================================
 % STRUMENTI
 % ============================================================
 
-\chapter{stats\_utils}
+\chapter{stats\_utils.py}
 \input{sezioni/stats_utils}
-
-\printbibliography
 
 \end{document}
