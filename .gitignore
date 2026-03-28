@@ -27,8 +27,40 @@ data/processed/
 # Output grafici generati automaticamente
 figures/
 
+# LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+*.xdv
+*.md5
+indent.log
+__latexindent_temp_*
+*.bak*
+
+# PDF
+*.pdf
+
+# Arduino
+*.hex
+*.elf
+
 # Editor e OS
 .vscode/
+!.vscode/tasks.json
+*.code-workspace
 .idea/
 *.DS_Store
 Thumbs.db

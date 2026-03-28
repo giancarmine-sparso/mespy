@@ -1,0 +1,100 @@
+\documentclass[11pt,a4paper]{report}
+
+% ============================================================
+% Encoding & Language
+% ============================================================
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\usepackage[italian]{babel}
+
+% ============================================================
+% References and citations
+% ============================================================
+\usepackage{csquotes}
+
+\usepackage[
+    backend=biber,
+    style=numeric,
+    sorting=none,
+    doi=false,
+    isbn=false,
+    url=false,
+    eprint=false,
+    maxbibnames=3,
+    giveninits=true
+]{biblatex}
+
+\addbibresource{mech-lab-tools.bib}
+
+% ============================================================
+% Page layout
+% ============================================================
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{epigraph}
+\usepackage{microtype}
+\setlength{\epigraphrule}{0pt}
+
+\renewcommand{\epigraphsize}{\small\itshape}
+\renewcommand{\epigraphflush}{flushright}
+\renewcommand{\sourceflush}{flushright}
+\renewcommand{\epigraphsize}{\itshape\small}
+
+% ============================================================
+% Mathematics
+% ============================================================
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage[thinc]{esdiff}
+
+% ============================================================
+% Figures & Graphics
+% ============================================================
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xcolor,tikz}
+\usepackage{booktabs}
+
+\usetikzlibrary{matrix, arrows.meta, positioning, decorations.pathreplacing, decorations.pathmorphing, calc}
+
+% ============================================================
+% SI Units
+% ============================================================
+\usepackage{siunitx}
+\sisetup{
+  per-mode=symbol,
+  separate-uncertainty=true
+}
+
+% ============================================================
+% Hyperlinks
+% ============================================================
+\usepackage[hidelinks]{hyperref}
+
+% ============================================================
+% Document metadata
+% ============================================================
+\title{Mech Lab Tools\\[0.4em]\large Documentazione degli strumenti di analisi}
+\author{Giancarmine Sparso}
+\date{\today}
+
+% ============================================================
+% Document
+% ============================================================
+\begin{document}
+
+\maketitle
+\tableofcontents
+\clearpage
+
+% ============================================================
+% STRUMENTI
+% ============================================================
+
+\chapter{stats\_utils}
+\input{sezioni/stats_utils}
+
+\printbibliography
+
+\end{document}
