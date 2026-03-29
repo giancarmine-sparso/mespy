@@ -19,6 +19,7 @@ env/
 # Jupyter
 .ipynb_checkpoints/
 *.ipynb_checkpoints
+ref.ipynb
 
 # Dati grezzi potenzialmente sensibili o pesanti
 data/raw/

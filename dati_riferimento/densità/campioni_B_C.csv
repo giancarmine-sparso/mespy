@@ -1,0 +1,3 @@
+Campione,Tipo,Massa_g,Dim1_mm,Dim1_nome,Dim2_mm,Dim2_nome,Dim3_mm,Dim3_nome,Strumento_Dim1,Strumento_Dim2,Strumento_Dim3
+B,parallelepipedo,82.80,75.90,Lato_a,20.20,Lato_b,20.30,Lato_c,nonio,Palmer,Palmer
+C,cilindro,195.04,70.50,Altezza,20.00,Diametro,,,nonio,Palmer,
