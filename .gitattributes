@@ -1,0 +1,27 @@
+# --- Documentazione LaTeX / markdown ---
+documentazione/** linguist-documentation
+references/** linguist-documentation
+*.tex linguist-documentation
+README.md linguist-documentation
+plan.md linguist-documentation
+
+# --- Notebook: opzionale ---
+notebooks/** linguist-documentation
+
+# --- Dati e figure non rappresentativi del linguaggio ---
+dati/** linguist-vendored
+dati_riferimento/** linguist-vendored
+figure/** linguist-vendored
+
+# --- Ambiente virtuale ---
+.venv/** linguist-vendored
+
+# --- File generati / non utili nei diff ---
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+
+# --- Normalizzazione fine riga ---
+* text=auto
