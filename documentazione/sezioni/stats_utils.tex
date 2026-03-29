@@ -11,7 +11,7 @@ Le funzioni disponibili sono:
 \end{itemize}
 
 \section{median(x)}
-
+\label{sec:median}
 \begin{description}
   \item[\textbf{Parametri}]
     \texttt{x}: array-like (lista, tupla, array NumPy) $\to$ convertito in \texttt{float64}.
@@ -32,8 +32,8 @@ def median(x):
 
 la funzione prima si assicura che l'input (x) sia un array che contiene float e poi restituisce la mediana calcolata con la funzione della libreria numpy.
 \newpage
-\section{weighted\_mean(x, w=None)}
-
+\section{\texorpdfstring{weighted\_mean(x, w=None)}{weighted\_mean(x, w=None)}}
+\label{sec:weighted-mean}
 \begin{description}
   \item[\textbf{Parametri}]
     \texttt{x}: array-like $\to$ convertito in \texttt{float64};
@@ -58,7 +58,7 @@ def weighted_mean(x, w=None):
     return np.sum(x * w) / np.sum(w)
 \end{minted}
 
-se non si passa un valore \textit{'w'} crea un array di tutti \text{1}, quindi ogni dato pesa uguale e si ottiene la media aritmetica classica:
+se non si passa un valore \textit{'w'} crea un array di tutti \texttt{1}, quindi ogni dato pesa uguale e si ottiene la media aritmetica classica:
 $$\overline{x} = \frac{1}{N} \sum_i x_i$$
 
 Se vengono passati i pesi $\frac{1}{\sigma^2_i}$, calcola la media pesata:
@@ -66,7 +66,7 @@ $$\overline{x}_w = \frac{\sum_i w_i x_i}{\sum_i w_i}$$
 dove i punti con incertezza minore (peso maggiore) contano di più.
 
 \section{variance(x, w=None)}
-
+\label{sec:variance}
 \begin{description}
   \item[\textbf{Parametri}]
     \texttt{x}: array-like $\to$ convertito in \texttt{float64};
@@ -98,7 +98,7 @@ $$\text{Var}(x) = \frac{1}{N} \sum_i (x_i - \overline{x})^2$$
 
 
 \section{covariance(x, y, w=None)}
-
+\label{sec:covariance}
 \begin{description}
   \item[\textbf{Parametri}]
     \texttt{x}, \texttt{y}: array-like $\to$ convertiti in \texttt{float64};
@@ -153,8 +153,8 @@ Equivalente alla forma classica:
 \]
 
 \newpage
-\section{standard\_deviation(x, w=None)}
-
+\section{\texorpdfstring{standard\_deviation(x, w=None)}{standard\_deviation(x, w=None)}}
+\label{sec:standard-deviation}
 \begin{description}
   \item[\textbf{Parametri}]
     \texttt{x}: array-like $\to$ convertito in \texttt{float64};
@@ -167,7 +167,7 @@ Equivalente alla forma classica:
     \texttt{float}: deviazione standard di \texttt{x}.
   \item[\textbf{Errori}]
     \texttt{ValueError} se \texttt{x} è vuoto.
-\end{description}S
+\end{description}
 La funzione \textbf{standard\_deviation(x, w=None)} calcola la deviazione standard
 come radice quadrata della varianza, sfruttando la funzione \textbf{variance(x, w=None)}.
 \begin{minted}{python}

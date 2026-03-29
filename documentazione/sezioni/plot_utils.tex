@@ -12,13 +12,15 @@ Le funzioni disponibili sono:
 \begin{itemize}
     \item \texttt{histogram(x, ...)}: genera un istogramma dei dati, con linea della media e banda di deviazione standard opzionali.
 \end{itemize}
-
-\section{histogram(x, bins, xlabel, ylabel, title, figsize, save\_path, show\_mean, show\_std, dpi, ax)}
+la documentazione per questa funzione è divisa in sottosezioni per spiegare al meglio ogni sua componente
+\section{\texorpdfstring{histogram(x, bins, label, xlabel, ylabel, title, figsize, save\_path, show\_mean, show\_std, dpi, ax)}{histogram(x, bins, label, xlabel, ylabel, title, figsize, save\_path, show\_mean, show\_std, dpi, ax)}}
+\label{sec:istogramma}
 
 \begin{description}
   \item[\textbf{Parametri}]
     \texttt{x}: array-like (lista, tupla, array NumPy) $\to$ convertito in \texttt{float64};\\
     \texttt{bins}: intero o \texttt{"auto"} (default: \texttt{"auto"}) $\to$ numero di intervalli dell'istogramma;\\
+    \texttt{label}: stringa (default: \texttt{"Dati"}) $\to$ testo che compare nella legenda;\\
     \texttt{xlabel}: stringa (default: \texttt{"Valore1"}) $\to$ etichetta dell'asse $x$;\\
     \texttt{ylabel}: stringa o \texttt{None} (default: \texttt{None}) $\to$ etichetta dell'asse $y$;\\
     \texttt{title}: stringa (default: \texttt{"Istogramma"}) $\to$ titolo del grafico;\\
@@ -37,11 +39,15 @@ Le funzioni disponibili sono:
     Nessuno.
 \end{description}
 
+
+\newpage
+\subsection{Parametri e figura}
 La funzione \textbf{histogram(x, ...)} genera un istogramma dei dati contenuti in \texttt{x}. Se non viene passato un asse \texttt{ax}, crea una nuova figura con le dimensioni e la risoluzione specificate.
 \begin{minted}{python}
 def histogram(
     x,
     bins="auto",
+    label="Dati",
     xlabel="Valore1",
     ylabel=None,
     title="Istogramma",
@@ -54,10 +60,116 @@ def histogram(
 ):
     x = np.asarray(x, dtype=float)
 
+    # --- Figura ---
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize, dpi=dpi, constrained_layout=True)
     else:
         fig = ax.get_figure()
 \end{minted}
 
-Il primo passo converte l'input in un array \texttt{float64}. La gestione dell'asse permette di integrare la funzione sia in figure autonome sia in griglie di sottografici: se \texttt{ax = None} viene creata una nuova figura, altrimenti si usa l'asse fornito e si recupera la figura padre con \texttt{ax.get\_figure()}.
+Il primo passo converte l'input in un array \texttt{float64}. La gestione dell'asse permette di integrare la funzione sia in figure autonome sia in griglie di sottografici: se \texttt{ax = None} viene creata una nuova figura, altrimenti si usa l'asse fornito e si recupera la figura padre con \texttt{ax.get\_figure()}. Il parametro \texttt{ax} sta per \textit{axes} in inglese e fa parte della libreria \texttt{matplotlib}.
+
+\subsection{Istogramma}
+\begin{minted}{python}
+    # --- Istogramma ---
+    counts, bin_edges, patches = ax.hist(
+        x,
+        bins=bins,
+        density=False,
+        color="#4878CF",
+        edgecolor="white",
+        alpha=0.85,
+        label="Dati",
+    )
+\end{minted}
+
+
+\begin{description}
+    \item[Parametri] 
+    \texttt{bins=bins}: quanti intervalli usare, deciso dall'utente, default "auto" (scelti automaticamente da numpy);\\
+    \texttt{density=False}: asse y a conteggi;\\
+    \texttt{color="\#4878CF"}: colore delle barre;\\
+    \texttt{edgecolo="white"}: bordo bianco tra una barra e l'altra;\\
+    \texttt{alpha=0.85}: leggera trasparenza applicata alle barre, per distinguerle meglio;\\
+    \texttt{label=label}: testo che compare nella legenda, controllato dal parametro \texttt{label} (default: \texttt{"Dati"});\\
+\end{description}
+\newpage
+La funzione \texttt{ax.hist()} disegna l'istogramma e restituisce tre cose:
+\begin{enumerate}
+    \item \textbf{counts}: un array con il numero di misure cadute in ogni bin
+    \item \textbf{\texttt{bin\_edges}}: i bordi degli intervalli, include sia il bordo destro che quello sinistro (ha un elemento in più di counts)
+    \item \textbf{patches}: oggetti grafici delle barre (modificabili successivamente)
+\end{enumerate}
+
+\subsection{Elementi dell'istogramma}
+I componenti principali dell'istogramma sono le statistiche:
+\begin{minted}{python}
+    # --- statistiche ---
+    mu = np.mean(x)
+    sigma = my.standard_deviation(x, w=1)
+\end{minted}
+dove \texttt{mu} rappresenta il valore atteso $E[x]$ e sigma è la \textbf{deviazione standard} calcolata con la funzione presente in \ref{sec:standard-deviation}.
+
+Successivamente abbiamo la linea mediana:
+\begin{minted}{python}
+    # --- linea media ---
+    if show_mean:
+        ax.axvline(
+            mu,
+            color="#D65F5",
+            linestyle="--",
+            linewidth=1.2,
+            label=rf"$\bar{{x}} = {mu:.3g}$",
+        )
+\end{minted}
+La funzione \texttt{ax.axvline()} disegna una linea verticale in
+corrispondenza di \(x=\mu\), permettendo di visualizzare immediatamente
+la posizione centrale della distribuzione secondo la media aritmetica.
+Questa indicazione è utile per confrontare il centro dell'istogramma con
+la dispersione dei dati e con eventuali altre statistiche descrittive.
+
+Un ulteriore elemento grafico utile è la banda di dispersione centrata
+sulla media, estesa di una deviazione standard a sinistra e a destra:
+
+\begin{minted}{python}
+    # --- linee +- sigma ---
+   if show_std:
+        ax.axvspan(
+            mu - sigma,
+            mu + sigma,
+            color="#EE854A" ,
+            alpha=0.15,
+            label=rf"$\pm 1\sigma = {sigma:.3g}$",
+        )
+\end{minted}
+
+
+La funzione \texttt{ax.axvspan()} colora la regione compresa tra
+\( \mu - \sigma \) e \( \mu + \sigma \), mettendo in evidenza
+l'intervallo di ampiezza pari a una deviazione standard attorno al valore centrale. Questa banda fornisce una rappresentazione visiva immediata della dispersione dei dati intorno alla media.
+\newpage
+
+Si impostano poi le etichette degli assi, il titolo del grafico e la legenda:
+
+\begin{minted}{python}
+    # --- etichette ---
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel if ylabel is not None else "Conteggi")
+    ax.set_title(title)
+
+    ax.legend(fontsize=9, framealpha=0.9)
+\end{minted}
+L'etichetta dell'asse \(x\) è assegnata tramite il parametro \texttt{xlabel}, mentre per l'asse \(y\) viene utilizzata l'etichetta fornita in \texttt{ylabel}; se questa non è specificata, viene usato il valore predefinito \texttt{"Conteggi"}. Il titolo del grafico è fissato da \texttt{title}. Infine, \texttt{ax.legend()} aggiunge una legenda che raccoglie e descrive gli elementi grafici opzionali, come la media e la banda di dispersione.
+
+Infine, il grafico può essere salvato su file se viene specificato un
+percorso di output:
+
+\begin{minted}{python}
+   # --- salvataggio ---
+    if save_path is not None:
+        fig.savefig(save_path, dpi=dpi, bbox_inches="tight")
+\end{minted}
+
+La chiamata a \texttt{fig.savefig()} esporta la figura nel percorso indicato da \texttt{save\_path}. Il parametro \texttt{dpi} controlla la risoluzione dell'immagine salvata, mentre \texttt{bbox\_inches="tight"} riduce i margini bianchi superflui attorno al grafico.
+
+\hfill
