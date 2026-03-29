@@ -9,6 +9,7 @@
 \setmathfont{Libertinus Math}
 \setsansfont{Libertinus Sans}
 \setmonofont{JetBrains Mono}[Scale=0.85]
+\newfontfamily\headingfont{Inter Display}
 \usepackage[italian]{babel}
 \usepackage{minted} % per snippet di codice
 \usemintedstyle{gruvbox-light}
@@ -21,38 +22,24 @@
 \usepackage[a4paper, margin=2.5cm]{geometry}
 \usepackage{needspace}
 \usepackage{etoolbox}
-\usepackage{epigraph}
 \usepackage{microtype}
-\setlength{\epigraphrule}{0pt}
-
-\renewcommand{\epigraphsize}{\small\itshape}
-\renewcommand{\epigraphflush}{flushright}
-\renewcommand{\sourceflush}{flushright}
 
 % ============================================================
 % Mathematics
 % ============================================================
-\usepackage{amsmath}
 \usepackage{mathtools}
-\usepackage{amsthm}
 \AtBeginDocument{%
   \setlength{\abovedisplayskip}{4pt plus 2pt minus 3pt}%
   \setlength{\belowdisplayskip}{4pt plus 2pt minus 3pt}%
   \setlength{\abovedisplayshortskip}{1pt plus 1pt}%
   \setlength{\belowdisplayshortskip}{3pt plus 1pt minus 2pt}%
 }
-\usepackage[thinc]{esdiff}
-
 % ============================================================
 % Figures & Graphics
 % ============================================================
-\usepackage{graphicx}
-\usepackage{float}
-\usepackage{xcolor,tikz}
+\usepackage{xcolor}
 \definecolor{accentblue}{HTML}{4878CF}
-\usepackage{booktabs}
 
-\usetikzlibrary{matrix, arrows.meta, positioning, decorations.pathreplacing, decorations.pathmorphing, calc}
 
 % ============================================================
 % Typography — headings
@@ -60,7 +47,7 @@
 \usepackage{titlesec}
 
 \titleformat{\chapter}[display]
-  {\normalfont\sffamily\bfseries}
+  {\normalfont\headingfont\bfseries}
   {\textcolor{accentblue}{\large\chaptertitlename\ \thechapter}}
   {4pt}
   {\huge}
@@ -69,19 +56,19 @@
 \titlespacing*{\chapter}{0pt}{-20pt}{30pt}
 
 \titleformat{\section}
-  {\normalfont\sffamily\large\bfseries}
+  {\normalfont\headingfont\large\bfseries}
   {\textcolor{accentblue}{\thesection}}
   {0.6em}
   {}
 
 \titleformat{\subsection}
-  {\normalfont\sffamily\normalsize\bfseries}
+  {\normalfont\headingfont\normalsize\bfseries}
   {\textcolor{accentblue}{\thesubsection}}
   {0.5em}
   {}
 
 \titleformat{\paragraph}
-  {\normalfont\sffamily\small\bfseries}
+  {\normalfont\headingfont\small\bfseries}
   {}
   {0pt}
   {}
@@ -105,15 +92,6 @@
   \vspace{1pt}%
   \noindent{\color{accentblue!25}\rule{\linewidth}{0.4pt}}%
   \vspace{2pt}%
-}
-
-% ============================================================
-% SI Units
-% ============================================================
-\usepackage{siunitx}
-\sisetup{
-  per-mode=symbol,
-  separate-uncertainty=true
 }
 
 % ============================================================
