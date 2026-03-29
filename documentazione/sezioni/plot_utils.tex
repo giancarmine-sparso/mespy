@@ -16,20 +16,22 @@ la documentazione per questa funzione è divisa in sottosezioni per spiegare al 
 \section{\texorpdfstring{histogram(x, bins, label, xlabel, ylabel, title, figsize, save\_path, show\_mean, show\_std, dpi, ax)}{histogram(x, bins, label, xlabel, ylabel, title, figsize, save\_path, show\_mean, show\_std, dpi, ax)}}
 \label{sec:istogramma}
 
-\begin{description}
-  \item[\textbf{Parametri}]
-    \texttt{x}: array-like (lista, tupla, array NumPy) $\to$ convertito in \texttt{float64};\\
-    \texttt{bins}: intero o \texttt{"auto"} (default: \texttt{"auto"}) $\to$ numero di intervalli dell'istogramma;\\
-    \texttt{label}: stringa (default: \texttt{"Dati"}) $\to$ testo che compare nella legenda;\\
-    \texttt{xlabel}: stringa (default: \texttt{"Valore1"}) $\to$ etichetta dell'asse $x$;\\
-    \texttt{ylabel}: stringa o \texttt{None} (default: \texttt{None}) $\to$ etichetta dell'asse $y$;\\
-    \texttt{title}: stringa (default: \texttt{"Istogramma"}) $\to$ titolo del grafico;\\
-    \texttt{figsize}: tupla (default: \texttt{(8, 5)}) $\to$ dimensioni della figura in pollici;\\
-    \texttt{save\_path}: stringa o \texttt{None} (default: \texttt{None}) $\to$ percorso in cui salvare la figura;\\
-    \texttt{show\_mean}: \texttt{bool} (default: \texttt{True}) $\to$ mostra la linea verticale della media;\\
-    \texttt{show\_std}: \texttt{bool} (default: \texttt{True}) $\to$ mostra la banda della deviazione standard;\\
-    \texttt{dpi}: intero (default: \texttt{300}) $\to$ risoluzione della figura;\\
-    \texttt{ax}: \texttt{matplotlib.axes.Axes} o \texttt{None} (default: \texttt{None}) $\to$ asse su cui disegnare.
+\begin{apidesc}
+  \item[\textbf{Parametri}]\hfill
+    \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=7em, leftmargin=7.5em, itemsep=1pt, parsep=0pt, topsep=3pt]
+      \item[x]          array-like $\to$ convertito in \texttt{float64}
+      \item[bins]       intero o \texttt{"auto"} (default \texttt{"auto"}) $\to$ numero di intervalli
+      \item[label]      stringa (default \texttt{"Dati"}) $\to$ testo nella legenda
+      \item[xlabel]     stringa (default \texttt{"Valore1"}) $\to$ etichetta asse $x$
+      \item[ylabel]     stringa o \texttt{None} $\to$ etichetta asse $y$ (default: \texttt{"Conteggi"})
+      \item[title]      stringa (default \texttt{"Istogramma"}) $\to$ titolo del grafico
+      \item[figsize]    tupla (default \texttt{(8,\,5)}) $\to$ dimensioni in pollici
+      \item[save\_path] stringa o \texttt{None} $\to$ percorso di salvataggio (default: \texttt{None})
+      \item[show\_mean] \texttt{bool} (default \texttt{True}) $\to$ mostra la linea della media
+      \item[show\_std]  \texttt{bool} (default \texttt{True}) $\to$ mostra la banda $\pm\sigma$
+      \item[dpi]        intero (default \texttt{300}) $\to$ risoluzione della figura
+      \item[ax]         \texttt{Axes} o \texttt{None} $\to$ asse su cui disegnare (default: \texttt{None})
+    \end{description}
   \item[\textbf{Vincoli}]
     Se \texttt{ax} $\neq$ \texttt{None}, la figura viene disegnata sull'asse passato senza crearne una nuova.
     Se \texttt{save\_path} $\neq$ \texttt{None}, la figura viene salvata nel percorso specificato con risoluzione \texttt{dpi}.
@@ -37,7 +39,7 @@ la documentazione per questa funzione è divisa in sottosezioni per spiegare al 
     \texttt{int}: \texttt{0} (implementazione in corso).
   \item[\textbf{Errori}]
     Nessuno.
-\end{description}
+\end{apidesc}
 
 
 \newpage
@@ -84,16 +86,18 @@ Il primo passo converte l'input in un array \texttt{float64}. La gestione dell'a
 \end{minted}
 
 
-\begin{description}
-    \item[Parametri] 
-    \texttt{bins=bins}: quanti intervalli usare, deciso dall'utente, default "auto" (scelti automaticamente da numpy);\\
-    \texttt{density=False}: asse y a conteggi;\\
-    \texttt{color="\#4878CF"}: colore delle barre;\\
-    \texttt{edgecolo="white"}: bordo bianco tra una barra e l'altra;\\
-    \texttt{alpha=0.85}: leggera trasparenza applicata alle barre, per distinguerle meglio;\\
-    \texttt{label=label}: testo che compare nella legenda, controllato dal parametro \texttt{label} (default: \texttt{"Dati"});\\
-\end{description}
-\newpage
+\begin{apidesc}
+  \item[\textbf{Parametri}]\hfill
+    \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=5em, leftmargin=5.5em, itemsep=1pt, parsep=0pt, topsep=3pt]
+      \item[bins]      \texttt{=bins} $\to$ numero di intervalli (default: \texttt{"auto"}, scelti da NumPy)
+      \item[density]   \texttt{=False} $\to$ asse $y$ a conteggi assoluti
+      \item[color]     \texttt{="\#4878CF"} $\to$ colore delle barre
+      \item[edgecolor] \texttt{="white"} $\to$ bordo bianco tra una barra e l'altra
+      \item[alpha]     \texttt{=0.85} $\to$ leggera trasparenza per distinguere meglio le barre
+      \item[label]     \texttt{=label} $\to$ testo nella legenda (default: \texttt{"Dati"})
+    \end{description}
+\end{apidesc}
+
 La funzione \texttt{ax.hist()} disegna l'istogramma e restituisce tre cose:
 \begin{enumerate}
     \item \textbf{counts}: un array con il numero di misure cadute in ogni bin
@@ -106,17 +110,17 @@ I componenti principali dell'istogramma sono le statistiche:
 \begin{minted}{python}
     # --- statistiche ---
     mu = np.mean(x)
-    sigma = my.standard_deviation(x, w=1)
+    sigma = my.standard_deviation(x)
 \end{minted}
 dove \texttt{mu} rappresenta il valore atteso $E[x]$ e sigma è la \textbf{deviazione standard} calcolata con la funzione presente in \ref{sec:standard-deviation}.
 
-Successivamente abbiamo la linea mediana:
+Successivamente abbiamo la linea della media:
 \begin{minted}{python}
     # --- linea media ---
     if show_mean:
         ax.axvline(
             mu,
-            color="#D65F5",
+            color=C_MEAN,
             linestyle="--",
             linewidth=1.2,
             label=rf"$\bar{{x}} = {mu:.3g}$",

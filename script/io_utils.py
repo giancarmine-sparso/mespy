@@ -5,13 +5,13 @@ import pandas as pd
 
 def load_csv(
     path,
-    sep="",
-    decimal="",
+    sep=",",
+    decimal=".",
     rename_columns=None,
     required_columns=None,
     drop_missing=False,
 ):
-    df = pd.read_csv(Path(path), sep=sep, decimal=decimal)  # carica i dati
+    df = pd.read_csv(Path(path), sep=sep, decimal=decimal, comment='#', skipinitialspace=True)  # carica i dati
 
     if rename_columns:
         df = df.rename(columns=rename_columns)

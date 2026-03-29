@@ -51,7 +51,7 @@ def histogram(
     show_std : bool, default True
         Se True disegna una banda trasparente nell'intervallo
         [media − σ, media + σ], dove σ è la deviazione standard
-        campionaria (ddof=1).
+        descrittiva (divisore N).
     label : str, default "Dati"
         Etichetta delle barre nella legenda.
     xlabel : str, default "Valore"
@@ -104,13 +104,13 @@ def histogram(
 
     # --- statistiche ---
     mu = np.mean(x)
-    sigma = my.standard_deviation(x, w=1)
+    sigma = my.standard_deviation(x)
 
     # --- linea media ---
     if show_mean:
         ax.axvline(
             mu,
-            color="#D65F5",
+            color=C_MEAN,
             linestyle="--",
             linewidth=1.2,
             label=rf"$\bar{{x}} = {mu:.3g}$",
