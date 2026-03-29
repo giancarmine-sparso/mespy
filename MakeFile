@@ -1,0 +1,52 @@
+.PHONY: all help setup venv install check-tex docs docs-clean clean
+
+PYTHON := python3
+VENV := .venv
+ACTIVATE := . $(VENV)/bin/activate
+PIP := $(VENV)/bin/pip
+
+MAIN := main
+TEX := $(MAIN).tex
+
+all: help
+
+help:
+	@echo "Available targets:"
+	@echo "  make setup      - create the Python virtual environment and install dependencies"
+	@echo "  make venv       - create the virtual environment"
+	@echo "  make install    - install Python dependencies into the virtual environment"
+	@echo "  make check-tex  - verify LaTeX prerequisites"
+	@echo "  make docs       - compile the PDF documentation"
+	@echo "  make docs-clean - remove LaTeX temporary files"
+	@echo "  make clean      - remove temporary files"
+
+setup: venv install
+
+venv:
+	@if [ ! -d "$(VENV)" ]; then \
+		$(PYTHON) -m venv $(VENV); \
+		echo "Created virtual environment in $(VENV)"; \
+	else \
+		echo "Virtual environment already exists"; \
+	fi
+
+install: venv
+	@$(PIP) install --upgrade pip
+	@if [ -f requirements.toml ]; then \
+		$(PIP) install -r requirements.toml; \
+		echo "Installed Python dependencies"; \
+	else \
+		echo "No requirements.toml found, skipping Python dependencies installation"; \
+	fi
+
+check-tex:
+	@bash tools/check-tex.sh
+
+docs: check-tex
+	@latexmk -lualatex -interaction=nonstopmode -halt-on-error $(TEX)
+
+docs-clean:
+	@latexmk -c $(TEX)
+	@rm -f *.fdb_latexmk *.fls *.synctex.gz
+
+clean: docs-clean

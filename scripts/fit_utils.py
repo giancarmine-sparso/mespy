@@ -3,7 +3,7 @@ import pandas as pd
 import stats_utils as my
 
 # fit lineare con incertezza su una variabile
-def lin_fit(x,y, sigma_y xlabel="x [xu]", ylabel="y [uy]"):
+def lin_fit(x,y, sigma_y, xlabel="x [xu]", ylabel="y [uy]"):
 
 
 

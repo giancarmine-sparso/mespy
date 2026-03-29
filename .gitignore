@@ -1,5 +1,6 @@
 # Variabili d'ambiente locali
 .env
+.envrc
 
 # Python
 __pycache__/
@@ -20,6 +21,9 @@ env/
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 ref.ipynb
+
+# Claude
+.claude
 
 # Dati grezzi potenzialmente sensibili o pesanti
 data/raw/
