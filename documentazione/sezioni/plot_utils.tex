@@ -70,7 +70,7 @@ def histogram(
 \end{minted}
 
 Il primo passo converte l'input in un array \texttt{float64}. La gestione dell'asse permette di integrare la funzione sia in figure autonome sia in griglie di sottografici: se \texttt{ax = None} viene creata una nuova figura, altrimenti si usa l'asse fornito e si recupera la figura padre con \texttt{ax.get\_figure()}. Il parametro \texttt{ax} sta per \textit{axes} in inglese e fa parte della libreria \texttt{matplotlib}.
-
+\newpage
 \subsection{Istogramma}
 \begin{minted}{python}
     # --- Istogramma ---
@@ -151,7 +151,6 @@ sulla media, estesa di una deviazione standard a sinistra e a destra:
 La funzione \texttt{ax.axvspan()} colora la regione compresa tra
 \( \mu - \sigma \) e \( \mu + \sigma \), mettendo in evidenza
 l'intervallo di ampiezza pari a una deviazione standard attorno al valore centrale. Questa banda fornisce una rappresentazione visiva immediata della dispersione dei dati intorno alla media.
-\newpage
 
 Si impostano poi le etichette degli assi, il titolo del grafico e la legenda:
 
