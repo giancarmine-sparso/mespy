@@ -59,7 +59,7 @@ __latexindent_temp_*
 *.bak*
 
 # PDF
-*.pdf
+# *.pdf
 
 # Arduino
 *.hex
