@@ -1,7 +1,53 @@
 % !TEX root = ../main.tex
 
-Il file \textit{io\_utils.py} contiene un unica funzione:
-\begin{itemize}
-    \item \texttt{load\_csv(path, ...)}: serve per caricare i dati da file csv, è una versione irrobustida della funzione \texttt{pd.read\_csv} disponibile con \texttt{pandas}
-\end{itemize}
+Il file \textit{io\_utils.py} raccoglie le funzioni di caricamento dati. Espone un'unica funzione, \texttt{load\_csv}, che avvolge \texttt{pd.read\_csv} aggiungendo validazione delle colonne e gestione dei valori mancanti.
 
+\section{\texorpdfstring{load\_csv(path, \ldots)}{load\_csv(path, ...)}}
+\label{sec:load-csv}
+\begin{apidesc}
+  \item[\textbf{Scopo}]
+    Caricare un file CSV in un \texttt{DataFrame}, con supporto a separatori e decimali personalizzati, rinomina delle colonne e controllo dei valori mancanti.
+  \item[\textbf{Parametri}]\hfill
+    \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=1.5em, leftmargin=2em, itemsep=1pt, parsep=0pt, topsep=1pt]
+      \item[path] str o Path $\to$ percorso del file CSV
+      \item[sep] str, default \texttt{","} $\to$ separatore di colonna
+      \item[decimal] str, default \texttt{"."} $\to$ separatore decimale
+      \item[rename\_columns] dict o \texttt{None}, default \texttt{None} $\to$ mappa \texttt{\{vecchio: nuovo\}} per rinominare le colonne
+      \item[required\_columns] list o \texttt{None}, default \texttt{None} $\to$ lista di colonne obbligatorie
+      \item[drop\_missing] bool, default \texttt{False} $\to$ se \texttt{True} elimina le righe con NaN; altrimenti solleva eccezione
+    \end{description}
+  \item[\textbf{Note}]
+    Le righe che iniziano con \texttt{\#} vengono ignorate; gli spazi dopo il separatore vengono rimossi automaticamente. Questi comportamenti sono fissi.
+  \item[\textbf{Restituisce}]
+    \texttt{pandas.DataFrame} con i dati del file.
+  \item[\textbf{Eccezioni}]
+    \texttt{ValueError} se una o più colonne di \texttt{required\_columns} sono assenti;
+    \texttt{ValueError} se il file contiene valori NaN e \texttt{drop\_missing=False}.
+\end{apidesc}
+\vspace{-15pt}
+\paragraph{Implementazione}
+\begin{minted}{python}
+def load_csv(path, sep=",", decimal=".", rename_columns=None,
+             required_columns=None, drop_missing=False):
+    df = pd.read_csv(Path(path), sep=sep, decimal=decimal,
+                     comment='#', skipinitialspace=True)
+    if rename_columns:
+        df = df.rename(columns=rename_columns)
+    if required_columns:
+        missing = [col for col in required_columns if col not in df.columns]
+        if missing:
+            raise ValueError(f"Colonne mancanti: {missing}")
+    if drop_missing:
+        df = df.dropna()
+    elif df.isna().any().any():
+        raise ValueError("Il file contiene valori mancanti")
+    return df
+\end{minted}
+\vspace{-10pt}
+\paragraph{Esempio d'uso}
+\begin{minted}{python}
+# CSV con separatore ";" e decimale "," (formato italiano)
+df = load_csv("misure.csv", sep=";", decimal=",",
+              rename_columns={"t [s]": "t", "x [m]": "x"},
+              required_columns=["t", "x"], drop_missing=True)
+\end{minted}
