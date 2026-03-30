@@ -70,27 +70,26 @@ source .venv/bin/activate
 ## Esempio minimo
 
 ```python
-import numpy as np
-
 from mech_lab_tools import lin_fit, load_csv, weighted_mean
 
 df = load_csv("data/reference/test_misure.csv", sep=",", decimal=".")
 
-x = df["Valore1"].to_numpy(dtype=float)
-sigma = np.full_like(x, 0.2)
+x = df["misura_n"].to_numpy(dtype=float)
+y = df["lunghezza_mm"].to_numpy(dtype=float)
+sigma_y = df["sigma_mm"].to_numpy(dtype=float)
 
-x_bar = weighted_mean(x, 1 / sigma**2)
+y_bar = weighted_mean(y, 1 / sigma_y**2)
 
 fit = lin_fit(
-    x=np.arange(1, len(x) + 1, dtype=float),
-    y=x,
-    sigma_y=sigma,
-    xlabel="indice",
-    ylabel="Valore1",
+    x=x,
+    y=y,
+    sigma_y=sigma_y,
+    xlabel="numero misura",
+    ylabel="lunghezza [mm]",
     plot=False,
 )
 
-print("media pesata:", x_bar)
+print("media pesata:", y_bar)
 print("pendenza:", fit["m"])
 ```
 

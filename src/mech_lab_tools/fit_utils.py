@@ -20,9 +20,15 @@ def lin_fit(
     if not (len(x) == len(y) == len(sigma_y)):
         raise ValueError("x, y e sigma_y devono avere la stessa lunghezza")
 
+    if not (np.all(np.isfinite(x)) and np.all(np.isfinite(y)) and np.all(np.isfinite(sigma_y))):
+        raise ValueError("x, y e sigma_y devono contenere solo valori finiti")
+
     n = len(x)
     if n < 3:
         raise ValueError("Servono almeno 3 punti per effettuare un fit lineare")
+
+    if np.any(sigma_y <= 0):
+        raise ValueError("sigma_y deve contenere solo valori strettamente positivi")
 
     # --- pesi p_i = 1 / sigma_yi^2 ---
     w = 1.0 / sigma_y**2
@@ -30,6 +36,9 @@ def lin_fit(
     # --- stima dei parametri ---
     # m = Cov_w(x,y) / Var_w(x)
     var_x = mlt.variance(x, w)
+    if not np.isfinite(var_x) or np.isclose(var_x, 0.0):
+        raise ValueError("x deve contenere almeno due valori distinti")
+
     cov_xy = mlt.covariance(x, y, w)
 
     m = cov_xy / var_x  # (14.12)

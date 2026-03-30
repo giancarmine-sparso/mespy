@@ -56,3 +56,27 @@ def test_lin_fit_raises_on_invalid_input():
 
     with pytest.raises(ValueError, match="almeno 3 punti"):
         lin_fit([1.0, 2.0], [1.0, 2.0], [0.1, 0.1], plot=False)
+
+
+def test_lin_fit_rejects_non_finite_values():
+    with pytest.raises(ValueError, match="valori finiti"):
+        lin_fit([1.0, np.nan, 3.0], [1.0, 2.0, 3.0], [0.1, 0.1, 0.1], plot=False)
+
+    with pytest.raises(ValueError, match="valori finiti"):
+        lin_fit([1.0, 2.0, 3.0], [1.0, np.inf, 3.0], [0.1, 0.1, 0.1], plot=False)
+
+    with pytest.raises(ValueError, match="valori finiti"):
+        lin_fit([1.0, 2.0, 3.0], [1.0, 2.0, 3.0], [0.1, np.nan, 0.1], plot=False)
+
+
+def test_lin_fit_rejects_non_positive_sigma():
+    with pytest.raises(ValueError, match="strettamente positivi"):
+        lin_fit([1.0, 2.0, 3.0], [1.0, 2.0, 3.0], [0.1, 0.0, 0.1], plot=False)
+
+    with pytest.raises(ValueError, match="strettamente positivi"):
+        lin_fit([1.0, 2.0, 3.0], [1.0, 2.0, 3.0], [0.1, -0.2, 0.1], plot=False)
+
+
+def test_lin_fit_rejects_constant_x():
+    with pytest.raises(ValueError, match="valori distinti"):
+        lin_fit([1.0, 1.0, 1.0], [1.0, 2.0, 3.0], [0.1, 0.1, 0.1], plot=False)

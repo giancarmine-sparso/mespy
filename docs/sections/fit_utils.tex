@@ -26,12 +26,17 @@ Le funzioni disponibili sono:
     \end{description}
   \item[\textbf{Vincoli}]
     \texttt{x}, \texttt{y} e \texttt{sigma\_y} devono avere la stessa lunghezza e contenere almeno 3 elementi ($n \geq 3$).
+    Tutti i valori di \texttt{x}, \texttt{y} e \texttt{sigma\_y} devono essere finiti.
     Tutti i valori di \texttt{sigma\_y} devono essere strettamente positivi ($\sigma_{y_i} > 0$) affinché i pesi $w_i = 1/\sigma_{y_i}^2$ siano finiti.
+    Inoltre \texttt{x} deve contenere almeno due valori distinti, altrimenti la varianza pesata delle ascisse si annulla e il fit lineare non e' definito.
   \item[\textbf{Restituisce}]
     \texttt{dict} con i parametri del fit, le loro incertezze, i residui, la loro dispersione e la figura generata se \texttt{plot=True}.
   \item[\textbf{Eccezioni}]
     \texttt{ValueError} se \texttt{len(x) != len(y)} o \texttt{len(x) != len(sigma\_y)};
-    \texttt{ValueError} se il numero di punti è inferiore a 3 ($n < 3$).
+    \texttt{ValueError} se il numero di punti è inferiore a 3 ($n < 3$);
+    \texttt{ValueError} se \texttt{x}, \texttt{y} o \texttt{sigma\_y} contengono valori non finiti;
+    \texttt{ValueError} se \texttt{sigma\_y} contiene valori non strettamente positivi;
+    \texttt{ValueError} se \texttt{x} non contiene almeno due valori distinti.
 \end{apidesc}
 
 \newpage
@@ -79,7 +84,7 @@ Il codice seguente calcola le incertezze su i parametri calcolati precedentement
 
 le formule sono le seguenti per la varianza:
 \[
-\text{Var}[\hat{m}] = \frac{1}{\text{Var}[x] \sum_i \frac{1}{\sigma^2_{Y_i}}}, \qquad \text{Var}[\hat{c}] = \frac{\overline{x^2}}{\text{Var}[x] \sum_i \frac{1}{\sigma_{Y_i}}} = \overline{x^2} \cdot \text{Var}[\hat{m}]
+\text{Var}[\hat{m}] = \frac{1}{\text{Var}[x] \sum_i \frac{1}{\sigma^2_{Y_i}}}, \qquad \text{Var}[\hat{c}] = \frac{\overline{x^2}}{\text{Var}[x] \sum_i \frac{1}{\sigma^2_{Y_i}}} = \overline{x^2} \cdot \text{Var}[\hat{m}]
 \]
 e per la covarianza:
 \[
@@ -106,7 +111,7 @@ esprime quanto ogni punto si scosta dalla retta di fit.
 
 La deviazione standard dei residui è invece calcolata come:
 \[
-\sigma_r = \sqrt{\frac{\sum_i (y_i - (m \cdot x_i + c)^2)}{n - 2}}
+\sigma_r = \sqrt{\frac{\sum_i \left(y_i - (m \cdot x_i + c)\right)^2}{n - 2}}
 \]
 quindi come la radice della somma in quadratura dei residui fratto \(n -2\). Questo perché il fit lineare ha consumato 2 gradi di libertà per stimare \(m\) e \(c\).
 
@@ -127,7 +132,7 @@ Dopo aver stimato parametri e residui, la funzione può costruire anche una visu
             1,
             figsize=(8, 6),
             dpi=dpi,
-            gridspec_kw={"height_rations": [3, 1]},
+            gridspec_kw={"height_ratios": [3, 1]},
             sharex=True,
             constrained_layout=True,
         )
@@ -148,7 +153,7 @@ La chiamata \texttt{plt.subplots(2, 1, ...)} crea una figura con due assi dispos
             color=C_BAR,
             markersize=4,
             ecolor=C_BAR,
-            eliwidth=1,
+            elinewidth=1,
             capsize=3,
         )
 
@@ -205,7 +210,7 @@ La funzione \texttt{ax\_fit.fill\_between(...)} colora la regione compresa tra i
         )
         ax_res.axhline(0, color=C_MEAN, linewidth=1, linestyle="--")
         ax_res.set_xlabel(xlabel)
-        ax_res.ste_ylabel("Residui")
+        ax_res.set_ylabel("Residui")
 \end{minted}
 
 La chiamata \texttt{ax\_res.errorbar(...)} riusa la stessa logica già descritta per \texttt{ax\_fit.errorbar}: cambia però la grandezza rappresentata sull'asse verticale, perché al posto dei valori \texttt{y} vengono usati i residui \texttt{r}. In questo modo il pannello inferiore non mostra più i dati originali, ma quanto ciascun punto si discosta dalla retta di fit.
