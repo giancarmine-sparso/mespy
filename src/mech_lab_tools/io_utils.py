@@ -11,6 +11,35 @@ def load_csv(
     required_columns=None,
     drop_missing=False,
 ):
+    """
+    Carica un file CSV in un DataFrame pandas con validazione.
+
+    Wrapper di ``pd.read_csv`` che aggiunge gestione di separatori,
+    decimali, rinominazione colonne, controllo colonne richieste
+    e trattamento dei valori mancanti.
+
+    Parametri
+    ---------
+    path : str o Path
+        Percorso del file CSV.
+    sep : str, default ","
+        Separatore di campo.
+    decimal : str, default "."
+        Carattere decimale (es. "," per formato italiano).
+    rename_columns : dict o None
+        Mappa {nome_vecchio: nome_nuovo} per rinominare le colonne.
+    required_columns : list o None
+        Colonne che devono essere presenti nel DataFrame.
+        Solleva ValueError se mancano.
+    drop_missing : bool, default False
+        Se True, rimuove le righe con valori mancanti.
+        Se False, solleva ValueError in presenza di NaN.
+
+    Restituisce
+    -----------
+    pd.DataFrame
+        DataFrame con i dati caricati e validati.
+    """
     df = pd.read_csv(Path(path), sep=sep, decimal=decimal, comment='#', skipinitialspace=True)  # carica i dati
 
     if rename_columns:

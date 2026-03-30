@@ -4,11 +4,47 @@ import mech_lab_tools as mlt
 from .plot_utils import C_BAR, C_BAND_B, C_MEAN
 
 
-# fit lineare con incertezza su una variabile
 def lin_fit(
     x, y, sigma_y, xlabel="x [xu]", ylabel="y [uy]", dpi=300, band=True, plot=True
 ):
+    """
+    Fit lineare pesato y = m*x + c con propagazione delle incertezze.
 
+    Stima pendenza e intercetta tramite minimi quadrati pesati
+    (pesi w_i = 1/sigma_y_i^2), calcola le incertezze sui parametri,
+    i residui e, opzionalmente, genera un grafico a due pannelli
+    (dati + retta, residui).
+
+    Parametri
+    ---------
+    x : array-like
+        Ascisse dei punti sperimentali.
+    y : array-like
+        Ordinate dei punti sperimentali.
+    sigma_y : array-like
+        Incertezze sulle ordinate (strettamente positive).
+    xlabel : str, default "x [xu]"
+        Etichetta asse x nel grafico.
+    ylabel : str, default "y [uy]"
+        Etichetta asse y nel grafico.
+    dpi : int, default 300
+        Risoluzione della figura.
+    band : bool, default True
+        Se True, disegna la banda di incertezza sulla retta.
+    plot : bool, default True
+        Se True, genera il grafico; se False restituisce fig=None.
+
+    Restituisce
+    -----------
+    dict
+        m, c : float — pendenza e intercetta
+        sigma_m, sigma_c : float — incertezze su m e c
+        cov_mc : float — covarianza tra m e c
+        rho_mc : float — coefficiente di correlazione tra m e c
+        r : ndarray — residui (y - m*x - c)
+        sigma_r : float — deviazione standard dei residui
+        fig : Figure o None — figura matplotlib (None se plot=False)
+    """
     x = np.asarray(x, dtype=float)
     y = np.asarray(y, dtype=float)
     sigma_y = np.asarray(sigma_y, dtype=float)
