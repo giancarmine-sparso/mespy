@@ -15,7 +15,7 @@ def lin_fit(
 
     x = np.asarray(x, dtype=float)
     y = np.asarray(y, dtype=float)
-    sigma_y = np.asanyarray(sigma_y, dtype=float)
+    sigma_y = np.asarray(sigma_y, dtype=float)
 
     if not (len(x) == len(y) == len(sigma_y)):
         raise ValueError("x, y e sigma_y devono avere la stessa lunghezza")
@@ -110,7 +110,7 @@ def lin_fit(
         ax_fit.grid(True, axis="y", linestyle="-", linewidth=0.5, alpha=0.3, zorder=0)
         ax_fit.legend(fontsize=9, framealpha=0.9)
 
-        # pannello inferiorre: residui
+        # pannello inferiore: residui
         ax_res.errorbar(
             x,
             r,

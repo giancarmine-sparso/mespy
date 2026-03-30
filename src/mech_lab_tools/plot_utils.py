@@ -14,7 +14,7 @@ def histogram(
     x,
     bins="auto",
     label="Dati",
-    xlabel="Valore1",
+    xlabel="Valore",
     ylabel=None,
     title="Istogramma",
     figsize=(8, 5),

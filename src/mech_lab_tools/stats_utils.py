@@ -77,7 +77,7 @@ def covariance(x, y, w=None):
     x = np.asarray(x, dtype=float)
     y = np.asarray(y, dtype=float)
     if len(x) != len(y):
-        raise ValueError("x and y must have the same length")
+        raise ValueError("x e y devono avere la stessa lunghezza")
     return weighted_mean(x * y, w) - weighted_mean(x, w) * weighted_mean(y, w)
 
 
@@ -99,5 +99,5 @@ def standard_deviation(x, w=None):
     """
     x = np.asarray(x, dtype=float)
     if len(x) == 0:
-        raise ValueError("x must contain at least one value")
+        raise ValueError("x deve contenere almeno un valore")
     return np.sqrt(variance(x, w))
