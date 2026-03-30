@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from mech_lab_tools import covariance, median, standard_deviation, variance, weighted_mean
+from mech_lab_tools import median, variance, weighted_mean
 
 
 def test_weighted_mean_uniform_weights():

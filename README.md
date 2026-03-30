@@ -29,6 +29,11 @@ mech-lab-tools/
 └── references/                  ← dispense del corso (non tracciate da git)
 ```
 
+## Stack
+
+Il toolbox è costruito sopra le librerie scientifiche standard di Python: NumPy, pandas e matplotlib.
+L'obiettivo non è sostituirle, ma fornire un piccolo livello riutilizzabile pensato per i flussi di lavoro del laboratorio di meccanica del primo anno.
+
 ## Prerequisiti
 
 - Python 3 (≥ 3.12)
