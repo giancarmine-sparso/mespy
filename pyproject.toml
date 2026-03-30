@@ -2,13 +2,28 @@
 name = "mech-lab-tools"
 version = "0.1.0"
 description = "Toolbox Python per l'analisi dati del laboratorio di meccanica"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Giancarmine-Sparso", email = "giancarminesparso@gmail.com" }]
 requires-python = ">=3.12"
+keywords = ["physics", "statistics", "data analysis", "laboratory", "mechanics"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+]
 dependencies = [
     "numpy",
     "pandas",
     "matplotlib",
     "scipy",
 ]
+
+[project.urls]
+Repository = "https://github.com/giancarmine-sparso/mech-lab-tools"
 
 [project.optional-dependencies]
 dev = [
@@ -21,4 +36,4 @@ where = ["src"]
 
 [build-system]
 requires = ["setuptools>=68"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"

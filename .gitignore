@@ -22,8 +22,9 @@ env/
 *.ipynb_checkpoints
 ref.ipynb
 
-# Claude
+# Claude - Codex
 .claude
+.codex
 
 # Dati grezzi potenzialmente sensibili o pesanti
 data/raw/
