@@ -110,7 +110,7 @@ I componenti principali dell'istogramma sono le statistiche:
 \begin{minted}{python}
     # --- statistiche ---
     mu = np.mean(x)
-    sigma = my.standard_deviation(x)
+    sigma = mlt.standard_deviation(x)
 \end{minted}
 dove \texttt{mu} rappresenta il valore atteso $E[x]$ e sigma è la \textbf{deviazione standard} calcolata con la funzione presente in \ref{sec:standard-deviation}.
 
@@ -175,6 +175,30 @@ percorso di output:
 
 La chiamata a \texttt{fig.savefig()} esporta la figura nel percorso indicato da \texttt{save\_path}. Il parametro \texttt{dpi} controlla la risoluzione dell'immagine salvata, mentre \texttt{bbox\_inches="tight"} riduce i margini bianchi superflui attorno al grafico.
 
-% TODO: aggiungi esempio uso di histogram
+\newpage
+\subsection{Esempio d'uso}
+Il codice seguente genera 200 campioni da una distribuzione normale con media $\mu = 0$ e deviazione standard $\sigma = 1$ tramite \texttt{numpy} e produce l'istogramma con le opzioni predefinite:
+
+\begin{minted}{python}
+import numpy as np
+from mech_lab_tools import plot_utils
+
+data = np.random.normal(loc=0, scale=1, size=200)
+
+fig, ax = plot_utils.histogram(
+    data,
+    bins=20,
+    label="Campione simulato",
+    xlabel="Valore",
+    title="Distribuzione normale simulata",
+)
+\end{minted}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.82\textwidth]{../figures/histogram_normal.png}
+  \caption{Istogramma di un campione di 200 valori estratti da una distribuzione normale $\mathcal{N}(0,1)$.}
+  \label{fig:histogram-normal}
+\end{figure}
 
 \hfill

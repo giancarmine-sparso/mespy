@@ -1,3 +1,4 @@
+from .fit_utils import lin_fit
 from .io_utils import load_csv
 
 # from .plot_utils import histogram
@@ -21,4 +22,5 @@ __all__ = [
     "variance",
     "covariance",
     "standard_deviation",
+    "lin_fit",
 ]

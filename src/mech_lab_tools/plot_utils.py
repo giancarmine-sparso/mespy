@@ -131,6 +131,8 @@ def histogram(
     ax.set_ylabel(ylabel if ylabel is not None else "Conteggi")
     ax.set_title(title)
 
+    ax.grid(True, axis="y", linestyle="-", linewidth=0.5, alpha=0.3, zorder=0)
+
     ax.legend(fontsize=9, framealpha=0.9)
 
     # --- salvataggio ---
