@@ -16,6 +16,7 @@ Il package espone direttamente:
 - `variance`
 - `covariance`
 - `standard_deviation`
+- `histogram`
 - `lin_fit`
 
 I moduli attualmente presenti in `src/mech_lab_tools` sono:
@@ -44,7 +45,7 @@ mech-lab-tools/
 
 - Python `>= 3.12`
 - `git`
-- `lualatex` e `latexmk` solo se vuoi ricompilare la documentazione
+- `lualatex`, `latexmk` e `pygmentize` solo se vuoi ricompilare la documentazione
 
 ## Installazione rapida
 
@@ -60,6 +61,8 @@ Crea il virtualenv e installa il package con le dipendenze di sviluppo:
 ```bash
 make setup
 ```
+
+Questo installa anche gli strumenti usati per il check pre-release (`build` e `twine`).
 
 Se vuoi attivare l'ambiente manualmente:
 
@@ -103,12 +106,24 @@ Per ricompilarla:
 make docs
 ```
 
+Il target usa `minted`, quindi richiede anche `pygmentize` disponibile nel `PATH`.
+
 Le sezioni attualmente documentate sono:
 
 - `io_utils`
 - `stats_utils`
 - `plot_utils`
 - `fit_utils`
+
+## Check pre-release
+
+Per eseguire il gate completo di release PyPI in locale:
+
+```bash
+make release-check
+```
+
+Il comando esegue test, `compileall`, `pip check`, build di `sdist` e `wheel`, validazione con `twine check` e smoke test degli import a partire dalla wheel generata.
 
 ## Comandi utili
 
@@ -117,9 +132,14 @@ Le sezioni attualmente documentate sono:
 | `make setup` | Crea il virtualenv e installa il package in editable mode con dipendenze `dev` |
 | `make venv` | Crea solo il virtualenv |
 | `make install` | Installa il package locale e le dipendenze |
+| `make test` | Esegue l'intera suite `pytest` |
+| `make dist` | Genera `sdist` e `wheel` in `dist/` |
+| `make twine-check` | Valida gli artifact generati con `twine check` |
+| `make release-check` | Esegue il gate completo pre-release per PyPI |
 | `make check-tex` | Verifica i prerequisiti LaTeX |
 | `make docs` | Compila la documentazione PDF |
 | `make docs-clean` | Rimuove i file temporanei LaTeX |
+| `make dist-clean` | Rimuove gli artifact Python di build |
 | `make clean` | Esegue la pulizia generale |
 
 ## Note

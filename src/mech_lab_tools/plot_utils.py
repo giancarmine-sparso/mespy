@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import numpy as np
 
 from .stats_utils import standard_deviation
@@ -87,6 +86,8 @@ def histogram(
 
     # --- Figura ---
     if ax is None:
+        import matplotlib.pyplot as plt
+
         fig, ax = plt.subplots(figsize=figsize, dpi=dpi, constrained_layout=True)
     else:
         fig = ax.get_figure()

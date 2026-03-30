@@ -11,10 +11,11 @@ check_cmd() {
 
 check_cmd latexmk
 check_cmd lualatex
+check_cmd pygmentize
 
 if [ ${#missing[@]} -gt 0 ]; then
     echo "Missing LaTeX prerequisites: ${missing[*]}"
-    echo "Install a LaTeX distribution that provides these commands."
+    echo "Install a LaTeX distribution and Pygments so these commands are available."
     echo "Examples:"
     echo "  - TeX Live (Linux)"
     echo "  - MacTeX (macOS)"

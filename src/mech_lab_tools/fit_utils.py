@@ -1,7 +1,7 @@
 import numpy as np
 
-import mech_lab_tools as mlt
 from .plot_utils import C_BAR, C_BAND_B, C_MEAN
+from .stats_utils import covariance, variance, weighted_mean
 
 
 def lin_fit(
@@ -67,22 +67,22 @@ def lin_fit(
 
     # --- stima dei parametri ---
     # m = Cov_w(x,y) / Var_w(x)
-    var_x = mlt.variance(x, w)
+    var_x = variance(x, w)
     if not np.isfinite(var_x) or np.isclose(var_x, 0.0):
         raise ValueError("x deve contenere almeno due valori distinti")
 
-    cov_xy = mlt.covariance(x, y, w)
+    cov_xy = covariance(x, y, w)
 
     m = cov_xy / var_x  # (14.12)
-    c = mlt.weighted_mean(y, w) - m * mlt.weighted_mean(x, w)  # (14.13)
+    c = weighted_mean(y, w) - m * weighted_mean(x, w)  # (14.13)
 
     # --- incertezze sui parametri (14.19, 14.20, 14.21) ---
     # Var[m] = 1 / (Var[x] * sum_i p_i)
     sum_w = np.sum(w)
     var_m = 1.0 / (var_x * sum_w)  # (14.19)
-    var_c = mlt.weighted_mean(x**2, w) / (var_x * sum_w)  # (14.20)
+    var_c = weighted_mean(x**2, w) / (var_x * sum_w)  # (14.20)
 
-    cov_mc = -mlt.weighted_mean(x, w) / (var_x * sum_w)  # (14.21)
+    cov_mc = -weighted_mean(x, w) / (var_x * sum_w)  # (14.21)
 
     sigma_m = np.sqrt(var_m)
     sigma_c = np.sqrt(var_c)
@@ -127,7 +127,7 @@ def lin_fit(
 
         # banda +- sigma sulla retta
         if band:
-            x_bar = mlt.weighted_mean(x, w)
+            x_bar = weighted_mean(x, w)
             sigma_y_fit = np.sqrt(1.0 / sum_w + (x_fit - x_bar) ** 2 / (var_x * sum_w))
             ax_fit.fill_between(
                 x_fit,
