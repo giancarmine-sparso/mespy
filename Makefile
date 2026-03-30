@@ -2,11 +2,12 @@
 
 PYTHON := python3
 VENV := .venv
-ACTIVATE := . $(VENV)/bin/activate
-PIP := $(VENV)/bin/pip
+VENV_PYTHON := $(VENV)/bin/python
+PIP := $(VENV_PYTHON) -m pip
 
 MAIN := main
 TEX := $(MAIN).tex
+DOCS_DIR := docs
 
 all: help
 
@@ -14,7 +15,7 @@ help:
 	@echo "Available targets:"
 	@echo "  make setup      - create the Python virtual environment and install dependencies"
 	@echo "  make venv       - create the virtual environment"
-	@echo "  make install    - install Python dependencies into the virtual environment"
+	@echo "  make install    - install the local package and development dependencies"
 	@echo "  make check-tex  - verify LaTeX prerequisites"
 	@echo "  make docs       - compile the PDF documentation"
 	@echo "  make docs-clean - remove LaTeX temporary files"
@@ -31,22 +32,23 @@ venv:
 	fi
 
 install: venv
+	@$(VENV_PYTHON) -m ensurepip --upgrade >/dev/null
 	@$(PIP) install --upgrade pip
-	@if [ -f requirements.toml ]; then \
-		$(PIP) install -r requirements.toml; \
-		echo "Installed Python dependencies"; \
+	@if [ -f pyproject.toml ]; then \
+		$(PIP) install -e ".[dev]"; \
+		echo "Installed local package and development dependencies in editable mode"; \
 	else \
-		echo "No requirements.toml found, skipping Python dependencies installation"; \
+		echo "No pyproject.toml found, skipping editable package installation"; \
 	fi
 
 check-tex:
 	@bash tools/check-tex.sh
 
 docs: check-tex
-	@latexmk -lualatex -interaction=nonstopmode -halt-on-error $(TEX)
+	@cd $(DOCS_DIR) && latexmk -lualatex -interaction=nonstopmode -halt-on-error $(TEX)
 
 docs-clean:
-	@latexmk -c $(TEX)
-	@rm -f *.fdb_latexmk *.fls *.synctex.gz
+	@cd $(DOCS_DIR) && latexmk -c $(TEX)
+	@rm -f $(DOCS_DIR)/*.fdb_latexmk $(DOCS_DIR)/*.fls $(DOCS_DIR)/*.synctex.gz
 
 clean: docs-clean

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from script import stats_utils as my
+from .stats_utils import standard_deviation
 
 # --- colori colorblind safe ---
 C_BAR = "#4878CF"  # blu       — barre istogramma
@@ -68,7 +68,7 @@ def histogram(
         a schermo sia per il salvataggio su file.
     save_path : str o None
         Percorso per il salvataggio automatico della figura
-        (es. "figure/hist.pdf"). Se None la figura non viene salvata.
+        (es. "figures/hist.pdf"). Se None la figura non viene salvata.
         Il formato viene dedotto dall'estensione del file.
     ax : matplotlib.axes.Axes o None
         Asse su cui disegnare. Se None la funzione crea una nuova
@@ -104,7 +104,7 @@ def histogram(
 
     # --- statistiche ---
     mu = np.mean(x)
-    sigma = my.standard_deviation(x)
+    sigma = standard_deviation(x)
 
     # --- linea media ---
     if show_mean:

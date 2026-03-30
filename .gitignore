@@ -34,7 +34,7 @@ figures/
 
 # References
 references/
-
+plan.md
 # LaTeX minted cache
 _minted-*/
 *.pygstyle
@@ -61,6 +61,7 @@ _minted-*/
 indent.log
 __latexindent_temp_*
 *.bak*
+_minted-main
 
 # PDF
 # *.pdf
