@@ -1,7 +1,7 @@
 from .fit_utils import lin_fit
 from .io_utils import load_csv
 
-# from .plot_utils import histogram
+from .plot_utils import histogram
 from .stats_utils import (
     covariance,
     median,
@@ -18,4 +18,5 @@ __all__ = [
     "covariance",
     "standard_deviation",
     "lin_fit",
+    "histogram",
 ]

@@ -1,11 +1,7 @@
 import numpy as np
 
 import mech_lab_tools as mlt
-
-C_BAR = "#4878CF"  # blu       — barre istogramma
-C_MEAN = "#D65F5F"  # rosso     — linea media
-C_BAND_A = "#4878CF"  # blu       — banda σ_A
-C_BAND_B = "#EE854A"  # arancione — banda σ_to
+from .plot_utils import C_BAR, C_BAND_B, C_MEAN
 
 
 # fit lineare con incertezza su una variabile
