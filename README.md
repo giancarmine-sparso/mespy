@@ -1,110 +1,128 @@
 # mech-lab-tools
 
-Toolbox Python modulare per l'analisi dei dati di laboratorio di meccanica (primo anno).
+Toolbox Python per l'analisi dei dati di laboratorio di meccanica.
 
-Raccoglie le funzioni che mi ritrovo a riscrivere ogni volta che apro un nuovo notebook: caricare un CSV, calcolare medie pesate, propagare gli errori, fare un fit lineare. L'idea è avere un posto solo dove tenere queste cose, documentarle bene una volta, e importarle nei notebook delle singole esperienze senza copia-incolla.
+L'obiettivo del progetto e' raccogliere in un unico package le utility che tornano spesso nei notebook di laboratorio: caricamento CSV, statistiche descrittive e pesate, istogrammi e fit lineare con incertezze.
 
-## Struttura
+Lo stato attuale e' ancora `Alpha`: il package e' gia' utilizzabile per casi semplici, ma l'API non va considerata stabile.
 
-```
+## Cosa c'e' oggi
+
+Il package espone direttamente:
+
+- `load_csv`
+- `median`
+- `weighted_mean`
+- `variance`
+- `covariance`
+- `standard_deviation`
+- `lin_fit`
+
+I moduli attualmente presenti in `src/mech_lab_tools` sono:
+
+- `io_utils.py`: lettura CSV con gestione di separatori, decimali, colonne richieste e missing values
+- `stats_utils.py`: funzioni statistiche di base, anche con pesi
+- `plot_utils.py`: istogrammi con media e banda `±1σ`
+- `fit_utils.py`: fit lineare pesato con residui, incertezze sui parametri e grafico opzionale
+
+## Struttura del progetto
+
+```text
 mech-lab-tools/
-├── src/
-│   └── mech_lab_tools/          ← moduli Python del toolbox
-│       ├── io_utils.py          ← caricamento CSV con gestione separatori e decimali
-│       ├── stats_utils.py       ← media pesata, varianza, covarianza, mediana
-│       ├── plot_utils.py        ← istogrammi colorblind-safe
-│       ├── fit_utils.py         ← fit lineare con incertezze          [WIP]
-│       ├── format_utils.py      ← formattazione x ± σ                 [WIP]
-│       └── uncertainty_utils.py ← propagazione degli errori           [WIP]
-├── data/
-│   ├── raw/                     ← dati originali (non tracciati da git)
-│   ├── processed/               ← risultati processati (non tracciati da git)
-│   └── reference/               ← dataset di test e campioni di riferimento
-├── figures/                     ← grafici esportati (non tracciati da git)
-├── notebooks/                   ← notebook Jupyter di prova
-├── docs/                        ← sorgente LaTeX e documentazione compilata (main.pdf)
-│   └── sections/                ← sorgenti LaTeX divisi per modulo
-├── tests/                       ← test dei moduli
-├── tools/                       ← script di supporto al Makefile
-└── references/                  ← dispense del corso (non tracciate da git)
+├── src/mech_lab_tools/   # package Python
+├── tests/                # test pytest
+├── notebooks/            # notebook di prova e dimostrazione
+├── docs/                 # documentazione LaTeX e PDF
+├── data/reference/       # dataset di riferimento per test/esempi
+├── figures/              # figure esportate
+├── tools/                # script di supporto
+├── pyproject.toml        # metadata del package
+└── Makefile              # comandi di setup e documentazione
 ```
 
-## Stack
+## Requisiti
 
-Il toolbox è costruito sopra le librerie scientifiche standard di Python: NumPy, pandas e matplotlib.
-L'obiettivo non è sostituirle, ma fornire un piccolo livello riutilizzabile pensato per i flussi di lavoro del laboratorio di meccanica del primo anno.
-
-## Prerequisiti
-
-- Python 3 (≥ 3.12)
+- Python `>= 3.12`
 - `git`
+- `lualatex` e `latexmk` solo se vuoi ricompilare la documentazione
 
-- `lualatex` e `latexmk` — solo per compilare la documentazione **(opzionale)**
+## Installazione rapida
 
-## Come iniziare
-
-Clona la repo e spostati nella directory:
+Clona il repository ed entra nella directory:
 
 ```bash
 git clone https://github.com/giancarmine-sparso/mech-lab-tools
 cd mech-lab-tools
 ```
 
-Crea il virtualenv e installa le dipendenze:
+Crea il virtualenv e installa il package con le dipendenze di sviluppo:
 
 ```bash
 make setup
 ```
 
-Attiva il virtualenv per usare i moduli nei notebook:
-
-**macOS / Linux:**
+Se vuoi attivare l'ambiente manualmente:
 
 ```bash
 source .venv/bin/activate
 ```
 
-**Windows (PowerShell):**
-
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
-**Windows (cmd):**
-
-```cmd
-.venv\Scripts\activate.bat
-```
-
-> **Nota:** con [direnv](https://direnv.net/) installato, il virtualenv si attiva automaticamente entrando nella directory — non serve il passo manuale.
-
-## Utilizzo
+## Esempio minimo
 
 ```python
-from mech_lab_tools import load_csv, weighted_mean, standard_deviation
+import numpy as np
 
-df = load_csv("data/raw/misure.csv", sep=";", decimal=",")
-x_bar = weighted_mean(df["lunghezza_mm"], 1 / df["sigma_mm"]**2)
-sigma = standard_deviation(df["lunghezza_mm"])
+from mech_lab_tools import lin_fit, load_csv, weighted_mean
+
+df = load_csv("data/reference/test_misure.csv", sep=",", decimal=".")
+
+x = df["Valore1"].to_numpy(dtype=float)
+sigma = np.full_like(x, 0.2)
+
+x_bar = weighted_mean(x, 1 / sigma**2)
+
+fit = lin_fit(
+    x=np.arange(1, len(x) + 1, dtype=float),
+    y=x,
+    sigma_y=sigma,
+    xlabel="indice",
+    ylabel="Valore1",
+    plot=False,
+)
+
+print("media pesata:", x_bar)
+print("pendenza:", fit["m"])
 ```
 
 ## Documentazione
 
-La documentazione dettagliata di ciascun modulo è in `docs/main.pdf`.
-Per ricompilarla (richiede `lualatex` e `latexmk`):
+La documentazione del package e' in `docs/main.pdf`.
+
+Per ricompilarla:
 
 ```bash
 make docs
 ```
 
-## Target del Makefile
+Le sezioni attualmente documentate sono:
+
+- `io_utils`
+- `stats_utils`
+- `plot_utils`
+- `fit_utils`
+
+## Comandi utili
 
 | Target | Descrizione |
 | --- | --- |
-| `make setup` | Crea il virtualenv e installa le dipendenze |
+| `make setup` | Crea il virtualenv e installa il package in editable mode con dipendenze `dev` |
 | `make venv` | Crea solo il virtualenv |
-| `make install` | Installa solo le dipendenze Python |
+| `make install` | Installa il package locale e le dipendenze |
 | `make check-tex` | Verifica i prerequisiti LaTeX |
 | `make docs` | Compila la documentazione PDF |
 | `make docs-clean` | Rimuove i file temporanei LaTeX |
-| `make clean` | Rimuove tutti i file temporanei |
+| `make clean` | Esegue la pulizia generale |
+
+## Note
+
+- I notebook in `notebooks/` sono esempi di utilizzo e test esplorativi, non documentazione API stabile.
