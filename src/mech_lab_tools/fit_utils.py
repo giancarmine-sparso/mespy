@@ -1,11 +1,23 @@
 import numpy as np
 
-from .plot_utils import C_BAR, C_BAND_B, C_MEAN
+from .plot_utils import C_BAND_B, C_BAR, C_MEAN
 from .stats_utils import covariance, variance, weighted_mean
 
 
 def lin_fit(
-    x, y, sigma_y, xlabel="x [xu]", ylabel="y [uy]", dpi=300, band=True, plot=True
+    x,
+    y,
+    sigma_y,
+    xlabel="x [xu]",
+    ylabel="y [uy]",
+    dpi=300,
+    band=True,
+    plot=True,
+    xlim=None,
+    ylim=None,
+    decimals=3,
+    legend=True,
+    legend_coefficient=False,
 ):
     """
     Fit lineare pesato y = m*x + c con propagazione delle incertezze.
@@ -33,6 +45,16 @@ def lin_fit(
         Se True, disegna la banda di incertezza sulla retta.
     plot : bool, default True
         Se True, genera il grafico; se False restituisce fig=None.
+    xlim : tuple di 2 float, opzionale
+        Limiti asse x (min, max) per il grafico.
+    ylim : tuple di 2 float, opzionale
+        Limiti asse y (min, max) per il pannello superiore.
+    decimals : int, default 3
+        Numero di cifre decimali per i coefficienti in legenda.
+    legend : bool, default True
+        Se True, mostra la legenda nel pannello superiore.
+    legend_coefficient : bool, default False
+        Se True, mostra m e c formattati nella legenda della retta.
 
     Restituisce
     -----------
@@ -52,7 +74,11 @@ def lin_fit(
     if not (len(x) == len(y) == len(sigma_y)):
         raise ValueError("x, y e sigma_y devono avere la stessa lunghezza")
 
-    if not (np.all(np.isfinite(x)) and np.all(np.isfinite(y)) and np.all(np.isfinite(sigma_y))):
+    if not (
+        np.all(np.isfinite(x))
+        and np.all(np.isfinite(y))
+        and np.all(np.isfinite(sigma_y))
+    ):
         raise ValueError("x, y e sigma_y devono contenere solo valori finiti")
 
     n = len(x)
@@ -61,6 +87,9 @@ def lin_fit(
 
     if np.any(sigma_y <= 0):
         raise ValueError("sigma_y deve contenere solo valori strettamente positivi")
+
+    # --- formato decimali ---
+    fmt = f".{decimals}f"
 
     # --- pesi p_i = 1 / sigma_yi^2 ---
     w = 1.0 / sigma_y**2
@@ -123,7 +152,10 @@ def lin_fit(
 
         x_fit = np.linspace(x.min(), x.max(), 200)
         y_fit = m * x_fit + c
-        ax_fit.plot(x_fit, y_fit, color=C_MEAN, linewidth=1.5, label="Fit")
+        fit_label = (
+            f"Fit: m={m:{fmt}}, c={c:{fmt}}" if legend_coefficient else "Fit"
+        )
+        ax_fit.plot(x_fit, y_fit, color=C_MEAN, linewidth=1.5, label=fit_label)
 
         # banda +- sigma sulla retta
         if band:
@@ -140,7 +172,8 @@ def lin_fit(
 
         ax_fit.set_ylabel(ylabel)
         ax_fit.grid(True, axis="y", linestyle="-", linewidth=0.5, alpha=0.3, zorder=0)
-        ax_fit.legend(fontsize=9, framealpha=0.9)
+        if legend:
+            ax_fit.legend(fontsize=9, framealpha=0.9)
 
         # pannello inferiore: residui
         ax_res.errorbar(
@@ -157,6 +190,17 @@ def lin_fit(
         ax_res.axhline(0, color=C_MEAN, linewidth=1, linestyle="--")
         ax_res.set_xlabel(xlabel)
         ax_res.set_ylabel("Residui")
+
+        # --- limiti assi ---
+        if xlim is not None:
+            if len(xlim) != 2:
+                raise ValueError(f"xlim deve avere 2 elementi, ricevuti {len(xlim)}")
+            ax_fit.set_xlim(xlim)
+            ax_res.set_xlim(xlim)
+        if ylim is not None:
+            if len(ylim) != 2:
+                raise ValueError(f"ylim deve avere 2 elementi, ricevuti {len(ylim)}")
+            ax_fit.set_ylim(ylim)
 
     return {
         "m": m,

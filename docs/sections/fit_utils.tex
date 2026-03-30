@@ -7,7 +7,7 @@ Le funzioni disponibili sono:
 \end{itemize}
 
 
-\section{\texorpdfstring{lin\_fit(x, y, sigma\_y, xlabel, ylabel, dpi, band, plot)}{lin\_fit(x, y, sigma\_y, xlabel, ylabel, dpi, band, plot)}}
+\section{\texorpdfstring{lin\_fit(x, y, sigma\_y, xlabel, ylabel, dpi, band, plot, xlim, ylim, decimals, legend, legend\_coefficient)}{lin\_fit(x, y, sigma\_y, xlabel, ylabel, dpi, band, plot, xlim, ylim, decimals, legend, legend\_coefficient)}}
 \label{sec:fit-lineare}
 
 \begin{apidesc}
@@ -23,6 +23,11 @@ Le funzioni disponibili sono:
       \item[dpi]      intero (default \texttt{300}) $\to$ risoluzione della figura salvata
       \item[band]     \texttt{bool} (default \texttt{True}) $\to$ se \texttt{True}, mostra la banda di confidenza attorno alla retta
       \item[plot]     \texttt{bool} (default \texttt{True}) $\to$ se \texttt{True}, genera e mostra il grafico del fit
+      \item[xlim]    \texttt{tuple} o \texttt{None} (default \texttt{None}) $\to$ limiti asse $x$ come \texttt{(xmin, xmax)}; ignorato se \texttt{plot=False}
+      \item[ylim]    \texttt{tuple} o \texttt{None} (default \texttt{None}) $\to$ limiti asse $y$ del pannello superiore come \texttt{(ymin, ymax)}; ignorato se \texttt{plot=False}
+      \item[decimals] \texttt{int} (default \texttt{3}) $\to$ cifre decimali per la formattazione dei coefficienti in legenda
+      \item[legend]  \texttt{bool} (default \texttt{True}) $\to$ se \texttt{True}, mostra la legenda nel pannello superiore
+      \item[legend\_coefficient] \texttt{bool} (default \texttt{False}) $\to$ se \texttt{True}, mostra $m$ e $c$ formattati nella legenda della retta
     \end{description}
   \item[\textbf{Vincoli}]
     \texttt{x}, \texttt{y} e \texttt{sigma\_y} devono avere la stessa lunghezza e contenere almeno 3 elementi ($n \geq 3$).
@@ -36,7 +41,8 @@ Le funzioni disponibili sono:
     \texttt{ValueError} se il numero di punti è inferiore a 3 ($n < 3$);
     \texttt{ValueError} se \texttt{x}, \texttt{y} o \texttt{sigma\_y} contengono valori non finiti;
     \texttt{ValueError} se \texttt{sigma\_y} contiene valori non strettamente positivi;
-    \texttt{ValueError} se \texttt{x} non contiene almeno due valori distinti.
+    \texttt{ValueError} se \texttt{x} non contiene almeno due valori distinti;
+    \texttt{ValueError} se \texttt{xlim} o \texttt{ylim} non contengono esattamente 2 elementi.
 \end{apidesc}
 
 \newpage
@@ -159,18 +165,22 @@ La chiamata \texttt{plt.subplots(2, 1, ...)} crea una figura con due assi dispos
 
         x_fit = np.linspace(x.min(), x.max(), 200)
         y_fit = m * x_fit + c
-        ax_fit.plot(x_fit, y_fit, color=C_MEAN, linewidth=1.5, label="Fit")
+        fit_label = (
+            f"Fit: m={m:{fmt}}, c={c:{fmt}}" if legend_coefficient else "Fit"
+        )
+        ax_fit.plot(x_fit, y_fit, color=C_MEAN, linewidth=1.5, label=fit_label)
 
         ax_fit.set_ylabel(ylabel)
         ax_fit.grid(True, axis="y", linestyle="-", linewidth=0.5, alpha=0.3, zorder=0)
-        ax_fit.legend(fontsize=9, framealpha=0.9)
+        if legend:
+            ax_fit.legend(fontsize=9, framealpha=0.9)
 \end{minted}
 
 La chiamata \texttt{ax\_fit.errorbar(...)} disegna i punti sperimentali con le rispettive barre d'errore. I primi due argomenti, \texttt{x} e \texttt{y}, sono le coordinate dei dati; \texttt{yerr=sigma\_y} specifica invece l'incertezza verticale associata a ciascun punto. Il parametro \texttt{fmt="o"} chiede di rappresentare ogni misura con un marcatore circolare, \texttt{color=C\_BAR} ne imposta il colore principale, \texttt{markersize=4} ne controlla la dimensione, \texttt{ecolor=C\_BAR} usa lo stesso colore per le barre di errore, il parametro dedicato alla larghezza della barra ne regola lo spessore grafico, e \texttt{capsize=3} aggiunge i piccoli terminali orizzontali alle estremità delle barre.
 
-Dopo i dati viene costruita la retta di fit. L'istruzione \texttt{np.linspace(x.min(), x.max(), 200)} genera 200 ascisse equispaziate tra il minimo e il massimo dei dati sperimentali: non sono nuovi dati misurati, ma una griglia regolare utile per tracciare una linea liscia. Su questa griglia la funzione calcola \texttt{y\_fit = m * x\_fit + c}, cioè l'equazione della retta stimata con i parametri del fit. La chiamata \texttt{ax\_fit.plot(...)} disegna quindi la curva corrispondente: \texttt{color=C\_MEAN} sceglie il colore della retta, \texttt{linewidth=1.5} ne fissa lo spessore, e \texttt{label="Fit"} fornisce il testo che comparirà in legenda.
+Dopo i dati viene costruita la retta di fit. L'istruzione \texttt{np.linspace(x.min(), x.max(), 200)} genera 200 ascisse equispaziate tra il minimo e il massimo dei dati sperimentali: non sono nuovi dati misurati, ma una griglia regolare utile per tracciare una linea liscia. Su questa griglia la funzione calcola \texttt{y\_fit = m * x\_fit + c}, cioè l'equazione della retta stimata con i parametri del fit. La variabile \texttt{fit\_label} costruisce l'etichetta della retta in legenda: se \texttt{legend\_coefficient} è vero, la label riporta i valori di $m$ e $c$ formattati con il numero di decimali specificato da \texttt{decimals} (tramite la stringa di formato \texttt{fmt}); altrimenti resta semplicemente \texttt{"Fit"}. La chiamata \texttt{ax\_fit.plot(...)} disegna quindi la curva corrispondente: \texttt{color=C\_MEAN} sceglie il colore della retta, \texttt{linewidth=1.5} ne fissa lo spessore, e \texttt{label=fit\_label} fornisce il testo che comparirà in legenda.
 
-Le ultime istruzioni rifiniscono il pannello. \texttt{ax\_fit.set\_ylabel(ylabel)} usa l'argomento della funzione per etichettare l'asse verticale; \texttt{ax\_fit.grid(...)} aggiunge una griglia leggera solo sull'asse \(y\), utile per stimare a colpo d'occhio lo scostamento dei punti dalla retta; \texttt{ax\_fit.legend(...)} mostra infine la legenda, con dimensione del font e trasparenza del riquadro controllate dai due argomenti passati.
+Le ultime istruzioni rifiniscono il pannello. \texttt{ax\_fit.set\_ylabel(ylabel)} usa l'argomento della funzione per etichettare l'asse verticale; \texttt{ax\_fit.grid(...)} aggiunge una griglia leggera solo sull'asse \(y\), utile per stimare a colpo d'occhio lo scostamento dei punti dalla retta. La legenda viene mostrata solo se \texttt{legend=True}, con dimensione del font e trasparenza del riquadro controllate dai due argomenti passati.
 
 \newpage
 \paragraph{Banda}
@@ -216,6 +226,22 @@ La funzione \texttt{ax\_fit.fill\_between(...)} colora la regione compresa tra i
 La chiamata \texttt{ax\_res.errorbar(...)} riusa la stessa logica già descritta per \texttt{ax\_fit.errorbar}: cambia però la grandezza rappresentata sull'asse verticale, perché al posto dei valori \texttt{y} vengono usati i residui \texttt{r}. In questo modo il pannello inferiore non mostra più i dati originali, ma quanto ciascun punto si discosta dalla retta di fit.
 
 L'istruzione \texttt{ax\_res.axhline(0, ...)} aggiunge una linea orizzontale di riferimento in corrispondenza di \(r = 0\). Essa rappresenta il caso ideale in cui dato e modello coincidono perfettamente, quindi aiuta a vedere subito se i residui oscillano in modo bilanciato attorno a zero oppure mostrano andamenti sistematici. Infine, \texttt{ax\_res.set\_xlabel(xlabel)} etichetta l'asse comune delle ascisse, mentre l'ultima istruzione assegna al pannello l'etichetta verticale \texttt{"Residui"}.
+
+\paragraph{Limiti degli assi}
+\begin{minted}{python}
+        # --- limiti assi ---
+        if xlim is not None:
+            if len(xlim) != 2:
+                raise ValueError(...)
+            ax_fit.set_xlim(xlim)
+            ax_res.set_xlim(xlim)
+        if ylim is not None:
+            if len(ylim) != 2:
+                raise ValueError(...)
+            ax_fit.set_ylim(ylim)
+\end{minted}
+
+Se l'utente passa \texttt{xlim} o \texttt{ylim}, la funzione forza i limiti degli assi corrispondenti. \texttt{xlim} viene applicato sia al pannello superiore sia a quello dei residui (dato che condividono l'asse $x$), mentre \texttt{ylim} agisce solo sul pannello del fit. Entrambi i parametri devono contenere esattamente due elementi; in caso contrario viene sollevata un'eccezione. Questo blocco si trova all'interno del ramo \texttt{if plot:}, quindi viene ignorato quando il grafico non è richiesto.
 
 \paragraph{Return della funzione}
 \begin{minted}{python}

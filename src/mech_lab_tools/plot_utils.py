@@ -11,17 +11,24 @@ C_BAND_B = "#EE854A"  # arancione — banda σ_tot
 
 def histogram(
     x,
+    ddof=1,
     bins="auto",
     label="Dati",
     xlabel="Valore",
     ylabel=None,
     title="Istogramma",
+    bin_ticks=True,
+    tick_rotation=0,
+    decimals=3,
     figsize=(8, 5),
     save_path=None,
+    show_legend=True,
     show_mean=True,
     show_std=True,
     dpi=300,
     ax=None,
+    xlim=None,
+    ylim=None,
 ):
     """
     Istogramma di una distribuzione sperimentale.
@@ -39,18 +46,14 @@ def histogram(
     x : array-like
         Dati da rappresentare. Viene convertito internamente
         in un array NumPy float64 tramite np.asarray.
+    ddof : int, default 1
+        Gradi di libertà per il calcolo della deviazione
+        standard (divisore N - ddof).
     bins : int o str, default "auto"
         Numero di bin o strategia numpy per la scelta automatica.
         Strategie disponibili: "auto", "sturges", "fd", "sqrt".
         Con "auto" numpy confronta Sturges e Freedman-Diaconis
         e sceglie quella che produce più bin.
-    show_mean : bool, default True
-        Se True traccia una linea verticale tratteggiata
-        in corrispondenza della media aritmetica dei dati.
-    show_std : bool, default True
-        Se True disegna una banda trasparente nell'intervallo
-        [media − σ, media + σ], dove σ è la deviazione standard
-        descrittiva (divisore N).
     label : str, default "Dati"
         Etichetta delle barre nella legenda.
     xlabel : str, default "Valore"
@@ -60,20 +63,45 @@ def histogram(
         automaticamente a "Conteggi".
     title : str, default "Istogramma"
         Titolo del grafico.
+    bin_ticks : bool, default True
+        Se True posiziona i tick dell'asse x sui bordi dei bin
+        e li formatta con il numero di decimali indicato da
+        *decimals*.
+    tick_rotation : int o float, default 0
+        Angolo di rotazione (in gradi) delle etichette
+        dell'asse x. Utile quando i tick si sovrappongono.
+    decimals : int, default 3
+        Numero di cifre decimali usato per formattare i tick
+        dei bin e i valori di media e σ nella legenda.
     figsize : tuple, default (8, 5)
         Dimensioni della figura in pollici (larghezza, altezza).
-    dpi : int, default 300
-        Risoluzione della figura, usata sia per la visualizzazione
-        a schermo sia per il salvataggio su file.
     save_path : str o None
         Percorso per il salvataggio automatico della figura
         (es. "figures/hist.pdf"). Se None la figura non viene salvata.
         Il formato viene dedotto dall'estensione del file.
+    show_legend : bool, default True
+        Se True mostra la legenda sul grafico.
+    show_mean : bool, default True
+        Se True traccia una linea verticale tratteggiata
+        in corrispondenza della media aritmetica dei dati.
+    show_std : bool, default True
+        Se True disegna una banda trasparente nell'intervallo
+        [media - σ, media + σ], dove σ è la deviazione standard
+        calcolata con il divisore N - ddof.
+    dpi : int, default 300
+        Risoluzione della figura, usata sia per la visualizzazione
+        a schermo sia per il salvataggio su file.
     ax : matplotlib.axes.Axes o None
         Asse su cui disegnare. Se None la funzione crea una nuova
         figura con plt.subplots(); se viene passato un asse esistente,
         la funzione disegna su quello e risale alla figura madre
         con ax.get_figure().
+    xlim : tuple o None
+        Limiti dell'asse x come (xmin, xmax). Se None i limiti
+        vengono determinati automaticamente da matplotlib.
+    ylim : tuple o None
+        Limiti dell'asse y come (ymin, ymax). Se None i limiti
+        vengono determinati automaticamente da matplotlib.
 
     Restituisce
     -----------
@@ -103,9 +131,21 @@ def histogram(
         label=label,
     )
 
+    # --- formato decimali ---
+    fmt = f".{decimals}f"
+
+    # --- tick sui bordi del bin ---
+    if bin_ticks:
+        ax.set_xticks(bin_edges)
+        ax.set_xticklabels([f"{edge:{fmt}}" for edge in bin_edges])
+
+    # --- tick rotation ---
+    if tick_rotation != 0:
+        ax.tick_params(axis="x", rotation=tick_rotation)
+
     # --- statistiche ---
     mu = np.mean(x)
-    sigma = standard_deviation(x)
+    sigma = standard_deviation(x, ddof)
 
     # --- linea media ---
     if show_mean:
@@ -114,7 +154,7 @@ def histogram(
             color=C_MEAN,
             linestyle="--",
             linewidth=1.2,
-            label=rf"$\bar{{x}} = {mu:.3g}$",
+            label=rf"$\bar{{x}} = {mu:{fmt}}$",
         )
 
     # --- linee +- sigma ---
@@ -124,7 +164,7 @@ def histogram(
             mu + sigma,
             color="#D65F5F",
             alpha=0.15,
-            label=rf"$\pm 1\sigma = {sigma:.3g}$",
+            label=rf"$\pm 1\sigma = {sigma:{fmt}}$",
         )
 
     # --- etichette ---
@@ -134,7 +174,24 @@ def histogram(
 
     ax.grid(True, axis="y", linestyle="-", linewidth=0.5, alpha=0.3, zorder=0)
 
-    ax.legend(fontsize=9, framealpha=0.9)
+    # --- legenda ---
+    if show_legend:
+        ax.legend(fontsize=9, framealpha=0.9)
+
+    # --- limiti assi ---
+    if xlim is not None:
+        if len(xlim) != 2:
+            raise ValueError(
+                f"xlim deve avere 2 elementi (xmin, xmax) | ricevuti {len(xlim)}"
+            )
+        ax.set_xlim(xlim)
+
+    if ylim is not None:
+        if len(ylim) != 2:
+            raise ValueError(
+                f"ylim deve avere due elementi (ymin, ymax) | ricevuti: {len(ylim)}"
+            )
+        ax.set_ylim(ylim)
 
     # --- salvataggio ---
     if save_path is not None:

@@ -36,6 +36,7 @@ figures/
 # References
 references/
 plan.md
+TODO.md
 # LaTeX minted cache
 _minted-*/
 *.pygstyle
