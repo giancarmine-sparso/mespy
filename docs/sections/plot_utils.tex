@@ -225,15 +225,11 @@ Si impostano poi le etichette degli assi, il titolo del grafico e la legenda:
 
     # --- limiti assi ---
     if xlim is not None:
-        if len(xlim) != 2:
-            raise ValueError(...)
         ax.set_xlim(xlim)
     if ylim is not None:
-        if len(ylim) != 2:
-            raise ValueError(...)
         ax.set_ylim(ylim)
 \end{minted}
-L'etichetta dell'asse \(x\) è assegnata tramite il parametro \texttt{xlabel}, mentre per l'asse \(y\) viene utilizzata l'etichetta fornita in \texttt{ylabel}; se questa non è specificata, viene usato il valore predefinito \texttt{"Conteggi"}. Il titolo del grafico è fissato da \texttt{title}. La chiamata \texttt{ax.grid(...)} aggiunge una griglia leggera lungo l'asse dei conteggi. Se \texttt{show\_legend = True}, \texttt{ax.legend()} aggiunge una legenda che raccoglie e descrive gli elementi grafici opzionali. I parametri \texttt{xlim} e \texttt{ylim} permettono di fissare manualmente i limiti degli assi; se non specificati, vengono determinati automaticamente da matplotlib. Se uno dei due non contiene esattamente 2 elementi, viene sollevato un \texttt{ValueError}.
+L'etichetta dell'asse \(x\) è assegnata tramite il parametro \texttt{xlabel}, mentre per l'asse \(y\) viene utilizzata l'etichetta fornita in \texttt{ylabel}; se questa non è specificata, viene usato il valore predefinito \texttt{"Conteggi"}. Il titolo del grafico è fissato da \texttt{title}. La chiamata \texttt{ax.grid(...)} aggiunge una griglia leggera lungo l'asse dei conteggi. Se \texttt{show\_legend = True}, \texttt{ax.legend()} aggiunge una legenda che raccoglie e descrive gli elementi grafici opzionali. I parametri \texttt{xlim} e \texttt{ylim} permettono di fissare manualmente i limiti degli assi; se non specificati, vengono determinati automaticamente da matplotlib. In questo punto della funzione i limiti sono solo applicati con \texttt{ax.set\_xlim(...)} e \texttt{ax.set\_ylim(...)}: la validazione della sequenza passata avviene invece all'inizio della funzione tramite \texttt{\_validate\_axis\_limits(...)}.
 
 Infine, il grafico può essere salvato su file se viene specificato un
 percorso di output:
