@@ -8,12 +8,12 @@ Le funzioni disponibili sono:
 \end{itemize}
 \vspace{-11pt}
 
-\section{\texorpdfstring{lin\_fit(x, y, sigma\_y, sigma\_x, xlabel, ylabel, dpi, band, plot, xlim, ylim, decimals, legend, legend\_coefficient, tol)}{lin\_fit(x, y, sigma\_y, sigma\_x, xlabel, ylabel, dpi, band, plot, xlim, ylim, decimals, legend, legend\_coefficient, tol)}}
+\section{\texorpdfstring{lin\_fit(x, y, sigma\_y, sigma\_x, xlabel, ylabel, dpi, band, plot, xlim, ylim, decimals, legend, legend\_coefficient, tol, title, title\_fontsize, title\_pad, legend\_fontsize, legend\_loc, show\_grid, grid\_alpha, data\_alpha, std\_alpha)}{lin\_fit(x, y, sigma\_y, sigma\_x, xlabel, ylabel, dpi, band, plot, xlim, ylim, decimals, legend, legend\_coefficient, tol, title, title_fontsize, title_pad, legend_fontsize, legend_loc, show_grid, grid_alpha, data_alpha, std_alpha)}}
 \label{sec:fit-lineare}
 \vspace{-3pt}
 \begin{apidesc}
   \item[\textbf{Scopo}]
-    Eseguire un fit lineare pesato $y = mx + c$ su un insieme di punti sperimentali con incertezze su $y$ e, opzionalmente, su $x$. Quando sono fornite le incertezze su $x$, i pesi vengono aggiornati iterativamente tramite la varianza efficace $\sigma_{\mathrm{eff},i}^2 = \sigma_{y_i}^2 + m^2\,\sigma_{x_i}^2$. La funzione stima i parametri $m$ e $c$ e le loro incertezze.
+    Eseguire un fit lineare pesato $y = mx + c$ su un insieme di punti sperimentali con incertezze su $y$ e, opzionalmente, su $x$. Quando sono fornite le incertezze su $x$, i pesi vengono aggiornati iterativamente tramite la varianza efficace $\sigma_{\mathrm{eff},i}^2 = \sigma_{y_i}^2 + m^2\,\sigma_{x_i}^2$. La funzione stima i parametri $m$ e $c$ e le loro incertezze, e offre anche controlli grafici opzionali per titolo, legenda, griglia e trasparenze.
     \enlargethispage{2\baselineskip}
   \item[\textbf{Parametri}]\hfill
     \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=7em, leftmargin=7.5em, itemsep=1pt, parsep=0pt, topsep=3pt]
@@ -32,7 +32,17 @@ Le funzioni disponibili sono:
       \item[legend]  \texttt{bool} (default \texttt{True}) $\to$ se \texttt{True}, mostra la legenda nel pannello superiore
       \item[legend\_coefficient] \texttt{bool} (default \texttt{False}) $\to$ se \texttt{True}, mostra $m$ e $c$ formattati nella legenda della retta
       \item[tol] \texttt{float} (default \texttt{1e-10}) $\to$ tolleranza relativa sulla convergenza di $m$ quando \texttt{sigma\_x} \`e attivo
+      \item[title] stringa o \texttt{None} (default \texttt{None}) $\to$ titolo del pannello superiore; se \texttt{None} non viene impostato alcun titolo
+      \item[title\_fontsize] intero o float (default \texttt{14}) $\to$ dimensione del font del titolo
+      \item[title\_pad] intero o float (default \texttt{10}) $\to$ distanza verticale tra titolo e area del grafico
+      \item[legend\_fontsize] intero o float (default \texttt{9}) $\to$ dimensione del font della legenda
+      \item[legend\_loc] stringa (default \texttt{"best"}) $\to$ posizione della legenda secondo le opzioni di matplotlib
+      \item[show\_grid] \texttt{bool} (default \texttt{True}) $\to$ se \texttt{True}, mostra la griglia orizzontale nel pannello superiore
+      \item[grid\_alpha] float (default \texttt{0.3}) $\to$ trasparenza della griglia
+      \item[data\_alpha] float (default \texttt{1.0}) $\to$ trasparenza dei punti sperimentali e delle rispettive barre d'errore
+      \item[std\_alpha] float (default \texttt{0.20}) $\to$ trasparenza della banda $\pm 1\sigma$ attorno alla retta
     \end{description}
+    I parametri da \texttt{title} a \texttt{std\_alpha} sono opzionali e keyword-only, così l'ordine posizionale storico della funzione resta invariato.
     \vspace{-3pt}
   \item[\textbf{Vincoli}]
     \texttt{x}, \texttt{y} e \texttt{sigma\_y} devono avere la stessa lunghezza e contenere almeno 3 elementi ($n \geq 3$). Se fornito, anche \texttt{sigma\_x} deve avere la stessa lunghezza.
@@ -205,6 +215,7 @@ La chiamata \texttt{plt.subplots(2, 1, ...)} crea una figura con due assi dispos
             ecolor=C_BAR,
             elinewidth=1,
             capsize=3,
+            alpha=data_alpha,
         )
 
         x_fit = np.linspace(x.min(), x.max(), 200)
@@ -215,16 +226,28 @@ La chiamata \texttt{plt.subplots(2, 1, ...)} crea una figura con due assi dispos
         ax_fit.plot(x_fit, y_fit, color=C_MEAN, linewidth=1.5, label=fit_label)
 
         ax_fit.set_ylabel(ylabel)
-        ax_fit.grid(True, axis="y", linestyle="-", linewidth=0.5, alpha=0.3, zorder=0)
+        if title is not None:
+            ax_fit.set_title(title, fontsize=title_fontsize, pad=title_pad)
+        if show_grid:
+            ax_fit.grid(
+                True,
+                axis="y",
+                linestyle="-",
+                linewidth=0.5,
+                alpha=grid_alpha,
+                zorder=0,
+            )
+        else:
+            ax_fit.grid(False, axis="y")
         if legend:
-            ax_fit.legend(fontsize=9, framealpha=0.9)
+            ax_fit.legend(fontsize=legend_fontsize, framealpha=0.9, loc=legend_loc)
 \end{minted}
 
-La chiamata \texttt{ax\_fit.errorbar(...)} disegna i punti sperimentali con le rispettive barre d'errore. I primi due argomenti, \texttt{x} e \texttt{y}, sono le coordinate dei dati; \texttt{yerr=sigma\_y} specifica l'incertezza verticale associata a ciascun punto. Il parametro \texttt{xerr} visualizza le barre d'errore orizzontali quando \texttt{sigma\_x} \`e fornito; in caso contrario viene passato \texttt{None} e le barre orizzontali non vengono disegnate. Il parametro \texttt{fmt="o"} chiede di rappresentare ogni misura con un marcatore circolare, \texttt{color=C\_BAR} ne imposta il colore principale, \texttt{markersize=4} ne controlla la dimensione, \texttt{ecolor=C\_BAR} usa lo stesso colore per le barre di errore, il parametro dedicato alla larghezza della barra ne regola lo spessore grafico, e \texttt{capsize=3} aggiunge i piccoli terminali orizzontali alle estremità delle barre.
+La chiamata \texttt{ax\_fit.errorbar(...)} disegna i punti sperimentali con le rispettive barre d'errore. I primi due argomenti, \texttt{x} e \texttt{y}, sono le coordinate dei dati; \texttt{yerr=sigma\_y} specifica l'incertezza verticale associata a ciascun punto. Il parametro \texttt{xerr} visualizza le barre d'errore orizzontali quando \texttt{sigma\_x} \`e fornito; in caso contrario viene passato \texttt{None} e le barre orizzontali non vengono disegnate. Il parametro \texttt{fmt="o"} chiede di rappresentare ogni misura con un marcatore circolare, \texttt{color=C\_BAR} ne imposta il colore principale, \texttt{markersize=4} ne controlla la dimensione, \texttt{ecolor=C\_BAR} usa lo stesso colore per le barre di errore, il parametro dedicato alla larghezza della barra ne regola lo spessore grafico, \texttt{capsize=3} aggiunge i piccoli terminali orizzontali alle estremità delle barre, mentre \texttt{data\_alpha} consente di regolare la trasparenza complessiva dei dati visualizzati.
 
 Dopo i dati viene costruita la retta di fit. L'istruzione \texttt{np.linspace(x.min(), x.max(), 200)} genera 200 ascisse equispaziate tra il minimo e il massimo dei dati sperimentali: non sono nuovi dati misurati, ma una griglia regolare utile per tracciare una linea liscia. Su questa griglia la funzione calcola \texttt{y\_fit = m * x\_fit + c}, cioè l'equazione della retta stimata con i parametri del fit. La variabile \texttt{fit\_label} costruisce l'etichetta della retta in legenda: se \texttt{legend\_coefficient} è vero, la label riporta i valori di $m$ e $c$ formattati con il numero di decimali specificato da \texttt{decimals} (tramite la stringa di formato \texttt{fmt}); altrimenti resta semplicemente \texttt{"Fit"}. La chiamata \texttt{ax\_fit.plot(...)} disegna quindi la curva corrispondente: \texttt{color=C\_MEAN} sceglie il colore della retta, \texttt{linewidth=1.5} ne fissa lo spessore, e \texttt{label=fit\_label} fornisce il testo che comparirà in legenda.
 
-Le ultime istruzioni rifiniscono il pannello. \texttt{ax\_fit.set\_ylabel(ylabel)} usa l'argomento della funzione per etichettare l'asse verticale; \texttt{ax\_fit.grid(...)} aggiunge una griglia leggera solo sull'asse \(y\), utile per stimare a colpo d'occhio lo scostamento dei punti dalla retta. La legenda viene mostrata solo se \texttt{legend=True}, con dimensione del font e trasparenza del riquadro controllate dai due argomenti passati.
+Le ultime istruzioni rifiniscono il pannello. \texttt{ax\_fit.set\_ylabel(ylabel)} usa l'argomento della funzione per etichettare l'asse verticale; se \texttt{title} non è \texttt{None}, \texttt{ax\_fit.set\_title(...)} imposta il titolo del pannello superiore usando \texttt{title\_fontsize} e \texttt{title\_pad}. La chiamata \texttt{ax\_fit.grid(...)} aggiunge una griglia leggera solo sull'asse \(y\) quando \texttt{show\_grid=True}, con opacità controllata da \texttt{grid\_alpha}. La legenda viene mostrata solo se \texttt{legend=True}, con dimensione del font e posizione regolate da \texttt{legend\_fontsize} e \texttt{legend\_loc}; la trasparenza del riquadro resta fissata a \texttt{0.9}.
 
 \newpage
 \paragraph{Banda}
@@ -239,14 +262,14 @@ Le ultime istruzioni rifiniscono il pannello. \texttt{ax\_fit.set\_ylabel(ylabel
                 x_fit,
                 y_fit - sigma_y_fit,
                 y_fit + sigma_y_fit,
-                color=C_BAND_B, alpha=0.20,
+                color=C_BAND_B, alpha=std_alpha,
                 label=r"$\pm 1 \sigma$ retta"
             )
 \end{minted}
 
 Il blocco è condizionato da \texttt{if band:}: la banda viene quindi disegnata solo quando \texttt{band=True}. La quantità \texttt{x\_bar = weighted\_mean(x, w)} è la media pesata delle ascisse e rappresenta il punto centrale attorno a cui la stima della retta è in genere più stabile. La variabile \texttt{sigma\_y\_fit} calcola invece, per ciascun valore di \texttt{x\_fit}, l'ampiezza della fascia attorno alla retta: il primo termine dipende dal numero complessivo di informazioni disponibili tramite \(\sum_i w_i\), mentre il secondo aumenta quando ci si allontana dalla zona centrale dei dati.
 
-La funzione \texttt{ax\_fit.fill\_between(...)} colora la regione compresa tra il bordo inferiore \texttt{y\_fit - sigma\_y\_fit} e quello superiore \texttt{y\_fit + sigma\_y\_fit}. Il primo argomento, \texttt{x\_fit}, fornisce l'asse orizzontale comune ai due bordi; \texttt{color=C\_BAND\_B} sceglie il colore della fascia, \texttt{alpha=0.20} la rende semitrasparente, e \texttt{label=...} aggiunge una voce dedicata nella legenda. Non è necessario ripetere qui la logica di colori e label già discussa nel pannello superiore: gli argomenti hanno la stessa funzione grafica, ma applicata a una regione anziché a una linea o a punti con barre d'errore. Visivamente, questa scelta rende immediato il confronto tra retta stimata e incertezza associata. La banda funziona quindi come un contesto grafico di lettura, non come un elemento separato dal fit. In altre parole, guida l'occhio prima ancora della lettura numerica.
+La funzione \texttt{ax\_fit.fill\_between(...)} colora la regione compresa tra il bordo inferiore \texttt{y\_fit - sigma\_y\_fit} e quello superiore \texttt{y\_fit + sigma\_y\_fit}. Il primo argomento, \texttt{x\_fit}, fornisce l'asse orizzontale comune ai due bordi; \texttt{color=C\_BAND\_B} sceglie il colore della fascia, \texttt{std\_alpha} ne controlla la trasparenza, e \texttt{label=...} aggiunge una voce dedicata nella legenda. Non è necessario ripetere qui la logica di colori e label già discussa nel pannello superiore: gli argomenti hanno la stessa funzione grafica, ma applicata a una regione anziché a una linea o a punti con barre d'errore. Visivamente, questa scelta rende immediato il confronto tra retta stimata e incertezza associata. La banda funziona quindi come un contesto grafico di lettura, non come un elemento separato dal fit. In altre parole, guida l'occhio prima ancora della lettura numerica.
 
 \paragraph{Pannello inferiore}
 \begin{minted}{python}
@@ -262,13 +285,14 @@ La funzione \texttt{ax\_fit.fill\_between(...)} colora la regione compresa tra i
             ecolor=C_BAR,
             elinewidth=1,
             capsize=3,
+            alpha=data_alpha,
         )
         ax_res.axhline(0, color=C_MEAN, linewidth=1, linestyle="--")
         ax_res.set_xlabel(xlabel)
         ax_res.set_ylabel("Residui")
 \end{minted}
 
-La chiamata \texttt{ax\_res.errorbar(...)} riusa la stessa logica già descritta per \texttt{ax\_fit.errorbar}, compreso il parametro \texttt{xerr} per le barre d'errore orizzontali: cambia però la grandezza rappresentata sull'asse verticale, perché al posto dei valori \texttt{y} vengono usati i residui \texttt{r}. In questo modo il pannello inferiore non mostra più i dati originali, ma quanto ciascun punto si discosta dalla retta di fit.
+La chiamata \texttt{ax\_res.errorbar(...)} riusa la stessa logica già descritta per \texttt{ax\_fit.errorbar}, compreso il parametro \texttt{xerr} per le barre d'errore orizzontali e il controllo di trasparenza \texttt{data\_alpha}: cambia però la grandezza rappresentata sull'asse verticale, perché al posto dei valori \texttt{y} vengono usati i residui \texttt{r}. In questo modo il pannello inferiore non mostra più i dati originali, ma quanto ciascun punto si discosta dalla retta di fit.
 
 L'istruzione \texttt{ax\_res.axhline(0, ...)} aggiunge una linea orizzontale di riferimento in corrispondenza di \(r = 0\). Essa rappresenta il caso ideale in cui dato e modello coincidono perfettamente, quindi aiuta a vedere subito se i residui oscillano in modo bilanciato attorno a zero oppure mostrano andamenti sistematici. Infine, \texttt{ax\_res.set\_xlabel(xlabel)} etichetta l'asse comune delle ascisse, mentre l'ultima istruzione assegna al pannello l'etichetta verticale \texttt{"Residui"}.
 

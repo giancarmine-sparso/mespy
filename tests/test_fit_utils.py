@@ -54,6 +54,39 @@ def test_lin_fit_returns_expected_parameters_and_plot():
     assert risultato["sigma_r"] > 0
 
 
+def test_lin_fit_accepts_custom_plot_styling_kwargs():
+    x, y, sigma_y, _, _ = make_placebo_data()
+
+    risultato = lin_fit(
+        x,
+        y,
+        sigma_y,
+        plot=True,
+        title="Fit placebo",
+        title_fontsize=16,
+        title_pad=12,
+        legend_fontsize=11,
+        legend_loc="upper left",
+        show_grid=False,
+        data_alpha=0.6,
+        std_alpha=0.35,
+    )
+
+    ax_fit = risultato["fig"].axes[0]
+    legenda = ax_fit.get_legend()
+
+    assert ax_fit.get_title() == "Fit placebo"
+    assert ax_fit.title.get_fontsize() == pytest.approx(16)
+    assert legenda is not None
+    assert legenda.get_texts()[0].get_fontsize() == pytest.approx(11)
+    assert not any(line.get_visible() for line in ax_fit.get_ygridlines())
+    assert any(
+        collection.get_alpha() == pytest.approx(0.35)
+        for collection in ax_fit.collections
+        if collection.get_alpha() is not None
+    )
+
+
 def test_lin_fit_with_sigma_x_uses_iterative_effective_variance():
     x, y, sigma_y, sigma_x, m_true, c_true = make_placebo_data_with_sigma_x()
 

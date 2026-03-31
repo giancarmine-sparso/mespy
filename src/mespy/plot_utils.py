@@ -51,6 +51,16 @@ def histogram(
     ax=None,
     xlim=None,
     ylim=None,
+    *,
+    title_fontsize=14,
+    title_pad=10,
+    legend_fontsize=9,
+    legend_loc="best",
+    show_grid=True,
+    grid_alpha=0.3,
+    histo_alpha=0.85,
+    mean_symbol=r"\bar{x}",
+    std_alpha=0.15,
 ):
     """
     Istogramma di una distribuzione sperimentale.
@@ -129,6 +139,28 @@ def histogram(
     ylim : tuple o None
         Limiti dell'asse y come (ymin, ymax). Se None i limiti
         vengono determinati automaticamente da matplotlib.
+    title_fontsize : int o float, default 14
+        Dimensione del font usata per il titolo. Keyword-only.
+    title_pad : int o float, default 10
+        Spaziatura verticale tra titolo e area del grafico.
+        Keyword-only.
+    legend_fontsize : int o float, default 9
+        Dimensione del font usata per la legenda. Keyword-only.
+    legend_loc : str, default "best"
+        Posizione della legenda, passata direttamente a
+        matplotlib.axes.Axes.legend. Keyword-only.
+    show_grid : bool, default True
+        Se True mostra una griglia orizzontale leggera
+        sull'asse y. Keyword-only.
+    grid_alpha : float, default 0.3
+        Trasparenza della griglia orizzontale. Keyword-only.
+    histo_alpha : float, default 0.85
+        Trasparenza delle barre dell'istogramma. Keyword-only.
+    mean_symbol : str, default r"\bar{x}"
+        Simbolo LaTeX usato nella legenda per indicare la media.
+        Keyword-only.
+    std_alpha : float, default 0.15
+        Trasparenza della banda ±1σ. Keyword-only.
 
     Restituisce
     -----------
@@ -185,7 +217,7 @@ def histogram(
         density=False,
         color="#4878CF",
         edgecolor="white",
-        alpha=0.85,
+        alpha=histo_alpha,
         label=label,
     )
 
@@ -212,7 +244,7 @@ def histogram(
             color=C_MEAN,
             linestyle="--",
             linewidth=1.2,
-            label=rf"$\bar{{x}} = {mu:{fmt}}$",
+            label=rf"${mean_symbol} = {mu:{fmt}}$",
         )
 
     # --- linee +- sigma ---
@@ -221,20 +253,25 @@ def histogram(
             mu - sigma,
             mu + sigma,
             color="#D65F5F",
-            alpha=0.15,
+            alpha=std_alpha,
             label=rf"$\pm 1\sigma = {sigma:{fmt}}$",
         )
 
     # --- etichette ---
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel if ylabel is not None else "Conteggi")
-    ax.set_title(title)
+    ax.set_title(title, fontsize=title_fontsize, pad=title_pad)
 
-    ax.grid(True, axis="y", linestyle="-", linewidth=0.5, alpha=0.3, zorder=0)
+    if show_grid:
+        ax.grid(
+            True, axis="y", linestyle="-", linewidth=0.5, alpha=grid_alpha, zorder=0
+        )
+    else:
+        ax.grid(False, axis="y")
 
     # --- legenda ---
     if show_legend:
-        ax.legend(fontsize=9, framealpha=0.9)
+        ax.legend(fontsize=legend_fontsize, framealpha=0.9, loc=legend_loc)
 
     # --- limiti assi ---
     if xlim is not None:

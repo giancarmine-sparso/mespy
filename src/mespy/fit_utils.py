@@ -20,6 +20,16 @@ def lin_fit(
     legend=True,
     legend_coefficient=False,
     tol=1e-10,
+    *,
+    title=None,
+    title_fontsize=14,
+    title_pad=10,
+    legend_fontsize=9,
+    legend_loc="best",
+    show_grid=True,
+    grid_alpha=0.3,
+    data_alpha=1.0,
+    std_alpha=0.20,
 ):
     """
     Fit lineare pesato y = m*x + c con propagazione delle incertezze.
@@ -66,6 +76,29 @@ def lin_fit(
     tol : float, default 1e-10
         Tolleranza relativa sulla convergenza di m quando sigma_x e'
         attivo.
+    title : str o None, default None
+        Titolo del pannello superiore del grafico. Se None non viene
+        impostato alcun titolo.
+    title_fontsize : int o float, default 14
+        Dimensione del font usata per il titolo.
+    title_pad : int o float, default 10
+        Spaziatura verticale tra titolo e area del grafico.
+    legend_fontsize : int o float, default 9
+        Dimensione del font usata per la legenda del pannello
+        superiore.
+    legend_loc : str, default "best"
+        Posizione della legenda, passata direttamente a
+        matplotlib.axes.Axes.legend.
+    show_grid : bool, default True
+        Se True mostra una griglia orizzontale leggera nel pannello
+        superiore del fit.
+    grid_alpha : float, default 0.3
+        Trasparenza della griglia orizzontale.
+    data_alpha : float, default 1.0
+        Trasparenza dei punti sperimentali e delle relative barre
+        d'errore nei due pannelli.
+    std_alpha : float, default 0.20
+        Trasparenza della banda ±1σ attorno alla retta di fit.
 
     Restituisce
     -----------
@@ -234,6 +267,7 @@ def lin_fit(
             ecolor=C_BAR,
             elinewidth=1,
             capsize=3,
+            alpha=data_alpha,
         )
 
         x_fit = np.linspace(x.min(), x.max(), 200)
@@ -250,14 +284,26 @@ def lin_fit(
                 y_fit - sigma_y_fit,
                 y_fit + sigma_y_fit,
                 color=C_BAND_B,
-                alpha=0.20,
+                alpha=std_alpha,
                 label=r"$\pm 1 \sigma$ retta",
             )
 
         ax_fit.set_ylabel(ylabel)
-        ax_fit.grid(True, axis="y", linestyle="-", linewidth=0.5, alpha=0.3, zorder=0)
+        if title is not None:
+            ax_fit.set_title(title, fontsize=title_fontsize, pad=title_pad)
+        if show_grid:
+            ax_fit.grid(
+                True,
+                axis="y",
+                linestyle="-",
+                linewidth=0.5,
+                alpha=grid_alpha,
+                zorder=0,
+            )
+        else:
+            ax_fit.grid(False, axis="y")
         if legend:
-            ax_fit.legend(fontsize=9, framealpha=0.9)
+            ax_fit.legend(fontsize=legend_fontsize, framealpha=0.9, loc=legend_loc)
 
         # pannello inferiore: residui
         ax_res.errorbar(
@@ -271,6 +317,7 @@ def lin_fit(
             ecolor=C_BAR,
             elinewidth=1,
             capsize=3,
+            alpha=data_alpha,
         )
         ax_res.axhline(0, color=C_MEAN, linewidth=1, linestyle="--")
         ax_res.set_xlabel(xlabel)
