@@ -2,11 +2,11 @@
 
 Toolbox Python per l'analisi dei dati di laboratorio di meccanica.
 
-L'obiettivo del progetto e' raccogliere in un unico package le utility che tornano spesso nei notebook di laboratorio: caricamento CSV, statistiche descrittive e pesate, istogrammi e fit lineare con incertezze.
+`mespy` raccoglie in un unico package le utility che tornano spesso nei notebook di laboratorio: caricamento CSV, statistiche descrittive e pesate, istogrammi e fit lineare con incertezze.
 
-Lo stato attuale e' ancora `Alpha`: il package e' gia' utilizzabile per casi semplici, ma l'API non va considerata stabile.
+La release `1.0.0` congela una public API piccola, tipizzata e pensata per un uso didattico: errori espliciti, firme stabili e output facili da leggere in notebook e script.
 
-## Cosa c'e' oggi
+## API pubblica stabile
 
 Il package espone direttamente:
 
@@ -19,12 +19,58 @@ Il package espone direttamente:
 - `histogram`
 - `lin_fit`
 
-I moduli attualmente presenti in `src/mespy` sono:
+I moduli presenti in `src/mespy` sono:
 
-- `io_utils.py`: lettura CSV con gestione di separatori, decimali, colonne richieste e missing values
-- `stats_utils.py`: funzioni statistiche di base, anche con pesi
+- `io_utils.py`: lettura CSV con policy esplicita per i valori mancanti
+- `stats_utils.py`: funzioni statistiche di base con validazione coerente degli input
 - `plot_utils.py`: istogrammi con media e banda `±1σ`
-- `fit_utils.py`: fit lineare pesato con residui, incertezze sui parametri e grafico opzionale
+- `fit_utils.py`: fit lineare pesato con risultato tipizzato `LinearFitResult`
+
+Il namespace root resta volutamente piccolo. I tipi pubblici aggiuntivi vivono nei submodule, per esempio `mespy.fit_utils.LinearFitResult`.
+
+## Stabilita` API
+
+- Le firme e il significato delle funzioni esportate da `mespy` seguono semantic versioning.
+- Gli input non validi falliscono con `ValueError` invece di propagare `nan` o warning silenziosi.
+- Il package distribuisce `py.typed`, quindi IDE e type checker vedono le firme pubbliche reali.
+
+## Esempio minimo
+
+```python
+from mespy import lin_fit, load_csv, weighted_mean
+
+df = load_csv(
+    "data/reference/test_misure.csv",
+    sep=",",
+    decimal=".",
+    missing="error",
+)
+
+x = df["misura_n"].to_numpy(dtype=float)
+y = df["lunghezza_mm"].to_numpy(dtype=float)
+sigma_y = df["sigma_mm"].to_numpy(dtype=float)
+
+y_bar = weighted_mean(y, 1 / sigma_y**2)
+fit = lin_fit(
+    x=x,
+    y=y,
+    sigma_y=sigma_y,
+    xlabel="numero misura",
+    ylabel="lunghezza [mm]",
+    show_plot=False,
+)
+
+print("media pesata:", y_bar)
+print("pendenza:", fit.slope)
+print("chi2 ridotto:", fit.reduced_chi2)
+```
+
+## Breaking change di `1.0.0`
+
+- `lin_fit(...)` non restituisce piu` un `dict`: ora restituisce `LinearFitResult` con campi descrittivi come `slope`, `intercept`, `chi2`, `reduced_chi2` e `figure`.
+- `load_csv(...)` usa `missing="error" | "drop" | "allow"` al posto di `drop_missing`.
+- `histogram(...)` usa `ddof=0` di default, in coerenza con `variance` e `standard_deviation`.
+- Le funzioni statistiche rifiutano input vuoti, non finiti o con pesi non validi invece di restituire `nan`.
 
 ## Struttura del progetto
 
@@ -63,38 +109,10 @@ Crea il virtualenv e installa il package con le dipendenze di sviluppo:
 make setup
 ```
 
-Questo installa anche gli strumenti usati per il check pre-release (`build` e `twine`).
-
 Se vuoi attivare l'ambiente manualmente:
 
 ```bash
 source .venv/bin/activate
-```
-
-## Esempio minimo
-
-```python
-from mespy import lin_fit, load_csv, weighted_mean
-
-df = load_csv("data/reference/test_misure.csv", sep=",", decimal=".")
-
-x = df["misura_n"].to_numpy(dtype=float)
-y = df["lunghezza_mm"].to_numpy(dtype=float)
-sigma_y = df["sigma_mm"].to_numpy(dtype=float)
-
-y_bar = weighted_mean(y, 1 / sigma_y**2)
-
-fit = lin_fit(
-    x=x,
-    y=y,
-    sigma_y=sigma_y,
-    xlabel="numero misura",
-    ylabel="lunghezza [mm]",
-    plot=False,
-)
-
-print("media pesata:", y_bar)
-print("pendenza:", fit["m"])
 ```
 
 ## Documentazione
@@ -111,7 +129,7 @@ Il target usa `minted`, quindi richiede anche `pygmentize` disponibile nel `PATH
 Inoltre il sorgente LaTeX usa i font `Libertinus Serif`, `Libertinus Math`, `Libertinus Sans`, `JetBrains Mono` e `Inter Display`.
 `make check-tex` verifica i comandi necessari e, se `fc-match` e' disponibile nel sistema, controlla anche la presenza di questi font.
 
-Le sezioni attualmente documentate sono:
+Le sezioni documentate sono:
 
 - `io_utils`
 - `stats_utils`
@@ -148,4 +166,4 @@ Il comando esegue test, `compileall`, `pip check`, build di `sdist` e `wheel`, v
 
 ## Note
 
-- I notebook in `notebooks/` sono esempi di utilizzo e test esplorativi, non documentazione API stabile.
+- I notebook in `notebooks/` sono esempi di utilizzo e test esplorativi, non documentazione API normativa.

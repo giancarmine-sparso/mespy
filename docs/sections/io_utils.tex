@@ -1,53 +1,67 @@
 % !TEX root = ../main.tex
 
-Il file \textit{io\_utils.py} raccoglie le funzioni di caricamento dati. Espone un'unica funzione, \texttt{load\_csv}, che avvolge \texttt{pd.read\_csv} aggiungendo validazione delle colonne e gestione dei valori mancanti.
+Il file \textit{io\_utils.py} raccoglie le funzioni di caricamento dati. Espone un'unica funzione, \texttt{load\_csv}, che avvolge \texttt{pandas.read\_csv} mantenendo una surface piccola e stabile per notebook e script didattici.
 
-\section{\texorpdfstring{load\_csv(path, \ldots)}{load\_csv(path, ...)}}
+\section{\texorpdfstring{load\_csv(path, *, sep, decimal, rename\_columns, required\_columns, missing, comment, skip\_initial\_space)}{load\_csv(path, *, sep, decimal, rename_columns, required_columns, missing, comment, skip_initial_space)}}
 \label{sec:load-csv}
 \begin{apidesc}
   \item[\textbf{Scopo}]
-    Caricare un file CSV in un \texttt{DataFrame}, con supporto a separatori e decimali personalizzati, rinomina delle colonne e controllo dei valori mancanti.
+    Caricare un file CSV in un \texttt{DataFrame}, con supporto a separatori e decimali personalizzati, rinomina delle colonne, controllo delle colonne richieste e policy esplicita per i valori mancanti.
   \item[\textbf{Parametri}]\hfill
-    \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=1.5em, leftmargin=2em, itemsep=1pt, parsep=0pt, topsep=1pt]
-      \item[path] str o Path $\to$ percorso del file CSV
-      \item[sep] str, default \texttt{","} $\to$ separatore di colonna
-      \item[decimal] str, default \texttt{"."} $\to$ separatore decimale
-      \item[rename\_columns] dict o \texttt{None}, default \texttt{None} $\to$ mappa \texttt{\{vecchio: nuovo\}} per rinominare le colonne
-      \item[required\_columns] list o \texttt{None}, default \texttt{None} $\to$ lista di colonne obbligatorie
-      \item[drop\_missing] bool, default \texttt{False} $\to$ se \texttt{True} elimina le righe con NaN; altrimenti solleva eccezione
+    \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=9em, leftmargin=9.5em, itemsep=1pt, parsep=0pt, topsep=2pt]
+      \item[path] \texttt{str} o \texttt{Path} $\to$ percorso del file CSV
+      \item[sep] \texttt{str}, default \texttt{","} $\to$ separatore di colonna
+      \item[decimal] \texttt{str}, default \texttt{"."} $\to$ separatore decimale
+      \item[rename\_columns] mapping o \texttt{None} $\to$ mappa \texttt{\{vecchio: nuovo\}} per rinominare le colonne
+      \item[required\_columns] collezione o \texttt{None} $\to$ nomi di colonna che devono essere presenti dopo l'eventuale rinomina
+      \item[missing] \texttt{"error"} $\mid$ \texttt{"drop"} $\mid$ \texttt{"allow"} (default \texttt{"error"}) $\to$ politica di gestione dei valori mancanti
+      \item[comment] \texttt{str} o \texttt{None}, default \texttt{None} $\to$ carattere di commento passato a \texttt{pandas.read\_csv}
+      \item[skip\_initial\_space] \texttt{bool}, default \texttt{True} $\to$ se \texttt{True}, ignora gli spazi dopo il separatore
     \end{description}
   \item[\textbf{Note}]
-    Le righe che iniziano con \texttt{\#} vengono ignorate; gli spazi dopo il separatore vengono rimossi automaticamente. Questi comportamenti sono fissi.
+    \texttt{required\_columns} viene verificato dopo \texttt{rename\_columns}. I parametri dopo \texttt{path} sono tutti keyword-only.
   \item[\textbf{Restituisce}]
-    \texttt{pandas.DataFrame} con i dati del file.
+    \texttt{pandas.DataFrame} con i dati caricati e validati.
   \item[\textbf{Eccezioni}]
-    \texttt{ValueError} se una o più colonne di \texttt{required\_columns} sono assenti;
-    \texttt{ValueError} se il file contiene valori NaN e \texttt{drop\_missing=False}.
+    \texttt{ValueError} se \texttt{missing} non è una policy supportata;
+    \texttt{ValueError} se una o più colonne richieste sono assenti;
+    \texttt{ValueError} se il file contiene valori mancanti e \texttt{missing="error"}.
 \end{apidesc}
-\vspace{-15pt}
-\paragraph{Implementazione}
+
+\paragraph{Policy per i valori mancanti}
+\begin{itemize}
+  \item \texttt{missing="error"}: il caricamento fallisce se compare almeno un \texttt{NaN}
+  \item \texttt{missing="drop"}: le righe incomplete vengono eliminate con \texttt{DataFrame.dropna()}
+  \item \texttt{missing="allow"}: il \texttt{DataFrame} viene restituito così com'è
+\end{itemize}
+
+\paragraph{Implementazione essenziale}
 \begin{minted}{python}
-def load_csv(path, sep=",", decimal=".", rename_columns=None,
-             required_columns=None, drop_missing=False):
-    df = pd.read_csv(Path(path), sep=sep, decimal=decimal,
-                     comment='#', skipinitialspace=True)
-    if rename_columns:
-        df = df.rename(columns=rename_columns)
-    if required_columns:
-        missing = [col for col in required_columns if col not in df.columns]
-        if missing:
-            raise ValueError(f"Colonne mancanti: {missing}")
-    if drop_missing:
-        df = df.dropna()
-    elif df.isna().any().any():
-        raise ValueError("Il file contiene valori mancanti")
-    return df
+df = pd.read_csv(
+    Path(path),
+    sep=sep,
+    decimal=decimal,
+    comment=comment,
+    skipinitialspace=skip_initial_space,
+)
+
+if rename_columns:
+    df = df.rename(columns=rename_columns)
+
+if required_columns:
+    missing_columns = [col for col in required_columns if col not in df.columns]
+    if missing_columns:
+        raise ValueError(f"Colonne mancanti: {missing_columns}")
 \end{minted}
-\vspace{-10pt}
+
 \paragraph{Esempio d'uso}
 \begin{minted}{python}
-# CSV con separatore ";" e decimale "," (formato italiano)
-df = load_csv("misure.csv", sep=";", decimal=",",
-              rename_columns={"t [s]": "t", "x [m]": "x"},
-              required_columns=["t", "x"], drop_missing=True)
+df = load_csv(
+    "misure.csv",
+    sep=";",
+    decimal=",",
+    rename_columns={"t [s]": "t", "x [m]": "x"},
+    required_columns=["t", "x"],
+    missing="drop",
+)
 \end{minted}

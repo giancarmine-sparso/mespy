@@ -1,311 +1,53 @@
 % !TEX root = ../main.tex
-\vspace{-11pt}
-Il file \textit{plot\_utils.py} raccoglie le funzioni di visualizzazione utilizzate per rappresentare graficamente i dati sperimentali. Per garantire accessibilità, il modulo definisce una piccola palette \textit{colorblind-safe} riutilizzabile anche dagli altri moduli:
+\vspace{-8pt}
+Il file \textit{plot\_utils.py} raccoglie le funzioni di visualizzazione per i dati sperimentali. Il modulo definisce anche una piccola palette colorblind-safe riusata dal fit lineare:
 
 \begin{itemize}
-    \item \texttt{C\_BAR = "\#4878CF"}: blu, usato come colore base per dati e barre;
-    \item \texttt{C\_MEAN = "\#D65F5F"}: rosso, usato per la linea della media e per la retta di fit;
-    \item \texttt{C\_BAND\_A = "\#4878CF"}: blu, tonalità disponibile per bande o elementi ausiliari;
-    \item \texttt{C\_BAND\_B = "\#EE854A"}: arancione, usato per la banda del fit lineare.
+    \item \texttt{C\_BAR = "\#4878CF"}
+    \item \texttt{C\_MEAN = "\#D65F5F"}
+    \item \texttt{C\_BAND\_A = "\#4878CF"}
+    \item \texttt{C\_BAND\_B = "\#EE854A"}
 \end{itemize}
 
-Le funzioni disponibili sono:
-\begin{itemize}
-    \item \texttt{histogram(x, ...)}: genera un istogramma dei dati, con opzioni per titolo, legenda, griglia, trasparenza e indicatori statistici come media e banda di deviazione standard.
-\end{itemize}
-La documentazione per questa funzione è divisa in sottosezioni per spiegare al meglio ogni sua componente.
-\section{\texorpdfstring{histogram(x, ddof, bins, label, xlabel, ylabel, title, bin\_ticks, bin\_width, tick\_rotation, decimals, figsize, save\_path, show\_legend, show\_mean, show\_std, dpi, ax, xlim, ylim, hist\_range, *, title\_fontsize, title\_pad, legend\_fontsize, legend\_loc, show\_grid, grid\_alpha, hist\_alpha, mean\_symbol, std\_alpha)}{histogram(x, ddof, bins, label, xlabel, ylabel, title, bin_ticks, bin_width, tick_rotation, decimals, figsize, save_path, show_legend, show_mean, show_std, dpi, ax, xlim, ylim, hist_range, *, title_fontsize, title_pad, legend_fontsize, legend_loc, show_grid, grid_alpha, hist_alpha, mean_symbol, std_alpha)}}
+\section{\texorpdfstring{histogram(x, *, ddof, bins, bin\_width, hist\_range, label, xlabel, ylabel, title, show\_bin\_ticks, tick\_rotation, decimals, show\_mean, show\_band, show\_legend, show\_grid, xlim, ylim, ax, figsize, dpi, save\_path, title\_fontsize, title\_pad, legend\_fontsize, legend\_loc, hist\_alpha, band\_alpha, grid\_alpha, mean\_symbol)}{histogram(x, *, ddof, bins, bin_width, hist_range, label, xlabel, ylabel, title, show_bin_ticks, tick_rotation, decimals, show_mean, show_band, show_legend, show_grid, xlim, ylim, ax, figsize, dpi, save_path, title_fontsize, title_pad, legend_fontsize, legend_loc, hist_alpha, band_alpha, grid_alpha, mean_symbol)}}
 \label{sec:istogramma}
-\vspace{-7pt}
 \begin{apidesc}
-  \item[\textbf{Parametri}]\hfill
-    \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=9em, leftmargin=9.5em, itemsep=1pt, parsep=0pt, topsep=3pt]
-      \item[x]               array-like $\to$ convertito in \texttt{float64}
-      \item[ddof]            intero (default \texttt{1}) $\to$ gradi di libertà per $\sigma$ (divisore $N - \text{ddof}$)
-      \item[bins]            intero o stringa (default \texttt{"auto"}) $\to$ numero di intervalli o strategia NumPy per sceglierli automaticamente
-      \item[label]           stringa (default \texttt{"Dati"}) $\to$ testo nella legenda
-      \item[xlabel]          stringa (default \texttt{"Valore"}) $\to$ etichetta asse $x$
-      \item[ylabel]          stringa o \texttt{None} $\to$ etichetta asse $y$ (default: \texttt{"Conteggi"})
-      \item[title]           stringa (default \texttt{"Istogramma"}) $\to$ titolo del grafico
-      \item[title\_fontsize] intero o float (default \texttt{14}) $\to$ dimensione del font del titolo
-      \item[title\_pad]      intero o float (default \texttt{10}) $\to$ distanza verticale tra titolo e area del grafico
-      \item[bin\_ticks]      \texttt{bool} (default \texttt{True}) $\to$ tick sui bordi dei bin
-      \item[bin\_width]      \texttt{float} o \texttt{None} (default \texttt{None}) $\to$ larghezza fissa di ciascun bin; usa \texttt{hist\_range} per definire l'estensione dei bordi ed \`e mutuamente esclusivo con \texttt{bins}
-      \item[tick\_rotation]  intero o float (default \texttt{0}) $\to$ rotazione etichette asse $x$ in gradi
-      \item[decimals]        intero (default \texttt{3}) $\to$ cifre decimali per tick, media e $\sigma$
-      \item[figsize]         tupla (default \texttt{(8,\,5)}) $\to$ dimensioni in pollici
-      \item[save\_path]      stringa o \texttt{None} $\to$ percorso di salvataggio (default: \texttt{None})
-      \item[show\_legend]    \texttt{bool} (default \texttt{True}) $\to$ mostra la legenda
-      \item[legend\_fontsize] intero o float (default \texttt{9}) $\to$ dimensione del font della legenda
-      \item[legend\_loc]     stringa (default \texttt{"best"}) $\to$ posizione della legenda secondo le opzioni di matplotlib
-      \item[show\_mean]      \texttt{bool} (default \texttt{True}) $\to$ mostra la linea della media
-      \item[show\_grid]      \texttt{bool} (default \texttt{True}) $\to$ attiva la griglia orizzontale sull'asse $y$
-      \item[grid\_alpha]     float (default \texttt{0.3}) $\to$ trasparenza della griglia
-      \item[hist\_alpha]     float (default \texttt{0.85}) $\to$ trasparenza delle barre dell'istogramma
-      \item[mean\_symbol]    stringa (default \texttt{r"\textbackslash bar\{x\}"}) $\to$ simbolo LaTeX usato nella legenda per la media
-      \item[show\_std]       \texttt{bool} (default \texttt{True}) $\to$ mostra la banda $\pm\sigma$
-      \item[std\_alpha]      float (default \texttt{0.15}) $\to$ trasparenza della banda $\pm\sigma$
-      \item[dpi]             intero (default \texttt{300}) $\to$ risoluzione della figura
-      \item[ax]              \texttt{Axes} o \texttt{None} $\to$ asse su cui disegnare (default: \texttt{None})
-      \item[xlim]            tupla o \texttt{None} $\to$ limiti asse $x$ come \texttt{(xmin, xmax)}
-      \item[ylim]            tupla o \texttt{None} $\to$ limiti asse $y$ come \texttt{(ymin, ymax)}
-      \item[hist\_range]     tupla o \texttt{None} $\to$ intervallo \texttt{(xmin, xmax)} usato per costruire i bordi dei bin quando \texttt{bin\_width} \`e specificato
+  \item[\textbf{Scopo}]
+    Disegnare un istogramma di un campione sperimentale, con media opzionale, banda \(\pm 1\sigma\), legenda, griglia, salvataggio su file e integrazione con assi matplotlib esistenti.
+  \item[\textbf{Contratto sugli input}]
+    \texttt{x} deve essere un array monodimensionale non vuoto e contenere solo valori finiti. Con il default \texttt{ddof=0} la funzione supporta anche dataset con un solo punto.
+  \item[\textbf{Parametri chiave}]\hfill
+    \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=8em, leftmargin=8.5em, itemsep=1pt, parsep=0pt, topsep=2pt]
+      \item[ddof] intero o float (default \texttt{0}) $\to$ gradi di libertà usati per \(\sigma\)
+      \item[bins] intero, stringa o bordi dei bin (default \texttt{"auto"})
+      \item[bin\_width] float o \texttt{None} $\to$ larghezza fissa dei bin, mutuamente esclusiva con \texttt{bins}
+      \item[hist\_range] tupla o \texttt{None} $\to$ intervallo \texttt{(xmin, xmax)} per il range dell'istogramma o la costruzione dei bin
+      \item[ax] \texttt{Axes} o \texttt{None} $\to$ asse esistente su cui disegnare
+      \item[save\_path] stringa o \texttt{None} $\to$ percorso di salvataggio della figura
     \end{description}
-    I parametri da \texttt{title\_fontsize} a \texttt{std\_alpha} sono opzionali e keyword-only, cos\`i l'ordine posizionale storico della funzione resta invariato.
-  \item[\textbf{Vincoli}]
-    \texttt{x} non deve essere vuoto.
-    Se \texttt{ax} $\neq$ \texttt{None}, la figura viene disegnata sull'asse passato senza crearne una nuova.
-    Se \texttt{save\_path} $\neq$ \texttt{None}, la figura viene salvata nel percorso specificato con risoluzione \texttt{dpi}.
   \item[\textbf{Restituisce}]
-    \texttt{(fig, ax)}: tupla con la figura e l'asse su cui è stato disegnato l'istogramma.
-  \item[\textbf{Errori}]
-    \texttt{ValueError} se \texttt{x} è vuoto;
-    \texttt{ValueError} se \texttt{ddof} rende non positivo il denominatore usato per la deviazione standard;
-    \texttt{ValueError} se \texttt{xlim} o \texttt{ylim} non hanno esattamente 2 elementi;
-    \texttt{ValueError} se \texttt{hist\_range} non ha esattamente 2 elementi o se non soddisfa \texttt{xmin < xmax};
-    \texttt{ValueError} se \texttt{bin\_width} $\leq 0$;
-    \texttt{ValueError} se \texttt{bin\_width} e \texttt{bins} sono entrambi specificati.
+    \texttt{(fig, ax)}: tupla con figura e asse del grafico.
+  \item[\textbf{Eccezioni}]
+    \texttt{ValueError} se \texttt{x} è vuoto o non finito;
+    \texttt{ValueError} se \texttt{xlim}, \texttt{ylim} o \texttt{hist\_range} non hanno esattamente 2 elementi;
+    \texttt{ValueError} se \texttt{hist\_range} non soddisfa \texttt{xmin < xmax};
+    \texttt{ValueError} se \texttt{bin\_width} è non positivo o incompatibile con \texttt{bins};
+    \texttt{ValueError} se \texttt{figsize} non è una coppia di valori positivi quando la funzione crea una nuova figura.
 \end{apidesc}
 
+\paragraph{Scelta di default su \texttt{ddof}}
+La banda \(\pm 1\sigma\) usa la stessa convenzione del resto del package: per default \texttt{ddof=0}, cioè statistica descrittiva di popolazione. Se si desidera la correzione di Bessel, bisogna passare \texttt{ddof=1} esplicitamente.
 
-\subsection{Parametri e figura}
-La funzione \textbf{histogram(x, ...)} genera un istogramma dei dati contenuti in \texttt{x}. Se non viene passato un asse \texttt{ax}, crea una nuova figura con le dimensioni e la risoluzione specificate.
+\paragraph{Uso con assi esistenti}
+Se \texttt{ax} è \texttt{None}, la funzione importa localmente \texttt{matplotlib.pyplot} e crea una nuova figura. Se invece viene passato un asse esistente, \texttt{histogram} disegna direttamente su quell'asse e restituisce la figura padre con \texttt{ax.get\_figure()}.
+
+\paragraph{Esempio d'uso}
 \begin{minted}{python}
-def histogram(
-    x,
-    ddof=1,
-    bins="auto",
-    label="Dati",
-    xlabel="Valore",
-    ylabel=None,
-    title="Istogramma",
-    bin_ticks=True,
-    bin_width=None,
-    tick_rotation=0,
-    decimals=3,
-    figsize=(8, 5),
-    save_path=None,
-    show_legend=True,
-    show_mean=True,
-    show_std=True,
-    dpi=300,
-    ax=None,
-    xlim=None,
-    ylim=None,
-    hist_range=None,
-    *,
-    title_fontsize=14,
-    title_pad=10,
-    legend_fontsize=9,
-    legend_loc="best",
-    show_grid=True,
-    grid_alpha=0.3,
-    hist_alpha=0.85,
-    mean_symbol=r"\bar{x}",
-    std_alpha=0.15,
-):
-    x = np.asarray(x, dtype=float)
-
-    # --- Figura ---
-    if ax is None:
-        import matplotlib.pyplot as plt
-
-        fig, ax = plt.subplots(figsize=figsize, dpi=dpi, constrained_layout=True)
-    else:
-        fig = ax.get_figure()
-\end{minted}
-
-Il primo passo converte l'input in un array \texttt{float64}. La gestione dell'asse permette di integrare la funzione sia in figure autonome sia in griglie di sottografici: se \texttt{ax = None} viene creata una nuova figura, importando \texttt{matplotlib.pyplot} solo quando serve; altrimenti si usa l'asse fornito e si recupera la figura padre con \texttt{ax.get\_figure()}. Il parametro \texttt{ax} sta per \textit{axes} in inglese e fa parte della libreria \texttt{matplotlib}. Il parametro \texttt{ddof} controlla i gradi di libertà usati nel calcolo della deviazione standard (divisore $N - \text{ddof}$), mentre \texttt{title\_fontsize} e \texttt{title\_pad} permettono di regolare in modo fine l'aspetto del titolo. Se si vuole imporre un'estensione esplicita ai bordi dei bin costruiti con \texttt{bin\_width}, si pu\`o usare \texttt{hist\_range = (xmin, xmax)}.
-\newpage
-\subsection{Binnaggio e istogramma}
-Se viene specificato \texttt{hist\_range}, la funzione valida l'intervallo \texttt{(xmin, xmax)} da usare per costruire i bin; in caso contrario usa direttamente il minimo e il massimo dei dati. Quando \texttt{bin\_width} \`e valorizzato, i bordi dei bin vengono poi allineati a multipli della larghezza richiesta:
-\begin{minted}{python}
-    # --- binnaggio ---
-    if hist_range is not None:
-        if len(hist_range) != 2:
-            raise ValueError(
-                "'hist_range' deve avere esattamente 2 elementi: (xmin, xmax)"
-            )
-        xmin, xmax = np.asarray(hist_range, dtype=float)
-        if xmin >= xmax:
-            raise ValueError("Serve xmin < xmax in 'hist_range'")
-    else:
-        xmin, xmax = np.min(x), np.max(x)
-
-    if bin_width is not None:
-        if bin_width <= 0:
-            raise ValueError("'bin_width' deve essere > 0.")
-
-        if bins != "auto":
-            raise ValueError(
-                "'bins' e 'bin_width' sono mutualmente esclusivi. Usane uno solo"
-            )
-
-        start = np.floor(xmin / bin_width) * bin_width
-        stop = np.ceil(xmax / bin_width) * bin_width
-        bins = np.arange(start, stop + bin_width, bin_width)
-\end{minted}
-
-\texttt{np.floor} e \texttt{np.ceil} arrotondano \texttt{xmin} e \texttt{xmax} al multiplo di \texttt{bin\_width} pi\`u vicino (rispettivamente per difetto e per eccesso), garantendo che tutti i valori nell'intervallo scelto cadano all'interno degli intervalli generati da \texttt{np.arange}. Se \texttt{hist\_range} non \`e fornito, \texttt{xmin} e \texttt{xmax} coincidono con il minimo e il massimo dei dati; se invece \texttt{bin\_width} non \`e specificato, il parametro \texttt{bins} viene usato direttamente da \texttt{ax.hist()}.
-
-\begin{minted}{python}
-    # --- Istogramma ---
-    counts, bin_edges, patches = ax.hist(
-        x,
-        bins=bins,
-        density=False,
-        color="#4878CF",
-        edgecolor="white",
-        alpha=hist_alpha,
-        label=label,
-    )
-
-    # --- formato decimali ---
-    fmt = f".{decimals}f"
-
-    # --- tick sui bordi del bin ---
-    if bin_ticks:
-        ax.set_xticks(bin_edges)
-        ax.set_xticklabels([f"{edge:{fmt}}" for edge in bin_edges])
-
-    # --- tick rotation ---
-    if tick_rotation != 0:
-        ax.tick_params(axis="x", rotation=tick_rotation)
-\end{minted}
-
-\newpage
-\begin{apidesc}
-  \item[\textbf{Parametri}]\hfill
-    \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=5em, leftmargin=5.5em, itemsep=1pt, parsep=0pt, topsep=3pt]
-      \item[bins]      \texttt{=bins} $\to$ numero di intervalli (default: \texttt{"auto"}, scelti da NumPy)
-      \item[density]   \texttt{=False} $\to$ asse $y$ a conteggi assoluti
-      \item[color]     \texttt{="\#4878CF"} $\to$ colore delle barre
-      \item[edgecolor] \texttt{="white"} $\to$ bordo bianco tra una barra e l'altra
-      \item[alpha]     \texttt{=hist\_alpha} $\to$ trasparenza configurabile delle barre
-      \item[label]     \texttt{=label} $\to$ testo nella legenda (default: \texttt{"Dati"})
-    \end{description}
-\end{apidesc}
-
-La funzione \texttt{ax.hist()} disegna l'istogramma e restituisce tre cose:
-\begin{enumerate}
-    \item \textbf{counts}: un array con il numero di misure cadute in ogni bin
-    \item \textbf{\texttt{bin\_edges}}: i bordi degli intervalli, include sia il bordo destro che quello sinistro (ha un elemento in più di counts)
-    \item \textbf{patches}: oggetti grafici delle barre (modificabili successivamente)
-\end{enumerate}
-
-Subito dopo, la stringa di formato \texttt{fmt} viene costruita a partire dal parametro \texttt{decimals}. Se \texttt{bin\_ticks = True}, i tick dell'asse $x$ vengono posizionati sui bordi dei bin e formattati con il numero di decimali scelto. Il parametro \texttt{tick\_rotation} permette di ruotare le etichette per evitare sovrapposizioni quando i bin sono numerosi, mentre \texttt{hist\_alpha} consente di rendere le barre più o meno trasparenti senza modificare il resto dello stile.
-\newpage
-\subsection{Elementi dell'istogramma}
-I componenti principali dell'istogramma sono le statistiche:
-\begin{minted}{python}
-    # --- statistiche ---
-    mu = np.mean(x)
-    sigma = standard_deviation(x, ddof=ddof)
-\end{minted}
-dove \texttt{mu} rappresenta il valore atteso $E[x]$ e sigma è la \textbf{deviazione standard} calcolata con la funzione presente in \ref{sec:standard-deviation}, usando il divisore $N - \text{ddof}$.
-
-Successivamente abbiamo la linea della media:
-\begin{minted}{python}
-    # --- linea media ---
-    if show_mean:
-        ax.axvline(
-            mu,
-            color=C_MEAN,
-            linestyle="--",
-            linewidth=1.2,
-            label=rf"${mean_symbol} = {mu:{fmt}}$",
-        )
-\end{minted}
-La funzione \texttt{ax.axvline()} disegna una linea verticale in
-corrispondenza di \(x=\mu\), permettendo di visualizzare immediatamente
-la posizione centrale della distribuzione secondo la media aritmetica.
-Questa indicazione è utile per confrontare il centro dell'istogramma con
-la dispersione dei dati e con eventuali altre statistiche descrittive.
-Il parametro \texttt{mean\_symbol} permette inoltre di personalizzare il simbolo mostrato in legenda, purché espresso come contenuto valido in modalità matematica LaTeX.
-
-Un ulteriore elemento grafico utile è la banda di dispersione centrata
-sulla media, estesa di una deviazione standard a sinistra e a destra:
-
-\begin{minted}{python}
-    # --- linee +- sigma ---
-    if show_std:
-        ax.axvspan(
-            mu - sigma,
-            mu + sigma,
-            color="#D65F5F",
-            alpha=std_alpha,
-            label=rf"$\pm 1\sigma = {sigma:{fmt}}$",
-        )
-\end{minted}
-
-
-La funzione \texttt{ax.axvspan()} colora la regione compresa tra
-\( \mu - \sigma \) e \( \mu + \sigma \), mettendo in evidenza
-l'intervallo di ampiezza pari a una deviazione standard attorno al valore centrale. Questa banda fornisce una rappresentazione visiva immediata della dispersione dei dati intorno alla media. Il parametro \texttt{std\_alpha} ne controlla la trasparenza, permettendo di bilanciare meglio la leggibilità della banda rispetto alle barre dell'istogramma.
-
-Si impostano poi le etichette degli assi, il titolo del grafico e la legenda:
-
-\begin{minted}{python}
-    # --- etichette ---
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel(ylabel if ylabel is not None else "Conteggi")
-    ax.set_title(title, fontsize=title_fontsize, pad=title_pad)
-
-    if show_grid:
-        ax.grid(
-            True, axis="y", linestyle="-", linewidth=0.5, alpha=grid_alpha, zorder=0
-        )
-    else:
-        ax.grid(False, axis="y")
-
-    # --- legenda ---
-    if show_legend:
-        ax.legend(fontsize=legend_fontsize, framealpha=0.9, loc=legend_loc)
-
-
-    # --- limiti assi ---
-    if xlim is not None:
-        ax.set_xlim(xlim)
-    if ylim is not None:
-        ax.set_ylim(ylim)
-\end{minted}
-L'etichetta dell'asse \(x\) è assegnata tramite il parametro \texttt{xlabel}, mentre per l'asse \(y\) viene utilizzata l'etichetta fornita in \texttt{ylabel}; se questa non è specificata, viene usato il valore predefinito \texttt{"Conteggi"}. Il titolo del grafico è fissato da \texttt{title} e può essere rifinito tramite \texttt{title\_fontsize} e \texttt{title\_pad}. La chiamata \texttt{ax.grid(...)} aggiunge una griglia leggera lungo l'asse dei conteggi solo se \texttt{show\_grid = True}, con opacità controllata da \texttt{grid\_alpha}. Se \texttt{show\_legend = True}, \texttt{ax.legend()} aggiunge una legenda che raccoglie e descrive gli elementi grafici opzionali, usando \texttt{legend\_fontsize} e \texttt{legend\_loc} per dimensione e posizione. I parametri \texttt{xlim} e \texttt{ylim} permettono di fissare manualmente i limiti degli assi; se non specificati, vengono determinati automaticamente da matplotlib. In questo punto della funzione i limiti sono solo applicati con \texttt{ax.set\_xlim(...)} e \texttt{ax.set\_ylim(...)}: la validazione della sequenza passata avviene invece all'inizio della funzione tramite \texttt{\_validate\_axis\_limits(...)}.
-
-Infine, il grafico può essere salvato su file se viene specificato un
-percorso di output:
-
-\begin{minted}{python}
-   # --- salvataggio ---
-    if save_path is not None:
-        fig.savefig(save_path, dpi=dpi, bbox_inches="tight")
-\end{minted}
-
-La chiamata a \texttt{fig.savefig()} esporta la figura nel percorso indicato da \texttt{save\_path}. Il parametro \texttt{dpi} controlla la risoluzione dell'immagine salvata, mentre \texttt{bbox\_inches="tight"} riduce i margini bianchi superflui attorno al grafico.
-
-\newpage
-\subsection{Esempio d'uso}
-Il codice seguente genera 200 campioni da una distribuzione normale con media $\mu = 0$ e deviazione standard $\sigma = 1$ tramite \texttt{numpy} e produce l'istogramma con le opzioni predefinite:
-
-\begin{minted}{python}
-import numpy as np
-from mespy import histogram
-
-data = np.random.normal(loc=0, scale=1, size=200)
-
 fig, ax = histogram(
-    data,
-    bins=20,
-    label="Campione simulato",
-    xlabel="Valore",
-    title="Distribuzione normale simulata",
+    x,
+    bins=10,
+    title="Distribuzione delle misure",
+    xlabel="lunghezza [mm]",
+    show_band=True,
 )
 \end{minted}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.82\textwidth]{../figures/histogram_normal.png}
-  \caption{Istogramma di un campione di 200 valori estratti da una distribuzione normale $\mathcal{N}(0,1)$.}
-  \label{fig:histogram-normal}
-\end{figure}
-
-\hfill

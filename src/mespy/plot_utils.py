@@ -1,68 +1,106 @@
-import numpy as np
+from __future__ import annotations
 
-from .stats_utils import standard_deviation
+from typing import TYPE_CHECKING
+
+import numpy as np
+from numpy.typing import ArrayLike
+
+from .stats_utils import _as_float_vector, standard_deviation
+
+if TYPE_CHECKING:
+    from matplotlib.axes import Axes
+    from matplotlib.figure import Figure
 
 # --- colori colorblind safe ---
-C_BAR = "#4878CF"  # blu       — barre istogramma
-C_MEAN = "#D65F5F"  # rosso     — linea media
-C_BAND_A = "#4878CF"  # blu       — banda σ_A
-C_BAND_B = "#EE854A"  # arancione — banda σ_tot
+C_BAR = "#4878CF"  # blu       - barre istogramma
+C_MEAN = "#D65F5F"  # rosso     - linea media
+C_BAND_A = "#4878CF"  # blu       - banda sigma_A
+C_BAND_B = "#EE854A"  # arancione - banda sigma_tot
 
 
-def _validate_axis_limits(limits, *, name, min_label, max_label):
+def _validate_axis_limits(
+    limits: ArrayLike,
+    *,
+    name: str,
+    min_label: str,
+    max_label: str,
+) -> tuple[float, float]:
     if isinstance(limits, (str, bytes)):
         raise ValueError(
             f"{name} deve essere una sequenza di 2 elementi ({min_label}, {max_label})"
         )
 
     try:
-        limits = tuple(limits)
+        values = tuple(limits)
     except TypeError as exc:
         raise ValueError(
             f"{name} deve essere una sequenza di 2 elementi ({min_label}, {max_label})"
         ) from exc
 
-    if len(limits) != 2:
+    if len(values) != 2:
         raise ValueError(
-            f"{name} deve avere 2 elementi ({min_label}, {max_label}) | ricevuti {len(limits)}"
+            f"{name} deve avere 2 elementi ({min_label}, {max_label}) | ricevuti {len(values)}"
         )
 
-    return limits
+    axis_limits = np.asarray(values, dtype=float)
+    if not np.all(np.isfinite(axis_limits)):
+        raise ValueError(f"{name} deve contenere solo valori finiti")
+
+    return float(axis_limits[0]), float(axis_limits[1])
+
+
+def _validate_figsize(figsize: ArrayLike) -> tuple[float, float]:
+    if isinstance(figsize, (str, bytes)):
+        raise ValueError("figsize deve essere una coppia di valori positivi")
+
+    try:
+        values = tuple(figsize)
+    except TypeError as exc:
+        raise ValueError("figsize deve essere una coppia di valori positivi") from exc
+
+    if len(values) != 2:
+        raise ValueError("figsize deve essere una coppia di valori positivi")
+
+    figure_size = np.asarray(values, dtype=float)
+    if not np.all(np.isfinite(figure_size)) or np.any(figure_size <= 0):
+        raise ValueError("figsize deve essere una coppia di valori positivi")
+
+    return float(figure_size[0]), float(figure_size[1])
 
 
 def histogram(
-    x,
-    ddof=1,
-    bins="auto",
-    label="Dati",
-    xlabel="Valore",
-    ylabel=None,
-    title="Istogramma",
-    bin_ticks=True,
-    bin_width=None,
-    tick_rotation=0,
-    decimals=3,
-    figsize=(8, 5),
-    save_path=None,
-    show_legend=True,
-    show_mean=True,
-    show_std=True,
-    dpi=300,
-    ax=None,
-    xlim=None,
-    ylim=None,
-    hist_range=None,
+    x: ArrayLike,
     *,
-    title_fontsize=14,
-    title_pad=10,
-    legend_fontsize=9,
-    legend_loc="best",
-    show_grid=True,
-    grid_alpha=0.3,
-    hist_alpha=0.85,
-    mean_symbol=r"\bar{x}",
-    std_alpha=0.15,
-):
+    ddof: int | float = 0,
+    bins: int | str | ArrayLike = "auto",
+    bin_width: float | None = None,
+    hist_range: ArrayLike | None = None,
+    label: str = "Dati",
+    xlabel: str = "Valore",
+    ylabel: str | None = None,
+    title: str = "Istogramma",
+    show_bin_ticks: bool = True,
+    tick_rotation: int | float = 0,
+    decimals: int = 3,
+    show_mean: bool = True,
+    show_band: bool = True,
+    show_legend: bool = True,
+    show_grid: bool = True,
+    xlim: ArrayLike | None = None,
+    ylim: ArrayLike | None = None,
+    ax: Axes | None = None,
+    figsize: ArrayLike = (8, 5),
+    dpi: int = 300,
+    save_path: str | None = None,
+    title_fontsize: int | float = 14,
+    title_pad: int | float = 10,
+    legend_fontsize: int | float = 9,
+    legend_loc: str = "best",
+    hist_alpha: float = 0.85,
+    band_alpha: float = 0.15,
+    grid_alpha: float = 0.3,
+    mean_symbol: str = r"\bar{x}",
+) -> tuple[Figure, Axes]:
     """
     Istogramma di una distribuzione sperimentale.
 
@@ -73,109 +111,8 @@ def histogram(
     Se non viene fornito un asse (ax), la funzione crea
     autonomamente una figura; altrimenti disegna sull'asse
     ricevuto, permettendo composizioni con più subplot.
-
-    Parametri
-    ---------
-    x : array-like
-        Dati da rappresentare. Viene convertito internamente
-        in un array NumPy float64 tramite np.asarray.
-    ddof : int, default 1
-        Gradi di libertà per il calcolo della deviazione
-        standard (divisore N - ddof).
-    bins : int o str, default "auto"
-        Numero di bin o strategia numpy per la scelta automatica.
-        Strategie disponibili: "auto", "sturges", "fd", "sqrt".
-        Con "auto" numpy confronta Sturges e Freedman-Diaconis
-        e sceglie quella che produce più bin.
-    label : str, default "Dati"
-        Etichetta delle barre nella legenda.
-    xlabel : str, default "Valore"
-        Etichetta dell'asse x.
-    ylabel : str o None
-        Etichetta dell'asse y. Se None viene impostata
-        automaticamente a "Conteggi".
-    title : str, default "Istogramma"
-        Titolo del grafico.
-    bin_ticks : bool, default True
-        Se True posiziona i tick dell'asse x sui bordi dei bin
-        e li formatta con il numero di decimali indicato da
-        *decimals*.
-    bin_width : float o None, default None
-        Larghezza fissa di ciascun bin. Se specificato, i bordi
-        dei bin vengono calcolati come multipli di bin_width
-        nell'intervallo definito da hist_range; se hist_range
-        non è fornito, viene usato l'intervallo [min(x), max(x)].
-        Mutuamente esclusivo con bins (che deve restare "auto").
-    tick_rotation : int o float, default 0
-        Angolo di rotazione (in gradi) delle etichette
-        dell'asse x. Utile quando i tick si sovrappongono.
-    decimals : int, default 3
-        Numero di cifre decimali usato per formattare i tick
-        dei bin e i valori di media e σ nella legenda.
-    figsize : tuple, default (8, 5)
-        Dimensioni della figura in pollici (larghezza, altezza).
-    save_path : str o None
-        Percorso per il salvataggio automatico della figura
-        (es. "figures/hist.pdf"). Se None la figura non viene salvata.
-        Il formato viene dedotto dall'estensione del file.
-    show_legend : bool, default True
-        Se True mostra la legenda sul grafico.
-    show_mean : bool, default True
-        Se True traccia una linea verticale tratteggiata
-        in corrispondenza della media aritmetica dei dati.
-    show_std : bool, default True
-        Se True disegna una banda trasparente nell'intervallo
-        [media - σ, media + σ], dove σ è la deviazione standard
-        calcolata con il divisore N - ddof.
-    dpi : int, default 300
-        Risoluzione della figura, usata sia per la visualizzazione
-        a schermo sia per il salvataggio su file.
-    ax : matplotlib.axes.Axes o None
-        Asse su cui disegnare. Se None la funzione crea una nuova
-        figura con plt.subplots(); se viene passato un asse esistente,
-        la funzione disegna su quello e risale alla figura madre
-        con ax.get_figure().
-    xlim : tuple o None
-        Limiti dell'asse x come (xmin, xmax). Se None i limiti
-        vengono determinati automaticamente da matplotlib.
-    ylim : tuple o None
-        Limiti dell'asse y come (ymin, ymax). Se None i limiti
-        vengono determinati automaticamente da matplotlib.
-    hist_range : tuple o None
-        Intervallo (xmin, xmax) usato per costruire i bordi dei
-        bin quando viene specificato bin_width. Se None, vengono
-        usati il minimo e il massimo dei dati.
-    title_fontsize : int o float, default 14
-        Dimensione del font usata per il titolo. Keyword-only.
-    title_pad : int o float, default 10
-        Spaziatura verticale tra titolo e area del grafico.
-        Keyword-only.
-    legend_fontsize : int o float, default 9
-        Dimensione del font usata per la legenda. Keyword-only.
-    legend_loc : str, default "best"
-        Posizione della legenda, passata direttamente a
-        matplotlib.axes.Axes.legend. Keyword-only.
-    show_grid : bool, default True
-        Se True mostra una griglia orizzontale leggera
-        sull'asse y. Keyword-only.
-    grid_alpha : float, default 0.3
-        Trasparenza della griglia orizzontale. Keyword-only.
-    hist_alpha : float, default 0.85
-        Trasparenza delle barre dell'istogramma. Keyword-only.
-    mean_symbol : str, default r"\bar{x}"
-        Simbolo LaTeX usato nella legenda per indicare la media.
-        Keyword-only.
-    std_alpha : float, default 0.15
-        Trasparenza della banda ±1σ. Keyword-only.
-
-    Restituisce
-    -----------
-    fig : matplotlib.figure.Figure
-        La figura che contiene il grafico.
-    ax  : matplotlib.axes.Axes
-        L'asse su cui è stato disegnato l'istogramma.
     """
-    x = np.asarray(x, dtype=float)
+    values = _as_float_vector("x", x)
 
     if xlim is not None:
         xlim = _validate_axis_limits(
@@ -193,26 +130,32 @@ def histogram(
             max_label="ymax",
         )
 
-    # --- Figura ---
     if ax is None:
         import matplotlib.pyplot as plt
 
-        fig, ax = plt.subplots(figsize=figsize, dpi=dpi, constrained_layout=True)
+        figure_size = _validate_figsize(figsize)
+        fig, ax = plt.subplots(
+            figsize=figure_size,
+            dpi=dpi,
+            constrained_layout=True,
+        )
     else:
         fig = ax.get_figure()
 
-    # --- binnaggio ---
-
+    hist_range_tuple: tuple[float, float] | None = None
     if hist_range is not None:
-        if len(hist_range) != 2:
-            raise ValueError(
-                "'hist_range' deve avere esattamente 2 elementi: (xmin, xmax)"
-            )
-        xmin, xmax = np.asarray(hist_range, dtype=float)
+        hist_range_tuple = _validate_axis_limits(
+            hist_range,
+            name="hist_range",
+            min_label="xmin",
+            max_label="xmax",
+        )
+        xmin, xmax = hist_range_tuple
         if xmin >= xmax:
             raise ValueError("Serve xmin < xmax in 'hist_range'")
     else:
-        xmin, xmax = np.min(x), np.max(x)
+        xmin = float(np.min(values))
+        xmax = float(np.max(values))
 
     if bin_width is not None:
         if bin_width <= 0:
@@ -227,34 +170,28 @@ def histogram(
         stop = np.ceil(xmax / bin_width) * bin_width
         bins = np.arange(start, stop + bin_width, bin_width)
 
-    # --- Istogramma ---
-    counts, bin_edges, patches = ax.hist(
-        x,
+    _, bin_edges, _ = ax.hist(
+        values,
         bins=bins,
+        range=hist_range_tuple if bin_width is None else None,
         density=False,
-        color="#4878CF",
+        color=C_BAR,
         edgecolor="white",
         alpha=hist_alpha,
         label=label,
     )
 
-    # --- formato decimali ---
     fmt = f".{decimals}f"
-
-    # --- tick sui bordi del bin ---
-    if bin_ticks:
+    if show_bin_ticks:
         ax.set_xticks(bin_edges)
         ax.set_xticklabels([f"{edge:{fmt}}" for edge in bin_edges])
 
-    # --- tick rotation ---
     if tick_rotation != 0:
         ax.tick_params(axis="x", rotation=tick_rotation)
 
-    # --- statistiche ---
-    mu = np.mean(x)
-    sigma = standard_deviation(x, ddof=ddof)
+    mu = float(np.mean(values))
+    sigma = standard_deviation(values, ddof=ddof)
 
-    # --- linea media ---
     if show_mean:
         ax.axvline(
             mu,
@@ -264,40 +201,40 @@ def histogram(
             label=rf"${mean_symbol} = {mu:{fmt}}$",
         )
 
-    # --- linee +- sigma ---
-    if show_std:
+    if show_band:
         ax.axvspan(
             mu - sigma,
             mu + sigma,
-            color="#D65F5F",
-            alpha=std_alpha,
+            color=C_MEAN,
+            alpha=band_alpha,
             label=rf"$\pm 1\sigma = {sigma:{fmt}}$",
         )
 
-    # --- etichette ---
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel if ylabel is not None else "Conteggi")
     ax.set_title(title, fontsize=title_fontsize, pad=title_pad)
 
     if show_grid:
         ax.grid(
-            True, axis="y", linestyle="-", linewidth=0.5, alpha=grid_alpha, zorder=0
+            True,
+            axis="y",
+            linestyle="-",
+            linewidth=0.5,
+            alpha=grid_alpha,
+            zorder=0,
         )
     else:
         ax.grid(False, axis="y")
 
-    # --- legenda ---
     if show_legend:
         ax.legend(fontsize=legend_fontsize, framealpha=0.9, loc=legend_loc)
 
-    # --- limiti assi ---
     if xlim is not None:
         ax.set_xlim(xlim)
 
     if ylim is not None:
         ax.set_ylim(ylim)
 
-    # --- salvataggio ---
     if save_path is not None:
         fig.savefig(save_path, dpi=dpi, bbox_inches="tight")
 

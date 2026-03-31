@@ -11,10 +11,31 @@ def test_weighted_mean_uniform_weights():
 
 
 def test_weighted_mean_non_uniform_weights():
-    # E_w[x] = (3*1 + 1*2 + 1*3) / (3+1+1) = 8/5 = 1.6
     values = np.array([1.0, 2.0, 3.0])
     weights = np.array([3.0, 1.0, 1.0])
     assert weighted_mean(values, weights) == pytest.approx(1.6)
+
+
+def test_weighted_mean_without_weights_matches_arithmetic_mean():
+    values = np.array([1.0, 2.0, 3.0])
+    assert weighted_mean(values) == pytest.approx(2.0)
+
+
+def test_weighted_mean_rejects_invalid_inputs():
+    with pytest.raises(ValueError, match="almeno un valore"):
+        weighted_mean([])
+
+    with pytest.raises(ValueError, match="solo valori finiti"):
+        weighted_mean([1.0, np.nan, 3.0])
+
+    with pytest.raises(ValueError, match="stessa forma"):
+        weighted_mean([1.0, 2.0, 3.0], [1.0, 2.0])
+
+    with pytest.raises(ValueError, match="strettamente positivi"):
+        weighted_mean([1.0, 2.0, 3.0], [1.0, 0.0, 1.0])
+
+    with pytest.raises(ValueError, match="strettamente positivi"):
+        weighted_mean([1.0, 2.0, 3.0], [1.0, -1.0, 2.0])
 
 
 def test_variance_basic():
@@ -27,12 +48,27 @@ def test_variance_raises_on_empty():
         variance([])
 
 
+def test_variance_raises_on_non_finite_values():
+    with pytest.raises(ValueError, match="solo valori finiti"):
+        variance([1.0, np.inf, 3.0])
+
+
 def test_variance_raises_on_weight_shape_mismatch():
     values = np.array([1.0, 2.0, 3.0])
     weights = np.array([1.0, 2.0])
 
     with pytest.raises(ValueError, match="stessa forma"):
         variance(values, weights)
+
+
+def test_variance_raises_on_non_positive_weights():
+    values = np.array([1.0, 2.0, 3.0])
+
+    with pytest.raises(ValueError, match="strettamente positivi"):
+        variance(values, [1.0, 0.0, 1.0])
+
+    with pytest.raises(ValueError, match="strettamente positivi"):
+        variance(values, [1.0, -1.0, 2.0])
 
 
 def test_variance_raises_when_ddof_makes_unweighted_denominator_non_positive():
@@ -43,10 +79,6 @@ def test_variance_raises_when_ddof_makes_unweighted_denominator_non_positive():
 
 
 def test_variance_weighted():
-    # x=[1,2,3], w=[1,1,2], sum_w=4
-    # E_w[x] = (1+2+6)/4 = 2.25
-    # E_w[x^2] = (1+4+18)/4 = 5.75
-    # Var = 5.75 - 2.25^2 = 0.6875
     values = np.array([1.0, 2.0, 3.0])
     weights = np.array([1.0, 1.0, 2.0])
     assert variance(values, weights) == pytest.approx(0.6875)
@@ -61,10 +93,6 @@ def test_variance_raises_when_ddof_makes_weighted_denominator_non_positive():
 
 
 def test_covariance_basic():
-    # x=[1,2,3], y=[2,4,6]
-    # E[xy] = (2+8+18)/3 = 28/3
-    # E[x]*E[y] = 2 * 4 = 8
-    # Cov = 28/3 - 8 = 4/3
     x = np.array([1.0, 2.0, 3.0])
     y = np.array([2.0, 4.0, 6.0])
     assert covariance(x, y) == pytest.approx(4.0 / 3.0)
@@ -73,6 +101,14 @@ def test_covariance_basic():
 def test_covariance_raises_on_length_mismatch():
     with pytest.raises(ValueError, match="stessa lunghezza"):
         covariance([1.0, 2.0], [1.0, 2.0, 3.0])
+
+
+def test_covariance_rejects_non_finite_values_and_invalid_weights():
+    with pytest.raises(ValueError, match="solo valori finiti"):
+        covariance([1.0, 2.0], [1.0, np.nan])
+
+    with pytest.raises(ValueError, match="strettamente positivi"):
+        covariance([1.0, 2.0], [1.0, 2.0], [1.0, 0.0])
 
 
 def test_standard_deviation_basic():
@@ -85,6 +121,20 @@ def test_standard_deviation_raises_on_empty():
         standard_deviation([])
 
 
+def test_standard_deviation_weighted_matches_variance_square_root():
+    values = np.array([1.0, 2.0, 3.0])
+    weights = np.array([1.0, 1.0, 2.0])
+    assert standard_deviation(values, weights) == pytest.approx(np.sqrt(0.6875))
+
+
 def test_median_odd():
     values = np.array([3.0, 1.0, 2.0])
     assert median(values) == pytest.approx(2.0)
+
+
+def test_median_rejects_empty_or_non_finite_values():
+    with pytest.raises(ValueError, match="almeno un valore"):
+        median([])
+
+    with pytest.raises(ValueError, match="solo valori finiti"):
+        median([1.0, np.nan, 2.0])

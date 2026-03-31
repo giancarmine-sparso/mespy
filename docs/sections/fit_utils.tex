@@ -1,363 +1,87 @@
 % !TEX root = ../main.tex
-\vspace{-15pt}
-Il file \textit{fit\_utils.py} raccoglie le funzioni per il fit di dati sperimentali. Le funzioni supportano l'incertezza sulle misure tramite pesi $w_i = 1/\sigma_{y_i}^2$, che amplificano il contributo dei punti più precisi nella stima dei parametri. Se sono fornite anche le incertezze sulle ascisse, i pesi vengono aggiornati iterativamente tramite la varianza efficace $\sigma_{\mathrm{eff},i}^2 = \sigma_{y_i}^2 + m^2\,\sigma_{x_i}^2$.
-\vspace{-5pt}
-Le funzioni disponibili sono:
-\begin{itemize}
-    \item \texttt{lin\_fit(x, y, sigma\_y, ...)}: esegue un fit lineare pesato $y = mx + c$ con incertezze su $y$ e, opzionalmente, su $x$, restituisce i parametri stimati e le relative incertezze.
-\end{itemize}
-\vspace{-11pt}
+\vspace{-10pt}
+Il file \textit{fit\_utils.py} raccoglie il fit lineare pesato del package. L'obiettivo della release \texttt{1.0.0} è offrire un contratto semplice e stabile: una singola funzione pubblica, \texttt{lin\_fit}, e un tipo di ritorno immutabile, \texttt{LinearFitResult}.
 
-\section{\texorpdfstring{lin\_fit(x, y, sigma\_y, sigma\_x, xlabel, ylabel, dpi, band, plot, xlim, ylim, decimals, legend, legend\_coefficient, tol, title, title\_fontsize, title\_pad, legend\_fontsize, legend\_loc, show\_grid, grid\_alpha, data\_alpha, std\_alpha, figsize, save\_path)}{lin\_fit(x, y, sigma\_y, sigma\_x, xlabel, ylabel, dpi, band, plot, xlim, ylim, decimals, legend, legend_coefficient, tol, title, title_fontsize, title_pad, legend_fontsize, legend_loc, show_grid, grid_alpha, data_alpha, std_alpha, figsize, save_path)}}
-\label{sec:fit-lineare}
-\vspace{-3pt}
+\section{LinearFitResult}
+\label{sec:linear-fit-result}
 \begin{apidesc}
   \item[\textbf{Scopo}]
-    Eseguire un fit lineare pesato $y = mx + c$ su un insieme di punti sperimentali con incertezze su $y$ e, opzionalmente, su $x$. Quando sono fornite le incertezze su $x$, i pesi vengono aggiornati iterativamente tramite la varianza efficace $\sigma_{\mathrm{eff},i}^2 = \sigma_{y_i}^2 + m^2\,\sigma_{x_i}^2$. La funzione stima i parametri $m$ e $c$ e le loro incertezze, e offre anche controlli grafici opzionali per titolo, legenda, griglia, trasparenze, dimensione della figura e salvataggio su file.
-    \enlargethispage{2\baselineskip}
-  \item[\textbf{Parametri}]\hfill
-    \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=7em, leftmargin=7.5em, itemsep=1pt, parsep=0pt, topsep=3pt]
-      \item[x]        array-like $\to$ convertito in \texttt{float64}; valori della variabile indipendente
-      \item[y]        array-like $\to$ convertito in \texttt{float64}; valori della variabile dipendente
-      \item[sigma\_y] array-like $\to$ convertito in \texttt{float64}; incertezze su $y$ (devono essere $> 0$)
-      \item[sigma\_x] array-like o \texttt{None} (default \texttt{None}) $\to$ incertezze sulle ascisse (devono essere $> 0$); se fornito, il fit usa la varianza efficace e il grafico mostra anche le barre d'errore orizzontali
-      \item[xlabel]   stringa (default \texttt{"x [xu]"}) $\to$ etichetta asse $x$ nel grafico
-      \item[ylabel]   stringa (default \texttt{"y [uy]"}) $\to$ etichetta asse $y$ nel grafico
-      \item[dpi]      intero (default \texttt{300}) $\to$ risoluzione della figura generata
-      \item[band]     \texttt{bool} (default \texttt{True}) $\to$ se \texttt{True}, mostra la banda di incertezza $\pm 1\sigma$ attorno alla retta
-      \item[plot]     \texttt{bool} (default \texttt{True}) $\to$ se \texttt{True}, genera il grafico del fit e restituisce la figura senza chiamare \texttt{plt.show()}
-      \item[xlim]    \texttt{tuple} o \texttt{None} (default \texttt{None}) $\to$ limiti asse $x$ come \texttt{(xmin, xmax)}; ignorato se \texttt{plot=False}
-      \item[ylim]    \texttt{tuple} o \texttt{None} (default \texttt{None}) $\to$ limiti asse $y$ del pannello superiore come \texttt{(ymin, ymax)}; ignorato se \texttt{plot=False}
-      \item[decimals] \texttt{int} (default \texttt{3}) $\to$ cifre decimali per la formattazione dei coefficienti in legenda
-      \item[legend]  \texttt{bool} (default \texttt{True}) $\to$ se \texttt{True}, mostra la legenda nel pannello superiore
-      \item[legend\_coefficient] \texttt{bool} (default \texttt{False}) $\to$ se \texttt{True}, mostra $m$ e $c$ formattati nella legenda della retta
-      \item[tol] \texttt{float} (default \texttt{1e-10}) $\to$ tolleranza relativa sulla convergenza di $m$ quando \texttt{sigma\_x} \`e attivo
-      \item[title] stringa o \texttt{None} (default \texttt{None}) $\to$ titolo del pannello superiore; se \texttt{None} non viene impostato alcun titolo
-      \item[title\_fontsize] intero o float (default \texttt{14}) $\to$ dimensione del font del titolo
-      \item[title\_pad] intero o float (default \texttt{10}) $\to$ distanza verticale tra titolo e area del grafico
-      \item[legend\_fontsize] intero o float (default \texttt{9}) $\to$ dimensione del font della legenda
-      \item[legend\_loc] stringa (default \texttt{"best"}) $\to$ posizione della legenda secondo le opzioni di matplotlib
-      \item[show\_grid] \texttt{bool} (default \texttt{True}) $\to$ se \texttt{True}, mostra la griglia orizzontale nel pannello superiore
-      \item[grid\_alpha] float (default \texttt{0.3}) $\to$ trasparenza della griglia
-      \item[data\_alpha] float (default \texttt{1.0}) $\to$ trasparenza dei punti sperimentali e delle rispettive barre d'errore
-      \item[std\_alpha] float (default \texttt{0.20}) $\to$ trasparenza della banda $\pm 1\sigma$ attorno alla retta
-      \item[figsize] \texttt{tuple} o \texttt{list} di 2 numeri (default \texttt{(8, 5)}) $\to$ dimensione della figura in pollici nel formato \texttt{(larghezza, altezza)}; usato solo se \texttt{plot=True}
-      \item[save\_path] stringa, path-like o \texttt{None} (default \texttt{None}) $\to$ se non \texttt{None}, salva la figura nel percorso indicato tramite \texttt{Figure.savefig}; richiede \texttt{plot=True}
-    \end{description}
-    I parametri da \texttt{title} a \texttt{save\_path} sono opzionali e keyword-only, così l'ordine posizionale storico della funzione resta invariato.
-    \vspace{-3pt}
-  \item[\textbf{Vincoli}]
-    \texttt{x}, \texttt{y} e \texttt{sigma\_y} devono avere la stessa lunghezza e contenere almeno 3 elementi ($n \geq 3$). Se fornito, anche \texttt{sigma\_x} deve avere la stessa lunghezza.
-    Tutti i valori di \texttt{x}, \texttt{y}, \texttt{sigma\_y} e, se fornito, \texttt{sigma\_x} devono essere finiti.
-    Tutti i valori di \texttt{sigma\_y} devono essere strettamente positivi ($\sigma_{y_i} > 0$) affinché i pesi $w_i = 1/\sigma_{y_i}^2$ siano finiti. Se fornito, tutti i valori di \texttt{sigma\_x} devono essere strettamente positivi ($\sigma_{x_i} > 0$).
-    Se fornito, \texttt{figsize} deve essere una coppia di valori numerici finiti e strettamente positivi.
-    Se \texttt{save\_path} non è \texttt{None}, deve essere richiesto anche il grafico, cioè \texttt{plot=True}.
-    Inoltre \texttt{x} deve contenere almeno due valori distinti, altrimenti la varianza pesata delle ascisse si annulla e il fit lineare non e' definito.
-  \item[\textbf{Restituisce}]
-    \texttt{dict} con i parametri del fit, le loro incertezze, i residui, la loro dispersione, la figura generata se \texttt{plot=True} e il numero di iterazioni effettuate per l'aggiornamento dei pesi (\texttt{n\_iter}).
-  \item[\textbf{Eccezioni}]
-    \texttt{ValueError} se \texttt{len(x) != len(y)} o \texttt{len(x) != len(sigma\_y)};
-    \texttt{ValueError} se il numero di punti è inferiore a 3 ($n < 3$);
-    \texttt{ValueError} se \texttt{x}, \texttt{y} o \texttt{sigma\_y} contengono valori non finiti;
-    \texttt{ValueError} se \texttt{sigma\_y} contiene valori non strettamente positivi;
-    \texttt{ValueError} se \texttt{sigma\_x} \`e fornito e \texttt{len(sigma\_x) != len(x)};
-    \texttt{ValueError} se \texttt{sigma\_x} contiene valori non finiti;
-    \texttt{ValueError} se \texttt{sigma\_x} contiene valori non strettamente positivi;
-    \texttt{ValueError} se \texttt{x} non contiene almeno due valori distinti;
-    \texttt{ValueError} se \texttt{plot=True} e \texttt{xlim} o \texttt{ylim} non contengono esattamente 2 elementi;
-    \texttt{ValueError} se \texttt{figsize} non è una coppia di valori numerici finiti e strettamente positivi;
-    \texttt{ValueError} se \texttt{save\_path} è fornito ma \texttt{plot=False}.
+    Rappresentare in modo tipizzato e leggibile il risultato di un fit lineare.
+  \item[\textbf{Campi pubblici}]
+    \texttt{slope}, \texttt{intercept}, \texttt{slope\_std}, \texttt{intercept\_std},
+    \texttt{covariance}, \texttt{correlation}, \texttt{residuals}, \texttt{residual\_std},
+    \texttt{chi2}, \texttt{reduced\_chi2}, \texttt{dof}, \texttt{iterations},
+    \texttt{converged}, \texttt{figure}.
+  \item[\textbf{Note}]
+    Il tipo è un dataclass immutabile; non sostituisce la funzione di fit ma formalizza il suo output.
 \end{apidesc}
 
+\section{\texorpdfstring{lin\_fit(x, y, sigma\_y, *, sigma\_x, xlabel, ylabel, title, decimals, tol, max\_iter, show\_plot, show\_band, show\_legend, show\_fit\_params, show\_grid, xlim, ylim, figsize, dpi, save\_path, title\_fontsize, title\_pad, legend\_fontsize, legend\_loc, data\_alpha, band\_alpha, grid\_alpha)}{lin\_fit(x, y, sigma_y, *, sigma_x, xlabel, ylabel, title, decimals, tol, max_iter, show_plot, show_band, show_legend, show_fit_params, show_grid, xlim, ylim, figsize, dpi, save_path, title_fontsize, title_pad, legend_fontsize, legend_loc, data_alpha, band_alpha, grid_alpha)}}
+\label{sec:fit-lineare}
+\begin{apidesc}
+  \item[\textbf{Scopo}]
+    Eseguire un fit lineare pesato \(y = mx + c\) su punti sperimentali con incertezze su \(y\) e, opzionalmente, su \(x\).
+  \item[\textbf{Parametri chiave}]\hfill
+    \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=8em, leftmargin=8.5em, itemsep=1pt, parsep=0pt, topsep=2pt]
+      \item[x, y] array-like $\to$ ascisse e ordinate dei dati
+      \item[sigma\_y] array-like $\to$ incertezze su \(y\), strettamente positive
+      \item[sigma\_x] array-like o \texttt{None} $\to$ incertezze su \(x\), strettamente positive
+      \item[decimals] int (default \texttt{3}) $\to$ cifre decimali nella legenda del grafico
+      \item[tol] float (default \texttt{1e-10}) $\to$ tolleranza relativa sulla convergenza iterativa
+      \item[max\_iter] int (default \texttt{100}) $\to$ massimo numero di aggiornamenti dei pesi quando \texttt{sigma\_x} è attivo
+      \item[show\_plot] bool (default \texttt{True}) $\to$ genera o meno la figura matplotlib
+      \item[save\_path] stringa o \texttt{None} $\to$ salva la figura se \texttt{show\_plot=True}
+    \end{description}
+  \item[\textbf{Restituisce}]
+    \texttt{LinearFitResult}.
+  \item[\textbf{Eccezioni}]
+    \texttt{ValueError} se i vettori non hanno la stessa lunghezza, contengono valori non finiti, hanno meno di 3 punti o contengono incertezze non positive;
+    \texttt{ValueError} se \texttt{tol} o \texttt{max\_iter} sono invalidi;
+    \texttt{ValueError} se \texttt{x} non contiene almeno due valori distinti;
+    \texttt{ValueError} se \texttt{save\_path} è usato con \texttt{show\_plot=False};
+    \texttt{RuntimeError} se il fit con \texttt{sigma\_x} non converge entro \texttt{max\_iter}.
+\end{apidesc}
 
-
-
-\subsection{Pesi e stima dei parametri}
-
-La funzione \textbf{lin\_fit(x, ...)} genera un fit lineare dei punti che vengono passati come input. La procedura di stima e' racchiusa in un ciclo iterativo che gestisce anche il caso in cui siano fornite incertezze sulle ascisse.
-
-\begin{minted}{python}
-    sigma_y2 = sigma_y**2
-    if use_sigma_x:
-        sigma_x2 = sigma_x**2
-
-    max_iter = 100
-    n_iter = 0
-    m_old = np.inf
-
-    # --- pesi w_i = 1 / sigma_yi^2 ---
-    w = 1.0 / sigma_y**2
-
-    for iteration in range(max_iter):
-
-        # --- stima dei parametri ---
-        var_x = variance(x, w)
-        cov_xy = covariance(x, y, w)
-
-        m = cov_xy / var_x
-        c = weighted_mean(y, w) - m * weighted_mean(x, w)
-
-        # --- convergenza (solo se sigma_x attivo) ---
-        if not use_sigma_x:
-            break  # una sola iterazione
-
-        rel_change = abs(m - m_old) / max(abs(m), 1e-300)
-        if rel_change < tol:
-            break
-
-        # --- aggiorna pesi con varianza efficace ---
-        m_old = m
-        n_iter += 1
-
-        sigma_eff2 = sigma_y2 + m**2 * sigma_x2
-        w = 1.0 / sigma_eff2
-\end{minted}
-
-Il coefficiente angolare e l'intercetta della retta sono calcolati con le formule:
+\paragraph{Fit con sole incertezze su \texttt{y}}
+Nel caso base i pesi sono
 \[
-\hat{m} = \frac{\mathrm{Cov}_w(x,y)}{\mathrm{Var}_w(x)}, \qquad \hat{c} = \bar{y}_w - \hat{m}\,\bar{x}_w
+  w_i = \frac{1}{\sigma_{y_i}^2},
 \]
-dove \(\bar{y}_w\) e \(\bar{x}_w\) sono le medie pesate con pesi \(w_i\) rispettivamente di \(y\) e di \(x\).
-
-Quando \texttt{sigma\_x} non e' fornito, il ciclo esegue una sola iterazione con pesi \(w_i = 1/\sigma_{y_i}^2\), recuperando il comportamento classico. Quando \texttt{sigma\_x} e' fornito, la funzione usa la \textbf{varianza efficace}:
+e i coefficienti della retta sono stimati con
 \[
-\sigma_{\mathrm{eff},i}^2 = \sigma_{y_i}^2 + \hat{m}^2\,\sigma_{x_i}^2
-\]
-e i pesi diventano \(w_i = 1/\sigma_{\mathrm{eff},i}^2\). Poiché \(\sigma_{\mathrm{eff},i}\) dipende da \(\hat{m}\), la stima viene iterata: all'iterazione 0 si usano i soli \(\sigma_{y_i}\), si calcola \(\hat{m}\), si aggiornano i pesi, e si ripete fino a convergenza. Il criterio di arresto e':
-\[
-\frac{|m_k - m_{k-1}|}{\max(|m_k|,\,10^{-300})} < \texttt{tol}
-\]
-con un massimo di 100 iterazioni. Il contatore \texttt{n\_iter} registra il numero di aggiornamenti dei pesi effettuati. Il criterio di arresto serve a verificare se il parametro \(m\) smette di cambiare il modo apprezzabile: se smette di cambiare \(m\) allora smettono di cambiare anche \(\sigma_{eff,i}\) e quindi i pesi, per questo motivo si sceglie quando fermarsi guardando \(|m_k - m_{k-1}|\).
-
-\subsection{Incertezza sui parametri}
-
-Il codice seguente calcola le incertezze su i parametri calcolati precedentemente usando le formule della teoria
-
-\begin{minted}{python}
-    # --- incertezza sui parametri ---
-    sum_w = np.sum(w)
-
-    var_m = 1.0 / (var_x * sum_w)
-    var_c = weighted_mean(x**2, w) / (var_x * sum_w)
-
-    cov_mc = -weighted_mean(x, w) / (var_x * sum_w)
-
-    sigma_m = np.sqrt(var_m)
-    sigma_c = np.sqrt(var_c)
-    rho_mc = cov_mc / (sigma_m * sigma_c)
-\end{minted}
-
-le formule sono le seguenti per la varianza:
-\[
-\text{Var}[\hat{m}] = \frac{1}{\text{Var}[x] \sum_i \frac{1}{\sigma^2_{Y_i}}}, \qquad \text{Var}[\hat{c}] = \frac{\overline{x^2}}{\text{Var}[x] \sum_i \frac{1}{\sigma^2_{Y_i}}} = \overline{x^2} \cdot \text{Var}[\hat{m}]
-\]
-e per la covarianza:
-\[
-\text{Cov}[\hat{m}, \hat{c}] =- \frac{\overline{x}}{\text{Var}[x]\sum_i \frac{1}{\sigma^2_{Y_i}}} = - \overline{x} \cdot \text{Var}[\hat{m}]
+  \hat{m} = \frac{\mathrm{Cov}_w(x,y)}{\mathrm{Var}_w(x)}, \qquad
+  \hat{c} = \bar{y}_w - \hat{m}\,\bar{x}_w.
 \]
 
-le devizioni standard e il coeffiente di correlazione sono invece calcolati con le formule standard.
-
-\newpage
-
-\subsection{Residui e sigma dei residui}
-
-\begin{minted}{python}
-    # --- residui e sigma dai residui (14.27) ---
-    r = y - m * x - c
-    sigma_r = np.sqrt(np.sum(r**2) / (n - 2))    
-\end{minted}
-
-In questo snippet di codice \(r\) è il vettore dei residui, vale a dire la differenza tra il valore misurato \(y_i\) e il valore previsto dalla retta:
+\paragraph{Fit con incertezze anche su \texttt{x}}
+Se viene passato \texttt{sigma\_x}, la funzione usa la varianza efficace
 \[
-r_i = y_i - (m \cdot x_i + c)
+  \sigma_{\mathrm{eff},i}^2 = \sigma_{y_i}^2 + \hat{m}^2 \sigma_{x_i}^2,
 \]
-esprime quanto ogni punto si scosta dalla retta di fit. 
+aggiorna i pesi iterativamente e controlla la convergenza con \texttt{tol}. Il campo \texttt{iterations} conta quanti aggiornamenti dei pesi sono stati effettuati; il campo \texttt{converged} indica se il criterio di arresto è stato soddisfatto.
 
-La deviazione standard dei residui è invece calcolata come:
-\[
-\sigma_r = \sqrt{\frac{\sum_i \left(y_i - (m \cdot x_i + c)\right)^2}{n - 2}}
-\]
-quindi come la radice della somma in quadratura dei residui fratto \(n -2\). Questo perché il fit lineare ha consumato 2 gradi di libertà per stimare \(m\) e \(c\).
+\paragraph{Diagnostiche}
+Oltre ai parametri del fit, \texttt{LinearFitResult} contiene:
+\begin{itemize}
+  \item \texttt{residuals} e \texttt{residual\_std}
+  \item \texttt{chi2} e \texttt{reduced\_chi2}
+  \item \texttt{dof = n - 2}
+  \item \texttt{figure}, che vale \texttt{None} se \texttt{show\_plot=False}
+\end{itemize}
 
-\subsection{Grafico dati, retta e residui}
-
-Dopo aver stimato parametri e residui, la funzione può costruire anche una visualizzazione del fit. Questa parte del codice è eseguita solo se \texttt{plot=True} e organizza il risultato in due pannelli: sopra i dati con la retta stimata, sotto i residui rispetto alla retta.
-
-\paragraph{Figura con subplots}
+\paragraph{Esempio d'uso}
 \begin{minted}{python}
-    # --- grafico dati + retta di fit ---
-    fig = None
-    if plot:
-        import matplotlib.pyplot as plt
+fit = lin_fit(
+    x,
+    y,
+    sigma_y,
+    sigma_x=sigma_x,
+    xlabel="tempo [s]",
+    ylabel="spazio [m]",
+    show_plot=False,
+)
 
-        # figura con subplots
-        fig, (ax_fit, ax_res) = plt.subplots(
-            2,
-            1,
-            figsize=figsize,
-            dpi=dpi,
-            gridspec_kw={"height_ratios": [3, 1]},
-            sharex=True,
-            constrained_layout=True,
-        )
+print(fit.slope)
+print(fit.intercept_std)
+print(fit.reduced_chi2)
 \end{minted}
-
-La variabile \texttt{fig} viene inizializzata a \texttt{None} così che la funzione possa restituire comunque qualcosa anche quando il grafico non viene creato. Il blocco viene poi eseguito solo se \texttt{plot} è vero. L'import locale di \texttt{matplotlib.pyplot} serve a caricare la libreria grafica solo quando necessario.
-
-La chiamata \texttt{plt.subplots(2, 1, ...)} crea una figura con due assi disposti in colonna: il primo, \texttt{ax\_fit}, ospita il fit vero e proprio; il secondo, \texttt{ax\_res}, ospita i residui. Il parametro \texttt{figsize=figsize} usa direttamente la dimensione passata alla funzione, che per default vale \texttt{(8, 5)} e rappresenta larghezza e altezza della figura in pollici, mentre \texttt{dpi=dpi} usa il valore passato alla funzione per fissare la risoluzione. Il dizionario \texttt{gridspec\_kw} raccoglie le opzioni di layout dei due pannelli, così da assegnare più spazio alla parte superiore. Infine, \texttt{sharex=True} fa sì che i due assi condividano la stessa scala orizzontale, scelta naturale perché sia il fit sia i residui sono funzioni della stessa variabile \(x\); \texttt{constrained\_layout=True} chiede invece a Matplotlib di ottimizzare automaticamente gli spazi fra assi, etichette e legenda.
-\vspace{-3pt}
-\paragraph{Pannello superiore}
-\begin{minted}{python}
-        # pannello superiore: dati con error bar + retta
-        ax_fit.errorbar(
-            x,
-            y,
-            yerr=sigma_y,
-            xerr=sigma_x if use_sigma_x else None,
-            fmt="o",
-            color=C_BAR,
-            markersize=4,
-            ecolor=C_BAR,
-            elinewidth=1,
-            capsize=3,
-            alpha=data_alpha,
-        )
-
-        x_fit = np.linspace(x.min(), x.max(), 200)
-        y_fit = m * x_fit + c
-        fit_label = (
-            f"Fit: m={m:{fmt}}, c={c:{fmt}}" if legend_coefficient else "Fit"
-        )
-        ax_fit.plot(x_fit, y_fit, color=C_MEAN, linewidth=1.5, label=fit_label)
-
-        ax_fit.set_ylabel(ylabel)
-        if title is not None:
-            ax_fit.set_title(title, fontsize=title_fontsize, pad=title_pad)
-        if show_grid:
-            ax_fit.grid(
-                True,
-                axis="y",
-                linestyle="-",
-                linewidth=0.5,
-                alpha=grid_alpha,
-                zorder=0,
-            )
-        else:
-            ax_fit.grid(False, axis="y")
-        if legend:
-            ax_fit.legend(fontsize=legend_fontsize, framealpha=0.9, loc=legend_loc)
-\end{minted}
-
-La chiamata \texttt{ax\_fit.errorbar(...)} disegna i punti sperimentali con le rispettive barre d'errore. I primi due argomenti, \texttt{x} e \texttt{y}, sono le coordinate dei dati; \texttt{yerr=sigma\_y} specifica l'incertezza verticale associata a ciascun punto. Il parametro \texttt{xerr} visualizza le barre d'errore orizzontali quando \texttt{sigma\_x} \`e fornito; in caso contrario viene passato \texttt{None} e le barre orizzontali non vengono disegnate. Il parametro \texttt{fmt="o"} chiede di rappresentare ogni misura con un marcatore circolare, \texttt{color=C\_BAR} ne imposta il colore principale, \texttt{markersize=4} ne controlla la dimensione, \texttt{ecolor=C\_BAR} usa lo stesso colore per le barre di errore, il parametro dedicato alla larghezza della barra ne regola lo spessore grafico, \texttt{capsize=3} aggiunge i piccoli terminali orizzontali alle estremità delle barre, mentre \texttt{data\_alpha} consente di regolare la trasparenza complessiva dei dati visualizzati.
-
-Dopo i dati viene costruita la retta di fit. L'istruzione \texttt{np.linspace(x.min(), x.max(), 200)} genera 200 ascisse equispaziate tra il minimo e il massimo dei dati sperimentali: non sono nuovi dati misurati, ma una griglia regolare utile per tracciare una linea liscia. Su questa griglia la funzione calcola \texttt{y\_fit = m * x\_fit + c}, cioè l'equazione della retta stimata con i parametri del fit. La variabile \texttt{fit\_label} costruisce l'etichetta della retta in legenda: se \texttt{legend\_coefficient} è vero, la label riporta i valori di $m$ e $c$ formattati con il numero di decimali specificato da \texttt{decimals} (tramite la stringa di formato \texttt{fmt}); altrimenti resta semplicemente \texttt{"Fit"}. La chiamata \texttt{ax\_fit.plot(...)} disegna quindi la curva corrispondente: \texttt{color=C\_MEAN} sceglie il colore della retta, \texttt{linewidth=1.5} ne fissa lo spessore, e \texttt{label=fit\_label} fornisce il testo che comparirà in legenda.
-
-Le ultime istruzioni rifiniscono il pannello. \texttt{ax\_fit.set\_ylabel(ylabel)} usa l'argomento della funzione per etichettare l'asse verticale; se \texttt{title} non è \texttt{None}, \texttt{ax\_fit.set\_title(...)} imposta il titolo del pannello superiore usando \texttt{title\_fontsize} e \texttt{title\_pad}. La chiamata \texttt{ax\_fit.grid(...)} aggiunge una griglia leggera solo sull'asse \(y\) quando \texttt{show\_grid=True}, con opacità controllata da \texttt{grid\_alpha}. La legenda viene mostrata solo se \texttt{legend=True}, con dimensione del font e posizione regolate da \texttt{legend\_fontsize} e \texttt{legend\_loc}; la trasparenza del riquadro resta fissata a \texttt{0.9}.
-
-\newpage
-\paragraph{Banda}
-\begin{minted}{python}
-        # banda +- sigma sulla retta
-        if band:
-            x_bar = weighted_mean(x, w)
-            sigma_y_fit = np.sqrt(
-                1.0 / sum_w + (x_fit - x_bar)**2 / (var_x * sum_w)
-            )
-            ax_fit.fill_between(
-                x_fit,
-                y_fit - sigma_y_fit,
-                y_fit + sigma_y_fit,
-                color=C_BAND_B, alpha=std_alpha,
-                label=r"$\pm 1 \sigma$ retta"
-            )
-\end{minted}
-
-Il blocco è condizionato da \texttt{if band:}: la banda viene quindi disegnata solo quando \texttt{band=True}. La quantità \texttt{x\_bar = weighted\_mean(x, w)} è la media pesata delle ascisse e rappresenta il punto centrale attorno a cui la stima della retta è in genere più stabile. La variabile \texttt{sigma\_y\_fit} calcola invece, per ciascun valore di \texttt{x\_fit}, l'ampiezza della fascia attorno alla retta: il primo termine dipende dal numero complessivo di informazioni disponibili tramite \(\sum_i w_i\), mentre il secondo aumenta quando ci si allontana dalla zona centrale dei dati.
-
-La funzione \texttt{ax\_fit.fill\_between(...)} colora la regione compresa tra il bordo inferiore \texttt{y\_fit - sigma\_y\_fit} e quello superiore \texttt{y\_fit + sigma\_y\_fit}. Il primo argomento, \texttt{x\_fit}, fornisce l'asse orizzontale comune ai due bordi; \texttt{color=C\_BAND\_B} sceglie il colore della fascia, \texttt{std\_alpha} ne controlla la trasparenza, e \texttt{label=...} aggiunge una voce dedicata nella legenda. Non è necessario ripetere qui la logica di colori e label già discussa nel pannello superiore: gli argomenti hanno la stessa funzione grafica, ma applicata a una regione anziché a una linea o a punti con barre d'errore. Visivamente, questa scelta rende immediato il confronto tra retta stimata e incertezza associata. La banda funziona quindi come un contesto grafico di lettura, non come un elemento separato dal fit. In altre parole, guida l'occhio prima ancora della lettura numerica.
-
-\paragraph{Pannello inferiore}
-\begin{minted}{python}
-        # pannello inferiore: residui
-        ax_res.errorbar(
-            x,
-            r,
-            yerr=sigma_y,
-            xerr=sigma_x if use_sigma_x else None,
-            fmt="o",
-            color=C_BAR,
-            markersize=4,
-            ecolor=C_BAR,
-            elinewidth=1,
-            capsize=3,
-            alpha=data_alpha,
-        )
-        ax_res.axhline(0, color=C_MEAN, linewidth=1, linestyle="--")
-        ax_res.set_xlabel(xlabel)
-        ax_res.set_ylabel("Residui")
-\end{minted}
-
-La chiamata \texttt{ax\_res.errorbar(...)} riusa la stessa logica già descritta per \texttt{ax\_fit.errorbar}, compreso il parametro \texttt{xerr} per le barre d'errore orizzontali e il controllo di trasparenza \texttt{data\_alpha}: cambia però la grandezza rappresentata sull'asse verticale, perché al posto dei valori \texttt{y} vengono usati i residui \texttt{r}. In questo modo il pannello inferiore non mostra più i dati originali, ma quanto ciascun punto si discosta dalla retta di fit.
-
-L'istruzione \texttt{ax\_res.axhline(0, ...)} aggiunge una linea orizzontale di riferimento in corrispondenza di \(r = 0\). Essa rappresenta il caso ideale in cui dato e modello coincidono perfettamente, quindi aiuta a vedere subito se i residui oscillano in modo bilanciato attorno a zero oppure mostrano andamenti sistematici. Infine, \texttt{ax\_res.set\_xlabel(xlabel)} etichetta l'asse comune delle ascisse, mentre l'ultima istruzione assegna al pannello l'etichetta verticale \texttt{"Residui"}.
-
-\paragraph{Limiti degli assi}
-\begin{minted}{python}
-        if xlim is not None:
-            xlim = _validate_axis_limits(
-                xlim,
-                name="xlim",
-                min_label="xmin",
-                max_label="xmax",
-            )
-
-        if ylim is not None:
-            ylim = _validate_axis_limits(
-                ylim,
-                name="ylim",
-                min_label="ymin",
-                max_label="ymax",
-            )
-\end{minted}
-
-Pi\`u avanti, dopo aver costruito i due pannelli, gli stessi limiti vengono applicati agli assi:
-
-\begin{minted}{python}
-        # --- limiti assi ---
-        if xlim is not None:
-            ax_fit.set_xlim(xlim)
-            ax_res.set_xlim(xlim)
-        if ylim is not None:
-            ax_fit.set_ylim(ylim)
-\end{minted}
-
-Se l'utente passa \texttt{xlim} o \texttt{ylim}, la funzione valida prima i parametri tramite \texttt{\_validate\_axis\_limits} importata da \texttt{plot\_utils}; solo in un secondo momento applica i limiti agli assi corrispondenti. \texttt{xlim} viene applicato sia al pannello superiore sia a quello dei residui (dato che condividono l'asse $x$), mentre \texttt{ylim} agisce solo sul pannello del fit. Tutto questo avviene all'interno del ramo \texttt{if plot:}, quindi viene ignorato quando il grafico non è richiesto.
-
-\paragraph{Salvataggio della figura}
-\begin{minted}{python}
-        if save_path is not None:
-            fig.savefig(save_path, dpi=dpi, bbox_inches="tight")
-\end{minted}
-
-Se \texttt{save\_path} è valorizzato, la figura viene salvata su file tramite \texttt{fig.savefig(...)} usando lo stesso \texttt{dpi} scelto per la creazione della figura e \texttt{bbox\_inches="tight"} per rifinire i margini. Il formato viene determinato normalmente da Matplotlib a partire dall'estensione del nome file. Questo passaggio è consentito solo quando \texttt{plot=True}, perché richiede che la figura sia stata effettivamente creata.
-
-\paragraph{Return della funzione}
-\begin{minted}{python}
-    return {
-        "m": m,
-        "c": c,
-        "sigma_m": sigma_m,
-        "sigma_c": sigma_c,
-        "cov_mc": cov_mc,
-        "rho_mc": rho_mc,
-        "r": r,
-        "sigma_r": sigma_r,
-        "fig": fig,
-        "n_iter": n_iter,
-    }
-\end{minted}
-
-La funzione restituisce un dizionario, cioè una struttura che associa a ogni chiave testuale una quantità calcolata durante il fit. Le chiavi \texttt{"m"} e \texttt{"c"} contengono rispettivamente coefficiente angolare e intercetta; \texttt{"sigma\_m"} e \texttt{"sigma\_c"} contengono le loro incertezze; \texttt{"cov\_mc"} e \texttt{"rho\_mc"} descrivono invece la dipendenza statistica fra i due parametri, rispettivamente tramite covarianza e coefficiente di correlazione.
-
-Le ultime voci riguardano qualità del fit e parte grafica. La chiave \texttt{"r"} restituisce il vettore dei residui, \texttt{"sigma\_r"} fornisce la loro deviazione standard stimata, mentre \texttt{"fig"} contiene l'oggetto figura creato da Matplotlib se \texttt{plot=True}; se il grafico non viene richiesto, questa chiave rimane associata a \texttt{None}. La chiave \texttt{"n\_iter"} riporta il numero di aggiornamenti dei pesi effettuati durante la procedura iterativa; se \texttt{sigma\_x} non e' fornito, il suo valore e' 0. In questo modo la funzione può essere usata sia in modalità puramente numerica sia in modalità numerica + grafica senza cambiare interfaccia.
