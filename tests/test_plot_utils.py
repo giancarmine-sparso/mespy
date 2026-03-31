@@ -41,3 +41,15 @@ def test_histogram_external_ax():
     assert ax is ax_ext
     assert fig is fig_ext
     plt.close("all")
+
+
+def test_histogram_rejects_scalar_axis_limits():
+    data = np.random.normal(size=20)
+
+    with pytest.raises(ValueError, match="xlim deve essere una sequenza di 2 elementi"):
+        histogram(data, xlim=1)
+
+    with pytest.raises(ValueError, match="ylim deve essere una sequenza di 2 elementi"):
+        histogram(data, ylim=1)
+
+    plt.close("all")

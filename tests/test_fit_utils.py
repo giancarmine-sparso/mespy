@@ -80,3 +80,13 @@ def test_lin_fit_rejects_non_positive_sigma():
 def test_lin_fit_rejects_constant_x():
     with pytest.raises(ValueError, match="valori distinti"):
         lin_fit([1.0, 1.0, 1.0], [1.0, 2.0, 3.0], [0.1, 0.1, 0.1], plot=False)
+
+
+def test_lin_fit_rejects_scalar_axis_limits_when_plotting():
+    x, y, sigma_y, _, _ = make_placebo_data()
+
+    with pytest.raises(ValueError, match="xlim deve essere una sequenza di 2 elementi"):
+        lin_fit(x, y, sigma_y, plot=True, xlim=1)
+
+    with pytest.raises(ValueError, match="ylim deve essere una sequenza di 2 elementi"):
+        lin_fit(x, y, sigma_y, plot=True, ylim=1)

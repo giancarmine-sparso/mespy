@@ -9,6 +9,27 @@ C_BAND_A = "#4878CF"  # blu       — banda σ_A
 C_BAND_B = "#EE854A"  # arancione — banda σ_tot
 
 
+def _validate_axis_limits(limits, *, name, min_label, max_label):
+    if isinstance(limits, (str, bytes)):
+        raise ValueError(
+            f"{name} deve essere una sequenza di 2 elementi ({min_label}, {max_label})"
+        )
+
+    try:
+        limits = tuple(limits)
+    except TypeError as exc:
+        raise ValueError(
+            f"{name} deve essere una sequenza di 2 elementi ({min_label}, {max_label})"
+        ) from exc
+
+    if len(limits) != 2:
+        raise ValueError(
+            f"{name} deve avere 2 elementi ({min_label}, {max_label}) | ricevuti {len(limits)}"
+        )
+
+    return limits
+
+
 def histogram(
     x,
     ddof=1,
@@ -112,6 +133,22 @@ def histogram(
     """
     x = np.asarray(x, dtype=float)
 
+    if xlim is not None:
+        xlim = _validate_axis_limits(
+            xlim,
+            name="xlim",
+            min_label="xmin",
+            max_label="xmax",
+        )
+
+    if ylim is not None:
+        ylim = _validate_axis_limits(
+            ylim,
+            name="ylim",
+            min_label="ymin",
+            max_label="ymax",
+        )
+
     # --- Figura ---
     if ax is None:
         import matplotlib.pyplot as plt
@@ -145,7 +182,7 @@ def histogram(
 
     # --- statistiche ---
     mu = np.mean(x)
-    sigma = standard_deviation(x, ddof)
+    sigma = standard_deviation(x, ddof=ddof)
 
     # --- linea media ---
     if show_mean:
@@ -180,17 +217,9 @@ def histogram(
 
     # --- limiti assi ---
     if xlim is not None:
-        if len(xlim) != 2:
-            raise ValueError(
-                f"xlim deve avere 2 elementi (xmin, xmax) | ricevuti {len(xlim)}"
-            )
         ax.set_xlim(xlim)
 
     if ylim is not None:
-        if len(ylim) != 2:
-            raise ValueError(
-                f"ylim deve avere due elementi (ymin, ymax) | ricevuti: {len(ylim)}"
-            )
         ax.set_ylim(ylim)
 
     # --- salvataggio ---

@@ -3,7 +3,7 @@ Il file \textit{fit\_utils.py} raccoglie le funzioni per il fit di dati sperimen
 
 Le funzioni disponibili sono:
 \begin{itemize}
-    \item \texttt{lin\_fit(x, y, sigma\_y, ...)}: esegue un fit lineare pesato $y = a + bx$ con incertezze su $y$, restituisce i parametri stimati e le relative incertezze.
+    \item \texttt{lin\_fit(x, y, sigma\_y, ...)}: esegue un fit lineare pesato $y = mx + c$ con incertezze su $y$, restituisce i parametri stimati e le relative incertezze.
 \end{itemize}
 
 
@@ -12,7 +12,7 @@ Le funzioni disponibili sono:
 
 \begin{apidesc}
   \item[\textbf{Scopo}]
-    Eseguire un fit lineare pesato $y = a + bx$ su un insieme di punti sperimentali con incertezze su $y$, stimando i parametri $a$ e $b$ e le loro incertezze.
+    Eseguire un fit lineare pesato $y = mx + c$ su un insieme di punti sperimentali con incertezze su $y$, stimando i parametri $m$ e $c$ e le loro incertezze.
   \item[\textbf{Parametri}]\hfill
     \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=7em, leftmargin=7.5em, itemsep=1pt, parsep=0pt, topsep=3pt]
       \item[x]        array-like $\to$ convertito in \texttt{float64}; valori della variabile indipendente
@@ -20,9 +20,9 @@ Le funzioni disponibili sono:
       \item[sigma\_y] array-like $\to$ convertito in \texttt{float64}; incertezze su $y$ (devono essere $> 0$)
       \item[xlabel]   stringa (default \texttt{"x [xu]"}) $\to$ etichetta asse $x$ nel grafico
       \item[ylabel]   stringa (default \texttt{"y [uy]"}) $\to$ etichetta asse $y$ nel grafico
-      \item[dpi]      intero (default \texttt{300}) $\to$ risoluzione della figura salvata
-      \item[band]     \texttt{bool} (default \texttt{True}) $\to$ se \texttt{True}, mostra la banda di confidenza attorno alla retta
-      \item[plot]     \texttt{bool} (default \texttt{True}) $\to$ se \texttt{True}, genera e mostra il grafico del fit
+      \item[dpi]      intero (default \texttt{300}) $\to$ risoluzione della figura generata
+      \item[band]     \texttt{bool} (default \texttt{True}) $\to$ se \texttt{True}, mostra la banda di incertezza $\pm 1\sigma$ attorno alla retta
+      \item[plot]     \texttt{bool} (default \texttt{True}) $\to$ se \texttt{True}, genera il grafico del fit e restituisce la figura senza chiamare \texttt{plt.show()}
       \item[xlim]    \texttt{tuple} o \texttt{None} (default \texttt{None}) $\to$ limiti asse $x$ come \texttt{(xmin, xmax)}; ignorato se \texttt{plot=False}
       \item[ylim]    \texttt{tuple} o \texttt{None} (default \texttt{None}) $\to$ limiti asse $y$ del pannello superiore come \texttt{(ymin, ymax)}; ignorato se \texttt{plot=False}
       \item[decimals] \texttt{int} (default \texttt{3}) $\to$ cifre decimali per la formattazione dei coefficienti in legenda
@@ -42,7 +42,7 @@ Le funzioni disponibili sono:
     \texttt{ValueError} se \texttt{x}, \texttt{y} o \texttt{sigma\_y} contengono valori non finiti;
     \texttt{ValueError} se \texttt{sigma\_y} contiene valori non strettamente positivi;
     \texttt{ValueError} se \texttt{x} non contiene almeno due valori distinti;
-    \texttt{ValueError} se \texttt{xlim} o \texttt{ylim} non contengono esattamente 2 elementi.
+    \texttt{ValueError} se \texttt{plot=True} e \texttt{xlim} o \texttt{ylim} non contengono esattamente 2 elementi.
 \end{apidesc}
 
 \newpage
@@ -56,12 +56,12 @@ La funzione \textbf{lin\_fit(x, ...)} genera un fit lineare dei punti che vengon
     # --- pesi w_i = 1 / sigma_yi^2 ---
     w = 1.0 / sigma_y**2
 
-    # --- stima dei parametri --- 
-    var_x = mlt.variance(x, w)
-    cov_xy = mlt.covariance(x, y, w)
+    # --- stima dei parametri ---
+    var_x = variance(x, w)
+    cov_xy = covariance(x, y, w)
 
     m = cov_xy / var_x
-    c  = mlt.weighted_mean(y,w) - m * mlt.weighted_mean(x, w)    
+    c = weighted_mean(y, w) - m * weighted_mean(x, w)
 \end{minted}
 
 questo primo stralcio di codice serve a calcolare il coefficiente angolare e l'intercetta della retta. Per farlo sfrutta le seguenti formule:
@@ -79,9 +79,9 @@ Il codice seguente calcola le incertezze su i parametri calcolati precedentement
     sum_w = np.sum(w)
 
     var_m = 1.0 / (var_x * sum_w)
-    var_c = mlt.weighted_mean(x**2, w) / (var_x * sum_w)
-    
-    cov_mc = -mlt.weighted_mean(x, w) / (var_x * sum_w)
+    var_c = weighted_mean(x**2, w) / (var_x * sum_w)
+
+    cov_mc = -weighted_mean(x, w) / (var_x * sum_w)
 
     sigma_m = np.sqrt(var_m)
     sigma_c = np.sqrt(var_c)
@@ -187,7 +187,7 @@ Le ultime istruzioni rifiniscono il pannello. \texttt{ax\_fit.set\_ylabel(ylabel
 \begin{minted}{python}
         # banda +- sigma sulla retta
         if band:
-            x_bar = mlt.weighted_mean(x,w)
+            x_bar = weighted_mean(x, w)
             sigma_y_fit = np.sqrt(
                 1.0 / sum_w + (x_fit - x_bar)**2 / (var_x * sum_w)
             )
@@ -200,7 +200,7 @@ Le ultime istruzioni rifiniscono il pannello. \texttt{ax\_fit.set\_ylabel(ylabel
             )
 \end{minted}
 
-Il blocco è condizionato da \texttt{if band:}: la banda viene quindi disegnata solo quando l'utente lo richiede esplicitamente. La quantità \texttt{x\_bar = mlt.weighted\_mean(x, w)} è la media pesata delle ascisse e rappresenta il punto centrale attorno a cui la stima della retta è in genere più stabile. La variabile \texttt{sigma\_y\_fit} calcola invece, per ciascun valore di \texttt{x\_fit}, l'ampiezza della fascia attorno alla retta: il primo termine dipende dal numero complessivo di informazioni disponibili tramite \(\sum_i w_i\), mentre il secondo aumenta quando ci si allontana dalla zona centrale dei dati.
+Il blocco è condizionato da \texttt{if band:}: la banda viene quindi disegnata solo quando \texttt{band=True}. La quantità \texttt{x\_bar = weighted\_mean(x, w)} è la media pesata delle ascisse e rappresenta il punto centrale attorno a cui la stima della retta è in genere più stabile. La variabile \texttt{sigma\_y\_fit} calcola invece, per ciascun valore di \texttt{x\_fit}, l'ampiezza della fascia attorno alla retta: il primo termine dipende dal numero complessivo di informazioni disponibili tramite \(\sum_i w_i\), mentre il secondo aumenta quando ci si allontana dalla zona centrale dei dati.
 
 La funzione \texttt{ax\_fit.fill\_between(...)} colora la regione compresa tra il bordo inferiore \texttt{y\_fit - sigma\_y\_fit} e quello superiore \texttt{y\_fit + sigma\_y\_fit}. Il primo argomento, \texttt{x\_fit}, fornisce l'asse orizzontale comune ai due bordi; \texttt{color=C\_BAND\_B} sceglie il colore della fascia, \texttt{alpha=0.20} la rende semitrasparente, e \texttt{label=...} aggiunge una voce dedicata nella legenda. Non è necessario ripetere qui la logica di colori e label già discussa nel pannello superiore: gli argomenti hanno la stessa funzione grafica, ma applicata a una regione anziché a una linea o a punti con barre d'errore. Visivamente, questa scelta rende immediato il confronto tra retta stimata e incertezza associata. La banda funziona quindi come un contesto grafico di lettura, non come un elemento separato dal fit. In altre parole, guida l'occhio prima ancora della lettura numerica.
 

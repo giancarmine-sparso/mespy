@@ -46,6 +46,7 @@ mech-lab-tools/
 - Python `>= 3.12`
 - `git`
 - `lualatex`, `latexmk` e `pygmentize` solo se vuoi ricompilare la documentazione
+- font richiesti dalla build docs: `Libertinus Serif`, `Libertinus Math`, `Libertinus Sans`, `JetBrains Mono`, `Inter Display`
 
 ## Installazione rapida
 
@@ -107,6 +108,8 @@ make docs
 ```
 
 Il target usa `minted`, quindi richiede anche `pygmentize` disponibile nel `PATH`.
+Inoltre il sorgente LaTeX usa i font `Libertinus Serif`, `Libertinus Math`, `Libertinus Sans`, `JetBrains Mono` e `Inter Display`.
+`make check-tex` verifica i comandi necessari e, se `fc-match` e' disponibile nel sistema, controlla anche la presenza di questi font.
 
 Le sezioni attualmente documentate sono:
 
@@ -136,7 +139,7 @@ Il comando esegue test, `compileall`, `pip check`, build di `sdist` e `wheel`, v
 | `make dist` | Genera `sdist` e `wheel` in `dist/` |
 | `make twine-check` | Valida gli artifact generati con `twine check` |
 | `make release-check` | Esegue il gate completo pre-release per PyPI |
-| `make check-tex` | Verifica i prerequisiti LaTeX |
+| `make check-tex` | Verifica i prerequisiti LaTeX e, se possibile, i font richiesti |
 | `make docs` | Compila la documentazione PDF |
 | `make docs-clean` | Rimuove i file temporanei LaTeX |
 | `make dist-clean` | Rimuove gli artifact Python di build |

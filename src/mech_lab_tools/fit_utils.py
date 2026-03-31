@@ -1,6 +1,6 @@
 import numpy as np
 
-from .plot_utils import C_BAND_B, C_BAR, C_MEAN
+from .plot_utils import C_BAND_B, C_BAR, C_MEAN, _validate_axis_limits
 from .stats_utils import covariance, variance, weighted_mean
 
 
@@ -124,6 +124,22 @@ def lin_fit(
     # --- grafico dati + retta di fit ---
     fig = None
     if plot:
+        if xlim is not None:
+            xlim = _validate_axis_limits(
+                xlim,
+                name="xlim",
+                min_label="xmin",
+                max_label="xmax",
+            )
+
+        if ylim is not None:
+            ylim = _validate_axis_limits(
+                ylim,
+                name="ylim",
+                min_label="ymin",
+                max_label="ymax",
+            )
+
         import matplotlib.pyplot as plt
 
         # figura con subplots
@@ -193,13 +209,9 @@ def lin_fit(
 
         # --- limiti assi ---
         if xlim is not None:
-            if len(xlim) != 2:
-                raise ValueError(f"xlim deve avere 2 elementi, ricevuti {len(xlim)}")
             ax_fit.set_xlim(xlim)
             ax_res.set_xlim(xlim)
         if ylim is not None:
-            if len(ylim) != 2:
-                raise ValueError(f"ylim deve avere 2 elementi, ricevuti {len(ylim)}")
             ax_fit.set_ylim(ylim)
 
     return {

@@ -4,10 +4,10 @@ Il file \textit{stats\_utils.py} raccoglie le funzioni statistiche di base utili
 Le funzioni disponibili sono:
 \begin{itemize}
     \item \texttt{median(x)}: calcola la mediana di un array di dati;
-    \item \texttt{weighted\_mean(x, w)}: calcola la media aritmetica, opzionalmente pesata;
-    \item \texttt{variance(x, w)}: calcola la varianza tramite la formula $\text{Var}(x) = E[x^2] - E[x]^2$;
-    \item \texttt{covariance(x, y, w)}: calcola la covarianza tra due variabili tramite la formula $\text{Cov}(x,y) = E[xy] - E[x]E[y]$;
-    \item \texttt{standard\_deviation(x, w)}: calcola la deviazione standard come $\sqrt{\text{Var}(x)}$.
+    \item \texttt{weighted\_mean(x, w=None)}: calcola la media aritmetica, opzionalmente pesata;
+    \item \texttt{variance(x, w=None, ddof=0)}: calcola la varianza con correzione opzionale sui gradi di libertà;
+    \item \texttt{covariance(x, y, w=None)}: calcola la covarianza tra due variabili tramite la formula $\text{Cov}(x,y) = E[xy] - E[x]E[y]$;
+    \item \texttt{standard\_deviation(x, w=None, ddof=0)}: calcola la deviazione standard come $\sqrt{\text{Var}(x)}$.
 \end{itemize}
 
 \section{median(x)}
@@ -101,7 +101,7 @@ dove i punti con incertezza minore (peso maggiore) contribuiscono di più al ris
 \paragraph{Esempio d'uso}
 \begin{minted}{python}
 import numpy as np
-from stats_utils import weighted_mean
+from mech_lab_tools import weighted_mean
 
 # Media semplice
 x = [1.0, 2.0, 3.0, 4.0, 5.0]
@@ -114,58 +114,89 @@ w     = 1 / sigma**2            # [25.0, 4.0, 100.0]
 print(weighted_mean(x, w))      # ≈ 9.860 (dominato da x=9.8, sigma=0.1)
 \end{minted}
 
-\section{variance(x, w=None)}
+\section{\texorpdfstring{variance(x, w=None, ddof=0)}{variance(x, w=None, ddof=0)}}
 \label{sec:variance}
 \begin{apidesc}
   \item[\textbf{Scopo}]
-    Calcolare la varianza di un array, con possibilità di pesare ogni dato.
+    Calcolare la varianza di un array, con possibilità di pesare ogni dato
+    e di applicare una correzione sui gradi di libertà.
   \item[\textbf{Parametri}]\hfill
-    \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=1.5em, leftmargin=2em, itemsep=1pt, parsep=0pt, topsep=1pt]
+    \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=2.5em, leftmargin=3em, itemsep=1pt, parsep=0pt, topsep=1pt]
       \item[x] array-like $\to$ convertito in \texttt{float64}
       \item[w] array-like o \texttt{None} (default: \texttt{None})
+      \item[ddof] int o float (default: \texttt{0}) $\to$ correzione sui gradi di libertà
     \end{description}
   \item[\textbf{Vincoli}]
-    Se \texttt{w} $\neq$ \texttt{None}, i pesi devono essere pre-calcolati come
-    $w_i = 1/\sigma_i^2$ e $\sum_i w_i > 0$. Se \texttt{w = None}, si usa
-    $w_i = 1$ per tutti gli $i$.
+    \texttt{x} non deve essere vuoto.
+    Se \texttt{w} $\neq$ \texttt{None}, deve avere la stessa forma di \texttt{x},
+    con pesi pre-calcolati come $w_i = 1/\sigma_i^2$.
+    Il denominatore ($N - \text{ddof}$ oppure $\sum_i w_i - \text{ddof}$) deve essere $> 0$.
   \item[\textbf{Restituisce}]
     \texttt{float}: varianza di \texttt{x}.
   \item[\textbf{Eccezioni}]
-    Nessuna eccezione esplicita; le stesse condizioni limite di
-    \texttt{weighted\_mean} si propagano (divisione per zero se $\sum_i w_i = 0$).
+    \texttt{ValueError} se \texttt{x} è vuoto;
+    \texttt{ValueError} se \texttt{w} non ha la stessa forma di \texttt{x};
+    \texttt{ValueError} se il denominatore è $\leq 0$.
 \end{apidesc}
 
 \paragraph{Implementazione}
 \begin{minted}{python}
-def variance(x, w=None):
+def variance(x, w=None, ddof=0):
     x = np.asarray(x, dtype=float)
-    return weighted_mean(x**2, w) - weighted_mean(x, w)**2
+
+    if x.size == 0:
+        raise ValueError("x deve contenere almeno un valore")
+
+    if w is None:
+        n = x.size
+        denom = n - ddof
+        if denom <= 0:
+            raise ValueError(...)
+
+        mean_x = np.mean(x)
+        return np.sum((x - mean_x) ** 2) / denom
+
+    w = np.asarray(w, dtype=float)
+
+    if w.shape != x.shape:
+        raise ValueError(...)
+
+    w_sum = np.sum(w)
+    denom = w_sum - ddof
+    if denom <= 0:
+        raise ValueError(...)
+
+    mean_x_w = np.sum(w * x) / w_sum
+    return np.sum(w * (x - mean_x_w) ** 2) / denom
 \end{minted}
-La funzione delega interamente il calcolo a \texttt{weighted\_mean}, sfruttando
-l'identità algebrica tra media dei quadrati e quadrato della media.
+La funzione gestisce separatamente il caso non pesato e il caso pesato. In entrambi
+i casi calcola la varianza tramite la somma degli scarti quadratici dalla media,
+dividendo per il denominatore corretto.
 
 \paragraph{Significato matematico}
-La varianza è calcolata tramite l'identità:
-$$\text{Var}(x) = \overline{x^2} - \overline{x}^2$$
-ovvero la media dei quadrati meno il quadrato della media. Con i pesi, la formula completa diventa:
-$$\text{Var}_w(x) = \frac{\sum_i w_i x_i^2}{\sum_i w_i} - \left( \frac{\sum_i w_i x_i}{\sum_i w_i} \right)^2$$
-Senza pesi ($w_i = 1$ per tutti) si riduce alla forma classica:
-$$\text{Var}(x) = \frac{1}{N} \sum_i (x_i - \overline{x})^2$$
+\textbf{Caso non pesato} ($w = \texttt{None}$): la varianza è calcolata come
+$$\text{Var}(x) = \frac{\sum_i (x_i - \overline{x})^2}{N - \text{ddof}}$$
+Con \texttt{ddof=0} si ottiene la varianza della popolazione (divisore $N$);
+con \texttt{ddof=1} si ottiene la varianza campionaria non distorta (divisore $N-1$).
+
+\textbf{Caso pesato} ($w \neq \texttt{None}$): la varianza pesata è calcolata come
+$$\text{Var}_w(x) = \frac{\sum_i w_i \, (x_i - \bar{x}_w)^2}{\sum_i w_i - \text{ddof}}$$
+dove $\bar{x}_w = \frac{\sum_i w_i x_i}{\sum_i w_i}$ è la media pesata di $x$.
+Per \texttt{ddof=0} si usa il divisore $\sum_i w_i$ (varianza della popolazione pesata).
 
 \begin{quote}
-\textbf{Nota:} tutte le funzioni di questo modulo usano statistiche descrittive della
-popolazione (divisore $N$), non stimatori campionari non distorti (divisore $N-1$).
-La notazione $E[x^2] - E[x]^2$ si riferisce pertanto alla media empirica del campione,
-non al valore atteso di una variabile aleatoria.
+\textbf{Nota:} il valore predefinito \texttt{ddof=0} corrisponde alla varianza della
+popolazione. Per ottenere la varianza campionaria (divisore $N-1$), passare
+\texttt{ddof=1}.
 \end{quote}
 
 \paragraph{Esempio d'uso}
 \begin{minted}{python}
-from stats_utils import variance
+from mech_lab_tools import variance
 
 x = [1.0, 2.0, 3.0, 4.0, 5.0]
-print(variance(x))   # 2.0
-# media = 3, E[x^2] = (1+4+9+16+25)/5 = 11 -> 11 - 9 = 2
+print(variance(x))          # 2.0  (varianza della popolazione)
+print(variance(x, ddof=1))  # 2.5  (varianza campionaria)
 \end{minted}
 
 \section{covariance(x, y, w=None)}
@@ -195,7 +226,7 @@ def covariance(x, y, w=None):
     x = np.asarray(x, dtype=float)
     y = np.asarray(y, dtype=float)
     if len(x) != len(y):
-        raise ValueError("x and y must have the same length")
+        raise ValueError("x e y devono avere la stessa lunghezza")
     return weighted_mean(x * y, w) - weighted_mean(x, w) * weighted_mean(y, w)
 \end{minted}
 Dopo aver verificato che \texttt{x} e \texttt{y} abbiano la stessa lunghezza,
@@ -221,7 +252,7 @@ negativa, che crescono in direzioni opposte; zero, che sono linearmente indipend
 
 \paragraph{Esempio d'uso}
 \begin{minted}{python}
-from stats_utils import covariance
+from mech_lab_tools import covariance
 
 x = [1.0, 2.0, 3.0, 4.0]
 y = [2.1, 3.9, 6.2, 7.8]   # y cresce con x -> covarianza positiva
@@ -232,53 +263,58 @@ print(covariance(x2, y2))   # = variance(x2) ≈ 0.667
 \end{minted}
 
 
-\section{\texorpdfstring{standard\_deviation(x, w=None)}{standard\_deviation(x, w=None)}}
+\section{\texorpdfstring{standard\_deviation(x, w=None, ddof=0)}{standard\_deviation(x, w=None, ddof=0)}}
 \label{sec:standard-deviation}
 \begin{apidesc}
   \item[\textbf{Scopo}]
-    Calcolare la deviazione standard di un array, con possibilità di pesare ogni dato.
+    Calcolare la deviazione standard di un array, con possibilità di pesare ogni dato
+    e di applicare una correzione sui gradi di libertà.
   \item[\textbf{Parametri}]\hfill
-    \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=1.5em, leftmargin=2em, itemsep=1pt, parsep=0pt, topsep=1pt]
+    \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=2.5em, leftmargin=3em, itemsep=1pt, parsep=0pt, topsep=1pt]
       \item[x] array-like $\to$ convertito in \texttt{float64}
       \item[w] array-like o \texttt{None} (default: \texttt{None})
+      \item[ddof] int o float (default: \texttt{0}) $\to$ correzione sui gradi di libertà
     \end{description}
   \item[\textbf{Vincoli}]
     \texttt{x} non deve essere vuoto ($N \geq 1$).
-    Se \texttt{w} $\neq$ \texttt{None}, i pesi devono essere pre-calcolati come
-    $w_i = 1/\sigma_i^2$ e $\sum_i w_i > 0$.
+    Stessi vincoli di \texttt{variance} per \texttt{w} e \texttt{ddof}.
   \item[\textbf{Restituisce}]
     \texttt{float}: deviazione standard di \texttt{x}.
   \item[\textbf{Eccezioni}]
-    \texttt{ValueError} se \texttt{x} è vuoto ($N = 0$).
+    \texttt{ValueError} se \texttt{x} è vuoto ($N = 0$);
+    eredita le eccezioni di \texttt{variance} per \texttt{w} e \texttt{ddof}.
 \end{apidesc}
 
 \paragraph{Implementazione}
 \begin{minted}{python}
-def standard_deviation(x, w=None):
+def standard_deviation(x, w=None, ddof=0):
     x = np.asarray(x, dtype=float)
-    if len(x) == 0:
-        raise ValueError("x must contain at least one value")
-    return np.sqrt(variance(x, w))
+
+    if x.size == 0:
+        raise ValueError("x deve contenere almeno un valore")
+
+    return np.sqrt(variance(x, w=w, ddof=ddof))
 \end{minted}
 Prima di procedere, la funzione controlla che \texttt{x} non sia vuoto,
-poi restituisce la radice quadrata della varianza calcolata da \texttt{variance}.
+poi restituisce la radice quadrata della varianza calcolata da \texttt{variance},
+propagando i parametri \texttt{w} e \texttt{ddof}.
 
 \paragraph{Significato matematico}
 La deviazione standard è la radice quadrata della varianza:
 $$\sigma(x) = \sqrt{\text{Var}(x)}$$
-Con i pesi la formula completa è:
-$$\sigma_w(x) = \sqrt{\frac{\sum_i w_i x_i^2}{\sum_i w_i} - \left( \frac{\sum_i w_i x_i}{\sum_i w_i} \right)^2}$$
-Senza pesi ($w_i = 1$ per tutti) si riduce alla forma classica:
-$$\sigma(x) = \sqrt{\frac{1}{N} \sum_i (x_i - \overline{x})^2}$$
+Senza pesi, con correzione sui gradi di libertà:
+$$\sigma(x) = \sqrt{\frac{\sum_i (x_i - \overline{x})^2}{N - \text{ddof}}}$$
+Con i pesi:
+$$\sigma_w(x) = \sqrt{\frac{\sum_i w_i \, (x_i - \bar{x}_w)^2}{\sum_i w_i - \text{ddof}}}$$
 La deviazione standard ha le stesse unità di misura dei dati, a differenza della
 varianza che è espressa in unità al quadrato: è quindi la grandezza tipicamente
 riportata come incertezza statistica di una serie di misure.
 
 \paragraph{Esempio d'uso}
 \begin{minted}{python}
-from stats_utils import standard_deviation
+from mech_lab_tools import standard_deviation
 
 x = [2.0, 4.0, 4.0, 4.0, 5.0, 5.0, 7.0, 9.0]
-print(standard_deviation(x))   # 2.0
-# media = 5, varianza = 4 -> sqrt(4) = 2
+print(standard_deviation(x))           # 2.0  (popolazione)
+print(standard_deviation(x, ddof=1))   # ≈ 2.138 (campionaria)
 \end{minted}
