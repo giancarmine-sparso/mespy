@@ -1,5 +1,5 @@
 [project]
-name = "mech-lab-tools"
+name = "mespy"
 version = "0.1.2"
 description = "Toolbox Python per l'analisi dei dati di laboratorio di meccanica"
 readme = { file = "README.md", content-type = "text/markdown" }
@@ -24,9 +24,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/giancarmine-sparso/mech-lab-tools"
-Repository = "https://github.com/giancarmine-sparso/mech-lab-tools"
-Issues = "https://github.com/giancarmine-sparso/mech-lab-tools/issues"
+Homepage = "https://github.com/giancarmine-sparso/mespy"
+Repository = "https://github.com/giancarmine-sparso/mespy"
+Issues = "https://github.com/giancarmine-sparso/mespy/issues"
 
 [project.optional-dependencies]
 dev = [

@@ -1,4 +1,4 @@
-# mech-lab-tools
+# mespy
 
 Toolbox Python per l'analisi dei dati di laboratorio di meccanica.
 
@@ -19,7 +19,7 @@ Il package espone direttamente:
 - `histogram`
 - `lin_fit`
 
-I moduli attualmente presenti in `src/mech_lab_tools` sono:
+I moduli attualmente presenti in `src/mespy` sono:
 
 - `io_utils.py`: lettura CSV con gestione di separatori, decimali, colonne richieste e missing values
 - `stats_utils.py`: funzioni statistiche di base, anche con pesi
@@ -29,8 +29,8 @@ I moduli attualmente presenti in `src/mech_lab_tools` sono:
 ## Struttura del progetto
 
 ```text
-mech-lab-tools/
-├── src/mech_lab_tools/   # package Python
+mespy/
+├── src/mespy/            # package Python
 ├── tests/                # test pytest
 ├── notebooks/            # notebook di prova e dimostrazione
 ├── docs/                 # documentazione LaTeX e PDF
@@ -53,8 +53,8 @@ mech-lab-tools/
 Clona il repository ed entra nella directory:
 
 ```bash
-git clone https://github.com/giancarmine-sparso/mech-lab-tools
-cd mech-lab-tools
+git clone https://github.com/giancarmine-sparso/mespy
+cd mespy
 ```
 
 Crea il virtualenv e installa il package con le dipendenze di sviluppo:
@@ -74,7 +74,7 @@ source .venv/bin/activate
 ## Esempio minimo
 
 ```python
-from mech_lab_tools import lin_fit, load_csv, weighted_mean
+from mespy import lin_fit, load_csv, weighted_mean
 
 df = load_csv("data/reference/test_misure.csv", sep=",", decimal=".")
 

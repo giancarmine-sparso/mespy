@@ -53,7 +53,7 @@ def main() -> None:
     repo_root = Path(os.environ["REPO_ROOT"]).resolve()
     _filter_repo_paths(repo_root)
 
-    import mech_lab_tools as mlt
+    import mespy as mlt
 
     module_path = Path(mlt.__file__).resolve()
     if module_path == repo_root or repo_root in module_path.parents:
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     main()
 
 """
-Smoke test per verificare che `mech_lab_tools` venga importato correttamente
+Smoke test per verificare che `mespy` venga importato correttamente
 dalla wheel/installazione distribuita e non dai sorgenti locali della repo.
 
 Scopo del file
@@ -100,7 +100,7 @@ che un utente installerebbe davvero.
 
 Questo smoke test evita proprio quel problema:
 1. rimuove da `sys.path` i percorsi che puntano alla repo locale;
-2. importa `mech_lab_tools`;
+2. importa `mespy`;
 3. controlla che il modulo importato non provenga dai sorgenti del progetto;
 4. verifica che gli export pubblici attesi siano presenti;
 5. controlla che l'import del pacchetto resti leggero, senza caricare subito
@@ -117,10 +117,10 @@ Cosa controlla in pratica
   filtra `sys.path` rimuovendo:
     * la root della repo;
     * eventuali path sotto `src/`, `tests/` e `tools/`.
-  Questo riduce il rischio che `import mech_lab_tools` risolva il package dai
+  Questo riduce il rischio che `import mespy` risolva il package dai
   file locali anziché dalla versione installata.
 
-- `import mech_lab_tools as mlt`:
+- `import mespy as mlt`:
   importa il pacchetto che dovrebbe provenire dalla wheel installata
   nell'ambiente di test.
 

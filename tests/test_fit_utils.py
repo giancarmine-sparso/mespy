@@ -2,7 +2,7 @@ import matplotlib
 import numpy as np
 import pytest
 
-from mech_lab_tools import lin_fit
+from mespy import lin_fit
 
 
 matplotlib.use("Agg")

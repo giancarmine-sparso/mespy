@@ -1,6 +1,6 @@
 import pytest
 
-from mech_lab_tools import load_csv
+from mespy import load_csv
 
 
 def test_load_csv_basic(tmp_path):

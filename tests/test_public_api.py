@@ -2,7 +2,7 @@ import os
 import subprocess
 import sys
 
-import mech_lab_tools as mlt
+import mespy as mlt
 
 
 def test_public_api_exports_documented_symbols():
@@ -29,7 +29,7 @@ def test_package_import_does_not_eagerly_import_matplotlib_pyplot(tmp_path):
             sys.executable,
             "-c",
             (
-                "import sys, mech_lab_tools as mlt; "
+                "import sys, mespy as mlt; "
                 "print('histogram' in mlt.__all__); "
                 "print('matplotlib.pyplot' in sys.modules)"
             ),

@@ -5,7 +5,7 @@ import pytest
 
 matplotlib.use("Agg")
 
-from mech_lab_tools import histogram
+from mespy import histogram
 
 
 def test_histogram_returns_fig_and_ax():
