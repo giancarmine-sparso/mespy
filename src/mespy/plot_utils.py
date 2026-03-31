@@ -51,6 +51,7 @@ def histogram(
     ax=None,
     xlim=None,
     ylim=None,
+    hist_range=None,
     *,
     title_fontsize=14,
     title_pad=10,
@@ -58,7 +59,7 @@ def histogram(
     legend_loc="best",
     show_grid=True,
     grid_alpha=0.3,
-    histo_alpha=0.85,
+    hist_alpha=0.85,
     mean_symbol=r"\bar{x}",
     std_alpha=0.15,
 ):
@@ -154,7 +155,7 @@ def histogram(
         sull'asse y. Keyword-only.
     grid_alpha : float, default 0.3
         Trasparenza della griglia orizzontale. Keyword-only.
-    histo_alpha : float, default 0.85
+    hist_alpha : float, default 0.85
         Trasparenza delle barre dell'istogramma. Keyword-only.
     mean_symbol : str, default r"\bar{x}"
         Simbolo LaTeX usato nella legenda per indicare la media.
@@ -197,6 +198,17 @@ def histogram(
 
     # --- binnaggio ---
 
+    if hist_range is not None:
+        if len(hist_range) != 2:
+            raise ValueError(
+                "'hist_range' deve avere esattamente 2 elementi: (xmin, xmax)"
+            )
+        xmin, xmax = np.asarray(hist_range, dtype=float)
+        if xmin >= xmax:
+            raise ValueError("Serve xmin < xmax in 'hist_range'")
+    else:
+        xmin, xmax = np.min(x), np.max(x)
+
     if bin_width is not None:
         if bin_width <= 0:
             raise ValueError("'bin_width' deve essere > 0.")
@@ -206,8 +218,8 @@ def histogram(
                 "'bins' e 'bin_width' sono mutualmente esclusivi. Usane uno solo"
             )
 
-        start = np.floor(np.min(x) / bin_width) * bin_width
-        stop = np.ceil(np.max(x) / bin_width) * bin_width
+        start = np.floor(xmin / bin_width) * bin_width
+        stop = np.ceil(xmax / bin_width) * bin_width
         bins = np.arange(start, stop + bin_width, bin_width)
 
     # --- Istogramma ---
@@ -217,7 +229,7 @@ def histogram(
         density=False,
         color="#4878CF",
         edgecolor="white",
-        alpha=histo_alpha,
+        alpha=hist_alpha,
         label=label,
     )
 
