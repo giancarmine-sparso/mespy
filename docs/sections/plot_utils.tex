@@ -14,7 +14,7 @@ Le funzioni disponibili sono:
     \item \texttt{histogram(x, ...)}: genera un istogramma dei dati, con opzioni per titolo, legenda, griglia, trasparenza e indicatori statistici come media e banda di deviazione standard.
 \end{itemize}
 La documentazione per questa funzione è divisa in sottosezioni per spiegare al meglio ogni sua componente.
-\section{\texorpdfstring{histogram(x, ddof, bins, label, xlabel, ylabel, title, bin\_ticks, bin\_width, tick\_rotation, decimals, figsize, save\_path, show\_legend, show\_mean, show\_std, dpi, ax, xlim, ylim, *, title\_fontsize, title\_pad, legend\_fontsize, legend\_loc, show\_grid, grid\_alpha, histo\_alpha, mean\_symbol, std\_alpha)}{histogram(x, ddof, bins, label, xlabel, ylabel, title, bin_ticks, bin_width, tick_rotation, decimals, figsize, save_path, show_legend, show_mean, show_std, dpi, ax, xlim, ylim, *, title_fontsize, title_pad, legend_fontsize, legend_loc, show_grid, grid_alpha, histo_alpha, mean_symbol, std_alpha)}}
+\section{\texorpdfstring{histogram(x, ddof, bins, label, xlabel, ylabel, title, bin\_ticks, bin\_width, tick\_rotation, decimals, figsize, save\_path, show\_legend, show\_mean, show\_std, dpi, ax, xlim, ylim, hist\_range, *, title\_fontsize, title\_pad, legend\_fontsize, legend\_loc, show\_grid, grid\_alpha, hist\_alpha, mean\_symbol, std\_alpha)}{histogram(x, ddof, bins, label, xlabel, ylabel, title, bin_ticks, bin_width, tick_rotation, decimals, figsize, save_path, show_legend, show_mean, show_std, dpi, ax, xlim, ylim, hist_range, *, title_fontsize, title_pad, legend_fontsize, legend_loc, show_grid, grid_alpha, hist_alpha, mean_symbol, std_alpha)}}
 \label{sec:istogramma}
 \vspace{-7pt}
 \begin{apidesc}
@@ -30,7 +30,7 @@ La documentazione per questa funzione è divisa in sottosezioni per spiegare al 
       \item[title\_fontsize] intero o float (default \texttt{14}) $\to$ dimensione del font del titolo
       \item[title\_pad]      intero o float (default \texttt{10}) $\to$ distanza verticale tra titolo e area del grafico
       \item[bin\_ticks]      \texttt{bool} (default \texttt{True}) $\to$ tick sui bordi dei bin
-      \item[bin\_width]      \texttt{float} o \texttt{None} (default \texttt{None}) $\to$ larghezza fissa di ciascun bin; mutuamente esclusivo con \texttt{bins}
+      \item[bin\_width]      \texttt{float} o \texttt{None} (default \texttt{None}) $\to$ larghezza fissa di ciascun bin; usa \texttt{hist\_range} per definire l'estensione dei bordi ed \`e mutuamente esclusivo con \texttt{bins}
       \item[tick\_rotation]  intero o float (default \texttt{0}) $\to$ rotazione etichette asse $x$ in gradi
       \item[decimals]        intero (default \texttt{3}) $\to$ cifre decimali per tick, media e $\sigma$
       \item[figsize]         tupla (default \texttt{(8,\,5)}) $\to$ dimensioni in pollici
@@ -41,7 +41,7 @@ La documentazione per questa funzione è divisa in sottosezioni per spiegare al 
       \item[show\_mean]      \texttt{bool} (default \texttt{True}) $\to$ mostra la linea della media
       \item[show\_grid]      \texttt{bool} (default \texttt{True}) $\to$ attiva la griglia orizzontale sull'asse $y$
       \item[grid\_alpha]     float (default \texttt{0.3}) $\to$ trasparenza della griglia
-      \item[histo\_alpha]    float (default \texttt{0.85}) $\to$ trasparenza delle barre dell'istogramma
+      \item[hist\_alpha]     float (default \texttt{0.85}) $\to$ trasparenza delle barre dell'istogramma
       \item[mean\_symbol]    stringa (default \texttt{r"\textbackslash bar\{x\}"}) $\to$ simbolo LaTeX usato nella legenda per la media
       \item[show\_std]       \texttt{bool} (default \texttt{True}) $\to$ mostra la banda $\pm\sigma$
       \item[std\_alpha]      float (default \texttt{0.15}) $\to$ trasparenza della banda $\pm\sigma$
@@ -49,6 +49,7 @@ La documentazione per questa funzione è divisa in sottosezioni per spiegare al 
       \item[ax]              \texttt{Axes} o \texttt{None} $\to$ asse su cui disegnare (default: \texttt{None})
       \item[xlim]            tupla o \texttt{None} $\to$ limiti asse $x$ come \texttt{(xmin, xmax)}
       \item[ylim]            tupla o \texttt{None} $\to$ limiti asse $y$ come \texttt{(ymin, ymax)}
+      \item[hist\_range]     tupla o \texttt{None} $\to$ intervallo \texttt{(xmin, xmax)} usato per costruire i bordi dei bin quando \texttt{bin\_width} \`e specificato
     \end{description}
     I parametri da \texttt{title\_fontsize} a \texttt{std\_alpha} sono opzionali e keyword-only, cos\`i l'ordine posizionale storico della funzione resta invariato.
   \item[\textbf{Vincoli}]
@@ -61,6 +62,7 @@ La documentazione per questa funzione è divisa in sottosezioni per spiegare al 
     \texttt{ValueError} se \texttt{x} è vuoto;
     \texttt{ValueError} se \texttt{ddof} rende non positivo il denominatore usato per la deviazione standard;
     \texttt{ValueError} se \texttt{xlim} o \texttt{ylim} non hanno esattamente 2 elementi;
+    \texttt{ValueError} se \texttt{hist\_range} non ha esattamente 2 elementi o se non soddisfa \texttt{xmin < xmax};
     \texttt{ValueError} se \texttt{bin\_width} $\leq 0$;
     \texttt{ValueError} se \texttt{bin\_width} e \texttt{bins} sono entrambi specificati.
 \end{apidesc}
@@ -90,6 +92,7 @@ def histogram(
     ax=None,
     xlim=None,
     ylim=None,
+    hist_range=None,
     *,
     title_fontsize=14,
     title_pad=10,
@@ -97,7 +100,7 @@ def histogram(
     legend_loc="best",
     show_grid=True,
     grid_alpha=0.3,
-    histo_alpha=0.85,
+    hist_alpha=0.85,
     mean_symbol=r"\bar{x}",
     std_alpha=0.15,
 ):
@@ -112,12 +115,23 @@ def histogram(
         fig = ax.get_figure()
 \end{minted}
 
-Il primo passo converte l'input in un array \texttt{float64}. La gestione dell'asse permette di integrare la funzione sia in figure autonome sia in griglie di sottografici: se \texttt{ax = None} viene creata una nuova figura, importando \texttt{matplotlib.pyplot} solo quando serve; altrimenti si usa l'asse fornito e si recupera la figura padre con \texttt{ax.get\_figure()}. Il parametro \texttt{ax} sta per \textit{axes} in inglese e fa parte della libreria \texttt{matplotlib}. Il parametro \texttt{ddof} controlla i gradi di libertà usati nel calcolo della deviazione standard (divisore $N - \text{ddof}$), mentre \texttt{title\_fontsize} e \texttt{title\_pad} permettono di regolare in modo fine l'aspetto del titolo.
+Il primo passo converte l'input in un array \texttt{float64}. La gestione dell'asse permette di integrare la funzione sia in figure autonome sia in griglie di sottografici: se \texttt{ax = None} viene creata una nuova figura, importando \texttt{matplotlib.pyplot} solo quando serve; altrimenti si usa l'asse fornito e si recupera la figura padre con \texttt{ax.get\_figure()}. Il parametro \texttt{ax} sta per \textit{axes} in inglese e fa parte della libreria \texttt{matplotlib}. Il parametro \texttt{ddof} controlla i gradi di libertà usati nel calcolo della deviazione standard (divisore $N - \text{ddof}$), mentre \texttt{title\_fontsize} e \texttt{title\_pad} permettono di regolare in modo fine l'aspetto del titolo. Se si vuole imporre un'estensione esplicita ai bordi dei bin costruiti con \texttt{bin\_width}, si pu\`o usare \texttt{hist\_range = (xmin, xmax)}.
 \newpage
 \subsection{Binnaggio e istogramma}
-Se viene specificato \texttt{bin\_width}, la funzione calcola i bordi dei bin come multipli della larghezza richiesta, allineandoli al minimo e al massimo dei dati:
+Se viene specificato \texttt{hist\_range}, la funzione valida l'intervallo \texttt{(xmin, xmax)} da usare per costruire i bin; in caso contrario usa direttamente il minimo e il massimo dei dati. Quando \texttt{bin\_width} \`e valorizzato, i bordi dei bin vengono poi allineati a multipli della larghezza richiesta:
 \begin{minted}{python}
     # --- binnaggio ---
+    if hist_range is not None:
+        if len(hist_range) != 2:
+            raise ValueError(
+                "'hist_range' deve avere esattamente 2 elementi: (xmin, xmax)"
+            )
+        xmin, xmax = np.asarray(hist_range, dtype=float)
+        if xmin >= xmax:
+            raise ValueError("Serve xmin < xmax in 'hist_range'")
+    else:
+        xmin, xmax = np.min(x), np.max(x)
+
     if bin_width is not None:
         if bin_width <= 0:
             raise ValueError("'bin_width' deve essere > 0.")
@@ -127,12 +141,12 @@ Se viene specificato \texttt{bin\_width}, la funzione calcola i bordi dei bin co
                 "'bins' e 'bin_width' sono mutualmente esclusivi. Usane uno solo"
             )
 
-        start = np.floor(np.min(x) / bin_width) * bin_width
-        stop = np.ceil(np.max(x) / bin_width) * bin_width
+        start = np.floor(xmin / bin_width) * bin_width
+        stop = np.ceil(xmax / bin_width) * bin_width
         bins = np.arange(start, stop + bin_width, bin_width)
 \end{minted}
 
-\texttt{np.floor} e \texttt{np.ceil} arrotondano il minimo e il massimo dei dati al multiplo di \texttt{bin\_width} più vicino (rispettivamente per difetto e per eccesso), garantendo che tutti i valori cadano all'interno degli intervalli generati da \texttt{np.arange}. Se \texttt{bin\_width} non è specificato, il parametro \texttt{bins} viene usato direttamente da \texttt{ax.hist()}.
+\texttt{np.floor} e \texttt{np.ceil} arrotondano \texttt{xmin} e \texttt{xmax} al multiplo di \texttt{bin\_width} pi\`u vicino (rispettivamente per difetto e per eccesso), garantendo che tutti i valori nell'intervallo scelto cadano all'interno degli intervalli generati da \texttt{np.arange}. Se \texttt{hist\_range} non \`e fornito, \texttt{xmin} e \texttt{xmax} coincidono con il minimo e il massimo dei dati; se invece \texttt{bin\_width} non \`e specificato, il parametro \texttt{bins} viene usato direttamente da \texttt{ax.hist()}.
 
 \begin{minted}{python}
     # --- Istogramma ---
@@ -142,7 +156,7 @@ Se viene specificato \texttt{bin\_width}, la funzione calcola i bordi dei bin co
         density=False,
         color="#4878CF",
         edgecolor="white",
-        alpha=histo_alpha,
+        alpha=hist_alpha,
         label=label,
     )
 
@@ -167,7 +181,7 @@ Se viene specificato \texttt{bin\_width}, la funzione calcola i bordi dei bin co
       \item[density]   \texttt{=False} $\to$ asse $y$ a conteggi assoluti
       \item[color]     \texttt{="\#4878CF"} $\to$ colore delle barre
       \item[edgecolor] \texttt{="white"} $\to$ bordo bianco tra una barra e l'altra
-      \item[alpha]     \texttt{=histo\_alpha} $\to$ trasparenza configurabile delle barre
+      \item[alpha]     \texttt{=hist\_alpha} $\to$ trasparenza configurabile delle barre
       \item[label]     \texttt{=label} $\to$ testo nella legenda (default: \texttt{"Dati"})
     \end{description}
 \end{apidesc}
@@ -179,7 +193,7 @@ La funzione \texttt{ax.hist()} disegna l'istogramma e restituisce tre cose:
     \item \textbf{patches}: oggetti grafici delle barre (modificabili successivamente)
 \end{enumerate}
 
-Subito dopo, la stringa di formato \texttt{fmt} viene costruita a partire dal parametro \texttt{decimals}. Se \texttt{bin\_ticks = True}, i tick dell'asse $x$ vengono posizionati sui bordi dei bin e formattati con il numero di decimali scelto. Il parametro \texttt{tick\_rotation} permette di ruotare le etichette per evitare sovrapposizioni quando i bin sono numerosi, mentre \texttt{histo\_alpha} consente di rendere le barre più o meno trasparenti senza modificare il resto dello stile.
+Subito dopo, la stringa di formato \texttt{fmt} viene costruita a partire dal parametro \texttt{decimals}. Se \texttt{bin\_ticks = True}, i tick dell'asse $x$ vengono posizionati sui bordi dei bin e formattati con il numero di decimali scelto. Il parametro \texttt{tick\_rotation} permette di ruotare le etichette per evitare sovrapposizioni quando i bin sono numerosi, mentre \texttt{hist\_alpha} consente di rendere le barre più o meno trasparenti senza modificare il resto dello stile.
 \newpage
 \subsection{Elementi dell'istogramma}
 I componenti principali dell'istogramma sono le statistiche:

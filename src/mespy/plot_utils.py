@@ -103,8 +103,9 @@ def histogram(
     bin_width : float o None, default None
         Larghezza fissa di ciascun bin. Se specificato, i bordi
         dei bin vengono calcolati come multipli di bin_width
-        a partire dal minimo dei dati. Mutuamente esclusivo
-        con bins (che deve restare "auto").
+        nell'intervallo definito da hist_range; se hist_range
+        non è fornito, viene usato l'intervallo [min(x), max(x)].
+        Mutuamente esclusivo con bins (che deve restare "auto").
     tick_rotation : int o float, default 0
         Angolo di rotazione (in gradi) delle etichette
         dell'asse x. Utile quando i tick si sovrappongono.
@@ -140,6 +141,10 @@ def histogram(
     ylim : tuple o None
         Limiti dell'asse y come (ymin, ymax). Se None i limiti
         vengono determinati automaticamente da matplotlib.
+    hist_range : tuple o None
+        Intervallo (xmin, xmax) usato per costruire i bordi dei
+        bin quando viene specificato bin_width. Se None, vengono
+        usati il minimo e il massimo dei dati.
     title_fontsize : int o float, default 14
         Dimensione del font usata per il titolo. Keyword-only.
     title_pad : int o float, default 10
