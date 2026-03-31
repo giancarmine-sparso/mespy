@@ -8,12 +8,12 @@ Le funzioni disponibili sono:
 \end{itemize}
 \vspace{-11pt}
 
-\section{\texorpdfstring{lin\_fit(x, y, sigma\_y, sigma\_x, xlabel, ylabel, dpi, band, plot, xlim, ylim, decimals, legend, legend\_coefficient, tol, title, title\_fontsize, title\_pad, legend\_fontsize, legend\_loc, show\_grid, grid\_alpha, data\_alpha, std\_alpha)}{lin\_fit(x, y, sigma\_y, sigma\_x, xlabel, ylabel, dpi, band, plot, xlim, ylim, decimals, legend, legend\_coefficient, tol, title, title_fontsize, title_pad, legend_fontsize, legend_loc, show_grid, grid_alpha, data_alpha, std_alpha)}}
+\section{\texorpdfstring{lin\_fit(x, y, sigma\_y, sigma\_x, xlabel, ylabel, dpi, band, plot, xlim, ylim, decimals, legend, legend\_coefficient, tol, title, title\_fontsize, title\_pad, legend\_fontsize, legend\_loc, show\_grid, grid\_alpha, data\_alpha, std\_alpha, figsize, save\_path)}{lin\_fit(x, y, sigma\_y, sigma\_x, xlabel, ylabel, dpi, band, plot, xlim, ylim, decimals, legend, legend_coefficient, tol, title, title_fontsize, title_pad, legend_fontsize, legend_loc, show_grid, grid_alpha, data_alpha, std_alpha, figsize, save_path)}}
 \label{sec:fit-lineare}
 \vspace{-3pt}
 \begin{apidesc}
   \item[\textbf{Scopo}]
-    Eseguire un fit lineare pesato $y = mx + c$ su un insieme di punti sperimentali con incertezze su $y$ e, opzionalmente, su $x$. Quando sono fornite le incertezze su $x$, i pesi vengono aggiornati iterativamente tramite la varianza efficace $\sigma_{\mathrm{eff},i}^2 = \sigma_{y_i}^2 + m^2\,\sigma_{x_i}^2$. La funzione stima i parametri $m$ e $c$ e le loro incertezze, e offre anche controlli grafici opzionali per titolo, legenda, griglia e trasparenze.
+    Eseguire un fit lineare pesato $y = mx + c$ su un insieme di punti sperimentali con incertezze su $y$ e, opzionalmente, su $x$. Quando sono fornite le incertezze su $x$, i pesi vengono aggiornati iterativamente tramite la varianza efficace $\sigma_{\mathrm{eff},i}^2 = \sigma_{y_i}^2 + m^2\,\sigma_{x_i}^2$. La funzione stima i parametri $m$ e $c$ e le loro incertezze, e offre anche controlli grafici opzionali per titolo, legenda, griglia, trasparenze, dimensione della figura e salvataggio su file.
     \enlargethispage{2\baselineskip}
   \item[\textbf{Parametri}]\hfill
     \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=7em, leftmargin=7.5em, itemsep=1pt, parsep=0pt, topsep=3pt]
@@ -41,13 +41,17 @@ Le funzioni disponibili sono:
       \item[grid\_alpha] float (default \texttt{0.3}) $\to$ trasparenza della griglia
       \item[data\_alpha] float (default \texttt{1.0}) $\to$ trasparenza dei punti sperimentali e delle rispettive barre d'errore
       \item[std\_alpha] float (default \texttt{0.20}) $\to$ trasparenza della banda $\pm 1\sigma$ attorno alla retta
+      \item[figsize] \texttt{tuple} o \texttt{list} di 2 numeri (default \texttt{(8, 5)}) $\to$ dimensione della figura in pollici nel formato \texttt{(larghezza, altezza)}; usato solo se \texttt{plot=True}
+      \item[save\_path] stringa, path-like o \texttt{None} (default \texttt{None}) $\to$ se non \texttt{None}, salva la figura nel percorso indicato tramite \texttt{Figure.savefig}; richiede \texttt{plot=True}
     \end{description}
-    I parametri da \texttt{title} a \texttt{std\_alpha} sono opzionali e keyword-only, così l'ordine posizionale storico della funzione resta invariato.
+    I parametri da \texttt{title} a \texttt{save\_path} sono opzionali e keyword-only, così l'ordine posizionale storico della funzione resta invariato.
     \vspace{-3pt}
   \item[\textbf{Vincoli}]
     \texttt{x}, \texttt{y} e \texttt{sigma\_y} devono avere la stessa lunghezza e contenere almeno 3 elementi ($n \geq 3$). Se fornito, anche \texttt{sigma\_x} deve avere la stessa lunghezza.
     Tutti i valori di \texttt{x}, \texttt{y}, \texttt{sigma\_y} e, se fornito, \texttt{sigma\_x} devono essere finiti.
     Tutti i valori di \texttt{sigma\_y} devono essere strettamente positivi ($\sigma_{y_i} > 0$) affinché i pesi $w_i = 1/\sigma_{y_i}^2$ siano finiti. Se fornito, tutti i valori di \texttt{sigma\_x} devono essere strettamente positivi ($\sigma_{x_i} > 0$).
+    Se fornito, \texttt{figsize} deve essere una coppia di valori numerici finiti e strettamente positivi.
+    Se \texttt{save\_path} non è \texttt{None}, deve essere richiesto anche il grafico, cioè \texttt{plot=True}.
     Inoltre \texttt{x} deve contenere almeno due valori distinti, altrimenti la varianza pesata delle ascisse si annulla e il fit lineare non e' definito.
   \item[\textbf{Restituisce}]
     \texttt{dict} con i parametri del fit, le loro incertezze, i residui, la loro dispersione, la figura generata se \texttt{plot=True} e il numero di iterazioni effettuate per l'aggiornamento dei pesi (\texttt{n\_iter}).
@@ -60,7 +64,9 @@ Le funzioni disponibili sono:
     \texttt{ValueError} se \texttt{sigma\_x} contiene valori non finiti;
     \texttt{ValueError} se \texttt{sigma\_x} contiene valori non strettamente positivi;
     \texttt{ValueError} se \texttt{x} non contiene almeno due valori distinti;
-    \texttt{ValueError} se \texttt{plot=True} e \texttt{xlim} o \texttt{ylim} non contengono esattamente 2 elementi.
+    \texttt{ValueError} se \texttt{plot=True} e \texttt{xlim} o \texttt{ylim} non contengono esattamente 2 elementi;
+    \texttt{ValueError} se \texttt{figsize} non è una coppia di valori numerici finiti e strettamente positivi;
+    \texttt{ValueError} se \texttt{save\_path} è fornito ma \texttt{plot=False}.
 \end{apidesc}
 
 
@@ -189,7 +195,7 @@ Dopo aver stimato parametri e residui, la funzione può costruire anche una visu
         fig, (ax_fit, ax_res) = plt.subplots(
             2,
             1,
-            figsize=(8, 6),
+            figsize=figsize,
             dpi=dpi,
             gridspec_kw={"height_ratios": [3, 1]},
             sharex=True,
@@ -199,7 +205,7 @@ Dopo aver stimato parametri e residui, la funzione può costruire anche una visu
 
 La variabile \texttt{fig} viene inizializzata a \texttt{None} così che la funzione possa restituire comunque qualcosa anche quando il grafico non viene creato. Il blocco viene poi eseguito solo se \texttt{plot} è vero. L'import locale di \texttt{matplotlib.pyplot} serve a caricare la libreria grafica solo quando necessario.
 
-La chiamata \texttt{plt.subplots(2, 1, ...)} crea una figura con due assi disposti in colonna: il primo, \texttt{ax\_fit}, ospita il fit vero e proprio; il secondo, \texttt{ax\_res}, ospita i residui. Il parametro \texttt{figsize=(8, 6)} imposta larghezza e altezza della figura in pollici, mentre \texttt{dpi=dpi} usa il valore passato alla funzione per fissare la risoluzione. Il dizionario \texttt{gridspec\_kw} raccoglie le opzioni di layout dei due pannelli, così da assegnare più spazio alla parte superiore. Infine, \texttt{sharex=True} fa sì che i due assi condividano la stessa scala orizzontale, scelta naturale perché sia il fit sia i residui sono funzioni della stessa variabile \(x\); \texttt{constrained\_layout=True} chiede invece a Matplotlib di ottimizzare automaticamente gli spazi fra assi, etichette e legenda.
+La chiamata \texttt{plt.subplots(2, 1, ...)} crea una figura con due assi disposti in colonna: il primo, \texttt{ax\_fit}, ospita il fit vero e proprio; il secondo, \texttt{ax\_res}, ospita i residui. Il parametro \texttt{figsize=figsize} usa direttamente la dimensione passata alla funzione, che per default vale \texttt{(8, 5)} e rappresenta larghezza e altezza della figura in pollici, mentre \texttt{dpi=dpi} usa il valore passato alla funzione per fissare la risoluzione. Il dizionario \texttt{gridspec\_kw} raccoglie le opzioni di layout dei due pannelli, così da assegnare più spazio alla parte superiore. Infine, \texttt{sharex=True} fa sì che i due assi condividano la stessa scala orizzontale, scelta naturale perché sia il fit sia i residui sono funzioni della stessa variabile \(x\); \texttt{constrained\_layout=True} chiede invece a Matplotlib di ottimizzare automaticamente gli spazi fra assi, etichette e legenda.
 \vspace{-3pt}
 \paragraph{Pannello superiore}
 \begin{minted}{python}
@@ -327,6 +333,14 @@ Pi\`u avanti, dopo aver costruito i due pannelli, gli stessi limiti vengono appl
 \end{minted}
 
 Se l'utente passa \texttt{xlim} o \texttt{ylim}, la funzione valida prima i parametri tramite \texttt{\_validate\_axis\_limits} importata da \texttt{plot\_utils}; solo in un secondo momento applica i limiti agli assi corrispondenti. \texttt{xlim} viene applicato sia al pannello superiore sia a quello dei residui (dato che condividono l'asse $x$), mentre \texttt{ylim} agisce solo sul pannello del fit. Tutto questo avviene all'interno del ramo \texttt{if plot:}, quindi viene ignorato quando il grafico non è richiesto.
+
+\paragraph{Salvataggio della figura}
+\begin{minted}{python}
+        if save_path is not None:
+            fig.savefig(save_path, dpi=dpi, bbox_inches="tight")
+\end{minted}
+
+Se \texttt{save\_path} è valorizzato, la figura viene salvata su file tramite \texttt{fig.savefig(...)} usando lo stesso \texttt{dpi} scelto per la creazione della figura e \texttt{bbox\_inches="tight"} per rifinire i margini. Il formato viene determinato normalmente da Matplotlib a partire dall'estensione del nome file. Questo passaggio è consentito solo quando \texttt{plot=True}, perché richiede che la figura sia stata effettivamente creata.
 
 \paragraph{Return della funzione}
 \begin{minted}{python}

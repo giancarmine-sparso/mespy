@@ -30,6 +30,8 @@ def lin_fit(
     grid_alpha=0.3,
     data_alpha=1.0,
     std_alpha=0.20,
+    figsize=(8, 5),
+    save_path=None,
 ):
     """
     Fit lineare pesato y = m*x + c con propagazione delle incertezze.
@@ -99,6 +101,12 @@ def lin_fit(
         d'errore nei due pannelli.
     std_alpha : float, default 0.20
         Trasparenza della banda ±1σ attorno alla retta di fit.
+    figsize : tuple o list di 2 float, default (8, 5)
+        Dimensione della figura matplotlib in pollici, nel formato
+        (larghezza, altezza). Usato solo se plot=True.
+    save_path : str, path-like o None, default None
+        Se non e' None, salva la figura nel percorso specificato
+        tramite matplotlib.figure.Figure.savefig. Richiede plot=True.
 
     Restituisce
     -----------
@@ -223,6 +231,23 @@ def lin_fit(
     if use_sigma_x:
         sigma_eff = np.sqrt(sigma_y2 + m**2 * sigma_x2)
 
+    # --- check figsize ---
+
+    if not isinstance(figsize, (tuple, list)) or len(figsize) != 2:
+        raise ValueError("figsize deve essere una coppia di valori positivi")
+
+    try:
+        figsize = np.asarray(figsize, dtype=float)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("figsize deve essere una coppia di valori positivi") from exc
+
+    if not np.all(np.isfinite(figsize)) or np.any(figsize <= 0):
+        raise ValueError("figsize deve essere una coppia di valori positivi")
+
+    # --- check correttezza save_path ---
+    if save_path is not None and not plot:
+        raise ValueError("save_path può essere usato solo se plot=True")
+
     # --- grafico dati + retta di fit ---
     fig = None
     if plot:
@@ -248,7 +273,7 @@ def lin_fit(
         fig, (ax_fit, ax_res) = plt.subplots(
             2,
             1,
-            figsize=(8, 6),
+            figsize=figsize,
             dpi=dpi,
             gridspec_kw={"height_ratios": [3, 1]},
             sharex=True,
@@ -329,6 +354,10 @@ def lin_fit(
             ax_res.set_xlim(xlim)
         if ylim is not None:
             ax_fit.set_ylim(ylim)
+
+        # --- salvataggio figura ---
+        if save_path is not None:
+            fig.savefig(save_path, dpi=dpi, bbox_inches="tight")
 
     return {
         "m": m,
