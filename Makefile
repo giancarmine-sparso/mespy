@@ -1,4 +1,4 @@
-.PHONY: all help setup venv install test dist twine-check release-check check-tex docs docs-clean dist-clean clean
+.PHONY: all help setup venv install test dist twine-check upload release-check check-tex docs docs-clean dist-clean clean
 
 PYTHON := python3
 VENV := .venv
@@ -7,6 +7,11 @@ PIP := $(VENV_PYTHON) -m pip
 PYTEST := $(VENV_PYTHON) -m pytest
 BUILD := $(VENV_PYTHON) -m build
 TWINE := $(VENV_PYTHON) -m twine
+PACKAGE_NAME := mespy
+PACKAGE_VERSION := $(shell sed -n 's/^version = "\(.*\)"/\1/p' pyproject.toml | head -n 1)
+SDIST := dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz
+WHEEL := dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)-py3-none-any.whl
+ARTIFACTS := $(SDIST) $(WHEEL)
 
 MAIN := main
 TEX := $(MAIN).tex
@@ -22,7 +27,8 @@ help:
 	@echo "  make install    - install the local package and development dependencies"
 	@echo "  make test       - run the pytest suite"
 	@echo "  make dist       - build the sdist and wheel in dist/"
-	@echo "  make twine-check - validate the generated artifacts"
+	@echo "  make twine-check - validate the current release artifacts"
+	@echo "  make upload     - upload only the current release artifacts"
 	@echo "  make release-check - run the full pre-release gate"
 	@echo "  make check-tex  - verify LaTeX prerequisites"
 	@echo "  make docs       - compile the PDF documentation"
@@ -52,11 +58,14 @@ install: venv
 test: venv
 	@PYTHONPATH=src $(PYTEST) -q
 
-dist: venv
+dist: dist-clean venv
 	@$(BUILD) --sdist --wheel --no-isolation
 
 twine-check: dist
-	@$(TWINE) check dist/*
+	@$(TWINE) check $(ARTIFACTS)
+
+upload: dist
+	@$(TWINE) upload $(ARTIFACTS)
 
 release-check: venv
 	@PYTHON_BIN="$(abspath $(VENV_PYTHON))" bash tools/release-check.sh

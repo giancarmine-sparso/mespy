@@ -37,7 +37,7 @@ def test_histogram_accepts_custom_plot_styling_kwargs():
         legend_fontsize=11,
         legend_loc="upper left",
         show_grid=False,
-        histo_alpha=0.4,
+        hist_alpha=0.4,
         mean_symbol=r"\mu",
         std_alpha=0.25,
     )

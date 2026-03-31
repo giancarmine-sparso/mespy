@@ -136,8 +136,9 @@ Il comando esegue test, `compileall`, `pip check`, build di `sdist` e `wheel`, v
 | `make venv` | Crea solo il virtualenv |
 | `make install` | Installa il package locale e le dipendenze |
 | `make test` | Esegue l'intera suite `pytest` |
-| `make dist` | Genera `sdist` e `wheel` in `dist/` |
-| `make twine-check` | Valida gli artifact generati con `twine check` |
+| `make dist` | Rigenera da zero `sdist` e `wheel` in `dist/` |
+| `make twine-check` | Valida solo gli artifact della versione corrente |
+| `make upload` | Carica su PyPI solo gli artifact della versione corrente |
 | `make release-check` | Esegue il gate completo pre-release per PyPI |
 | `make check-tex` | Verifica i prerequisiti LaTeX e, se possibile, i font richiesti |
 | `make docs` | Compila la documentazione PDF |
