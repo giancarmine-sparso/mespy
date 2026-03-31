@@ -22,6 +22,26 @@ def test_variance_basic():
     assert variance(values) == pytest.approx(4.0)
 
 
+def test_variance_raises_on_empty():
+    with pytest.raises(ValueError, match="almeno un valore"):
+        variance([])
+
+
+def test_variance_raises_on_weight_shape_mismatch():
+    values = np.array([1.0, 2.0, 3.0])
+    weights = np.array([1.0, 2.0])
+
+    with pytest.raises(ValueError, match="stessa forma"):
+        variance(values, weights)
+
+
+def test_variance_raises_when_ddof_makes_unweighted_denominator_non_positive():
+    values = np.array([1.0, 2.0, 3.0])
+
+    with pytest.raises(ValueError, match="denominatore non positivo"):
+        variance(values, ddof=3)
+
+
 def test_variance_weighted():
     # x=[1,2,3], w=[1,1,2], sum_w=4
     # E_w[x] = (1+2+6)/4 = 2.25
@@ -30,6 +50,14 @@ def test_variance_weighted():
     values = np.array([1.0, 2.0, 3.0])
     weights = np.array([1.0, 1.0, 2.0])
     assert variance(values, weights) == pytest.approx(0.6875)
+
+
+def test_variance_raises_when_ddof_makes_weighted_denominator_non_positive():
+    values = np.array([1.0, 2.0, 3.0])
+    weights = np.array([1.0, 1.0, 1.0])
+
+    with pytest.raises(ValueError, match="denominatore non positivo"):
+        variance(values, weights, ddof=3)
 
 
 def test_covariance_basic():

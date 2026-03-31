@@ -39,6 +39,7 @@ def histogram(
     ylabel=None,
     title="Istogramma",
     bin_ticks=True,
+    bin_width=None,
     tick_rotation=0,
     decimals=3,
     figsize=(8, 5),
@@ -88,6 +89,11 @@ def histogram(
         Se True posiziona i tick dell'asse x sui bordi dei bin
         e li formatta con il numero di decimali indicato da
         *decimals*.
+    bin_width : float o None, default None
+        Larghezza fissa di ciascun bin. Se specificato, i bordi
+        dei bin vengono calcolati come multipli di bin_width
+        a partire dal minimo dei dati. Mutuamente esclusivo
+        con bins (che deve restare "auto").
     tick_rotation : int o float, default 0
         Angolo di rotazione (in gradi) delle etichette
         dell'asse x. Utile quando i tick si sovrappongono.
@@ -156,6 +162,21 @@ def histogram(
         fig, ax = plt.subplots(figsize=figsize, dpi=dpi, constrained_layout=True)
     else:
         fig = ax.get_figure()
+
+    # --- binnaggio ---
+
+    if bin_width is not None:
+        if bin_width <= 0:
+            raise ValueError("'bin_width' deve essere > 0.")
+
+        if bins != "auto":
+            raise ValueError(
+                "'bins' e 'bin_width' sono mutualmente esclusivi. Usane uno solo"
+            )
+
+        start = np.floor(np.min(x) / bin_width) * bin_width
+        stop = np.ceil(np.max(x) / bin_width) * bin_width
+        bins = np.arange(start, stop + bin_width, bin_width)
 
     # --- Istogramma ---
     counts, bin_edges, patches = ax.hist(

@@ -14,7 +14,7 @@ Le funzioni disponibili sono:
     \item \texttt{histogram(x, ...)}: genera un istogramma dei dati, con linea della media e banda di deviazione standard opzionali.
 \end{itemize}
 La documentazione per questa funzione è divisa in sottosezioni per spiegare al meglio ogni sua componente.
-\section{\texorpdfstring{histogram(x, ddof, bins, label, xlabel, ylabel, title, bin\_ticks, tick\_rotation, decimals, figsize, save\_path, show\_legend, show\_mean, show\_std, dpi, ax, xlim, ylim)}{histogram(x, ddof, bins, label, xlabel, ylabel, title, bin\_ticks, tick\_rotation, decimals, figsize, save\_path, show\_legend, show\_mean, show\_std, dpi, ax, xlim, ylim)}}
+\section{\texorpdfstring{histogram(x, ddof, bins, label, xlabel, ylabel, title, bin\_ticks, bin\_width, tick\_rotation, decimals, figsize, save\_path, show\_legend, show\_mean, show\_std, dpi, ax, xlim, ylim)}{histogram(x, ddof, bins, label, xlabel, ylabel, title, bin\_ticks, bin\_width, tick\_rotation, decimals, figsize, save\_path, show\_legend, show\_mean, show\_std, dpi, ax, xlim, ylim)}}
 \label{sec:istogramma}
 \vspace{-7pt}
 \begin{apidesc}
@@ -28,6 +28,7 @@ La documentazione per questa funzione è divisa in sottosezioni per spiegare al 
       \item[ylabel]          stringa o \texttt{None} $\to$ etichetta asse $y$ (default: \texttt{"Conteggi"})
       \item[title]           stringa (default \texttt{"Istogramma"}) $\to$ titolo del grafico
       \item[bin\_ticks]      \texttt{bool} (default \texttt{True}) $\to$ tick sui bordi dei bin
+      \item[bin\_width]      \texttt{float} o \texttt{None} (default \texttt{None}) $\to$ larghezza fissa di ciascun bin; mutuamente esclusivo con \texttt{bins}
       \item[tick\_rotation]  intero o float (default \texttt{0}) $\to$ rotazione etichette asse $x$ in gradi
       \item[decimals]        intero (default \texttt{3}) $\to$ cifre decimali per tick, media e $\sigma$
       \item[figsize]         tupla (default \texttt{(8,\,5)}) $\to$ dimensioni in pollici
@@ -49,7 +50,9 @@ La documentazione per questa funzione è divisa in sottosezioni per spiegare al 
   \item[\textbf{Errori}]
     \texttt{ValueError} se \texttt{x} è vuoto;
     \texttt{ValueError} se \texttt{ddof} rende non positivo il denominatore usato per la deviazione standard;
-    \texttt{ValueError} se \texttt{xlim} o \texttt{ylim} non hanno esattamente 2 elementi.
+    \texttt{ValueError} se \texttt{xlim} o \texttt{ylim} non hanno esattamente 2 elementi;
+    \texttt{ValueError} se \texttt{bin\_width} $\leq 0$;
+    \texttt{ValueError} se \texttt{bin\_width} e \texttt{bins} sono entrambi specificati.
 \end{apidesc}
 
 
@@ -65,6 +68,7 @@ def histogram(
     ylabel=None,
     title="Istogramma",
     bin_ticks=True,
+    bin_width=None,
     tick_rotation=0,
     decimals=3,
     figsize=(8, 5),
@@ -90,7 +94,26 @@ def histogram(
 
 Il primo passo converte l'input in un array \texttt{float64}. La gestione dell'asse permette di integrare la funzione sia in figure autonome sia in griglie di sottografici: se \texttt{ax = None} viene creata una nuova figura, importando \texttt{matplotlib.pyplot} solo quando serve; altrimenti si usa l'asse fornito e si recupera la figura padre con \texttt{ax.get\_figure()}. Il parametro \texttt{ax} sta per \textit{axes} in inglese e fa parte della libreria \texttt{matplotlib}. Il parametro \texttt{ddof} controlla i gradi di libertà usati nel calcolo della deviazione standard (divisore $N - \text{ddof}$).
 \newpage
-\subsection{Istogramma}
+\subsection{Binnaggio e istogramma}
+Se viene specificato \texttt{bin\_width}, la funzione calcola i bordi dei bin come multipli della larghezza richiesta, allineandoli al minimo e al massimo dei dati:
+\begin{minted}{python}
+    # --- binnaggio ---
+    if bin_width is not None:
+        if bin_width <= 0:
+            raise ValueError("'bin_width' deve essere > 0.")
+
+        if bins != "auto":
+            raise ValueError(
+                "'bins' e 'bin_width' sono mutualmente esclusivi. Usane uno solo"
+            )
+
+        start = np.floor(np.min(x) / bin_width) * bin_width
+        stop = np.ceil(np.max(x) / bin_width) * bin_width
+        bins = np.arange(start, stop + bin_width, bin_width)
+\end{minted}
+
+\texttt{np.floor} e \texttt{np.ceil} arrotondano il minimo e il massimo dei dati al multiplo di \texttt{bin\_width} più vicino (rispettivamente per difetto e per eccesso), garantendo che tutti i valori cadano all'interno degli intervalli generati da \texttt{np.arange}. Se \texttt{bin\_width} non è specificato, il parametro \texttt{bins} viene usato direttamente da \texttt{ax.hist()}.
+
 \begin{minted}{python}
     # --- Istogramma ---
     counts, bin_edges, patches = ax.hist(
@@ -116,7 +139,7 @@ Il primo passo converte l'input in un array \texttt{float64}. La gestione dell'a
         ax.tick_params(axis="x", rotation=tick_rotation)
 \end{minted}
 
-
+\newpage
 \begin{apidesc}
   \item[\textbf{Parametri}]\hfill
     \begin{description}[font=\normalfont\ttfamily\bfseries, labelwidth=5em, leftmargin=5.5em, itemsep=1pt, parsep=0pt, topsep=3pt]

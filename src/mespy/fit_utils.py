@@ -8,6 +8,7 @@ def lin_fit(
     x,
     y,
     sigma_y,
+    sigma_x=None,
     xlabel="x [xu]",
     ylabel="y [uy]",
     dpi=300,
@@ -18,12 +19,15 @@ def lin_fit(
     decimals=3,
     legend=True,
     legend_coefficient=False,
+    tol=1e-10,
 ):
     """
     Fit lineare pesato y = m*x + c con propagazione delle incertezze.
 
     Stima pendenza e intercetta tramite minimi quadrati pesati
-    (pesi w_i = 1/sigma_y_i^2), calcola le incertezze sui parametri,
+    (pesi w_i = 1/sigma_y_i^2). Se e' fornito sigma_x usa la
+    varianza efficace sigma_eff_i^2 = sigma_y_i^2 + m^2*sigma_x_i^2
+    aggiornata iterativamente. Calcola le incertezze sui parametri,
     i residui e, opzionalmente, genera un grafico a due pannelli
     (dati + retta, residui).
 
@@ -35,6 +39,10 @@ def lin_fit(
         Ordinate dei punti sperimentali.
     sigma_y : array-like
         Incertezze sulle ordinate (strettamente positive).
+    sigma_x : array-like, opzionale
+        Incertezze sulle ascisse (strettamente positive). Se fornito,
+        il fit usa la varianza efficace e il grafico mostra anche le
+        barre d'errore orizzontali.
     xlabel : str, default "x [xu]"
         Etichetta asse x nel grafico.
     ylabel : str, default "y [uy]"
@@ -55,6 +63,9 @@ def lin_fit(
         Se True, mostra la legenda nel pannello superiore.
     legend_coefficient : bool, default False
         Se True, mostra m e c formattati nella legenda della retta.
+    tol : float, default 1e-10
+        Tolleranza relativa sulla convergenza di m quando sigma_x e'
+        attivo.
 
     Restituisce
     -----------
@@ -66,6 +77,7 @@ def lin_fit(
         r : ndarray — residui (y - m*x - c)
         sigma_r : float — deviazione standard dei residui
         fig : Figure o None — figura matplotlib (None se plot=False)
+        n_iter : int — numero di aggiornamenti dei pesi effettuati
     """
     x = np.asarray(x, dtype=float)
     y = np.asarray(y, dtype=float)
@@ -88,22 +100,73 @@ def lin_fit(
     if np.any(sigma_y <= 0):
         raise ValueError("sigma_y deve contenere solo valori strettamente positivi")
 
+    # --- gestione sigma_x ---
+    use_sigma_x = sigma_x is not None
+    if use_sigma_x:
+        sigma_x = np.asarray(sigma_x, dtype=float)
+        if len(sigma_x) != n:
+            raise ValueError("sigma_x deve avere la stessa lunghezza di x, y e sigma_y")
+
+        if not np.all(np.isfinite(sigma_x)):
+            raise ValueError("sigma_x deve contenere solo valori finiti")
+
+        if np.any(sigma_x <= 0):
+            raise ValueError("sigma_x deve contenere solo valori strettamente positivi")
+
     # --- formato decimali ---
     fmt = f".{decimals}f"
+
+    # ===================================================================
+    #  Procedura iterativa per varianza efficace
+    #  sigma_eff_i^2 = sigma_y_i^2 + m^2 * sigma_x_i^2
+    #
+    #  Iterazione 0:  w_i = 1/sigma_y_i^2  (sigma_x ignorato)
+    #  Iterazione k:  w_i = 1/sigma_eff_i^2  con m dal passo k-1
+    #
+    #  Se sigma_x non è fornito, si fa una sola iterazione.
+    # ===================================================================
+
+    sigma_y2 = sigma_y**2
+    if use_sigma_x:
+        sigma_x2 = sigma_x**2
+
+    # === iterazione 0: pesi con soli sigma_y ===
+
+    max_iter = 100
+
+    n_iter = 0
+    m_old = np.inf
 
     # --- pesi p_i = 1 / sigma_yi^2 ---
     w = 1.0 / sigma_y**2
 
-    # --- stima dei parametri ---
-    # m = Cov_w(x,y) / Var_w(x)
-    var_x = variance(x, w)
-    if not np.isfinite(var_x) or np.isclose(var_x, 0.0):
-        raise ValueError("x deve contenere almeno due valori distinti")
+    for iteration in range(max_iter):
 
-    cov_xy = covariance(x, y, w)
+        # --- stima dei parametri ---
+        # m = Cov_w(x,y) / Var_w(x)
+        var_x = variance(x, w)
+        if not np.isfinite(var_x) or np.isclose(var_x, 0.0):
+            raise ValueError("x deve contenere almeno due valori distinti")
 
-    m = cov_xy / var_x  # (14.12)
-    c = weighted_mean(y, w) - m * weighted_mean(x, w)  # (14.13)
+        cov_xy = covariance(x, y, w)
+
+        m = cov_xy / var_x  # (14.12)
+        c = weighted_mean(y, w) - m * weighted_mean(x, w)  # (14.13)
+
+        # --- convergenza (solo se sigma_x attivo) ---
+        if not use_sigma_x:
+            break  # una sola iterazione
+
+        rel_change = abs(m - m_old) / max(abs(m), 1e-300)
+        if rel_change < tol:
+            break
+
+        # --- aggiorna pesi con varianza efficace ---
+        m_old = m
+        n_iter += 1
+
+        sigma_eff2 = sigma_y2 + m**2 * sigma_x2
+        w = 1.0 / sigma_eff2
 
     # --- incertezze sui parametri (14.19, 14.20, 14.21) ---
     # Var[m] = 1 / (Var[x] * sum_i p_i)
@@ -120,6 +183,12 @@ def lin_fit(
     # --- residui e sigma dai residui (14.27) ---
     r = y - m * x - c
     sigma_r = np.sqrt(np.sum(r**2) / (n - 2))
+
+    # --- sigma_eff finale ---
+    sigma_eff = None
+
+    if use_sigma_x:
+        sigma_eff = np.sqrt(sigma_y2 + m**2 * sigma_x2)
 
     # --- grafico dati + retta di fit ---
     fig = None
@@ -158,6 +227,7 @@ def lin_fit(
             x,
             y,
             yerr=sigma_y,
+            xerr=sigma_x if use_sigma_x else None,
             fmt="o",
             color=C_BAR,
             markersize=4,
@@ -168,9 +238,7 @@ def lin_fit(
 
         x_fit = np.linspace(x.min(), x.max(), 200)
         y_fit = m * x_fit + c
-        fit_label = (
-            f"Fit: m={m:{fmt}}, c={c:{fmt}}" if legend_coefficient else "Fit"
-        )
+        fit_label = f"Fit: m={m:{fmt}}, c={c:{fmt}}" if legend_coefficient else "Fit"
         ax_fit.plot(x_fit, y_fit, color=C_MEAN, linewidth=1.5, label=fit_label)
 
         # banda +- sigma sulla retta
@@ -196,6 +264,7 @@ def lin_fit(
             x,
             r,
             yerr=sigma_y,
+            xerr=sigma_x if use_sigma_x else None,
             fmt="o",
             color=C_BAR,
             markersize=4,
@@ -224,4 +293,5 @@ def lin_fit(
         "r": r,
         "sigma_r": sigma_r,
         "fig": fig,
+        "n_iter": n_iter,
     }

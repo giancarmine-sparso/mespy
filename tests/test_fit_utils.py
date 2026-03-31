@@ -19,6 +19,18 @@ def make_placebo_data():
     return x, y, sigma_y, m_true, c_true
 
 
+def make_placebo_data_with_sigma_x():
+    rng = np.random.default_rng(123)
+    x_true = np.linspace(1.0, 10.0, 16)
+    sigma_x = np.linspace(0.08, 0.22, x_true.size)
+    sigma_y = np.full_like(x_true, 0.35)
+    m_true = 1.7
+    c_true = 0.9
+    x_obs = x_true + rng.normal(0.0, sigma_x)
+    y = c_true + m_true * x_true + rng.normal(0.0, sigma_y)
+    return x_obs, y, sigma_y, sigma_x, m_true, c_true
+
+
 def test_lin_fit_returns_expected_parameters_and_plot():
     x, y, sigma_y, m_true, c_true = make_placebo_data()
 
@@ -40,6 +52,19 @@ def test_lin_fit_returns_expected_parameters_and_plot():
     assert risultato["sigma_m"] > 0
     assert risultato["sigma_c"] > 0
     assert risultato["sigma_r"] > 0
+
+
+def test_lin_fit_with_sigma_x_uses_iterative_effective_variance():
+    x, y, sigma_y, sigma_x, m_true, c_true = make_placebo_data_with_sigma_x()
+
+    risultato_base = lin_fit(x, y, sigma_y, plot=False)
+    risultato_sigma_x = lin_fit(x, y, sigma_y, sigma_x=sigma_x, plot=False)
+
+    assert risultato_sigma_x["m"] == pytest.approx(m_true, abs=0.05)
+    assert risultato_sigma_x["c"] == pytest.approx(c_true, abs=0.20)
+    assert risultato_sigma_x["n_iter"] > 0
+    assert risultato_sigma_x["sigma_m"] > risultato_base["sigma_m"]
+    assert risultato_sigma_x["sigma_c"] > risultato_base["sigma_c"]
 
 
 def test_lin_fit_without_plot_returns_no_figure():
@@ -75,6 +100,15 @@ def test_lin_fit_rejects_non_positive_sigma():
 
     with pytest.raises(ValueError, match="strettamente positivi"):
         lin_fit([1.0, 2.0, 3.0], [1.0, 2.0, 3.0], [0.1, -0.2, 0.1], plot=False)
+
+    with pytest.raises(ValueError, match="sigma_x"):
+        lin_fit(
+            [1.0, 2.0, 3.0],
+            [1.0, 2.0, 3.0],
+            [0.1, 0.1, 0.1],
+            sigma_x=[0.1, 0.0, 0.1],
+            plot=False,
+        )
 
 
 def test_lin_fit_rejects_constant_x():
