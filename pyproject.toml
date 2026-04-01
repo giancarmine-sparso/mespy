@@ -38,6 +38,10 @@ dev = [
     "twine",
     "wheel",
     "ipykernel",
+    "sphinx>=9.1.0",
+    "pydata-sphinx-theme>=0.16.1",
+    "myst-parser>=5.0.0",
+    "sphinx-copybutton>=0.5.2",
 ]
 
 [tool.setuptools.packages.find]
@@ -52,6 +56,8 @@ build-backend = "setuptools.build_meta"
 
 [dependency-groups]
 dev = [
-    "mkdocs>=1.6.1",
-    "mkdocs-material>=9.7.6",
+    "sphinx>=9.1.0",
+    "pydata-sphinx-theme>=0.16.1",
+    "myst-parser>=5.0.0",
+    "sphinx-copybutton>=0.5.2",
 ]

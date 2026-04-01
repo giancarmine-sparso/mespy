@@ -68,6 +68,12 @@ _minted-main
 # PDF
 # *.pdf
 
+# Documentazione generata
+docs-sphinx/build/
+site/
+docs/LaTeX-docs/.texmf-var/
+docs/LaTeX-docs/main.pdf
+
 # Arduino
 *.hex
 *.elf

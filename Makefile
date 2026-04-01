@@ -1,4 +1,4 @@
-.PHONY: all help setup venv install test dist twine-check upload release-check check-tex docs docs-clean dist-clean clean
+.PHONY: all help setup venv install test dist twine-check upload release-check check-tex docs docs-clean docs-pdf docs-pdf-clean dist-clean clean
 
 PYTHON := python3
 VENV := .venv
@@ -15,8 +15,12 @@ ARTIFACTS := $(SDIST) $(WHEEL)
 
 MAIN := main
 TEX := $(MAIN).tex
-DOCS_DIR := docs
+DOCS_DIR := docs/LaTeX-docs
 TEX_CACHE_DIR := $(abspath $(DOCS_DIR)/.texmf-var)
+SPHINX_DIR := docs-sphinx
+SPHINX_SOURCE_DIR := $(SPHINX_DIR)/source
+SPHINX_BUILD_DIR := $(SPHINX_DIR)/build
+SPHINX := $(VENV_PYTHON) -m sphinx
 
 all: help
 
@@ -30,9 +34,11 @@ help:
 	@echo "  make twine-check - validate the current release artifacts"
 	@echo "  make upload     - upload only the current release artifacts"
 	@echo "  make release-check - run the full pre-release gate"
-	@echo "  make check-tex  - verify LaTeX prerequisites"
-	@echo "  make docs       - compile the PDF documentation"
-	@echo "  make docs-clean - remove LaTeX temporary files"
+	@echo "  make docs       - build the Sphinx HTML documentation"
+	@echo "  make docs-clean - remove the Sphinx build artifacts"
+	@echo "  make check-tex  - verify LaTeX prerequisites for the legacy PDF docs"
+	@echo "  make docs-pdf   - compile the legacy PDF documentation"
+	@echo "  make docs-pdf-clean - remove LaTeX temporary files"
 	@echo "  make dist-clean - remove Python build artifacts"
 	@echo "  make clean      - remove temporary files"
 
@@ -73,11 +79,17 @@ release-check: venv
 check-tex:
 	@bash tools/check-tex.sh
 
-docs: check-tex
+docs: venv
+	@$(SPHINX) -W -b html "$(SPHINX_SOURCE_DIR)" "$(SPHINX_BUILD_DIR)/html"
+
+docs-clean:
+	@rm -rf "$(SPHINX_BUILD_DIR)"
+
+docs-pdf: check-tex
 	@mkdir -p $(TEX_CACHE_DIR)
 	@cd $(DOCS_DIR) && TEXMFVAR="$(TEX_CACHE_DIR)" TEXMFCACHE="$(TEX_CACHE_DIR)" latexmk -lualatex -shell-escape -interaction=nonstopmode -halt-on-error $(TEX)
 
-docs-clean:
+docs-pdf-clean:
 	@mkdir -p $(TEX_CACHE_DIR)
 	@cd $(DOCS_DIR) && TEXMFVAR="$(TEX_CACHE_DIR)" TEXMFCACHE="$(TEX_CACHE_DIR)" latexmk -c $(TEX)
 	@rm -rf $(TEX_CACHE_DIR)
@@ -87,4 +99,4 @@ docs-clean:
 dist-clean:
 	@rm -rf build dist src/*.egg-info
 
-clean: docs-clean dist-clean
+clean: docs-clean docs-pdf-clean dist-clean
