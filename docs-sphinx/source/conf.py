@@ -47,5 +47,5 @@ extensions = [
     "sphinx.ext.intersphinx",
 ]
 
-nb_execution_mode = "off"
+nb_execution_mode = "auto"
 nb_execution_raise_on_error = True
