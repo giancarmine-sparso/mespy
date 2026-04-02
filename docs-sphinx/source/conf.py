@@ -10,7 +10,8 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 language = "it"
 source_suffix = {
     ".rst": "restructuredtext",
-    ".md": "markdown",
+    ".md": "myst-nb",
+    ".ipynb": "myst-nb",
 }
 master_doc = "index"
 myst_heading_anchors = 3
@@ -40,7 +41,11 @@ myst_enable_extensions = [
 ]
 
 extensions = [
-    "myst_parser",
     "sphinx.ext.githubpages",
     "sphinx_copybutton",
+    "myst_nb",
+    "sphinx.ext.intersphinx",
 ]
+
+nb_execution_mode = "off"
+nb_execution_raise_on_error = True

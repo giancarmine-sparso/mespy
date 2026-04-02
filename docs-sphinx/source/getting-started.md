@@ -37,5 +37,6 @@ fig, ax = histogram(df["lunghezza"], title=f"Varianza = {var_l:.3f} mm^2")
 ## Esempi
 
 - [Workflow base](examples/basic-workflow.md)
-- [Istogramma](examples/histogram.md)
-- [Fit lineare](examples/linear-fit.md)
+- [Istogramma](examples/histogram.ipynb)
+- [Fit lineare](examples/linear-fit.ipynb)
+- [Statistiche](examples/stats-utils.ipynb)

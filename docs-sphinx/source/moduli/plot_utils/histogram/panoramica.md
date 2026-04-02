@@ -17,7 +17,8 @@ Disegnare un istogramma di un campione sperimentale, con opzioni per evidenziare
 - `xlim`, `ylim`: limiti espliciti degli assi.
 - `ax`: asse matplotlib esistente da riusare.
 - `figsize`, `dpi`, `save_path`: parametri di creazione e salvataggio della figura.
-- `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, `hist_alpha`, `band_alpha`, `grid_alpha`, `mean_symbol`: opzioni di presentazione.
+- `hist_alpha`, `band_alpha`, `grid_alpha`: regolano rispettivamente la trasparenza delle barre dell'istogramma, della banda `+- 1 sigma` e della griglia sull'asse `y`.
+- `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, `mean_symbol`: opzioni di presentazione.
 
 ## Restituisce
 

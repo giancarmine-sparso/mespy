@@ -1,12 +1,13 @@
 # Esempi
 
-Questa sezione raccoglie esempi brevi, orientati all'uso del package. Gli esempi sono pensati come punto di partenza per notebook o script, non come riferimento formale dell'API.
+Questa sezione raccoglie notebook brevi, orientati all'uso del package. Gli esempi sono pensati come punto di partenza per notebook o script, non come riferimento formale dell'API.
 
 ## Esempi disponibili
 
 - [Workflow base](basic-workflow.md)
-- [Istogramma](histogram.md)
-- [Fit lineare](linear-fit.md)
+- [Istogramma](histogram.ipynb)
+- [Fit lineare](linear-fit.ipynb)
+- [Statistiche](stats-utils.ipynb)
 
 ```{toctree}
 :hidden:
@@ -15,4 +16,5 @@ Questa sezione raccoglie esempi brevi, orientati all'uso del package. Gli esempi
 basic-workflow
 histogram
 linear-fit
+stats-utils
 ```
