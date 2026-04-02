@@ -5,7 +5,7 @@ references/** linguist-documentation
 README.md linguist-documentation
 
 # --- Notebook: opzionale ---
-notebooks/** linguist-documentation
+docs-sphinx/source/examples/**/*.ipynb linguist-documentation
 
 # --- Dati e figure non rappresentativi del linguaggio ---
 data/** linguist-vendored
