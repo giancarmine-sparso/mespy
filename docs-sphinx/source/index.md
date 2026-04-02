@@ -8,6 +8,7 @@ Questa documentazione e organizzata per modulo: ogni file principale ha una pagi
 
 - [Installazione](installazione.md) per preparare l'ambiente locale e verificare l'import.
 - [Guida rapida](getting-started.md) per partire dal flusso di lavoro piu comune.
+- [Esempi](examples/index.md) per notebook d'uso pronti da adattare.
 - [io_utils](moduli/io_utils/index.md) per il caricamento dei CSV.
 - [stats_utils](moduli/stats_utils/index.md) per le statistiche descrittive e pesate.
 - [plot_utils](moduli/plot_utils/index.md) per la visualizzazione.

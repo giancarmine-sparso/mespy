@@ -53,7 +53,7 @@ Se vuoi solo il package locale senza tool di sviluppo, sostituisci `".[dev]"` co
 ## Cosa viene installato
 
 - dipendenze runtime: `numpy`, `pandas`, `matplotlib`
-- tool di sviluppo: `pytest`, `sphinx`, `pydata-sphinx-theme`, `myst-parser`, `build`, `twine`
+- tool di sviluppo: `pytest`, `sphinx`, `pydata-sphinx-theme`, `myst-nb`, `build`, `twine`
 - package locale in editable mode quando usi `-e`
 
 ## Passo successivo

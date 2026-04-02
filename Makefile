@@ -1,4 +1,4 @@
-.PHONY: all help setup venv install test dist twine-check upload release-check check-tex docs docs-clean docs-pdf docs-pdf-clean dist-clean clean
+.PHONY: all help setup venv install test dist twine-check upload release-check check-tex docs docs-serve docs-clean docs-pdf docs-pdf-clean dist-clean clean
 
 PYTHON := python3
 VENV := .venv
@@ -35,6 +35,7 @@ help:
 	@echo "  make upload     - upload only the current release artifacts"
 	@echo "  make release-check - run the full pre-release gate"
 	@echo "  make docs       - build the Sphinx HTML documentation"
+	@echo "  make docs-serve - serve the built Sphinx HTML documentation locally"
 	@echo "  make docs-clean - remove the Sphinx build artifacts"
 	@echo "  make check-tex  - verify LaTeX prerequisites for the legacy PDF docs"
 	@echo "  make docs-pdf   - compile the legacy PDF documentation"
@@ -81,6 +82,9 @@ check-tex:
 
 docs: venv
 	@$(SPHINX) -W -b html "$(SPHINX_SOURCE_DIR)" "$(SPHINX_BUILD_DIR)/html"
+
+docs-serve: docs
+	@cd "$(SPHINX_BUILD_DIR)/html" && "$(VENV_PYTHON)" -m http.server 8000
 
 docs-clean:
 	@rm -rf "$(SPHINX_BUILD_DIR)"
