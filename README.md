@@ -1,14 +1,22 @@
 # mespy
 
-Toolbox Python per l'analisi dei dati di laboratorio di meccanica.
+> Documentation: [giancarmine-sparso.github.io/mespy](https://giancarmine-sparso.github.io/mespy/index.html#)
 
-`mespy` raccoglie in un unico package le utility che tornano spesso nei notebook di laboratorio: caricamento CSV, statistiche descrittive e pesate, istogrammi e fit lineare con incertezze.
+Small Python toolbox for mechanics laboratory data analysis.
 
-La release `1.0.0` congela una public API piccola, tipizzata e pensata per un uso didattico: errori espliciti, firme stabili e output facili da leggere in notebook e script.
+`mespy` started as a set of helper functions that kept reappearing across mechanics lab notebooks and classroom scripts: loading CSV measurements, computing descriptive and weighted statistics, plotting histograms, and running linear fits with uncertainties. The library brings those recurring tasks together into a single typed package with a small public API that is easy to use in notebooks, scripts, and teaching material.
 
-## API pubblica stabile
+## What It Provides
 
-Il package espone direttamente:
+- CSV loading with explicit missing-data policies
+- Descriptive and weighted statistics for one-dimensional data
+- Histogram plotting for quick exploratory analysis
+- Weighted linear fitting with a typed result object
+- Clear validation errors instead of silent `nan` propagation
+
+## Public API
+
+The root package exports:
 
 - `load_csv`
 - `median`
@@ -19,153 +27,56 @@ Il package espone direttamente:
 - `histogram`
 - `lin_fit`
 
-I moduli presenti in `src/mespy` sono:
+The root namespace stays intentionally small. Additional public types, such as `mespy.fit_utils.LinearFitResult`, live in submodules.
 
-- `io_utils.py`: lettura CSV con policy esplicita per i valori mancanti
-- `stats_utils.py`: funzioni statistiche di base con validazione coerente degli input
-- `plot_utils.py`: istogrammi con media e banda `±1σ`
-- `fit_utils.py`: fit lineare pesato con risultato tipizzato `LinearFitResult`
+## Installation
 
-Il namespace root resta volutamente piccolo. I tipi pubblici aggiuntivi vivono nei submodule, per esempio `mespy.fit_utils.LinearFitResult`.
-
-## Stabilita` API
-
-- Le firme e il significato delle funzioni esportate da `mespy` seguono semantic versioning.
-- Gli input non validi falliscono con `ValueError` invece di propagare `nan` o warning silenziosi.
-- Il package distribuisce `py.typed`, quindi IDE e type checker vedono le firme pubbliche reali.
-
-## Esempio minimo
-
-```python
-from mespy import lin_fit, load_csv, weighted_mean
-
-df = load_csv(
-    "data/reference/test_misure.csv",
-    sep=",",
-    decimal=".",
-    missing="error",
-)
-
-x = df["misura_n"].to_numpy(dtype=float)
-y = df["lunghezza_mm"].to_numpy(dtype=float)
-sigma_y = df["sigma_mm"].to_numpy(dtype=float)
-
-y_bar = weighted_mean(y, 1 / sigma_y**2)
-fit = lin_fit(
-    x=x,
-    y=y,
-    sigma_y=sigma_y,
-    xlabel="numero misura",
-    ylabel="lunghezza [mm]",
-    show_plot=False,
-)
-
-print("media pesata:", y_bar)
-print("pendenza:", fit.slope)
-print("chi2 ridotto:", fit.reduced_chi2)
-```
-
-## Breaking change di `1.0.0`
-
-- `lin_fit(...)` non restituisce piu` un `dict`: ora restituisce `LinearFitResult` con campi descrittivi come `slope`, `intercept`, `chi2`, `reduced_chi2` e `figure`.
-- `load_csv(...)` usa `missing="error" | "drop" | "allow"` al posto di `drop_missing`.
-- `histogram(...)` usa `ddof=0` di default, in coerenza con `variance` e `standard_deviation`.
-- Le funzioni statistiche rifiutano input vuoti, non finiti o con pesi non validi invece di restituire `nan`.
-
-## Struttura del progetto
-
-```text
-mespy/
-├── src/mespy/            # package Python
-├── tests/                # test pytest
-├── notebooks/            # notebook di prova e dimostrazione
-├── docs/                 # sorgenti e build della documentazione HTML
-├── data/reference/       # dataset di riferimento per test/esempi
-├── figures/              # figure esportate
-├── tools/                # script di supporto
-├── pyproject.toml        # metadata del package
-└── Makefile              # comandi di setup e documentazione
-```
-
-## Requisiti
-
-- Python `>= 3.12`
-- `git`
-- nessun requisito di sistema extra per il sito HTML: `make setup` installa Sphinx e le dipendenze Python necessarie
-
-## Installazione rapida
-
-Clona il repository ed entra nella directory:
+`mespy` requires Python `>= 3.12`.
 
 ```bash
 git clone https://github.com/giancarmine-sparso/mespy
 cd mespy
-```
-
-Crea il virtualenv e installa il package con le dipendenze di sviluppo:
-
-```bash
 make setup
 ```
 
-Se vuoi attivare l'ambiente manualmente:
+If you want to activate the virtual environment manually:
 
 ```bash
 source .venv/bin/activate
 ```
 
-## Documentazione
+## Documentation
 
-La documentazione HTML del package vive in `docs/source` e viene generata in `docs/build/html`.
+The Sphinx source lives in `docs/source`, and the generated site is written to `docs/build/html`.
 
-Per costruire il sito:
+Build the documentation with:
 
 ```bash
 make docs
 ```
 
-La homepage risultante e' `docs/build/html/index.html`.
+The generated site includes both English and Italian outputs, with English as the default landing page. Complete usage workflows and notebooks are available in `docs/source/examples`.
 
-La documentazione del sito e organizzata in:
+## Project Structure
 
-- home e guida rapida
-- moduli principali
-- controlli e helper interni
-- esempi d'uso
-
-Se vuoi pulire la build HTML:
-
-```bash
-make docs-clean
+```text
+mespy/
+├── .github/
+│   └── workflows/          # automation for documentation publishing
+├── data/
+│   └── reference/          # reference datasets used by tests and examples
+├── docs/
+│   ├── source/             # Sphinx source, examples, and translations
+│   ├── Makefile
+│   └── make.bat
+├── figures/                # exported example figures
+├── src/
+│   └── mespy/              # library package
+├── tests/                  # pytest suite
+├── tools/                  # release and smoke-test helpers
+├── LICENSE
+├── Makefile                # local setup, testing, release, and docs tasks
+├── pyproject.toml          # package metadata and dependencies
+├── README.md
+└── uv.lock
 ```
-
-## Check pre-release
-
-Per eseguire il gate completo di release PyPI in locale:
-
-```bash
-make release-check
-```
-
-Il comando esegue test, `compileall`, `pip check`, build di `sdist` e `wheel`, validazione con `twine check` e smoke test degli import a partire dalla wheel generata.
-
-## Comandi utili
-
-| Target | Descrizione |
-| --- | --- |
-| `make setup` | Crea il virtualenv e installa il package in editable mode con dipendenze `dev` |
-| `make venv` | Crea solo il virtualenv |
-| `make install` | Installa il package locale e le dipendenze |
-| `make test` | Esegue l'intera suite `pytest` |
-| `make dist` | Rigenera da zero `sdist` e `wheel` in `dist/` |
-| `make twine-check` | Valida solo gli artifact della versione corrente |
-| `make upload` | Carica su PyPI solo gli artifact della versione corrente |
-| `make release-check` | Esegue il gate completo pre-release per PyPI |
-| `make docs` | Costruisce il sito HTML con Sphinx in `docs/build/html` |
-| `make docs-clean` | Rimuove gli artifact di build di Sphinx |
-| `make dist-clean` | Rimuove gli artifact Python di build |
-| `make clean` | Esegue la pulizia generale |
-
-## Note
-
-- I notebook in `notebooks/` sono esempi di utilizzo e test esplorativi, non documentazione API normativa.
