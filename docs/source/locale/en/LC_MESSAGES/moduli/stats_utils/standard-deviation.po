@@ -1,0 +1,54 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/stats_utils/standard-deviation.md:17
+msgid "Panoramica"
+msgstr "Overview"
+
+#: ../../source/moduli/stats_utils/standard-deviation.md:17
+msgid "Funzionamento"
+msgstr "Implementation"
+
+#: ../../source/moduli/stats_utils/standard-deviation.md:1
+msgid "standard_deviation"
+msgstr "standard_deviation"
+
+#: ../../source/moduli/stats_utils/standard-deviation.md:3
+msgid "Firma"
+msgstr "Signature"
+
+#: ../../source/moduli/stats_utils/standard-deviation.md:13
+msgid ""
+"`standard_deviation` restituisce la deviazione standard come radice quadrata della varianza "
+"calcolata da [`variance`](variance.md)."
+msgstr ""
+"`standard_deviation` returns the standard deviation as the square root of the variance computed "
+"by [`variance`](variance.md)."
+
+#: ../../source/moduli/stats_utils/standard-deviation.md:15
+msgid ""
+"Questa pagina offre un accesso rapido alla funzione. Le informazioni d'uso complete sono in "
+"[Panoramica](standard-deviation/panoramica.md), mentre [Funzionamento](standard-"
+"deviation/funzionamento.md) e disponibile come sottopagina separata."
+msgstr ""
+"This page offers quick access to the function. Complete usage information is in [Overview"
+"](standard-deviation/panoramica.md), while [How it works](standard-deviation/funzionamento.md) is"
+" available as a separate subpage."
+

@@ -1,0 +1,104 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/getting-started.md:1
+msgid "Guida rapida"
+msgstr "Quick start"
+
+#: ../../source/getting-started.md:3
+msgid ""
+"Questa guida presenta il percorso piu semplice per usare `mespy`: caricare un file, fare qualche "
+"statistica di base, creare un grafico e, se serve, eseguire un fit lineare."
+msgstr ""
+"This guide presents the simplest path for using `mespy`: load a file, run a few basic statistics,"
+" create a plot, and, if needed, perform a linear fit."
+
+#: ../../source/getting-started.md:5
+msgid ""
+"Se vuoi studiare il codice delle funzioni e il significato matematico dei risultati, vai "
+"direttamente alla sezione [Moduli](moduli/index.md). Ogni modulo raccoglie la panoramica "
+"concettuale e le pagine dedicate alle singole funzioni pubbliche."
+msgstr ""
+"If you want to study the function code and the mathematical meaning of the results, go directly "
+"to the [Modules](moduli/index.md) section. Each module collects the conceptual overview and the "
+"pages dedicated to individual public functions."
+
+#: ../../source/getting-started.md:8
+msgid "Moduli principali"
+msgstr "Main modules"
+
+#: ../../source/getting-started.md:10
+msgid "[`io_utils`](moduli/io_utils/index.md) gestisce il caricamento dei CSV."
+msgstr "[`io_utils`](moduli/io_utils/index.md) gestisce il caricamento dei CSV."
+
+#: ../../source/getting-started.md:11
+msgid "[`stats_utils`](moduli/stats_utils/index.md) raccoglie le funzioni statistiche."
+msgstr "[`stats_utils`](moduli/stats_utils/index.md) raccoglie le funzioni statistiche."
+
+#: ../../source/getting-started.md:12
+msgid "[`plot_utils`](moduli/plot_utils/index.md) contiene gli strumenti di visualizzazione."
+msgstr "[`plot_utils`](moduli/plot_utils/index.md) contiene gli strumenti di visualizzazione."
+
+#: ../../source/getting-started.md:13
+msgid "[`fit_utils`](moduli/fit_utils/index.md) contiene il fit lineare e il tipo di risultato."
+msgstr "[`fit_utils`](moduli/fit_utils/index.md) contiene il fit lineare e il tipo di risultato."
+
+#: ../../source/getting-started.md:15
+msgid "Primo flusso di lavoro"
+msgstr "First workflow"
+
+#: ../../source/getting-started.md:31
+msgid "Come navigare la docs"
+msgstr "How to navigate the docs"
+
+#: ../../source/getting-started.md:33
+msgid "Parti dalla pagina madre del modulo per vedere scopo, import e collegamenti interni."
+msgstr "Start from the module landing page to see its purpose, imports, and internal links."
+
+#: ../../source/getting-started.md:34
+msgid "Apri poi la pagina della funzione per firma, parametri, ritorno, errori ed esempi."
+msgstr "Then open the function page for its signature, parameters, return value, errors, and examples."
+
+#: ../../source/getting-started.md:35
+msgid "Se vuoi capire i check sugli input, consulta [Controlli e helper interni](checks/index.md)."
+msgstr ""
+"If you want to understand the input checks, consult [Internal checks and "
+"helpers](checks/index.md)."
+
+#: ../../source/getting-started.md:37
+msgid "Esempi"
+msgstr "Examples"
+
+#: ../../source/getting-started.md:39
+msgid "[Workflow base](examples/basic-workflow.md)"
+msgstr "[Basic workflow](examples/basic-workflow.md)"
+
+#: ../../source/getting-started.md:40
+msgid "[Istogramma](examples/histogram.ipynb)"
+msgstr "[Histogram](examples/histogram.ipynb)"
+
+#: ../../source/getting-started.md:41
+msgid "[Fit lineare](examples/linear-fit.ipynb)"
+msgstr "[Linear fit](examples/linear-fit.ipynb)"
+
+#: ../../source/getting-started.md:42
+msgid "[Statistiche](examples/stats-utils.ipynb)"
+msgstr "[Statistics](examples/stats-utils.ipynb)"
+

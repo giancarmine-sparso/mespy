@@ -1,0 +1,88 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:1
+msgid "Panoramica"
+msgstr "Overview"
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:3
+msgid "Scopo"
+msgstr "Purpose"
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:5
+msgid "Calcolare la covarianza tra due variabili, con supporto opzionale ai pesi."
+msgstr "Compute the covariance between two variables, with optional support for weights."
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:7
+msgid "Parametri"
+msgstr "Parameters"
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:9
+msgid "`x`: prima variabile."
+msgstr "`x`: first variable."
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:10
+msgid "`y`: seconda variabile."
+msgstr "`y`: second variable."
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:11
+msgid "`w`: pesi opzionali compatibili con `x` e `y`."
+msgstr "`w`: optional weights compatible with `x` and `y`."
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:13
+msgid "Restituisce"
+msgstr "Returns"
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:15
+msgid "Un `float` con la covarianza tra `x` e `y`."
+msgstr "A `float` with the covariance between `x` and `y`."
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:17
+msgid "Errori ed eccezioni"
+msgstr "Errors and exceptions"
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:19
+msgid "`ValueError` se `x` e `y` non hanno la stessa lunghezza."
+msgstr "`ValueError` if `x` and `y` do not have the same length."
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:20
+msgid "`ValueError` se gli input contengono valori non finiti."
+msgstr "`ValueError` if the inputs contain non-finite values."
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:21
+msgid "`ValueError` se `w` e incompatibile o non positivo."
+msgstr "`ValueError` if `w` is incompatible or not positive."
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:23
+msgid "Esempio"
+msgstr "Example"
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:34
+msgid "Note"
+msgstr "Notes"
+
+#: ../../source/moduli/stats_utils/covariance/panoramica.md:36
+msgid ""
+"La formula implementata e `E[xy] - E[x]E[y]`. Nel caso pesato, le medie sono pesate con lo stesso"
+" vettore `w`."
+msgstr ""
+"The implemented formula is `E[xy] - E[x]E[y]`. In the weighted case, the means are weighted with "
+"the same `w` vector."
+

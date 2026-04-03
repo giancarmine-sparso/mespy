@@ -1,0 +1,162 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:1
+msgid "Panoramica"
+msgstr "Overview"
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:3
+msgid "Scopo"
+msgstr "Purpose"
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:5
+msgid ""
+"Disegnare un istogramma di un campione sperimentale, con opzioni per evidenziare la media, la "
+"fascia `+- 1 sigma`, la legenda, la griglia e il salvataggio della figura."
+msgstr ""
+"Draw a histogram of an experimental sample, with options to highlight the mean, the `+- 1 sigma` "
+"band, the legend, the grid, and figure saving."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:7
+msgid "Parametri"
+msgstr "Parameters"
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:9
+msgid "`x`: dati da istogrammare."
+msgstr "`x`: data to histogram."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:10
+msgid "`ddof`: parametro passato a `standard_deviation` per la banda."
+msgstr "`ddof`: parameter passed to `standard_deviation` for the band."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:11
+msgid "`bins`: numero di bin, algoritmo automatico o array dei bordi."
+msgstr "`bins`: number of bins, automatic algorithm, or array of edges."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:12
+msgid "`bin_width`: larghezza fissa dei bin. Non puo essere usata insieme a `bins` diverso da `\"auto\"`."
+msgstr "`bin_width`: fixed bin width. It cannot be used together with `bins` other than `\"auto\"`."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:13
+msgid "`hist_range`: coppia `(xmin, xmax)` usata come range dell'istogramma."
+msgstr "`hist_range`: `(xmin, xmax)` pair used as the histogram range."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:14
+msgid "`label`, `xlabel`, `ylabel`, `title`: etichette testuali."
+msgstr "`label`, `xlabel`, `ylabel`, `title`: text labels."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:15
+msgid "`show_bin_ticks`, `tick_rotation`, `decimals`: controllano la formattazione dell'asse x."
+msgstr "`show_bin_ticks`, `tick_rotation`, `decimals`: control x-axis formatting."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:16
+msgid "`show_mean`, `show_band`, `show_legend`, `show_grid`: attivano o disattivano elementi del grafico."
+msgstr "`show_mean`, `show_band`, `show_legend`, `show_grid`: enable or disable plot elements."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:17
+msgid "`xlim`, `ylim`: limiti espliciti degli assi."
+msgstr "`xlim`, `ylim`: explicit axis limits."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:18
+msgid "`ax`: asse matplotlib esistente da riusare."
+msgstr "`ax`: existing matplotlib axis to reuse."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:19
+msgid "`figsize`, `dpi`, `save_path`: parametri di creazione e salvataggio della figura."
+msgstr "`figsize`, `dpi`, `save_path`: parameters for creating and saving the figure."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:20
+msgid ""
+"`hist_alpha`, `band_alpha`, `grid_alpha`: regolano rispettivamente la trasparenza delle barre "
+"dell'istogramma, della banda `+- 1 sigma` e della griglia sull'asse `y`."
+msgstr ""
+"`hist_alpha`, `band_alpha`, `grid_alpha`: control the transparency of the histogram bars, the `+-"
+" 1 sigma` band, and the grid on the `y` axis, respectively."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:21
+msgid ""
+"`title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, `mean_symbol`: opzioni di "
+"presentazione."
+msgstr ""
+"`title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, `mean_symbol`: presentation "
+"options."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:23
+msgid "Restituisce"
+msgstr "Returns"
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:25
+msgid "Una tupla `(fig, ax)` con figura e asse su cui e stato disegnato l'istogramma."
+msgstr "A `(fig, ax)` tuple with the figure and axis on which the histogram was drawn."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:27
+msgid "Errori ed eccezioni"
+msgstr "Errors and exceptions"
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:29
+msgid "`ValueError` se `x` e vuoto, non monodimensionale o contiene valori non finiti."
+msgstr "`ValueError` if `x` is empty, not one-dimensional, or contains non-finite values."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:30
+msgid "`ValueError` se `xlim`, `ylim` o `hist_range` non sono coppie valide di valori finiti."
+msgstr "`ValueError` if `xlim`, `ylim`, or `hist_range` are not valid pairs of finite values."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:31
+msgid "`ValueError` se `hist_range` non soddisfa `xmin < xmax`."
+msgstr "`ValueError` if `hist_range` does not satisfy `xmin < xmax`."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:32
+msgid "`ValueError` se `bin_width <= 0`."
+msgstr "`ValueError` if `bin_width <= 0`."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:33
+msgid "`ValueError` se `bin_width` e `bins` vengono usati insieme in modo incompatibile."
+msgstr "`ValueError` if `bin_width` and `bins` are used together incompatibly."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:34
+msgid "`ValueError` se `figsize` non e una coppia positiva quando la figura viene creata internamente."
+msgstr "`ValueError` if `figsize` is not a positive pair when the figure is created internally."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:36
+msgid "Esempio"
+msgstr "Example"
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:54
+msgid "Note"
+msgstr "Notes"
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:56
+msgid "Se `ax` e `None`, la funzione crea una nuova figura con `plt.subplots`."
+msgstr "If `ax` is `None`, the function creates a new figure with `plt.subplots`."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:57
+msgid "Se passi `ax`, la figura restituita e `ax.get_figure()`."
+msgstr "If you pass `ax`, the returned figure is `ax.get_figure()`."
+
+#: ../../source/moduli/plot_utils/histogram/panoramica.md:58
+msgid ""
+"La validazione dei limiti e delle dimensioni passa per "
+"[`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-limits.md) e "
+"[`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md)."
+msgstr ""
+"Validation of limits and figure size goes through "
+"[`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-limits.md) and "
+"[`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md)."
+

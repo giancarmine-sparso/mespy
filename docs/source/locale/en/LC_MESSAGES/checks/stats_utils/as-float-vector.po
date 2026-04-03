@@ -1,0 +1,106 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/checks/stats_utils/as-float-vector.md:1
+msgid "_as_float_vector"
+msgstr "_as_float_vector"
+
+#: ../../source/checks/stats_utils/as-float-vector.md:3
+msgid "Firma"
+msgstr "Signature"
+
+#: ../../source/checks/stats_utils/as-float-vector.md:14
+msgid "Che problema risolve"
+msgstr "What problem it solves"
+
+#: ../../source/checks/stats_utils/as-float-vector.md:16
+msgid ""
+"Normalizza un input numerico in un array `float64` monodimensionale e finito. E il check di base "
+"su cui si appoggiano piu moduli del package."
+msgstr ""
+"Normalizes a numeric input into a one-dimensional, finite `float64` array. It is the base check "
+"used by multiple package modules."
+
+#: ../../source/checks/stats_utils/as-float-vector.md:18
+msgid "Contratto sugli input"
+msgstr "Input contract"
+
+#: ../../source/checks/stats_utils/as-float-vector.md:20
+msgid "`values` deve poter essere convertito da `numpy.asarray(..., dtype=float)`."
+msgstr "`values` must be convertible with `numpy.asarray(..., dtype=float)`."
+
+#: ../../source/checks/stats_utils/as-float-vector.md:21
+msgid "Il risultato deve essere monodimensionale."
+msgstr "The result must be one-dimensional."
+
+#: ../../source/checks/stats_utils/as-float-vector.md:22
+msgid "Se `allow_empty=False`, l'array non puo essere vuoto."
+msgstr "If `allow_empty=False`, the array cannot be empty."
+
+#: ../../source/checks/stats_utils/as-float-vector.md:23
+msgid "Tutti gli elementi devono essere finiti."
+msgstr "All elements must be finite."
+
+#: ../../source/checks/stats_utils/as-float-vector.md:25
+msgid "Dove viene usata"
+msgstr "Where it is used"
+
+#: ../../source/checks/stats_utils/as-float-vector.md:27
+msgid ""
+"internamente da quasi tutte le funzioni pubbliche di "
+"[`stats_utils`](../../moduli/stats_utils/index.md)"
+msgstr "internally by almost all public functions in [`stats_utils`](../../moduli/stats_utils/index.md)"
+
+#: ../../source/checks/stats_utils/as-float-vector.md:28
+msgid "in [`histogram`](../../moduli/plot_utils/histogram.md)"
+msgstr "in [`histogram`](../../moduli/plot_utils/histogram.md)"
+
+#: ../../source/checks/stats_utils/as-float-vector.md:29
+msgid "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md)"
+msgstr "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md)"
+
+#: ../../source/checks/stats_utils/as-float-vector.md:31
+msgid "Come fallisce"
+msgstr "Failure modes"
+
+#: ../../source/checks/stats_utils/as-float-vector.md:33
+msgid "`ValueError` se l'input non e monodimensionale"
+msgstr "`ValueError` if the input is not one-dimensional"
+
+#: ../../source/checks/stats_utils/as-float-vector.md:34
+msgid "`ValueError` se l'input e vuoto quando non ammesso"
+msgstr "`ValueError` if the input is empty when that is not allowed"
+
+#: ../../source/checks/stats_utils/as-float-vector.md:35
+msgid "`ValueError` se sono presenti `NaN` o infiniti"
+msgstr "`ValueError` if `NaN` values or infinities are present"
+
+#: ../../source/checks/stats_utils/as-float-vector.md:37
+msgid "Perche resta privata"
+msgstr "Why it stays private"
+
+#: ../../source/checks/stats_utils/as-float-vector.md:39
+msgid ""
+"E un dettaglio infrastrutturale condiviso. Documentarla aiuta a capire il package, ma esporla "
+"come API pubblica vincolerebbe inutilmente l'implementazione interna."
+msgstr ""
+"It is a shared infrastructure detail. Documenting it helps explain the package, but exposing it "
+"as a public API would unnecessarily constrain the internal implementation."
+

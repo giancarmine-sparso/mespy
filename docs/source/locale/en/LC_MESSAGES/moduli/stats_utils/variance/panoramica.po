@@ -1,0 +1,92 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:1
+msgid "Panoramica"
+msgstr "Overview"
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:3
+msgid "Scopo"
+msgstr "Purpose"
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:5
+msgid "Calcolare la varianza di `x`, con supporto sia al caso non pesato sia al caso pesato."
+msgstr "Compute the variance of `x`, supporting both the unweighted and weighted cases."
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:7
+msgid "Parametri"
+msgstr "Parameters"
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:9
+msgid "`x`: dati numerici."
+msgstr "`x`: numeric data."
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:10
+msgid "`w`: pesi opzionali."
+msgstr "`w`: optional weights."
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:11
+msgid ""
+"`ddof`: correzione sul denominatore. Nel caso non pesato il denominatore e `len(x) - ddof`; nel "
+"caso pesato e `sum(w) - ddof`."
+msgstr ""
+"`ddof`: correction applied to the denominator. In the unweighted case the denominator is `len(x) "
+"- ddof`; in the weighted case it is `sum(w) - ddof`."
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:13
+msgid "Restituisce"
+msgstr "Returns"
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:15
+msgid "Un `float` con la varianza."
+msgstr "A `float` with the variance."
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:17
+msgid "Errori ed eccezioni"
+msgstr "Errors and exceptions"
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:19
+msgid "`ValueError` se `x` e vuoto o non finito."
+msgstr "`ValueError` if `x` is empty or not finite."
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:20
+msgid "`ValueError` se `w` e invalido."
+msgstr "`ValueError` if `w` is invalid."
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:21
+msgid "`ValueError` se il denominatore diventa minore o uguale a zero."
+msgstr "`ValueError` if the denominator becomes less than or equal to zero."
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:23
+msgid "Esempio"
+msgstr "Example"
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:34
+msgid "Note"
+msgstr "Notes"
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:36
+msgid "Il default `ddof=0` e coerente con l'impostazione descrittiva dell'intero package."
+msgstr "The default `ddof=0` is consistent with the descriptive convention used throughout the package."
+
+#: ../../source/moduli/stats_utils/variance/panoramica.md:37
+msgid "La versione pesata usa la media pesata interna, non `numpy.var`."
+msgstr "The weighted version uses the internal weighted mean, not `numpy.var`."
+

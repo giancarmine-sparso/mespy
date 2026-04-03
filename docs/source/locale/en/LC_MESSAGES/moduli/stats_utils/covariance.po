@@ -1,0 +1,54 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/stats_utils/covariance.md:17
+msgid "Panoramica"
+msgstr "Overview"
+
+#: ../../source/moduli/stats_utils/covariance.md:17
+msgid "Funzionamento"
+msgstr "Implementation"
+
+#: ../../source/moduli/stats_utils/covariance.md:1
+msgid "covariance"
+msgstr "covariance"
+
+#: ../../source/moduli/stats_utils/covariance.md:3
+msgid "Firma"
+msgstr "Signature"
+
+#: ../../source/moduli/stats_utils/covariance.md:13
+msgid ""
+"`covariance` stima la covarianza tra due variabili numeriche, con supporto opzionale ai pesi e "
+"con validazione coerente degli input."
+msgstr ""
+"`covariance` estimates the covariance between two numeric variables, with optional support for "
+"weights and consistent input validation."
+
+#: ../../source/moduli/stats_utils/covariance.md:15
+msgid ""
+"Questa pagina resta il punto di ingresso rapido. I dettagli operativi sono in "
+"[Panoramica](covariance/panoramica.md), mentre [Funzionamento](covariance/funzionamento.md) e "
+"predisposta come sottopagina separata."
+msgstr ""
+"This page remains the quick entry point. Operational details are in "
+"[Overview](covariance/panoramica.md), while [How it works](covariance/funzionamento.md) is "
+"prepared as a separate subpage."
+

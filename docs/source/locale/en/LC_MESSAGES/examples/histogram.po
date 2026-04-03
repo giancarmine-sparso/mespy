@@ -1,0 +1,102 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/examples/histogram.ipynb:10002
+msgid "Istogramma"
+msgstr "Histogram"
+
+#: ../../source/examples/histogram.ipynb:10004
+msgid ""
+"Questo notebook mostra alcuni usi tipici di `mp.histogram` con il dataset di esempio incluso "
+"nella cartella `examples`."
+msgstr ""
+"This notebook shows a few typical uses of `mp.histogram` with the sample dataset included in the "
+"`examples` folder."
+
+#: ../../source/examples/histogram.ipynb:20002
+msgid "Import"
+msgstr "Imports"
+
+#: ../../source/examples/histogram.ipynb:40002
+msgid "Uso base di histogram"
+msgstr "Basic histogram usage"
+
+#: ../../source/examples/histogram.ipynb:40004
+msgid ""
+"L'unico argomento essenziale è il campione numerico su cui costruire l'istogramma. Tutti gli "
+"altri parametri servono per controllare stile, annotazioni e layout del grafico."
+msgstr ""
+"The only essential argument is the numeric sample used to build the histogram. All other "
+"parameters are used to control the plot style, annotations, and layout."
+
+#: ../../source/examples/histogram.ipynb:60002
+msgid "Personalizzazione labels e legenda"
+msgstr "Custom labels and legend"
+
+#: ../../source/examples/histogram.ipynb:60004
+msgid ""
+"Puoi cambiare etichetta dei dati, asse x, titolo, dimensione del titolo e precisione numerica "
+"della legenda senza modificare il resto della chiamata."
+msgstr ""
+"You can change the data label, x axis, title, title size, and legend numeric precision without "
+"modifying the rest of the call."
+
+#: ../../source/examples/histogram.ipynb:80002
+msgid "Personalizzazione bins"
+msgstr "Custom bin settings"
+
+#: ../../source/examples/histogram.ipynb:80004
+msgid ""
+"`bins` e `bin_width` sono alternativi: usa il primo per fissare direttamente numero o strategia "
+"dei bin, il secondo per imporre una larghezza costante. `hist_range` restringe il range usato per"
+" costruire l'istogramma."
+msgstr ""
+"`bins` and `bin_width` are alternatives: use the former to set the number or strategy of bins "
+"directly, and the latter to impose a constant width. `hist_range` restricts the range used to "
+"build the histogram."
+
+#: ../../source/examples/histogram.ipynb:100002
+msgid "Confronto su due assi"
+msgstr "Comparison across two axes"
+
+#: ../../source/examples/histogram.ipynb:100004
+msgid ""
+"Quando passi `ax`, `mespy` disegna sul subplot esistente e ti permette di combinare piu "
+"distribuzioni nella stessa figura senza cambiare API."
+msgstr ""
+"When you pass `ax`, `mespy` draws on the existing subplot and lets you combine multiple "
+"distributions in the same figure without changing the API."
+
+#: ../../source/examples/histogram.ipynb:120002
+msgid "Pagine collegate"
+msgstr "Related pages"
+
+#: ../../source/examples/histogram.ipynb:120004
+msgid "[`histogram`](../moduli/plot_utils/histogram.md)"
+msgstr "[`histogram`](../moduli/plot_utils/histogram.md)"
+
+#: ../../source/examples/histogram.ipynb:120005
+msgid "[`_validate_axis_limits`](../checks/plot_utils/validate-axis-limits.md)"
+msgstr "[`_validate_axis_limits`](../checks/plot_utils/validate-axis-limits.md)"
+
+#: ../../source/examples/histogram.ipynb:120006
+msgid "[`_validate_figsize`](../checks/plot_utils/validate-figsize.md)"
+msgstr "[`_validate_figsize`](../checks/plot_utils/validate-figsize.md)"
+

@@ -1,0 +1,112 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/installazione.md:1
+msgid "Installazione"
+msgstr "Installation"
+
+#: ../../source/installazione.md:3
+msgid ""
+"`mespy` richiede Python `3.12` o superiore. I comandi seguenti assumono che tu sia "
+"gia nella directory del progetto e che il virtualenv locale sia `.venv`, in coerenza "
+"con i target `make` del repository."
+msgstr ""
+"`mespy` requires Python `3.12` or newer. The following commands assume that you are "
+"already in the project directory and that the local virtual environment is `.venv`, "
+"in line with the repository `make` targets."
+
+#: ../../source/installazione.md:5
+msgid "Con uv"
+msgstr "With uv"
+
+#: ../../source/installazione.md:13
+msgid "Con pip"
+msgstr "With pip"
+
+#: ../../source/installazione.md:22
+msgid "Da jupyter-notebook"
+msgstr "From Jupyter Notebook"
+
+#: ../../source/installazione.md:24
+msgid "Eseguire in una cella di codice"
+msgstr "Run in a code cell"
+
+#: ../../source/installazione.md:30 ../../source/installazione.md:40
+msgid "successivamente eliminare la cella."
+msgstr "then remove the cell."
+
+#: ../../source/installazione.md:32
+msgid "Su Colab"
+msgstr "On Colab"
+
+#: ../../source/installazione.md:34
+msgid "Eseguire in una cella di codice:"
+msgstr "Run in a code cell:"
+
+#: ../../source/installazione.md:42
+msgid "Verifica rapida"
+msgstr "Quick check"
+
+#: ../../source/installazione.md:44
+msgid "Dopo l'installazione puoi controllare che l'import funzioni con un test minimo."
+msgstr "After installation you can verify that the import works with a minimal test."
+
+#: ../../source/installazione.md:50
+msgid ""
+"Se vuoi solo il package locale senza tool di sviluppo, sostituisci `\".[dev]\"` con "
+"`.`. In quel caso non sono garantiti i target `make test` e `make docs`, perche "
+"richiedono le dipendenze di sviluppo."
+msgstr ""
+"If you only want the local package without development tools, replace `\".[dev]\"` "
+"with `.`. In that case `make test` and `make docs` are not guaranteed, because they "
+"require the development dependencies."
+
+#: ../../source/installazione.md:53
+msgid "Cosa viene installato"
+msgstr "What gets installed"
+
+#: ../../source/installazione.md:55
+msgid "dipendenze runtime: `numpy`, `pandas`, `matplotlib`"
+msgstr "runtime dependencies: `numpy`, `pandas`, `matplotlib`"
+
+#: ../../source/installazione.md:56
+msgid ""
+"tool di sviluppo: `pytest`, `sphinx`, `pydata-sphinx-theme`, `myst-nb`, `build`, "
+"`twine`"
+msgstr ""
+"development tools: `pytest`, `sphinx`, `pydata-sphinx-theme`, `myst-nb`, `build`, "
+"`twine`"
+
+#: ../../source/installazione.md:57
+msgid "package locale in editable mode quando usi `-e`"
+msgstr "local package in editable mode when you use `-e`"
+
+#: ../../source/installazione.md:59
+msgid "Passo successivo"
+msgstr "Next step"
+
+#: ../../source/installazione.md:61
+msgid ""
+"Dopo l'installazione puoi continuare con la [Guida rapida](getting-started.md) oppure"
+" aprire gli [Esempi](examples/index.md)."
+msgstr ""
+"After installation you can continue with the [Quick start](getting-started.md) or "
+"open the [Examples](examples/index.md)."
+

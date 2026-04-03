@@ -1,0 +1,96 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:1
+msgid "_fit_coefficients"
+msgstr "_fit_coefficients"
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:3
+msgid "Firma"
+msgstr "Signature"
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:13
+msgid "Che problema risolve"
+msgstr "What problem it solves"
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:15
+msgid ""
+"Calcola un singolo aggiornamento dei coefficienti del fit lineare pesato: pendenza, intercetta e "
+"varianza pesata di `x`."
+msgstr ""
+"Computes one update of the weighted linear-fit coefficients: slope, intercept, and weighted "
+"variance of `x`."
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:17
+msgid "Contratto sugli input"
+msgstr "Input contract"
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:19
+msgid "`x`, `y` e `weights` devono essere gia validati dal chiamante."
+msgstr "`x`, `y`, and `weights` must already be validated by the caller."
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:20
+msgid "`weights` deve contenere pesi strettamente positivi."
+msgstr "`weights` must contain strictly positive weights."
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:21
+msgid "`x` deve avere varianza pesata finita e non nulla."
+msgstr "`x` must have a finite, non-zero weighted variance."
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:23
+msgid "Dove viene usata"
+msgstr "Where it is used"
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:25
+msgid "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) per il calcolo iniziale dei coefficienti"
+msgstr "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) for the initial coefficient estimate"
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:26
+msgid "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) a ogni iterazione quando `sigma_x` e presente"
+msgstr "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) at each iteration when `sigma_x` is provided"
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:28
+msgid "Come fallisce"
+msgstr "Failure modes"
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:30
+msgid "`ValueError` se la varianza pesata di `x` non e finita"
+msgstr "`ValueError` if the weighted variance of `x` is not finite"
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:31
+msgid ""
+"`ValueError` se la varianza pesata di `x` e troppo vicina a zero, cioe se non ci sono abbastanza "
+"valori distinti per stimare la pendenza"
+msgstr ""
+"`ValueError` if the weighted variance of `x` is too close to zero, meaning there are not enough "
+"distinct values to estimate the slope"
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:33
+msgid "Perche resta privata"
+msgstr "Why it stays private"
+
+#: ../../source/checks/fit_utils/fit-coefficients.md:35
+msgid ""
+"E un mattone interno dell'algoritmo di `lin_fit`. Documentarlo chiarisce il flusso del calcolo, "
+"ma non avrebbe molto senso come endpoint pubblico separato."
+msgstr ""
+"It is an internal building block of the `lin_fit` algorithm. Documenting it clarifies the "
+"calculation flow, but it would not make much sense as a separate public endpoint."
+

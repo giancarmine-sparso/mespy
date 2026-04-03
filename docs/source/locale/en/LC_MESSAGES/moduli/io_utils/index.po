@@ -1,0 +1,108 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/io_utils/index.md:1
+msgid "io_utils.py"
+msgstr "io_utils.py"
+
+#: ../../source/moduli/io_utils/index.md:3
+msgid ""
+"`io_utils.py` si occupa del caricamento dei file CSV e concentra in un solo punto le scelte di "
+"validazione legate a colonne mancanti, rinomina dei campi e gestione dei valori `NaN`."
+msgstr ""
+"`io_utils.py` handles CSV file loading and centralizes the validation choices related to missing "
+"columns, field renaming, and `NaN` handling."
+
+#: ../../source/moduli/io_utils/index.md:5
+msgid "Import principali"
+msgstr "Main imports"
+
+#: ../../source/moduli/io_utils/index.md:7
+msgid ""
+"Standard library: `collections.abc.Collection`, `collections.abc.Mapping`, `pathlib.Path`, "
+"`typing.Literal`"
+msgstr ""
+
+#: ../../source/moduli/io_utils/index.md:9
+msgid "Librerie esterne: `pandas as pd`"
+msgstr "External libraries: `pandas as pd`"
+
+#: ../../source/moduli/io_utils/index.md:11
+msgid "Tipi definiti nel modulo: `MissingPolicy = Literal[\"error\", \"drop\", \"allow\"]`"
+msgstr "Types defined in the module: `MissingPolicy = Literal[\"error\", \"drop\", \"allow\"]`"
+
+#: ../../source/moduli/io_utils/index.md:14
+msgid "Cosa espone"
+msgstr "What it exports"
+
+#: ../../source/moduli/io_utils/index.md:16
+msgid ""
+"[`load_csv`](load-csv.md): wrapper di `pandas.read_csv` con un contratto piu piccolo e "
+"prevedibile."
+msgstr ""
+"[`load_csv`](load-csv.md): wrapper di `pandas.read_csv` con un contratto piu piccolo e "
+"prevedibile."
+
+#: ../../source/moduli/io_utils/index.md:18
+msgid "Responsabilita del modulo"
+msgstr "Module responsibilities"
+
+#: ../../source/moduli/io_utils/index.md:20
+msgid "leggere un file CSV da percorso stringa o `Path`"
+msgstr "read a CSV file from a string path or `Path`"
+
+#: ../../source/moduli/io_utils/index.md:21
+msgid "supportare separatori e separatori decimali configurabili"
+msgstr "support configurable separators and decimal separators"
+
+#: ../../source/moduli/io_utils/index.md:22
+msgid "rinominare le colonne subito dopo il caricamento"
+msgstr "rename columns immediately after loading"
+
+#: ../../source/moduli/io_utils/index.md:23
+msgid "verificare eventuali colonne obbligatorie"
+msgstr "check any required columns"
+
+#: ../../source/moduli/io_utils/index.md:24
+msgid "scegliere in modo esplicito la policy sui valori mancanti"
+msgstr "choose the missing-value policy explicitly"
+
+#: ../../source/moduli/io_utils/index.md:26
+msgid "Relazioni con il resto del package"
+msgstr "Relations with the rest of the package"
+
+#: ../../source/moduli/io_utils/index.md:28
+msgid ""
+"`io_utils.py` e il punto di ingresso per trasformare dati su disco in un `DataFrame` da passare "
+"poi alle funzioni di [`stats_utils`](../stats_utils/index.md), "
+"[`plot_utils`](../plot_utils/index.md) e [`fit_utils`](../fit_utils/index.md)."
+msgstr ""
+"`io_utils.py` is the entry point for turning on-disk data into a `DataFrame` that can then be "
+"passed to the functions in [`stats_utils`](../stats_utils/index.md), "
+"[`plot_utils`](../plot_utils/index.md), and [`fit_utils`](../fit_utils/index.md)."
+
+#: ../../source/moduli/io_utils/index.md:30
+msgid "Pagina di dettaglio"
+msgstr "Detailed page"
+
+#: ../../source/moduli/io_utils/index.md:32
+msgid "[`load_csv`](load-csv.md)"
+msgstr "[`load_csv`](load-csv.md)"
+

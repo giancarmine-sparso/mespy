@@ -1,0 +1,54 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/stats_utils/variance.md:17
+msgid "Panoramica"
+msgstr "Overview"
+
+#: ../../source/moduli/stats_utils/variance.md:17
+msgid "Funzionamento"
+msgstr "Implementation"
+
+#: ../../source/moduli/stats_utils/variance.md:1
+msgid "variance"
+msgstr "variance"
+
+#: ../../source/moduli/stats_utils/variance.md:3
+msgid "Firma"
+msgstr "Signature"
+
+#: ../../source/moduli/stats_utils/variance.md:13
+msgid ""
+"`variance` calcola la varianza di un campione nel caso non pesato o, in alternativa, nel caso "
+"pesato con denominatore corretto da `ddof`."
+msgstr ""
+"`variance` computes the variance of a sample in the unweighted case or, alternatively, in the "
+"weighted case with the denominator corrected by `ddof`."
+
+#: ../../source/moduli/stats_utils/variance.md:15
+msgid ""
+"Questa pagina resta il punto di accesso rapido. La documentazione completa e in "
+"[Panoramica](variance/panoramica.md), mentre [Funzionamento](variance/funzionamento.md) e "
+"disponibile come sottopagina separata."
+msgstr ""
+"This page remains the quick access point. The full documentation is in "
+"[Overview](variance/panoramica.md), while [How it works](variance/funzionamento.md) is available "
+"as a separate subpage."
+

@@ -1,0 +1,238 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:1
+msgid "Funzionamento"
+msgstr "Implementation"
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:3
+msgid ""
+"Questa pagina descrive il flusso interno di `variance` e l'ordine con cui vengono applicate "
+"validazione degli input, scelta tra ramo non pesato e ramo pesato, controllo del denominatore e "
+"calcolo finale degli scarti quadratici. A differenza di [Panoramica](panoramica.md), qui "
+"l'obiettivo non e ripetere la firma, ma mostrare come la funzione costruisce davvero la varianza."
+msgstr ""
+"This page describes the internal flow of `variance` and the order in which input validation, "
+"selection of the unweighted or weighted branch, denominator checks, and final squared-deviation "
+"calculation are applied. Unlike [Overview](panoramica.md), the goal here is not to repeat the "
+"signature, but to show how the function actually builds the variance."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:5
+msgid ""
+"I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. Gli helper "
+"privati vengono citati solo per chiarire il flusso; i dettagli completi sono documentati in "
+"[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) e "
+"[`_validate_weights`](../../../checks/stats_utils/validate-weights.md)."
+msgstr ""
+"The following snippets are taken from the current `src/mespy/stats_utils.py` implementation. "
+"Private helpers are mentioned only to clarify the flow; complete details are documented in "
+"[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) and "
+"[`_validate_weights`](../../../checks/stats_utils/validate-weights.md)."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:7
+msgid "Sequenza di esecuzione"
+msgstr "Execution sequence"
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:9
+msgid "L'implementazione segue questa sequenza:"
+msgstr "The implementation follows this sequence:"
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:11
+msgid "Converte `x` in un vettore `float64` monodimensionale e finito."
+msgstr "Converts `x` into a one-dimensional, finite `float64` vector."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:12
+msgid "Se `w` e presente, lo valida come vettore compatibile, strettamente positivo e con somma positiva."
+msgstr ""
+"If `w` is provided, it validates it as a compatible vector with strictly positive values and "
+"positive sum."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:13
+msgid "Se `w is None`, usa il ramo non pesato con denominatore `len(x) - ddof`."
+msgstr "If `w is None`, it uses the unweighted branch with denominator `len(x) - ddof`."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:14
+msgid "Se `w` e presente, usa il ramo pesato con denominatore `sum(w) - ddof`."
+msgstr "If `w` is provided, it uses the weighted branch with denominator `sum(w) - ddof`."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:15
+msgid ""
+"In entrambi i rami calcola prima la media coerente con il caso corrente, poi la somma degli "
+"scarti quadratici."
+msgstr ""
+"In both branches it first computes the mean consistent with the current case, then the sum of "
+"squared deviations."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:16
+msgid "Se il denominatore risulta minore o uguale a zero, interrompe il calcolo con `ValueError`."
+msgstr "If the denominator is less than or equal to zero, it stops the calculation with `ValueError`."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:18
+msgid "Ramo non pesato e ramo pesato"
+msgstr "Unweighted and weighted branches"
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:47
+msgid "Il cuore della funzione e la separazione netta tra due definizioni operative della varianza."
+msgstr "The core of the function is the clear separation between two operational definitions of variance."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:49
+msgid "Nel caso non pesato la cardinalita effettiva e `n = values.size`."
+msgstr "In the unweighted case the effective cardinality is `n = values.size`."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:50
+msgid "Nel caso pesato la quantita di normalizzazione diventa `w_sum = sum(weights)`."
+msgstr "In the weighted case the normalization quantity becomes `w_sum = sum(weights)`."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:51
+msgid ""
+"In entrambi i casi `ddof` agisce sottraendo una correzione al denominatore, ma la base su cui "
+"interviene cambia."
+msgstr ""
+"In both cases `ddof` acts by subtracting a correction from the denominator, but the base it "
+"applies to changes."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:53
+msgid "Formule implementate"
+msgstr "Implemented formulas"
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:55
+msgid "Nel ramo non pesato la funzione usa"
+msgstr "In the unweighted branch the function uses"
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:57
+msgid ""
+"\n"
+"\\bar{x} = \\frac{1}{n}\\sum_i x_i,\n"
+"\\qquad\n"
+"\\mathrm{Var}(x) = \\frac{\\sum_i (x_i - \\bar{x})^2}{n - \\mathrm{ddof}}.\n"
+msgstr ""
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:63
+msgid "Nel ramo pesato usa invece"
+msgstr "In the weighted branch it instead uses"
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:65
+msgid ""
+"\n"
+"\\bar{x}_w = \\frac{\\sum_i w_i x_i}{\\sum_i w_i},\n"
+"\\qquad\n"
+"\\mathrm{Var}_w(x) = \\frac{\\sum_i w_i (x_i - \\bar{x}_w)^2}{\\sum_i w_i - \\mathrm{ddof}}.\n"
+msgstr ""
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:71
+msgid ""
+"La funzione non delega a `numpy.var(...)`: costruisce esplicitamente la media coerente con il "
+"ramo selezionato e poi somma gli scarti quadratici."
+msgstr ""
+"The function does not delegate to `numpy.var(...)`: it explicitly builds the mean consistent with"
+" the selected branch and then sums the squared deviations."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:73
+msgid "Ruolo di `ddof` e condizioni di errore"
+msgstr "Role of `ddof` and error conditions"
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:75
+msgid ""
+"Il parametro `ddof` non modifica solo l'interpretazione statistica del risultato: puo rendere il "
+"calcolo impossibile."
+msgstr ""
+"The `ddof` parameter does not only change the statistical interpretation of the result: it can "
+"make the computation impossible."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:77
+msgid "Nel caso non pesato il codice richiede `len(x) - ddof > 0`."
+msgstr "In the unweighted case the code requires `len(x) - ddof > 0`."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:78
+msgid "Nel caso pesato richiede `sum(w) - ddof > 0`."
+msgstr "In the weighted case it requires `sum(w) - ddof > 0`."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:79
+msgid ""
+"Se una di queste condizioni fallisce, la funzione alza `ValueError` prima di effettuare la "
+"divisione finale."
+msgstr ""
+"If one of these conditions fails, the function raises `ValueError` before performing the final "
+"division."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:81
+msgid ""
+"Il default `ddof=0` e coerente con l'impostazione descrittiva del package: la funzione calcola "
+"per default una varianza di popolazione, non la versione con correzione di Bessel."
+msgstr ""
+"The default `ddof=0` is consistent with the descriptive setup of the package: by default the "
+"function computes a population variance, not the version with Bessel's correction."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:83
+msgid "Interazioni importanti tra parametri"
+msgstr "Important interactions between parameters"
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:85
+msgid "Alcuni aspetti del comportamento meritano di essere resi espliciti."
+msgstr "Some aspects of the behavior are worth making explicit."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:87
+msgid ""
+"`w=None` non significa \"pesi tutti uguali\" implementati a mano: significa proprio usare il ramo"
+" non pesato basato su `np.mean(values)`."
+msgstr ""
+"`w=None` does not mean \"all weights equal\" implemented by hand: it explicitly means using the "
+"unweighted branch based on `np.mean(values)`."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:88
+msgid ""
+"Se i pesi sono tutti uguali e `ddof=0`, il valore ottenuto coincide con una varianza calcolata "
+"con pesi uniformi, ma il denominatore nel ramo pesato resta `sum(w)`, non `len(x)`."
+msgstr ""
+"If all weights are equal and `ddof=0`, the value matches a variance computed with uniform "
+"weights, but the denominator in the weighted branch remains `sum(w)`, not `len(x)`."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:89
+msgid "La funzione accetta `ddof` anche come `float`, quindi la correzione non e limitata a interi."
+msgstr "The function also accepts `ddof` as a `float`, so the correction is not limited to integers."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:90
+msgid ""
+"Gli errori legati a input vuoti, non monodimensionali o non finiti vengono sempre intercettati "
+"all'inizio da [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), mentre gli "
+"errori specifici del ramo pesato passano da [`_validate_weights`](../../../checks/stats_utils"
+"/validate-weights.md)."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:92
+msgid "Esempio commentato"
+msgstr "Commented example"
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:105
+msgid "In questo esempio la stessa funzione viene usata in tre modi diversi."
+msgstr "In this example the same function is used in three different ways."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:107
+msgid "La prima chiamata usa `n - ddof` con `ddof=0`."
+msgstr "The first call uses `n - ddof` with `ddof=0`."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:108
+msgid "La seconda usa invece `sum(w) - ddof`, quindi la normalizzazione dipende dai pesi."
+msgstr "The second instead uses `sum(w) - ddof`, so the normalization depends on the weights."
+
+#: ../../source/moduli/stats_utils/variance/funzionamento.md:109
+msgid "La terza mantiene il caso non pesato ma applica una correzione esplicita al denominatore."
+msgstr "The third keeps the unweighted case but applies an explicit correction to the denominator."
+

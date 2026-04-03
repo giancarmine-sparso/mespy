@@ -1,0 +1,318 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:1
+msgid "Funzionamento"
+msgstr "Implementation"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:3
+msgid ""
+"Questa pagina descrive il flusso interno di `load_csv` e l'ordine con cui vengono applicati i "
+"controlli. A differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere la lista "
+"dei parametri, ma chiarire come la funzione costruisce e valida il `DataFrame`."
+msgstr ""
+"This page describes the internal flow of `load_csv` and the order in which checks are applied. "
+"Unlike [Overview](panoramica.md), the goal here is not to repeat the parameter list, but to "
+"clarify how the function builds and validates the `DataFrame`."
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:5
+msgid "Sequenza di esecuzione"
+msgstr "Execution sequence"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:7
+msgid "L'implementazione segue una sequenza semplice e prevedibile:"
+msgstr "The implementation follows a simple and predictable sequence:"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:9
+msgid ""
+"Controlla subito che `missing` sia una delle policy supportate: `\"error\"`, `\"drop\"` oppure "
+"`\"allow\"`."
+msgstr ""
+"It immediately checks that `missing` is one of the supported policies: `\"error\"`, `\"drop\"`, "
+"or `\"allow\"`."
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:10
+msgid "Chiama `pd.read_csv(...)` passando:"
+msgstr "Calls `pd.read_csv(...)` with:"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:11
+msgid "`Path(path)` come percorso del file"
+msgstr "`Path(path)` as the file path"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:12
+msgid "`sep`"
+msgstr "`sep`"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:13
+msgid "`decimal`"
+msgstr "`decimal`"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:14
+msgid "`comment`"
+msgstr "`comment`"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:15
+msgid "`skipinitialspace=skip_initial_space`"
+msgstr "`skipinitialspace=skip_initial_space`"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:16
+msgid "Se `rename_columns` e valorizzato, rinomina le colonne del `DataFrame`."
+msgstr "If `rename_columns` is provided, it renames the `DataFrame` columns."
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:17
+msgid ""
+"Se `required_columns` e valorizzato, verifica che tutte le colonne richieste siano presenti dopo "
+"l'eventuale rinomina."
+msgstr ""
+"If `required_columns` is provided, it checks that all required columns are present after any "
+"renaming."
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:18
+msgid "Applica la policy sui valori mancanti:"
+msgstr "Applies the missing-value policy:"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:19
+msgid "con `missing=\"drop\"` restituisce `df.dropna()`"
+msgstr "with `missing=\"drop\"` it returns `df.dropna()`"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:20
+msgid "con `missing=\"error\"` controlla se esiste almeno un `NaN` e, in quel caso, solleva `ValueError`"
+msgstr ""
+"with `missing=\"error\"` it checks whether at least one `NaN` exists and, if so, raises "
+"`ValueError`"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:21
+msgid "con `missing=\"allow\"` non modifica il `DataFrame`"
+msgstr "with `missing=\"allow\"` it leaves the `DataFrame` unchanged"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:22
+msgid "Restituisce il `DataFrame` finale."
+msgstr "Returns the final `DataFrame`."
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:24
+msgid "In forma compatta, il comportamento e equivalente a questo schema:"
+msgstr "In compact form, the behavior is equivalent to this scheme:"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:53
+msgid "Ordine dei controlli"
+msgstr "Order of checks"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:55
+msgid "L'ordine dei passaggi e parte del contratto pratico della funzione."
+msgstr "The order of the steps is part of the practical contract of the function."
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:57
+msgid "`path` e l'unico parametro posizionale: tutti gli altri sono keyword-only."
+msgstr "`path` is the only positional parameter: all the others are keyword-only."
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:58
+msgid ""
+"La validazione di `missing` avviene prima di leggere il file. Se la policy non e supportata, la "
+"funzione fallisce subito."
+msgstr ""
+"Validation of `missing` happens before reading the file. If the policy is not supported, the "
+"function fails immediately."
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:59
+msgid ""
+"`required_columns` viene controllato dopo `rename_columns`. Questo permette di chiedere colonne "
+"con il nome finale, non con il nome originale del file."
+msgstr ""
+"`required_columns` is checked after `rename_columns`. This allows you to request columns by their"
+" final name, not their original file name."
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:60
+msgid ""
+"`comment` e `skip_initial_space` non introducono logica aggiuntiva: sono passthrough controllati "
+"verso `pandas.read_csv`."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:61
+msgid ""
+"Il controllo dei `NaN` con `missing=\"error\"` non avviene durante la lettura, ma sul `DataFrame`"
+" gia caricato."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:63
+msgid ""
+"Questo ordine rende il comportamento facile da prevedere nei notebook e negli script: prima si "
+"importa il file, poi si normalizzano i nomi, poi si verifica la struttura, e solo alla fine si "
+"decide come trattare i valori mancanti."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:65
+msgid "Policy sui valori mancanti"
+msgstr "Missing-value policy"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:67
+msgid "La gestione dei `NaN` e esplicita e dipende interamente dal parametro `missing`."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:69
+msgid ""
+"`missing=\"error\"`: e il default. Dopo il caricamento, la funzione controlla l'intero "
+"`DataFrame` con `df.isna().any().any()`. Se trova almeno un valore mancante, solleva "
+"`ValueError`."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:70
+msgid ""
+"`missing=\"drop\"`: il caricamento non fallisce per la presenza di `NaN`. Le righe incomplete "
+"vengono eliminate con `DataFrame.dropna()`, e il `DataFrame` restituito puo quindi avere meno "
+"righe del file originale."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:71
+msgid ""
+"`missing=\"allow\"`: la funzione non rimuove nulla e non solleva errori per i `NaN`. I valori "
+"mancanti restano nel `DataFrame` e vengono gestiti eventualmente a valle."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:73
+msgid "Dal punto di vista operativo:"
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:75
+msgid "`error` e utile quando il file deve essere completo prima di passare alle analisi."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:76
+msgid "`drop` e utile quando si vuole un comportamento conservativo ma non bloccante."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:77
+msgid "`allow` e utile quando la gestione dei dati mancanti viene demandata a passaggi successivi."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:79
+msgid ""
+"Se `missing` riceve un valore diverso da `\"error\"`, `\"drop\"` o `\"allow\"`, la funzione "
+"solleva subito `ValueError` senza tentare la lettura del CSV."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:81
+msgid "Interazioni tra parametri"
+msgstr "Interactions between parameters"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:83
+msgid ""
+"Alcune combinazioni di parametri definiscono il comportamento pratico piu importante della "
+"funzione."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:85
+msgid "Rinomina e colonne richieste"
+msgstr "Renaming and required columns"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:87
+#, python-brace-format
+msgid ""
+"La rinomina avviene prima del controllo su `required_columns`. Per esempio, se il file contiene "
+"una colonna `x` e si passa `rename_columns={\"x\": \"alfa\"}`, allora "
+"`required_columns=[\"alfa\"]` e valido. Questo evita di dover ragionare contemporaneamente su "
+"nomi originali e nomi finali."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:89
+msgid ""
+"Se dopo la rinomina manca ancora una colonna richiesta, la funzione solleva `ValueError` con "
+"l'elenco delle colonne assenti."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:91
+msgid "Separatore e separatore decimale"
+msgstr "Delimiter and decimal separator"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:93
+msgid ""
+"`sep` e `decimal` vengono inoltrati direttamente a `pandas.read_csv`. Questo permette di leggere "
+"senza logica extra sia CSV \"classici\" con `,` e `.` sia file con formato piu comune in contesto"
+" italiano, ad esempio `;` come separatore di colonna e `,` come separatore decimale."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:95
+msgid ""
+"La funzione non esegue conversioni manuali dei numeri: si appoggia al comportamento standard di "
+"pandas."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:97
+msgid "Commenti espliciti"
+msgstr "Explicit comments"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:99
+msgid "Il parametro `comment` e opzionale e ha comportamento opt-in:"
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:101
+msgid "se `comment=None`, i caratteri come `#` restano parte del contenuto testuale"
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:102
+msgid "se `comment=\"#\"`, le righe che iniziano con `#` vengono trattate come commenti da `read_csv`"
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:104
+msgid ""
+"Questo dettaglio e importante per evitare che simboli presenti nei dati vengano interpretati come"
+" commenti senza una richiesta esplicita."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:106
+msgid "Spazi dopo il separatore"
+msgstr "Spaces after the delimiter"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:108
+msgid ""
+"`skip_initial_space=True` viene tradotto in `skipinitialspace=True` nella chiamata a pandas. In "
+"pratica, gli spazi immediatamente successivi al separatore vengono ignorati gia in fase di "
+"lettura, senza passaggi di pulizia aggiuntivi nel `DataFrame`."
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:110
+msgid "Esempio commentato"
+msgstr "Commented example"
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:123
+msgid "In questo esempio:"
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:125
+msgid "il file di esempio viene letto direttamente dalla cartella `data/reference`"
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:126
+msgid "le colonne vengono rinominate subito dopo il caricamento"
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:127
+msgid "il controllo su `required_columns` verifica i nomi finali `n`, `lunghezza` e `sigma`"
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:128
+msgid "eventuali righe con valori mancanti vengono rimosse prima della restituzione"
+msgstr ""
+
+#: ../../source/moduli/io_utils/load-csv/funzionamento.md:130
+msgid ""
+"Il risultato finale e un `DataFrame` gia pronto per essere passato alle funzioni di analisi e "
+"plotting del package."
+msgstr ""
+

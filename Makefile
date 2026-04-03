@@ -1,4 +1,4 @@
-.PHONY: all help setup venv install test dist twine-check upload release-check check-tex docs docs-serve docs-clean docs-pdf docs-pdf-clean dist-clean clean
+.PHONY: all help setup venv install test dist twine-check upload release-check docs docs-gettext docs-update-locale docs-build-locale docs-en docs-it docs-serve docs-clean dist-clean clean
 
 PYTHON := python3
 VENV := .venv
@@ -13,14 +13,16 @@ SDIST := dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz
 WHEEL := dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)-py3-none-any.whl
 ARTIFACTS := $(SDIST) $(WHEEL)
 
-MAIN := main
-TEX := $(MAIN).tex
-DOCS_DIR := docs/LaTeX-docs
-TEX_CACHE_DIR := $(abspath $(DOCS_DIR)/.texmf-var)
-SPHINX_DIR := docs-sphinx
+SPHINX_DIR := docs
 SPHINX_SOURCE_DIR := $(SPHINX_DIR)/source
 SPHINX_BUILD_DIR := $(SPHINX_DIR)/build
+SPHINX_HTML_DIR := $(SPHINX_BUILD_DIR)/html
+SPHINX_HTML_EN_DIR := $(SPHINX_HTML_DIR)/en
+SPHINX_HTML_IT_DIR := $(SPHINX_HTML_DIR)/it
+SPHINX_GETTEXT_DIR := $(SPHINX_BUILD_DIR)/gettext
+SPHINX_LOCALE_DIR := $(SPHINX_SOURCE_DIR)/locale
 SPHINX := $(VENV_PYTHON) -m sphinx
+SPHINX_INTL := $(VENV_PYTHON) -m sphinx_intl
 
 all: help
 
@@ -34,12 +36,14 @@ help:
 	@echo "  make twine-check - validate the current release artifacts"
 	@echo "  make upload     - upload only the current release artifacts"
 	@echo "  make release-check - run the full pre-release gate"
-	@echo "  make docs       - build the Sphinx HTML documentation"
+	@echo "  make docs       - build the bilingual Sphinx HTML documentation"
+	@echo "  make docs-gettext - extract gettext catalogs for the docs"
+	@echo "  make docs-update-locale - update the English translation catalogs"
+	@echo "  make docs-build-locale - compile the English translation catalogs"
+	@echo "  make docs-en    - build only the English Sphinx HTML documentation"
+	@echo "  make docs-it    - build only the Italian Sphinx HTML documentation"
 	@echo "  make docs-serve - serve the built Sphinx HTML documentation locally"
 	@echo "  make docs-clean - remove the Sphinx build artifacts"
-	@echo "  make check-tex  - verify LaTeX prerequisites for the legacy PDF docs"
-	@echo "  make docs-pdf   - compile the legacy PDF documentation"
-	@echo "  make docs-pdf-clean - remove LaTeX temporary files"
 	@echo "  make dist-clean - remove Python build artifacts"
 	@echo "  make clean      - remove temporary files"
 
@@ -77,30 +81,51 @@ upload: dist
 release-check: venv
 	@PYTHON_BIN="$(abspath $(VENV_PYTHON))" bash tools/release-check.sh
 
-check-tex:
-	@bash tools/check-tex.sh
-
 docs: venv
-	@$(SPHINX) -W -b html "$(SPHINX_SOURCE_DIR)" "$(SPHINX_BUILD_DIR)/html"
+	@$(MAKE) docs-clean
+	@$(MAKE) docs-en
+	@$(MAKE) docs-it
+	@printf '%s\n' \
+		'<!doctype html>' \
+		'<html lang="en">' \
+		'<head>' \
+		'  <meta charset="utf-8" />' \
+		'  <meta http-equiv="refresh" content="0; url=./en/" />' \
+		'  <meta name="viewport" content="width=device-width, initial-scale=1" />' \
+		'  <title>mespy documentation</title>' \
+		'  <script>window.location.replace("./en/");</script>' \
+		'</head>' \
+		'<body>' \
+		'  <p>Redirecting to the <a href="./en/">English documentation</a>. Per la versione italiana vai a <a href="./it/">./it/</a>.</p>' \
+		'</body>' \
+		'</html>' \
+		> "$(SPHINX_HTML_DIR)/index.html"
+	@touch "$(SPHINX_HTML_DIR)/.nojekyll"
+
+docs-gettext: venv
+	@rm -rf "$(SPHINX_GETTEXT_DIR)"
+	@$(SPHINX) -W -D nb_execution_mode=off -b gettext "$(SPHINX_SOURCE_DIR)" "$(SPHINX_GETTEXT_DIR)"
+
+docs-update-locale: docs-gettext
+	@$(SPHINX_INTL) -c "$(SPHINX_SOURCE_DIR)/conf.py" update -p "$(SPHINX_GETTEXT_DIR)" -l en
+
+docs-build-locale: docs-update-locale
+	@$(SPHINX_INTL) -c "$(SPHINX_SOURCE_DIR)/conf.py" build -l en
+
+docs-en: venv docs-build-locale
+	@$(SPHINX) -W -D nb_execution_mode=off -b html -D language=en "$(SPHINX_SOURCE_DIR)" "$(SPHINX_HTML_EN_DIR)"
+
+docs-it: venv
+	@$(SPHINX) -W -D nb_execution_mode=off -b html -D language=it "$(SPHINX_SOURCE_DIR)" "$(SPHINX_HTML_IT_DIR)"
 
 docs-serve: docs
-	@cd "$(SPHINX_BUILD_DIR)/html" && "$(VENV_PYTHON)" -m http.server 8000
+	@cd "$(SPHINX_HTML_DIR)" && "$(VENV_PYTHON)" -m http.server 8000
 
 docs-clean:
 	@rm -rf "$(SPHINX_BUILD_DIR)"
-
-docs-pdf: check-tex
-	@mkdir -p $(TEX_CACHE_DIR)
-	@cd $(DOCS_DIR) && TEXMFVAR="$(TEX_CACHE_DIR)" TEXMFCACHE="$(TEX_CACHE_DIR)" latexmk -lualatex -shell-escape -interaction=nonstopmode -halt-on-error $(TEX)
-
-docs-pdf-clean:
-	@mkdir -p $(TEX_CACHE_DIR)
-	@cd $(DOCS_DIR) && TEXMFVAR="$(TEX_CACHE_DIR)" TEXMFCACHE="$(TEX_CACHE_DIR)" latexmk -c $(TEX)
-	@rm -rf $(TEX_CACHE_DIR)
-	@rm -rf $(DOCS_DIR)/_minted-$(MAIN)
-	@rm -f $(DOCS_DIR)/*.fdb_latexmk $(DOCS_DIR)/*.fls $(DOCS_DIR)/*.synctex.gz
+	@if [ -d "$(SPHINX_LOCALE_DIR)" ]; then find "$(SPHINX_LOCALE_DIR)" -name '*.mo' -delete; fi
 
 dist-clean:
 	@rm -rf build dist src/*.egg-info
 
-clean: docs-clean docs-pdf-clean dist-clean
+clean: docs-clean dist-clean

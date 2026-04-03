@@ -1,0 +1,104 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/checks/stats_utils/validate-weights.md:1
+msgid "_validate_weights"
+msgstr "_validate_weights"
+
+#: ../../source/checks/stats_utils/validate-weights.md:3
+msgid "Firma"
+msgstr "Signature"
+
+#: ../../source/checks/stats_utils/validate-weights.md:12
+msgid "Che problema risolve"
+msgstr "What problem it solves"
+
+#: ../../source/checks/stats_utils/validate-weights.md:14
+msgid "Centralizza la validazione dei pesi usati nelle statistiche pesate."
+msgstr "Centralizes validation of the weights used in weighted statistics."
+
+#: ../../source/checks/stats_utils/validate-weights.md:16
+msgid "Contratto sugli input"
+msgstr "Input contract"
+
+#: ../../source/checks/stats_utils/validate-weights.md:18
+msgid "Se `w is None`, restituisce `None` e il chiamante ricade nel caso non pesato."
+msgstr "If `w is None`, it returns `None` and the caller falls back to the unweighted case."
+
+#: ../../source/checks/stats_utils/validate-weights.md:19
+msgid "Se `w` e presente, viene prima convertito con [`_as_float_vector`](as-float-vector.md)."
+msgstr "If `w` is provided, it is first converted with [`_as_float_vector`](as-float-vector.md)."
+
+#: ../../source/checks/stats_utils/validate-weights.md:20
+msgid "`w` deve avere la stessa forma di `x`."
+msgstr "`w` must have the same shape as `x`."
+
+#: ../../source/checks/stats_utils/validate-weights.md:21
+msgid "Ogni peso deve essere strettamente positivo."
+msgstr "Each weight must be strictly positive."
+
+#: ../../source/checks/stats_utils/validate-weights.md:22
+msgid "Anche la somma dei pesi deve essere strettamente positiva e finita."
+msgstr "The sum of the weights must also be strictly positive and finite."
+
+#: ../../source/checks/stats_utils/validate-weights.md:24
+msgid "Dove viene usata"
+msgstr "Where it is used"
+
+#: ../../source/checks/stats_utils/validate-weights.md:26
+msgid "[`weighted_mean`](../../moduli/stats_utils/weighted-mean.md)"
+msgstr "[`weighted_mean`](../../moduli/stats_utils/weighted-mean.md)"
+
+#: ../../source/checks/stats_utils/validate-weights.md:27
+msgid "[`variance`](../../moduli/stats_utils/variance.md)"
+msgstr "[`variance`](../../moduli/stats_utils/variance.md)"
+
+#: ../../source/checks/stats_utils/validate-weights.md:28
+msgid "[`covariance`](../../moduli/stats_utils/covariance.md)"
+msgstr "[`covariance`](../../moduli/stats_utils/covariance.md)"
+
+#: ../../source/checks/stats_utils/validate-weights.md:30
+msgid "Come fallisce"
+msgstr "Failure modes"
+
+#: ../../source/checks/stats_utils/validate-weights.md:32
+msgid "`ValueError` se `w` non ha la stessa forma di `x`"
+msgstr "`ValueError` if `w` does not have the same shape as `x`"
+
+#: ../../source/checks/stats_utils/validate-weights.md:33
+msgid "`ValueError` se contiene zeri, valori negativi, `NaN` o infiniti"
+msgstr "`ValueError` if it contains zeros, negative values, `NaN` values, or infinities"
+
+#: ../../source/checks/stats_utils/validate-weights.md:34
+msgid "`ValueError` se la somma dei pesi non e positiva"
+msgstr "`ValueError` if the sum of the weights is not positive"
+
+#: ../../source/checks/stats_utils/validate-weights.md:36
+msgid "Perche resta privata"
+msgstr "Why it stays private"
+
+#: ../../source/checks/stats_utils/validate-weights.md:38
+msgid ""
+"Serve a imporre una convenzione comune sui pesi senza introdurre una funzione aggiuntiva nell'API"
+" pubblica."
+msgstr ""
+"It enforces a shared convention for weights without introducing an extra function into the public"
+" API."
+

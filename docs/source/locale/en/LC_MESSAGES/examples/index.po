@@ -1,0 +1,53 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/examples/index.md:1
+msgid "Esempi"
+msgstr "Examples"
+
+#: ../../source/examples/index.md:3
+msgid ""
+"Questa sezione raccoglie notebook brevi, orientati all'uso del package. Gli esempi "
+"sono pensati come punto di partenza per notebook o script, non come riferimento "
+"formale dell'API."
+msgstr ""
+"This section collects short notebooks focused on using the package. The examples are "
+"designed as a starting point for notebooks or scripts, not as formal API reference."
+
+#: ../../source/examples/index.md:5
+msgid "Esempi disponibili"
+msgstr "Available examples"
+
+#: ../../source/examples/index.md:7
+msgid "[Workflow base](basic-workflow.md)"
+msgstr "[Basic workflow](basic-workflow.md)"
+
+#: ../../source/examples/index.md:8
+msgid "[Istogramma](histogram.ipynb)"
+msgstr "[Histogram](histogram.ipynb)"
+
+#: ../../source/examples/index.md:9
+msgid "[Fit lineare](linear-fit.ipynb)"
+msgstr "[Linear fit](linear-fit.ipynb)"
+
+#: ../../source/examples/index.md:10
+msgid "[Statistiche](stats-utils.ipynb)"
+msgstr "[Statistics](stats-utils.ipynb)"
+

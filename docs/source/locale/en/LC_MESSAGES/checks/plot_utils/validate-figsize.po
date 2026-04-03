@@ -1,0 +1,90 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/checks/plot_utils/validate-figsize.md:1
+msgid "_validate_figsize"
+msgstr "_validate_figsize"
+
+#: ../../source/checks/plot_utils/validate-figsize.md:3
+msgid "Firma"
+msgstr "Signature"
+
+#: ../../source/checks/plot_utils/validate-figsize.md:9
+msgid "Che problema risolve"
+msgstr "What problem it solves"
+
+#: ../../source/checks/plot_utils/validate-figsize.md:11
+msgid ""
+"Verifica che `figsize` sia una coppia valida di dimensioni positive, prima di creare una figura "
+"matplotlib."
+msgstr "Checks that `figsize` is a valid pair of positive dimensions before creating a matplotlib figure."
+
+#: ../../source/checks/plot_utils/validate-figsize.md:13
+msgid "Contratto sugli input"
+msgstr "Input contract"
+
+#: ../../source/checks/plot_utils/validate-figsize.md:15
+msgid "`figsize` deve essere una sequenza di due elementi."
+msgstr "`figsize` must be a sequence of two elements."
+
+#: ../../source/checks/plot_utils/validate-figsize.md:16
+msgid "Non puo essere una stringa o un oggetto bytes."
+msgstr "It cannot be a string or a bytes object."
+
+#: ../../source/checks/plot_utils/validate-figsize.md:17
+msgid "I due valori devono essere finiti e strettamente positivi."
+msgstr "Both values must be finite and strictly positive."
+
+#: ../../source/checks/plot_utils/validate-figsize.md:19
+msgid "Dove viene usata"
+msgstr "Where it is used"
+
+#: ../../source/checks/plot_utils/validate-figsize.md:21
+msgid "in [`histogram`](../../moduli/plot_utils/histogram.md) quando la figura viene creata internamente"
+msgstr "in [`histogram`](../../moduli/plot_utils/histogram.md) when the figure is created internally"
+
+#: ../../source/checks/plot_utils/validate-figsize.md:22
+msgid "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) quando `show_plot=True`"
+msgstr "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) when `show_plot=True`"
+
+#: ../../source/checks/plot_utils/validate-figsize.md:24
+msgid "Come fallisce"
+msgstr "Failure modes"
+
+#: ../../source/checks/plot_utils/validate-figsize.md:26
+msgid "`ValueError` se `figsize` non e una coppia"
+msgstr "`ValueError` if `figsize` is not a pair"
+
+#: ../../source/checks/plot_utils/validate-figsize.md:27
+msgid "`ValueError` se uno dei valori non e numerico, non e finito oppure non e positivo"
+msgstr "`ValueError` if one of the values is not numeric, not finite, or not positive"
+
+#: ../../source/checks/plot_utils/validate-figsize.md:29
+msgid "Perche resta privata"
+msgstr "Why it stays private"
+
+#: ../../source/checks/plot_utils/validate-figsize.md:31
+msgid ""
+"Evita di duplicare sempre lo stesso controllo nel codice di plotting, ma non aggiunge un concetto"
+" autonomo per l'utente finale."
+msgstr ""
+"It avoids duplicating the same check throughout the plotting code, but it does not add a "
+"standalone concept for the end user."
+

@@ -1,0 +1,84 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/stats_utils/median/panoramica.md:1
+msgid "Panoramica"
+msgstr "Overview"
+
+#: ../../source/moduli/stats_utils/median/panoramica.md:3
+msgid "Scopo"
+msgstr "Purpose"
+
+#: ../../source/moduli/stats_utils/median/panoramica.md:5
+msgid ""
+"Restituire la mediana di un campione numerico dopo aver validato che l'input sia "
+"monodimensionale, non vuoto e finito."
+msgstr ""
+"Return the median of a numeric sample after validating that the input is one-dimensional, non-"
+"empty, and finite."
+
+#: ../../source/moduli/stats_utils/median/panoramica.md:7
+msgid "Parametri"
+msgstr "Parameters"
+
+#: ../../source/moduli/stats_utils/median/panoramica.md:9
+msgid "`x`: sequenza o array con i dati."
+msgstr "`x`: sequence or array containing the data."
+
+#: ../../source/moduli/stats_utils/median/panoramica.md:11
+msgid "Restituisce"
+msgstr "Returns"
+
+#: ../../source/moduli/stats_utils/median/panoramica.md:13
+msgid "Un `float` con la mediana di `x`."
+msgstr "A `float` with the median of `x`."
+
+#: ../../source/moduli/stats_utils/median/panoramica.md:15
+msgid "Errori ed eccezioni"
+msgstr "Errors and exceptions"
+
+#: ../../source/moduli/stats_utils/median/panoramica.md:17
+msgid "`ValueError` se `x` e vuoto."
+msgstr "`ValueError` if `x` is empty."
+
+#: ../../source/moduli/stats_utils/median/panoramica.md:18
+msgid "`ValueError` se `x` non e monodimensionale."
+msgstr "`ValueError` if `x` is not one-dimensional."
+
+#: ../../source/moduli/stats_utils/median/panoramica.md:19
+msgid "`ValueError` se `x` contiene `NaN` o infiniti."
+msgstr "`ValueError` if `x` contains `NaN` values or infinities."
+
+#: ../../source/moduli/stats_utils/median/panoramica.md:21
+msgid "Esempio"
+msgstr "Example"
+
+#: ../../source/moduli/stats_utils/median/panoramica.md:30
+msgid "Note"
+msgstr "Notes"
+
+#: ../../source/moduli/stats_utils/median/panoramica.md:32
+msgid ""
+"La funzione delega tutta la validazione preliminare a "
+"[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md)."
+msgstr ""
+"The function delegates all preliminary validation to "
+"[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md)."
+
