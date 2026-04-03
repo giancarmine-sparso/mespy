@@ -1,0 +1,152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:1
+msgid "Panoramica"
+msgstr "Overview"
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:3
+msgid "Scopo"
+msgstr "Purpose"
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:5
+msgid ""
+"Eseguire un fit lineare pesato `y = m x + c` su dati sperimentali con incertezze su `y` e, "
+"opzionalmente, anche su `x`."
+msgstr ""
+"Perform a weighted linear fit `y = m x + c` on experimental data with uncertainties on `y` and, "
+"optionally, on `x` as well."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:7
+msgid "Parametri"
+msgstr "Parameters"
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:9
+msgid "`x`, `y`: dati sperimentali."
+msgstr "`x`, `y`: experimental data."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:10
+msgid "`sigma_y`: incertezze su `y`, strettamente positive."
+msgstr "`sigma_y`: uncertainties on `y`, strictly positive."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:11
+msgid "`sigma_x`: incertezze opzionali su `x`, anch'esse strettamente positive."
+msgstr "`sigma_x`: optional uncertainties on `x`, also strictly positive."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:12
+msgid "`tol`: tolleranza relativa usata nel criterio di convergenza quando `sigma_x` e presente."
+msgstr "`tol`: relative tolerance used in the convergence criterion when `sigma_x` is provided."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:13
+msgid "`max_iter`: massimo numero di aggiornamenti dei pesi."
+msgstr "`max_iter`: maximum number of weight updates."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:14
+msgid ""
+"`show_plot`, `show_band`, `show_legend`, `show_fit_params`, `show_grid`: controllano la parte "
+"grafica."
+msgstr ""
+"`show_plot`, `show_band`, `show_legend`, `show_fit_params`, `show_grid`: control the plotting "
+"part."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:15
+msgid ""
+"`xlabel`, `ylabel`, `title`, `xlim`, `ylim`, `figsize`, `dpi`, `save_path` e gli altri parametri "
+"di stile regolano la figura."
+msgstr ""
+"`xlabel`, `ylabel`, `title`, `xlim`, `ylim`, `figsize`, `dpi`, `save_path`, and the other style "
+"parameters control the figure."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:17
+msgid "Restituisce"
+msgstr "Returns"
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:19
+msgid ""
+"Un [`LinearFitResult`](../linear-fit-result.md) con parametri del fit, incertezze, residui, "
+"diagnostiche e figura opzionale."
+msgstr ""
+"A [`LinearFitResult`](../linear-fit-result.md) containing fit parameters, uncertainties, "
+"residuals, diagnostics, and an optional figure."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:21
+msgid "Errori ed eccezioni"
+msgstr "Errors and exceptions"
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:23
+msgid "`ValueError` se `x`, `y` e `sigma_y` non hanno la stessa lunghezza."
+msgstr "`ValueError` if `x`, `y`, and `sigma_y` do not have the same length."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:24
+msgid "`ValueError` se ci sono meno di 3 punti."
+msgstr "`ValueError` if there are fewer than 3 points."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:25
+msgid "`ValueError` se gli input contengono valori non finiti."
+msgstr "`ValueError` if the inputs contain non-finite values."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:26
+msgid "`ValueError` se `sigma_y` o `sigma_x` contengono valori non positivi."
+msgstr "`ValueError` if `sigma_y` or `sigma_x` contain non-positive values."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:27
+msgid "`ValueError` se `tol` o `max_iter` sono invalidi."
+msgstr "`ValueError` if `tol` or `max_iter` are invalid."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:28
+msgid "`ValueError` se `x` non contiene almeno due valori distinti."
+msgstr "`ValueError` if `x` does not contain at least two distinct values."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:29
+msgid "`ValueError` se `save_path` viene usato con `show_plot=False`."
+msgstr "`ValueError` if `save_path` is used with `show_plot=False`."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:30
+msgid "`RuntimeError` se il caso con `sigma_x` non converge entro `max_iter`."
+msgstr "`RuntimeError` if the case with `sigma_x` does not converge within `max_iter`."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:32
+msgid "Esempio"
+msgstr "Example"
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:53
+msgid "Note"
+msgstr "Notes"
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:55
+msgid "Nel caso base i pesi sono `1 / sigma_y**2`."
+msgstr "In the basic case the weights are `1 / sigma_y**2`."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:56
+msgid ""
+"Se `sigma_x` e presente, i pesi vengono aggiornati con la varianza efficace `sigma_y^2 + m^2 "
+"sigma_x^2`."
+msgstr ""
+"If `sigma_x` is provided, the weights are updated with the effective variance `sigma_y^2 + m^2 "
+"sigma_x^2`."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:57
+msgid ""
+"I coefficienti iniziali e gli aggiornamenti intermedi passano per "
+"[`_fit_coefficients`](../../../checks/fit_utils/fit-coefficients.md)."
+msgstr ""
+"The initial coefficients and intermediate updates go through "
+"[`_fit_coefficients`](../../../checks/fit_utils/fit-coefficients.md)."
+

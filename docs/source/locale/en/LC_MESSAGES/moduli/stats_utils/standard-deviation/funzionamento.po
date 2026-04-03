@@ -1,0 +1,178 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:1
+msgid "Funzionamento"
+msgstr "Implementation"
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:3
+msgid ""
+"Questa pagina descrive il flusso interno di `standard_deviation` e il modo in cui la funzione "
+"delega quasi tutto il lavoro a [`variance`](../variance.md). A differenza di "
+"[Panoramica](panoramica.md), qui l'obiettivo non e ripetere i parametri, ma mostrare perche il "
+"comportamento pratico della deviazione standard coincide quasi interamente con quello della "
+"varianza."
+msgstr ""
+"This page describes the internal flow of `standard_deviation` and how the function delegates "
+"almost all of its work to [`variance`](../variance.md). Unlike [Overview](panoramica.md), the "
+"goal here is not to repeat the parameters, but to show why the practical behavior of standard "
+"deviation almost entirely coincides with that of variance."
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:5
+msgid ""
+"I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. Anche se "
+"[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) non compare direttamente nel"
+" corpo di `standard_deviation`, entra in gioco subito attraverso `variance(...)`; lo stesso vale "
+"per [`_validate_weights`](../../../checks/stats_utils/validate-weights.md) quando `w` e presente."
+msgstr ""
+"The following snippets are taken from the current `src/mespy/stats_utils.py` implementation. Even"
+" though [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) does not appear "
+"directly in the body of `standard_deviation`, it comes into play immediately through "
+"`variance(...)`; the same is true for [`_validate_weights`](../../../checks/stats_utils/validate-"
+"weights.md) when `w` is provided."
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:7
+msgid "Sequenza di esecuzione"
+msgstr "Execution sequence"
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:9
+msgid "L'implementazione segue questa sequenza:"
+msgstr "The implementation follows this sequence:"
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:11
+msgid "Riceve `x`, `w` e `ddof` senza effettuare validazioni locali."
+msgstr "Receives `x`, `w`, and `ddof` without performing local validation."
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:12
+msgid "Delega il calcolo della varianza a [`variance`](../variance.md)."
+msgstr "Delegates the variance computation to [`variance`](../variance.md)."
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:13
+msgid "Applica `np.sqrt(...)` al valore restituito."
+msgstr "Applies `np.sqrt(...)` to the returned value."
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:14
+msgid "Converte il risultato in `float` Python."
+msgstr "Converts the result to a Python `float`."
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:16
+msgid "Wrapper minimale sopra `variance`"
+msgstr "Minimal wrapper over `variance`"
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:27
+msgid ""
+"Questo frammento mostra che `standard_deviation` non reimplementa nessuna parte della logica "
+"statistica."
+msgstr ""
+"This snippet shows that `standard_deviation` does not reimplement any part of the statistical "
+"logic."
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:29
+msgid "Non valida direttamente `x`: la validazione avviene dentro `variance(...)`."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:30
+msgid "Non gestisce direttamente i pesi: anche questo controllo e delegato."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:31
+msgid ""
+"Non distingue con rami propri tra caso pesato e non pesato: eredita i due rami gia presenti nella"
+" varianza."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:33
+msgid "Formula implementata"
+msgstr "Implemented formula"
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:35
+msgid "La definizione operativa e semplicemente"
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:37
+msgid ""
+"\n"
+"\\sigma = \\sqrt{\\mathrm{Var}(x)}\n"
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:41
+msgid "oppure, nel caso pesato,"
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:43
+msgid ""
+"\n"
+"\\sigma_w = \\sqrt{\\mathrm{Var}_w(x)}.\n"
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:47
+msgid ""
+"Per questo motivo tutto cio che influenza la varianza influenza automaticamente anche la "
+"deviazione standard."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:49
+msgid "`ddof` viene passato senza modifiche a `variance(...)`."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:50
+msgid ""
+"Se il denominatore della varianza diventa non positivo, l'errore nasce prima della radice "
+"quadrata."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:51
+msgid ""
+"Se i pesi sono invalidi, il fallimento avviene nel validatore comune dei pesi, non in "
+"`standard_deviation` stessa."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:53
+msgid "Interazioni importanti con `variance`"
+msgstr "Important interactions with `variance`"
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:55
+msgid "Il comportamento pratico della funzione si capisce meglio leggendo questa dipendenza esplicita."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:57
+msgid ""
+"`standard_deviation(x)` equivale a prendere la radice quadrata della varianza non pesata con "
+"`ddof=0`."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:58
+msgid ""
+"`standard_deviation(x, w=w)` equivale a prendere la radice quadrata della varianza pesata "
+"costruita con gli stessi pesi."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:59
+msgid ""
+"`standard_deviation(x, ddof=1)` non introduce una nuova convenzione: chiede semplicemente a "
+"`variance(...)` di usare un denominatore corretto."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:60
+msgid ""
+"Di conseguenza, per capire davvero errori, casi limite e ruolo di `ddof`, la pagina di "
+"riferimento resta [`variance`](../variance.md)."
+msgstr ""
+

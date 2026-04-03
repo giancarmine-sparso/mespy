@@ -1,0 +1,104 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/index.md:1
+msgid "mespy"
+msgstr "mespy"
+
+#: ../../source/index.md:3
+msgid "`mespy` e una toolbox Python per l'analisi di dati sperimentali."
+msgstr "`mespy` is a Python toolbox for experimental data analysis."
+
+#: ../../source/index.md:5
+msgid ""
+"Questa documentazione e organizzata per modulo: ogni file principale ha una pagina "
+"panoramica e una pagina separata per ogni funzione pubblica. In parallelo c'e una "
+"sezione dedicata ai controlli interni, utile per capire come il package normalizza "
+"gli input e gestisce gli errori."
+msgstr ""
+"This documentation is organized by module: each main file has an overview page and a "
+"separate page for each public function. In parallel there is a section dedicated to "
+"internal checks, useful for understanding how the package normalizes inputs and "
+"handles errors."
+
+#: ../../source/index.md:7
+msgid "Cosa trovi qui"
+msgstr "What you'll find here"
+
+#: ../../source/index.md:9
+msgid ""
+"[Installazione](installazione.md) per preparare l'ambiente locale e verificare "
+"l'import."
+msgstr ""
+"[Installation](installazione.md) to prepare the local environment and verify the "
+"import."
+
+#: ../../source/index.md:10
+msgid "[Guida rapida](getting-started.md) per partire dal flusso di lavoro piu comune."
+msgstr "[Quick start](getting-started.md) to begin with the most common workflow."
+
+#: ../../source/index.md:11
+msgid "[Esempi](examples/index.md) per notebook d'uso pronti da adattare."
+msgstr "[Examples](examples/index.md) for ready-to-adapt usage notebooks."
+
+#: ../../source/index.md:12
+msgid "[io_utils](moduli/io_utils/index.md) per il caricamento dei CSV."
+msgstr "[io_utils](moduli/io_utils/index.md) for CSV loading."
+
+#: ../../source/index.md:13
+msgid "[stats_utils](moduli/stats_utils/index.md) per le statistiche descrittive e pesate."
+msgstr "[stats_utils](moduli/stats_utils/index.md) for descriptive and weighted statistics."
+
+#: ../../source/index.md:14
+msgid "[plot_utils](moduli/plot_utils/index.md) per la visualizzazione."
+msgstr "[plot_utils](moduli/plot_utils/index.md) for visualization."
+
+#: ../../source/index.md:15
+msgid "[fit_utils](moduli/fit_utils/index.md) per il fit lineare pesato."
+msgstr "[fit_utils](moduli/fit_utils/index.md) for weighted linear fitting."
+
+#: ../../source/index.md:16
+msgid "[Controlli e helper interni](checks/index.md) per i validatori e gli helper privati."
+msgstr "[Internal checks and helpers](checks/index.md) for validators and private helpers."
+
+#: ../../source/index.md:18
+msgid "Obiettivi del package"
+msgstr "Package goals"
+
+#: ../../source/index.md:20
+msgid "offrire API piccole e leggibili"
+msgstr "offer small, readable APIs"
+
+#: ../../source/index.md:21
+msgid "validare subito gli input problematici"
+msgstr "validate problematic inputs early"
+
+#: ../../source/index.md:22
+msgid "produrre errori chiari in notebook e script didattici"
+msgstr "produce clear errors in notebooks and teaching scripts"
+
+#: ../../source/index.md:23
+msgid "mantenere separata l'API pubblica dai dettagli interni"
+msgstr "keep the public API separate from internal details"
+
+#: ../../source/index.md:25
+msgid "Esempio rapido"
+msgstr "Quick example"
+

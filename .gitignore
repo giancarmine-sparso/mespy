@@ -37,42 +37,10 @@ figures/
 references/
 plan.md
 TODO.md
-# LaTeX minted cache
-_minted-*/
-*.pygstyle
-
-# LaTeX
-*.aux
-*.log
-*.out
-*.toc
-*.synctex.gz
-*.fls
-*.fdb_latexmk
-*.bbl
-*.bcf
-*.blg
-*.run.xml
-*.lof
-*.lot
-*.nav
-*.snm
-*.vrb
-*.xdv
-*.md5
-indent.log
-__latexindent_temp_*
-*.bak*
-_minted-main
-
-# PDF
-# *.pdf
-
 # Documentazione generata
-docs-sphinx/build/
+docs/build/
 site/
-docs/LaTeX-docs/.texmf-var/
-docs/LaTeX-docs/main.pdf
+docs/source/locale/**/LC_MESSAGES/*.mo
 
 # Arduino
 *.hex

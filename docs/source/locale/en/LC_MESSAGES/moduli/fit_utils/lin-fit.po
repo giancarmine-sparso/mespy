@@ -1,0 +1,54 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/fit_utils/lin-fit.md:42
+msgid "Panoramica"
+msgstr "Overview"
+
+#: ../../source/moduli/fit_utils/lin-fit.md:42
+msgid "Funzionamento"
+msgstr "Implementation"
+
+#: ../../source/moduli/fit_utils/lin-fit.md:1
+msgid "lin_fit"
+msgstr "lin_fit"
+
+#: ../../source/moduli/fit_utils/lin-fit.md:3
+msgid "Firma"
+msgstr "Signature"
+
+#: ../../source/moduli/fit_utils/lin-fit.md:38
+msgid ""
+"`lin_fit` esegue un fit lineare pesato `y = m x + c` su dati sperimentali, con supporto opzionale"
+" alle incertezze anche su `x`."
+msgstr ""
+"`lin_fit` performs a weighted linear fit `y = m x + c` on experimental data, with optional "
+"support for uncertainties on `x` as well."
+
+#: ../../source/moduli/fit_utils/lin-fit.md:40
+msgid ""
+"Questa pagina resta il punto di accesso rapido alla funzione. I dettagli pratici sono raccolti in"
+" [Panoramica](lin-fit/panoramica.md), mentre [Funzionamento](lin-fit/funzionamento.md) e "
+"predisposta come sottopagina separata."
+msgstr ""
+"This page remains the quick access point for the function. Practical details are collected in "
+"[Overview](lin-fit/panoramica.md), while [How it works](lin-fit/funzionamento.md) is prepared as "
+"a separate subpage."
+

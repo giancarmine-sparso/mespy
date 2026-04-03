@@ -1,0 +1,114 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/stats_utils/index.md:1
+msgid "stats_utils.py"
+msgstr "stats_utils.py"
+
+#: ../../source/moduli/stats_utils/index.md:3
+msgid ""
+"`stats_utils.py` raccoglie le statistiche descrittive di base del package e i validatori interni "
+"riusati anche da altri moduli."
+msgstr ""
+"`stats_utils.py` collects the package basic descriptive statistics and the internal validators "
+"reused by other modules as well."
+
+#: ../../source/moduli/stats_utils/index.md:5
+msgid "Import principali"
+msgstr "Main imports"
+
+#: ../../source/moduli/stats_utils/index.md:7
+msgid "Librerie esterne: `numpy as np`, `numpy.typing.ArrayLike`, `numpy.typing.NDArray`"
+msgstr "External libraries: `numpy as np`, `numpy.typing.ArrayLike`, `numpy.typing.NDArray`"
+
+#: ../../source/moduli/stats_utils/index.md:9
+msgid "Tipi definiti nel modulo: `FloatVector = NDArray[np.float64]`"
+msgstr "Types defined in the module: `FloatVector = NDArray[np.float64]`"
+
+#: ../../source/moduli/stats_utils/index.md:11
+msgid ""
+"Helper interni: [`_as_float_vector`](../../checks/stats_utils/as-float-vector.md), "
+"[`_validate_weights`](../../checks/stats_utils/validate-weights.md)"
+msgstr ""
+"Internal helpers: [`_as_float_vector`](../../checks/stats_utils/as-float-vector.md), "
+"[`_validate_weights`](../../checks/stats_utils/validate-weights.md)"
+
+#: ../../source/moduli/stats_utils/index.md:15
+msgid "Cosa espone"
+msgstr "What it exports"
+
+#: ../../source/moduli/stats_utils/index.md:17 ../../source/moduli/stats_utils/index.md:36
+msgid "[`median`](median.md)"
+msgstr "[`median`](median.md)"
+
+#: ../../source/moduli/stats_utils/index.md:18 ../../source/moduli/stats_utils/index.md:37
+msgid "[`weighted_mean`](weighted-mean.md)"
+msgstr "[`weighted_mean`](weighted-mean.md)"
+
+#: ../../source/moduli/stats_utils/index.md:19 ../../source/moduli/stats_utils/index.md:38
+msgid "[`variance`](variance.md)"
+msgstr "[`variance`](variance.md)"
+
+#: ../../source/moduli/stats_utils/index.md:20 ../../source/moduli/stats_utils/index.md:39
+msgid "[`covariance`](covariance.md)"
+msgstr "[`covariance`](covariance.md)"
+
+#: ../../source/moduli/stats_utils/index.md:21 ../../source/moduli/stats_utils/index.md:40
+msgid "[`standard_deviation`](standard-deviation.md)"
+msgstr "[`standard_deviation`](standard-deviation.md)"
+
+#: ../../source/moduli/stats_utils/index.md:23
+msgid "Di cosa si occupa"
+msgstr "What it does"
+
+#: ../../source/moduli/stats_utils/index.md:25
+msgid "convertire input array-like in vettori `float64` monodimensionali"
+msgstr "convert array-like inputs into one-dimensional `float64` vectors"
+
+#: ../../source/moduli/stats_utils/index.md:26
+msgid "intercettare input vuoti o non finiti"
+msgstr "catch empty or non-finite inputs"
+
+#: ../../source/moduli/stats_utils/index.md:27
+msgid "gestire opzionalmente pesi strettamente positivi"
+msgstr "optionally handle strictly positive weights"
+
+#: ../../source/moduli/stats_utils/index.md:28
+msgid "calcolare statistiche non pesate e pesate con un'interfaccia uniforme"
+msgstr "compute unweighted and weighted statistics with a uniform interface"
+
+#: ../../source/moduli/stats_utils/index.md:30
+msgid "Relazioni interne"
+msgstr "Internal relations"
+
+#: ../../source/moduli/stats_utils/index.md:32
+msgid ""
+"Gli helper di questo modulo non servono solo alle funzioni statistiche. `_as_float_vector` viene "
+"importata anche da [`plot_utils`](../plot_utils/index.md) e [`fit_utils`](../fit_utils/index.md),"
+" quindi `stats_utils.py` e il punto centrale della normalizzazione numerica degli input."
+msgstr ""
+"The helpers in this module are not used only by the statistical functions. `_as_float_vector` is "
+"also imported by [`plot_utils`](../plot_utils/index.md) and [`fit_utils`](../fit_utils/index.md),"
+" so `stats_utils.py` is the central point for numeric input normalization."
+
+#: ../../source/moduli/stats_utils/index.md:34
+msgid "Pagine di dettaglio"
+msgstr "Detailed pages"
+

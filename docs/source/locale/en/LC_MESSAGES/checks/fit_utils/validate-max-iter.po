@@ -1,0 +1,82 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:1
+msgid "_validate_max_iter"
+msgstr "_validate_max_iter"
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:3
+msgid "Firma"
+msgstr "Signature"
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:9
+msgid "Che problema risolve"
+msgstr "What problem it solves"
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:11
+msgid "Impedisce di avviare l'iterazione del fit con un numero di iterazioni massimo non valido."
+msgstr "Prevents the fit iteration from starting with an invalid maximum iteration count."
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:13
+msgid "Contratto sugli input"
+msgstr "Input contract"
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:15
+msgid "`max_iter` deve essere un intero vero, non un booleano."
+msgstr "`max_iter` must be a real integer, not a boolean."
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:16
+msgid "Il valore intero deve essere strettamente positivo."
+msgstr "The integer value must be strictly positive."
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:18
+msgid "Dove viene usata"
+msgstr "Where it is used"
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:20
+msgid ""
+"in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) prima dell'eventuale ciclo iterativo su "
+"`sigma_x`"
+msgstr "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) before the optional iterative loop on `sigma_x`"
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:22
+msgid "Come fallisce"
+msgstr "Failure modes"
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:24
+msgid "`ValueError` se `max_iter` non e un intero"
+msgstr "`ValueError` if `max_iter` is not an integer"
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:25
+msgid "`ValueError` se `max_iter` e un booleano"
+msgstr "`ValueError` if `max_iter` is a boolean"
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:26
+msgid "`ValueError` se `max_iter <= 0`"
+msgstr "`ValueError` if `max_iter <= 0`"
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:28
+msgid "Perche resta privata"
+msgstr "Why it stays private"
+
+#: ../../source/checks/fit_utils/validate-max-iter.md:30
+msgid "Esprime una regola di validazione molto specifica per l'algoritmo iterativo del fit lineare."
+msgstr "It expresses a validation rule that is very specific to the iterative linear-fit algorithm."
+

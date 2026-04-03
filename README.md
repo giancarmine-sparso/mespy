@@ -79,8 +79,7 @@ mespy/
 ├── src/mespy/            # package Python
 ├── tests/                # test pytest
 ├── notebooks/            # notebook di prova e dimostrazione
-├── docs-sphinx/          # sorgenti e build della documentazione HTML
-├── docs/LaTeX-docs/      # sorgenti legacy della documentazione PDF
+├── docs/                 # sorgenti e build della documentazione HTML
 ├── data/reference/       # dataset di riferimento per test/esempi
 ├── figures/              # figure esportate
 ├── tools/                # script di supporto
@@ -93,8 +92,6 @@ mespy/
 - Python `>= 3.12`
 - `git`
 - nessun requisito di sistema extra per il sito HTML: `make setup` installa Sphinx e le dipendenze Python necessarie
-- `lualatex`, `latexmk` e `pygmentize` solo se vuoi ricompilare la documentazione PDF legacy
-- font richiesti dalla build PDF legacy: `Libertinus Serif`, `Libertinus Math`, `Libertinus Sans`, `JetBrains Mono`, `Inter Display`
 
 ## Installazione rapida
 
@@ -119,7 +116,7 @@ source .venv/bin/activate
 
 ## Documentazione
 
-La documentazione HTML del package vive in `docs-sphinx/source` e viene generata in `docs-sphinx/build/html`.
+La documentazione HTML del package vive in `docs/source` e viene generata in `docs/build/html`.
 
 Per costruire il sito:
 
@@ -127,7 +124,7 @@ Per costruire il sito:
 make docs
 ```
 
-La homepage risultante e' `docs-sphinx/build/html/index.html`.
+La homepage risultante e' `docs/build/html/index.html`.
 
 La documentazione del sito e organizzata in:
 
@@ -140,24 +137,6 @@ Se vuoi pulire la build HTML:
 
 ```bash
 make docs-clean
-```
-
-## Documentazione PDF legacy
-
-La vecchia documentazione LaTeX resta disponibile in `docs/LaTeX-docs`.
-
-Per ricompilarla:
-
-```bash
-make docs-pdf
-```
-
-`make check-tex` verifica i prerequisiti LaTeX e, se `fc-match` e' disponibile nel sistema, controlla anche la presenza dei font richiesti.
-
-Per pulire gli artifact LaTeX:
-
-```bash
-make docs-pdf-clean
 ```
 
 ## Check pre-release
@@ -182,11 +161,8 @@ Il comando esegue test, `compileall`, `pip check`, build di `sdist` e `wheel`, v
 | `make twine-check` | Valida solo gli artifact della versione corrente |
 | `make upload` | Carica su PyPI solo gli artifact della versione corrente |
 | `make release-check` | Esegue il gate completo pre-release per PyPI |
-| `make docs` | Costruisce il sito HTML con Sphinx in `docs-sphinx/build/html` |
+| `make docs` | Costruisce il sito HTML con Sphinx in `docs/build/html` |
 | `make docs-clean` | Rimuove gli artifact di build di Sphinx |
-| `make check-tex` | Verifica i prerequisiti LaTeX e, se possibile, i font richiesti |
-| `make docs-pdf` | Compila la documentazione PDF legacy |
-| `make docs-pdf-clean` | Rimuove i file temporanei LaTeX |
 | `make dist-clean` | Rimuove gli artifact Python di build |
 | `make clean` | Esegue la pulizia generale |
 

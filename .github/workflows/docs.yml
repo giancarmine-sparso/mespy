@@ -45,7 +45,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: docs-sphinx/build/html
+          path: docs/build/html
 
   deploy:
     runs-on: ubuntu-latest

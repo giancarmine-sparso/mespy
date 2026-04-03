@@ -1,0 +1,109 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/checks/index.md:1
+msgid "Controlli e helper interni"
+msgstr "Internal checks and helpers"
+
+#: ../../source/checks/index.md:3
+msgid ""
+"Questa sezione documenta le funzioni private usate da `mespy` per validare input e centralizzare "
+"piccoli passaggi di calcolo. Sono helper importanti per capire il comportamento del package, ma "
+"non fanno parte dell'API pubblica."
+msgstr ""
+"This section documents the private functions used by `mespy` to validate inputs and centralize "
+"small calculation steps. They are important helpers for understanding the package behavior, but "
+"they are not part of the public API."
+
+#: ../../source/checks/index.md:5
+msgid "Perche esiste questa sezione"
+msgstr "Why this section exists"
+
+#: ../../source/checks/index.md:7
+msgid "mostra dove vengono intercettati gli errori piu comuni"
+msgstr "shows where the most common errors are caught"
+
+#: ../../source/checks/index.md:8
+msgid "rende esplicite le dipendenze interne tra moduli"
+msgstr "makes internal dependencies between modules explicit"
+
+#: ../../source/checks/index.md:9
+msgid "aiuta a capire perche le funzioni pubbliche hanno un comportamento coerente"
+msgstr "helps explain why the public functions behave consistently"
+
+#: ../../source/checks/index.md:11
+msgid "Mappa rapida"
+msgstr "Quick map"
+
+#: ../../source/checks/index.md:13
+msgid "stats_utils"
+msgstr "stats_utils"
+
+#: ../../source/checks/index.md:15
+msgid "[`_as_float_vector`](stats_utils/as-float-vector.md)"
+msgstr "[`_as_float_vector`](stats_utils/as-float-vector.md)"
+
+#: ../../source/checks/index.md:16
+msgid "[`_validate_weights`](stats_utils/validate-weights.md)"
+msgstr "[`_validate_weights`](stats_utils/validate-weights.md)"
+
+#: ../../source/checks/index.md:18
+msgid "plot_utils"
+msgstr "plot_utils"
+
+#: ../../source/checks/index.md:20
+msgid "[`_validate_axis_limits`](plot_utils/validate-axis-limits.md)"
+msgstr "[`_validate_axis_limits`](plot_utils/validate-axis-limits.md)"
+
+#: ../../source/checks/index.md:21
+msgid "[`_validate_figsize`](plot_utils/validate-figsize.md)"
+msgstr "[`_validate_figsize`](plot_utils/validate-figsize.md)"
+
+#: ../../source/checks/index.md:23
+msgid "fit_utils"
+msgstr "fit_utils"
+
+#: ../../source/checks/index.md:25
+msgid "[`_validate_positive_vector`](fit_utils/validate-positive-vector.md)"
+msgstr "[`_validate_positive_vector`](fit_utils/validate-positive-vector.md)"
+
+#: ../../source/checks/index.md:26
+msgid "[`_validate_positive_scalar`](fit_utils/validate-positive-scalar.md)"
+msgstr "[`_validate_positive_scalar`](fit_utils/validate-positive-scalar.md)"
+
+#: ../../source/checks/index.md:27
+msgid "[`_validate_max_iter`](fit_utils/validate-max-iter.md)"
+msgstr "[`_validate_max_iter`](fit_utils/validate-max-iter.md)"
+
+#: ../../source/checks/index.md:28
+msgid "[`_fit_coefficients`](fit_utils/fit-coefficients.md)"
+msgstr "[`_fit_coefficients`](fit_utils/fit-coefficients.md)"
+
+#: ../../source/checks/index.md:30
+msgid "Nota importante"
+msgstr "Important note"
+
+#: ../../source/checks/index.md:32
+msgid ""
+"Il fatto che queste funzioni siano documentate non significa che siano stabili come interfaccia "
+"pubblica. Sono descritte per chiarezza progettuale e per facilitare la manutenzione del package."
+msgstr ""
+"The fact that these functions are documented does not mean they are stable public interfaces. "
+"They are described for design clarity and to make maintenance of the package easier."

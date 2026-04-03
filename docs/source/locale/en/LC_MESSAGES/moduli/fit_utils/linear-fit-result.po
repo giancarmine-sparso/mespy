@@ -1,0 +1,148 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:1
+msgid "LinearFitResult"
+msgstr "LinearFitResult"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:3
+msgid "Definizione"
+msgstr "Definition"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:5
+msgid ""
+"`LinearFitResult` e una `dataclass` immutabile con `slots=True`, usata come oggetto "
+"di ritorno di [`lin_fit`](lin-fit.md)."
+msgstr ""
+"`LinearFitResult` is an immutable `dataclass` with `slots=True`, used as the return "
+"object of [`lin_fit`](lin-fit.md)."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:7
+msgid "Scopo"
+msgstr "Purpose"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:9
+msgid ""
+"Raccogliere in un unico contenitore tipizzato i parametri del fit, le incertezze "
+"associate, i residui, le diagnostiche e la figura opzionale."
+msgstr ""
+"Collect the fit parameters, associated uncertainties, residuals, diagnostics, and "
+"optional figure in a single typed container."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:11
+msgid "Campi"
+msgstr "Fields"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:13
+msgid "`slope`: pendenza della retta stimata."
+msgstr "`slope`: slope of the fitted line."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:14
+msgid "`intercept`: intercetta della retta stimata."
+msgstr "`intercept`: intercept of the fitted line."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:15
+msgid "`slope_std`: incertezza standard sulla pendenza."
+msgstr "`slope_std`: standard uncertainty on the slope."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:16
+msgid "`intercept_std`: incertezza standard sull'intercetta."
+msgstr "`intercept_std`: standard uncertainty on the intercept."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:17
+msgid "`covariance`: covarianza tra i due parametri del fit."
+msgstr "`covariance`: covariance between the two fit parameters."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:18
+msgid "`correlation`: coefficiente di correlazione tra pendenza e intercetta."
+msgstr "`correlation`: correlation coefficient between slope and intercept."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:19
+msgid "`residuals`: vettore dei residui `y - (m x + c)`."
+msgstr "`residuals`: vector of residuals `y - (m x + c)`."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:20
+msgid "`residual_std`: stima sintetica della dispersione dei residui."
+msgstr "`residual_std`: compact estimate of residual dispersion."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:21
+msgid "`chi2`: chi quadrato del fit."
+msgstr "`chi2`: chi-squared of the fit."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:22
+msgid "`reduced_chi2`: chi quadrato ridotto."
+msgstr "`reduced_chi2`: reduced chi-squared."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:23
+msgid "`dof`: gradi di liberta, pari a `n - 2`."
+msgstr "`dof`: degrees of freedom, equal to `n - 2`."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:24
+msgid "`iterations`: numero di aggiornamenti dei pesi effettuati."
+msgstr "`iterations`: number of weight updates performed."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:25
+msgid ""
+"`converged`: indica se l'iterazione con `sigma_x` ha soddisfatto il criterio di "
+"arresto."
+msgstr ""
+"`converged`: indicates whether the iteration with `sigma_x` satisfied the stopping "
+"criterion."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:26
+msgid "`figure`: oggetto matplotlib oppure `None` se `show_plot=False`."
+msgstr "`figure`: matplotlib object or `None` when `show_plot=False`."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:28
+msgid "Quando leggerlo"
+msgstr "When to read it"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:30
+msgid "Usa questo oggetto quando vuoi:"
+msgstr "Use this object when you want to:"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:32
+msgid "recuperare i parametri del fit senza dover parsare una stringa o una legenda"
+msgstr "retrieve the fit parameters without having to parse a string or a legend"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:33
+msgid "controllare la qualita del fit tramite residui e `reduced_chi2`"
+msgstr "check fit quality through residuals and `reduced_chi2`"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:34
+msgid "decidere se salvare o riusare la figura generata"
+msgstr "decide whether to save or reuse the generated figure"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:36
+msgid "Esempio"
+msgstr "Example"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:46
+msgid "Note"
+msgstr "Notes"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:48
+msgid ""
+"La classe non esegue calcoli da sola: e una rappresentazione dell'output prodotto da "
+"[`lin_fit`](lin-fit.md)."
+msgstr ""
+"The class does not perform calculations on its own: it is a representation of the "
+"output produced by [`lin_fit`](lin-fit.md)."
+

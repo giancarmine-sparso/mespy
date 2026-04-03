@@ -1,0 +1,133 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:1
+msgid "Funzionamento"
+msgstr "Implementation"
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:3
+msgid ""
+"Questa pagina descrive il flusso interno di `median` e l'ordine con cui vengono applicate "
+"validazione e calcolo finale della mediana. A differenza di [Panoramica](panoramica.md), qui "
+"l'obiettivo non e ripetere la firma della funzione, ma mostrare come il risultato viene costruito"
+" davvero."
+msgstr ""
+"This page describes the internal flow of `median` and the order in which validation and the final"
+" median calculation are applied. Unlike [Overview](panoramica.md), the goal here is not to repeat"
+" the function signature, but to show how the result is actually built."
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:5
+msgid ""
+"I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. L'unico "
+"helper coinvolto e [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), che "
+"definisce il contratto numerico di ingresso prima della delega finale a NumPy."
+msgstr ""
+"The following snippets are taken from the current `src/mespy/stats_utils.py` implementation. The "
+"only helper involved is [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), "
+"which defines the numeric input contract before the final delegation to NumPy."
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:7
+msgid "Sequenza di esecuzione"
+msgstr "Execution sequence"
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:9
+msgid "L'implementazione segue questa sequenza:"
+msgstr "The implementation follows this sequence:"
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:11
+msgid "Converte `x` in un vettore `float64` monodimensionale e finito con `_as_float_vector(\"x\", x)`."
+msgstr "Converts `x` into a one-dimensional, finite `float64` vector with `_as_float_vector(\"x\", x)`."
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:12
+msgid ""
+"Rifiuta input vuoti, multidimensionali o con valori non finiti direttamente nel validatore "
+"condiviso."
+msgstr "Rejects empty, multidimensional, or non-finite inputs directly in the shared validator."
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:13
+msgid "Passa il vettore validato a `np.median(...)`."
+msgstr "Passes the validated vector to `np.median(...)`."
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:14
+msgid "Converte il risultato finale in `float` Python."
+msgstr "Converts the final result to a Python `float`."
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:16
+msgid "Validazione e delega a NumPy"
+msgstr "Validation and delegation to NumPy"
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:24
+msgid "`median` e la funzione piu lineare dell'intero modulo."
+msgstr "`median` is the most straightforward function in the whole module."
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:26
+msgid "Non contiene rami alternativi, parametri opzionali o formule riscritte a mano."
+msgstr "It contains no alternative branches, optional parameters, or hand-rewritten formulas."
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:27
+msgid ""
+"Tutta la robustezza dell'API e concentrata nella prima riga: `_as_float_vector(...)` impone che "
+"`x` sia un array numerico, monodimensionale, non vuoto e composto solo da valori finiti."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:28
+msgid ""
+"Una volta ottenuto `values`, la funzione non aggiunge altra logica statistica: delega il calcolo "
+"della mediana a `np.median(values)`."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:29
+msgid ""
+"Il cast finale a `float` uniforma il tipo di ritorno dell'API pubblica, evitando di esporre uno "
+"scalare NumPy."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:31
+msgid "Casi limite e comportamento pratico"
+msgstr "Edge cases and practical behavior"
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:33
+msgid "Questa funzione non implementa politiche speciali oltre alla validazione iniziale."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:35
+msgid ""
+"Se `x` e vuoto, il fallimento avviene prima di chiamare `np.median(...)`, quindi il package evita"
+" warning o `nan` silenziosi."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:36
+msgid ""
+"Se `x` contiene `NaN` o infiniti, il rifiuto avviene sempre nel validatore comune, in modo "
+"coerente con tutte le altre funzioni di `stats_utils`."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:37
+msgid ""
+"Se `x` ha un numero pari di elementi, la scelta su come combinare i due valori centrali e "
+"interamente quella di NumPy, perche `mespy` non la ridefinisce."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/median/funzionamento.md:38
+msgid ""
+"Proprio per questa struttura minimale, il comportamento di `median` e facile da leggere: "
+"validazione comune all'ingresso, poi singola delega al motore numerico sottostante."
+msgstr ""
+

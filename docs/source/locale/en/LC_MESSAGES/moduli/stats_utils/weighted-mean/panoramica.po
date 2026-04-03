@@ -1,0 +1,88 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:1
+msgid "Panoramica"
+msgstr "Overview"
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:3
+msgid "Scopo"
+msgstr "Purpose"
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:5
+msgid "Calcolare la media aritmetica di `x` oppure, se `w` e presente, la media pesata."
+msgstr "Compute the arithmetic mean of `x` or, if `w` is provided, the weighted mean."
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:7
+msgid "Parametri"
+msgstr "Parameters"
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:9
+msgid "`x`: dati numerici."
+msgstr "`x`: numeric data."
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:10
+msgid "`w`: pesi opzionali. Devono avere la stessa forma di `x` ed essere strettamente positivi."
+msgstr "`w`: optional weights. They must have the same shape as `x` and be strictly positive."
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:12
+msgid "Restituisce"
+msgstr "Returns"
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:14
+msgid "Un `float` con la media semplice o pesata."
+msgstr "A `float` with the simple or weighted mean."
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:16
+msgid "Errori ed eccezioni"
+msgstr "Errors and exceptions"
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:18
+msgid "`ValueError` se `x` e vuoto o non finito."
+msgstr "`ValueError` if `x` is empty or not finite."
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:19
+msgid "`ValueError` se `w` ha forma incompatibile."
+msgstr "`ValueError` if `w` has an incompatible shape."
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:20
+msgid "`ValueError` se `w` contiene valori non positivi o ha somma non positiva."
+msgstr "`ValueError` if `w` contains non-positive values or has a non-positive sum."
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:22
+msgid "Esempio"
+msgstr "Example"
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:34
+msgid "Note"
+msgstr "Notes"
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:36
+msgid "Se `w is None`, la funzione usa `numpy.mean`."
+msgstr "If `w is None`, the function uses `numpy.mean`."
+
+#: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:37
+msgid ""
+"La validazione dei pesi passa per [`_validate_weights`](../../../checks/stats_utils/validate-"
+"weights.md)."
+msgstr ""
+"Weight validation goes through [`_validate_weights`](../../../checks/stats_utils/validate-"
+"weights.md)."
+

@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:1
+msgid "Panoramica"
+msgstr "Overview"
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:3
+msgid "Scopo"
+msgstr "Purpose"
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:5
+msgid ""
+"Caricare un file CSV in un `DataFrame` pandas con un insieme ristretto di opzioni e con controlli"
+" espliciti su colonne richieste e valori mancanti."
+msgstr ""
+"Load a CSV file into a pandas `DataFrame` with a restricted set of options and explicit checks on"
+" required columns and missing values."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:7
+msgid "Parametri"
+msgstr "Parameters"
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:9
+msgid "`path`: percorso del file da leggere."
+msgstr "`path`: path of the file to read."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:10
+msgid "`sep`: separatore di colonna passato a `pandas.read_csv`."
+msgstr "`sep`: column delimiter passed to `pandas.read_csv`."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:11
+msgid "`decimal`: separatore decimale, utile per file con formato italiano."
+msgstr "`decimal`: decimal separator, useful for files that use the Italian format."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:12
+#, python-brace-format
+msgid "`rename_columns`: mappa `{nome_origine: nome_destinazione}` applicata dopo il caricamento."
+msgstr "`rename_columns`: `{source_name: destination_name}` mapping applied after loading."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:13
+msgid "`required_columns`: elenco di colonne che devono esistere dopo l'eventuale rinomina."
+msgstr "`required_columns`: list of columns that must exist after the optional rename step."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:14
+msgid "`missing`: politica sui `NaN`. Puo essere `\"error\"`, `\"drop\"` oppure `\"allow\"`."
+msgstr "`missing`: policy for `NaN` values. It can be `\"error\"`, `\"drop\"`, or `\"allow\"`."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:15
+msgid "`comment`: carattere di commento opzionale per `read_csv`."
+msgstr "`comment`: optional comment character for `read_csv`."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:16
+msgid "`skip_initial_space`: se vero, ignora gli spazi subito dopo il separatore."
+msgstr "`skip_initial_space`: if true, ignores spaces immediately after the delimiter."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:18
+msgid "Restituisce"
+msgstr "Returns"
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:20
+msgid "Un `pd.DataFrame` con i dati caricati e, se richiesto, gia rinominati o filtrati."
+msgstr "A `pd.DataFrame` with the loaded data and, if requested, already renamed or filtered."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:22
+msgid "Errori ed eccezioni"
+msgstr "Errors and exceptions"
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:24
+msgid "`ValueError` se `missing` non e una policy supportata."
+msgstr "`ValueError` if `missing` is not a supported policy."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:25
+msgid "`ValueError` se una o piu colonne richieste non sono presenti."
+msgstr "`ValueError` if one or more required columns are missing."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:26
+msgid "`ValueError` se il file contiene valori mancanti e `missing=\"error\"`."
+msgstr "`ValueError` if the file contains missing values and `missing=\"error\"`."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:28
+msgid "Esempio"
+msgstr "Example"
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:41
+msgid "Note pratiche"
+msgstr "Practical notes"
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:43
+msgid "Il controllo su `required_columns` avviene dopo `rename_columns`."
+msgstr "The `required_columns` check happens after `rename_columns`."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:44
+msgid "`missing=\"drop\"` rimuove le righe incomplete con `DataFrame.dropna()`."
+msgstr "`missing=\"drop\"` removes incomplete rows with `DataFrame.dropna()`."
+
+#: ../../source/moduli/io_utils/load-csv/panoramica.md:45
+msgid ""
+"La funzione non converte direttamente il `DataFrame` in array numerici: quel passaggio resta alle"
+" funzioni statistiche e di plotting."
+msgstr ""
+"The function does not directly convert the `DataFrame` into numeric arrays: that step remains the"
+" responsibility of the statistics and plotting functions."
+

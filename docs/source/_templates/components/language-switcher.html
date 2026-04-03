@@ -1,0 +1,40 @@
+{%- set button_id = unique_html_id("pst-language-switcher-button") -%}
+{%- set dropdown_id = unique_html_id("pst-language-switcher-list") -%}
+<div class="version-switcher__container dropdown language-switcher-container">
+  <button
+    id="{{ button_id }}"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="{{ dropdown_id }}"
+    aria-label="{{ language_switcher_title }}"
+    data-language-switcher-current="{{ current_language }}"
+  >
+    {{ current_language_label }}
+    <span class="caret"></span>
+  </button>
+  <div
+    id="{{ dropdown_id }}"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox"
+    aria-labelledby="{{ button_id }}"
+    aria-label="{{ language_switcher_label }}"
+  >
+    {% for item in supported_languages %}
+      <a
+        class="dropdown-item list-group-item list-group-item-action py-1{% if item.is_current %} active{% endif %}"
+        href="{{ item.page_href }}"
+        hreflang="{{ item.code }}"
+        lang="{{ item.code }}"
+        role="option"
+        {% if item.is_current %}aria-current="page"{% endif %}
+        data-language-switcher-link="true"
+        data-language-code="{{ item.code }}"
+        data-language-home="{{ item.home_href }}"
+      >
+        <span>{{ item.label }}</span>
+      </a>
+    {% endfor %}
+  </div>
+</div>

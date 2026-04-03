@@ -1,0 +1,126 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/fit_utils/index.md:1
+msgid "fit_utils.py"
+msgstr "fit_utils.py"
+
+#: ../../source/moduli/fit_utils/index.md:3
+msgid ""
+"`fit_utils.py` contiene il fit lineare pesato del package e il tipo di ritorno associato. E il "
+"modulo piu denso del progetto, perche combina statistica, validazione degli input e plotting "
+"opzionale."
+msgstr ""
+"`fit_utils.py` contains the package weighted linear fit and its associated return type. It is the"
+" densest module in the project because it combines statistics, input validation, and optional "
+"plotting."
+
+#: ../../source/moduli/fit_utils/index.md:5
+msgid "Import principali"
+msgstr "Main imports"
+
+#: ../../source/moduli/fit_utils/index.md:7
+msgid "Standard library: `dataclasses.dataclass`, `typing.TYPE_CHECKING`"
+msgstr ""
+
+#: ../../source/moduli/fit_utils/index.md:9
+msgid "Librerie esterne: `numpy as np`, `numpy.typing.ArrayLike`, `numpy.typing.NDArray`"
+msgstr "External libraries: `numpy as np`, `numpy.typing.ArrayLike`, `numpy.typing.NDArray`"
+
+#: ../../source/moduli/fit_utils/index.md:11
+msgid ""
+"Import interni da `plot_utils`: `C_BAND_B`, `C_BAR`, `C_MEAN`, "
+"[`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md), "
+"[`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)"
+msgstr ""
+"Internal imports from `plot_utils`: `C_BAND_B`, `C_BAR`, `C_MEAN`, "
+"[`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md), "
+"[`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)"
+
+#: ../../source/moduli/fit_utils/index.md:15
+msgid ""
+"Import interni da `stats_utils`: [`_as_float_vector`](../../checks/stats_utils/as-float-"
+"vector.md), [`covariance`](../stats_utils/covariance.md), "
+"[`variance`](../stats_utils/variance.md), [`weighted_mean`](../stats_utils/weighted-mean.md)"
+msgstr ""
+"Internal imports from `stats_utils`: [`_as_float_vector`](../../checks/stats_utils/as-float-"
+"vector.md), [`covariance`](../stats_utils/covariance.md), "
+"[`variance`](../stats_utils/variance.md), [`weighted_mean`](../stats_utils/weighted-mean.md)"
+
+#: ../../source/moduli/fit_utils/index.md:21
+msgid "Cosa espone"
+msgstr "What it exports"
+
+#: ../../source/moduli/fit_utils/index.md:23 ../../source/moduli/fit_utils/index.md:43
+msgid "[`LinearFitResult`](linear-fit-result.md)"
+msgstr "[`LinearFitResult`](linear-fit-result.md)"
+
+#: ../../source/moduli/fit_utils/index.md:24 ../../source/moduli/fit_utils/index.md:44
+msgid "[`lin_fit`](lin-fit.md)"
+msgstr "[`lin_fit`](lin-fit.md)"
+
+#: ../../source/moduli/fit_utils/index.md:26
+msgid "Di cosa si occupa"
+msgstr "What it does"
+
+#: ../../source/moduli/fit_utils/index.md:28
+msgid "validare `x`, `y`, `sigma_y` e opzionalmente `sigma_x`"
+msgstr "validate `x`, `y`, `sigma_y`, and optionally `sigma_x`"
+
+#: ../../source/moduli/fit_utils/index.md:29
+msgid "stimare pendenza e intercetta con minimi quadrati pesati"
+msgstr "estimate slope and intercept with weighted least squares"
+
+#: ../../source/moduli/fit_utils/index.md:30
+msgid "aggiornare iterativamente i pesi quando esistono incertezze anche su `x`"
+msgstr "update the weights iteratively when uncertainties on `x` are also present"
+
+#: ../../source/moduli/fit_utils/index.md:31
+msgid "calcolare residui, `chi2`, `reduced_chi2`, correlazione e altre diagnostiche"
+msgstr "compute residuals, `chi2`, `reduced_chi2`, correlation, and other diagnostics"
+
+#: ../../source/moduli/fit_utils/index.md:32
+msgid "creare, se richiesto, una figura matplotlib con pannello del fit e pannello dei residui"
+msgstr "create, when requested, a matplotlib figure with a fit panel and a residuals panel"
+
+#: ../../source/moduli/fit_utils/index.md:34
+msgid "Helper collegati"
+msgstr "Related helpers"
+
+#: ../../source/moduli/fit_utils/index.md:36
+msgid "[`_validate_positive_vector`](../../checks/fit_utils/validate-positive-vector.md)"
+msgstr "[`_validate_positive_vector`](../../checks/fit_utils/validate-positive-vector.md)"
+
+#: ../../source/moduli/fit_utils/index.md:37
+msgid "[`_validate_positive_scalar`](../../checks/fit_utils/validate-positive-scalar.md)"
+msgstr "[`_validate_positive_scalar`](../../checks/fit_utils/validate-positive-scalar.md)"
+
+#: ../../source/moduli/fit_utils/index.md:38
+msgid "[`_validate_max_iter`](../../checks/fit_utils/validate-max-iter.md)"
+msgstr "[`_validate_max_iter`](../../checks/fit_utils/validate-max-iter.md)"
+
+#: ../../source/moduli/fit_utils/index.md:39
+msgid "[`_fit_coefficients`](../../checks/fit_utils/fit-coefficients.md)"
+msgstr "[`_fit_coefficients`](../../checks/fit_utils/fit-coefficients.md)"
+
+#: ../../source/moduli/fit_utils/index.md:41
+msgid "Pagine di dettaglio"
+msgstr "Detailed pages"
+

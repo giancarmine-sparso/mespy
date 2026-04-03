@@ -1,0 +1,195 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:1
+msgid "Funzionamento"
+msgstr "Implementation"
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:3
+msgid ""
+"Questa pagina descrive il flusso interno di `weighted_mean` e l'ordine con cui vengono applicate "
+"validazione degli input, scelta tra ramo non pesato e ramo pesato, e calcolo finale della media. "
+"A differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere i parametri, ma "
+"mostrare come la funzione costruisce davvero il risultato."
+msgstr ""
+"This page describes the internal flow of `weighted_mean` and the order in which input validation,"
+" selection of the unweighted or weighted branch, and final mean calculation are applied. Unlike "
+"[Overview](panoramica.md), the goal here is not to repeat the parameters, but to show how the "
+"function actually builds the result."
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:5
+msgid ""
+"I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. Gli helper "
+"privati vengono citati solo per chiarire il flusso; i dettagli completi sono documentati in "
+"[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) e "
+"[`_validate_weights`](../../../checks/stats_utils/validate-weights.md)."
+msgstr ""
+"The following snippets are taken from the current `src/mespy/stats_utils.py` implementation. "
+"Private helpers are mentioned only to clarify the flow; complete details are documented in "
+"[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) and "
+"[`_validate_weights`](../../../checks/stats_utils/validate-weights.md)."
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:7
+msgid "Sequenza di esecuzione"
+msgstr "Execution sequence"
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:9
+msgid "L'implementazione segue questa sequenza:"
+msgstr "The implementation follows this sequence:"
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:11
+msgid "Converte `x` in un vettore `float64` monodimensionale e finito."
+msgstr "Converts `x` into a one-dimensional, finite `float64` vector."
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:12
+msgid ""
+"Se `w` e presente, lo valida come vettore con la stessa forma di `x`, strettamente positivo e con"
+" somma finita positiva."
+msgstr ""
+"If `w` is provided, it validates it as a vector with the same shape as `x`, strictly positive, "
+"and with a finite positive sum."
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:13
+msgid "Se `w is None`, calcola la media aritmetica semplice con `np.mean(values)`."
+msgstr "If `w is None`, it computes the simple arithmetic mean with `np.mean(values)`."
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:14
+msgid "Se `w` e valido, calcola la media pesata come rapporto tra somma pesata e somma dei pesi."
+msgstr ""
+"If `w` is valid, it computes the weighted mean as the ratio between weighted sum and sum of "
+"weights."
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:15
+msgid "Converte sempre il risultato in `float` Python."
+msgstr "Always converts the result to a Python `float`."
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:17
+msgid "Validazione e scelta del ramo numerico"
+msgstr "Validation and selection of the numerical branch"
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:30
+msgid ""
+"Il primo passaggio e comune a tutto il modulo: `values` deve essere un vettore numerico "
+"monodimensionale, non vuoto e senza `NaN` o infiniti."
+msgstr ""
+"The first step is shared across the whole module: `values` must be a one-dimensional, non-empty "
+"numeric vector without `NaN` values or infinities."
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:32
+msgid "Il secondo passaggio decide se la funzione resta nel caso base oppure entra nel caso pesato."
+msgstr "The second step decides whether the function stays in the base case or enters the weighted case."
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:34
+msgid ""
+"Se `w is None`, `_validate_weights(...)` restituisce `None` e `weighted_mean` ricade "
+"esplicitamente nel ramo non pesato."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:35
+msgid ""
+"Se `w` e presente, `_validate_weights(...)` impone compatibilita di forma con `x`, stretta "
+"positivita di ogni peso e positivita finita della somma complessiva."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:36
+msgid ""
+"In altre parole, `weighted_mean` non prova mai a \"riparare\" pesi invalidi: richiede che il "
+"vettore sia gia coerente con il significato statistico atteso."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:38
+msgid "Formula implementata"
+msgstr "Implemented formula"
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:40
+msgid "Nel caso non pesato la funzione usa semplicemente"
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:42
+#, python-brace-format
+msgid ""
+"\n"
+"\\bar{x} = \\frac{1}{n}\\sum_i x_i,\n"
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:46
+msgid "tramite `np.mean(values)`."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:48
+msgid "Nel caso pesato il codice implementa invece"
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:50
+#, python-brace-format
+msgid ""
+"\n"
+"\\bar{x}_w = \\frac{\\sum_i w_i x_i}{\\sum_i w_i}.\n"
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:54
+msgid "Questo si riflette direttamente nell'ultima riga del frammento:"
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:60
+msgid "Il numeratore somma i contributi `x_i` moltiplicati per il rispettivo peso."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:61
+msgid "Il denominatore normalizza il risultato usando la somma degli stessi pesi."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:62
+msgid "La funzione non normalizza `w` in anticipo: usa i pesi cosi come arrivano, purche siano validi."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:64
+msgid "Interazioni importanti tra input e risultato"
+msgstr "Important interactions between inputs and the result"
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:66
+msgid "Alcuni dettagli pratici definiscono il comportamento reale di `weighted_mean`."
+msgstr "A few practical details define the actual behavior of `weighted_mean`."
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:68
+msgid ""
+"Pesi uniformi producono lo stesso risultato della media aritmetica semplice, ma il percorso "
+"interno resta quello pesato."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:69
+msgid ""
+"La funzione accetta qualunque scala positiva dei pesi: moltiplicare tutti i `w_i` per la stessa "
+"costante non cambia il risultato finale."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:70
+msgid ""
+"Zeri e valori negativi non sono ammessi, quindi non esiste un ramo in cui alcuni punti vengano "
+"\"spenti\" con peso nullo."
+msgstr ""
+
+#: ../../source/moduli/stats_utils/weighted-mean/funzionamento.md:71
+msgid ""
+"La somma dei pesi compare esplicitamente nella formula finale, ma il controllo sulla sua "
+"positivita e anticipato in [`_validate_weights`](../../../checks/stats_utils/validate-"
+"weights.md), cosi il calcolo non arriva mai a un denominatore nullo o non finito."
+msgstr ""
+
