@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"POT-Creation-Date: 2026-04-05 19:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -16,13 +16,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.18.0\n"
 
-#: ../../source/moduli/plot_utils/histogram.md:45
+#: ../../source/moduli/plot_utils/histogram.md:53
 msgid "Panoramica"
 msgstr "Overview"
 
-#: ../../source/moduli/plot_utils/histogram.md:45
+#: ../../source/moduli/plot_utils/histogram.md:53
 msgid "Funzionamento"
 msgstr "Implementation"
 
@@ -34,20 +34,36 @@ msgstr "histogram"
 msgid "Firma"
 msgstr "Signature"
 
-#: ../../source/moduli/plot_utils/histogram.md:41
+#: ../../source/moduli/plot_utils/histogram.md:46
 msgid ""
-"`histogram` disegna un istogramma di un campione numerico e puo aggiungere media, banda `+- 1 "
-"sigma`, legenda, griglia e salvataggio della figura."
+"`histogram` disegna un istogramma di un campione numerico e puo "
+"aggiungere media, banda `+- 1 sigma`, legenda, griglia e salvataggio "
+"della figura. Di default applica lo stile Matplotlib `mespy`; passa "
+"`style=None` per usare gli `rcParams` correnti oppure il nome di un altro"
+" stile per delegare a Matplotlib."
 msgstr ""
-"`histogram` draws a histogram for a numeric sample and can add the mean, a `+- 1 sigma` band, "
-"legend, grid, and figure saving."
+"`histogram` draws a histogram for a numeric sample and can add the mean, "
+"a `+- 1 sigma` band, legend, grid, and figure saving. By default it "
+"applies the `mespy` Matplotlib style; pass `style=None` to use the "
+"current `rcParams`, or the name of another style to delegate to "
+"Matplotlib."
 
-#: ../../source/moduli/plot_utils/histogram.md:43
+#: ../../source/moduli/plot_utils/histogram.md:49
 msgid ""
-"Questa pagina resta il punto di ingresso rapido. I dettagli completi sono in "
-"[Panoramica](histogram/panoramica.md), mentre [Funzionamento](histogram/funzionamento.md) e "
-"predisposta come sottopagina dedicata."
-msgstr ""
-"This page remains the quick entry point. Full details are in [Overview](histogram/panoramica.md),"
-" while [How it works](histogram/funzionamento.md) is set up as a dedicated subpage."
+"I parametri `figsize`, `dpi`, `title_fontsize`, `title_pad`, "
+"`legend_fontsize`, `legend_loc`, `bar_color`, `edgecolor` e `grid_alpha` "
+"possono ereditare lo stile attivo quando lasciati a `None`. I parametri "
+"`mean_color`, `band_color`, `hist_alpha`, `band_alpha` e `mean_symbol` "
+"restano invece override espliciti della singola chiamata."
+msgstr "The `figsize`, `dpi`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, `bar_color`, `edgecolor`, and `grid_alpha` parameters can inherit from the active style when left as `None`. The `mean_color`, `band_color`, `hist_alpha`, `band_alpha`, and `mean_symbol` parameters remain explicit per-call overrides instead."
 
+#: ../../source/moduli/plot_utils/histogram.md:51
+msgid ""
+"Questa pagina resta il punto di ingresso rapido. I dettagli completi sono"
+" in [Panoramica](histogram/panoramica.md), mentre "
+"[Funzionamento](histogram/funzionamento.md) e predisposta come "
+"sottopagina dedicata."
+msgstr ""
+"This page remains the quick entry point. Full details are in "
+"[Overview](histogram/panoramica.md), while [How it "
+"works](histogram/funzionamento.md) is set up as a dedicated subpage."

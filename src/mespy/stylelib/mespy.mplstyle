@@ -1,0 +1,31 @@
+# Defaults aligned with mespy.plot_utils.histogram().
+# Only settings with a direct Matplotlib rcParams equivalent live here.
+figure.constrained_layout.use: True
+
+figure.dpi: 100
+savefig.dpi: 300
+
+
+figure.figsize: 8, 5
+axes.titlesize: 14
+axes.titlepad: 10
+axes.facecolor: white
+axes.grid: True
+axes.grid.axis: y
+axes.axisbelow: True
+
+grid.alpha: 0.3
+grid.linewidth: 0.5
+grid.linestyle: -
+
+legend.fontsize: 9
+legend.loc: best
+legend.framealpha: 0.9
+
+patch.facecolor: 4878CF
+patch.edgecolor: white
+patch.force_edgecolor: True
+
+# Color cycle adapted from seaborn's "colorblind" palette (BSD license)
+
+axes.prop_cycle: cycler('color', ['4878CF', 'EE854A', '6ACC64', 'D65F5F', '956CB4', '8C613C', 'DC7EC0', '797979', 'D5BB67', '82C6E2'])

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"POT-Creation-Date: 2026-04-05 19:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -16,13 +16,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.18.0\n"
 
-#: ../../source/moduli/fit_utils/lin-fit.md:42
+#: ../../source/moduli/fit_utils/lin-fit.md:50
 msgid "Panoramica"
 msgstr "Overview"
 
-#: ../../source/moduli/fit_utils/lin-fit.md:42
+#: ../../source/moduli/fit_utils/lin-fit.md:50
 msgid "Funzionamento"
 msgstr "Implementation"
 
@@ -34,21 +34,38 @@ msgstr "lin_fit"
 msgid "Firma"
 msgstr "Signature"
 
-#: ../../source/moduli/fit_utils/lin-fit.md:38
+#: ../../source/moduli/fit_utils/lin-fit.md:42
 msgid ""
-"`lin_fit` esegue un fit lineare pesato `y = m x + c` su dati sperimentali, con supporto opzionale"
-" alle incertezze anche su `x`."
+"`lin_fit` esegue un fit lineare pesato `y = m x + c` su dati "
+"sperimentali, con supporto opzionale alle incertezze anche su `x`."
 msgstr ""
-"`lin_fit` performs a weighted linear fit `y = m x + c` on experimental data, with optional "
-"support for uncertainties on `x` as well."
+"`lin_fit` performs a weighted linear fit `y = m x + c` on experimental "
+"data, with optional support for uncertainties on `x` as well."
 
-#: ../../source/moduli/fit_utils/lin-fit.md:40
+#: ../../source/moduli/fit_utils/lin-fit.md:44
 msgid ""
-"Questa pagina resta il punto di accesso rapido alla funzione. I dettagli pratici sono raccolti in"
-" [Panoramica](lin-fit/panoramica.md), mentre [Funzionamento](lin-fit/funzionamento.md) e "
-"predisposta come sottopagina separata."
+"Di default applica lo stile Matplotlib `mespy`; passa `style=None` per "
+"usare gli `rcParams` correnti oppure il nome di un altro stile per "
+"delegare a Matplotlib."
+msgstr "By default it applies the `mespy` Matplotlib style; pass `style=None` to use the current `rcParams`, or the name of another style to delegate to Matplotlib."
+
+#: ../../source/moduli/fit_utils/lin-fit.md:46
+msgid ""
+"I parametri `figsize`, `dpi`, `title_fontsize`, `title_pad`, "
+"`legend_fontsize`, `legend_loc`, `point_color` e `grid_alpha` possono "
+"ereditare lo stile attivo quando lasciati a `None`. I parametri "
+"`fit_color`, `band_color`, `data_alpha` e `band_alpha` restano invece "
+"override espliciti della singola chiamata."
+msgstr "The `figsize`, `dpi`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, `point_color`, and `grid_alpha` parameters can inherit from the active style when left as `None`. The `fit_color`, `band_color`, `data_alpha`, and `band_alpha` parameters remain explicit per-call overrides instead."
+
+#: ../../source/moduli/fit_utils/lin-fit.md:48
+msgid ""
+"Questa pagina resta il punto di accesso rapido alla funzione. I dettagli "
+"pratici sono raccolti in [Panoramica](lin-fit/panoramica.md), mentre "
+"[Funzionamento](lin-fit/funzionamento.md) e predisposta come sottopagina "
+"separata."
 msgstr ""
-"This page remains the quick access point for the function. Practical details are collected in "
-"[Overview](lin-fit/panoramica.md), while [How it works](lin-fit/funzionamento.md) is prepared as "
-"a separate subpage."
+"This page remains the quick access point for the function. Practical "
+"details are collected in [Overview](lin-fit/panoramica.md), while [How it"
+" works](lin-fit/funzionamento.md) is prepared as a separate subpage."
 

@@ -19,6 +19,10 @@ Questa sezione documenta le funzioni private usate da `mespy` per validare input
 
 - [`_validate_axis_limits`](plot_utils/validate-axis-limits.md)
 - [`_validate_figsize`](plot_utils/validate-figsize.md)
+- [`_validate_decimals`](plot_utils/validate-decimals.md)
+- [`_in_ipython`](plot_utils/in-ipython.md)
+- [`_display_new_figures`](plot_utils/display-new-figures.md)
+- [`_style_context`](plot_utils/style-context.md)
 
 ### fit_utils
 

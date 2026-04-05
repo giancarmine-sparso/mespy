@@ -1,0 +1,96 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-05 19:48+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/checks/plot_utils/style-context.md:1
+msgid "_style_context"
+msgstr "_style_context"
+
+#: ../../source/checks/plot_utils/style-context.md:3
+msgid "Firma"
+msgstr "Signature"
+
+#: ../../source/checks/plot_utils/style-context.md:9
+msgid "Che problema risolve"
+msgstr "What problem it solves"
+
+#: ../../source/checks/plot_utils/style-context.md:11
+msgid ""
+"Applica uno stile Matplotlib temporaneo e rende coerente il comportamento"
+" delle figure create da `mespy`, soprattutto nei notebook "
+"IPython/Jupyter."
+msgstr "Applies a temporary Matplotlib style and keeps the behaviour of figures created by `mespy` consistent, especially in IPython/Jupyter notebooks."
+
+#: ../../source/checks/plot_utils/style-context.md:13
+msgid "Contratto sugli input"
+msgstr "Input contract"
+
+#: ../../source/checks/plot_utils/style-context.md:15
+msgid ""
+"`style=None` non aggiunge uno stile extra e lascia validi gli `rcParams` "
+"correnti."
+msgstr "`style=None` does not add any extra style and leaves the current `rcParams` in effect."
+
+#: ../../source/checks/plot_utils/style-context.md:16
+msgid "`style=\"mespy\"` carica il file di stile incluso nel package."
+msgstr "`style=\"mespy\"` loads the style file bundled with the package."
+
+#: ../../source/checks/plot_utils/style-context.md:17
+msgid "Qualunque altra stringa viene passata a Matplotlib come nome stile."
+msgstr "Any other string is passed to Matplotlib as a style name."
+
+#: ../../source/checks/plot_utils/style-context.md:19
+msgid "Dove viene usata"
+msgstr "Where it is used"
+
+#: ../../source/checks/plot_utils/style-context.md:21
+msgid "in [`histogram`](../../moduli/plot_utils/histogram.md)"
+msgstr "in [`histogram`](../../moduli/plot_utils/histogram.md)"
+
+#: ../../source/checks/plot_utils/style-context.md:22
+msgid "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md)"
+msgstr "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md)"
+
+#: ../../source/checks/plot_utils/style-context.md:24
+msgid "Come fallisce"
+msgstr "How it fails"
+
+#: ../../source/checks/plot_utils/style-context.md:26
+msgid ""
+"Se Matplotlib non riesce a caricare lo stile richiesto, propaga l'errore "
+"del backend di stile sottostante."
+msgstr "If Matplotlib cannot load the requested style, it propagates the error raised by the underlying style backend."
+
+#: ../../source/checks/plot_utils/style-context.md:27
+msgid ""
+"In ambiente notebook, alla fine del blocco mostra le nuove figure create "
+"e poi le chiude per evitare il doppio display automatico."
+msgstr "In notebook environments, at the end of the block it shows the new figures that were created and then closes them to avoid double automatic display."
+
+#: ../../source/checks/plot_utils/style-context.md:29
+msgid "Perche resta privata"
+msgstr "Why it remains private"
+
+#: ../../source/checks/plot_utils/style-context.md:31
+msgid ""
+"E un dettaglio infrastrutturale condiviso dalle funzioni di plotting. "
+"Documentarlo chiarisce il comportamento del package, ma non e pensato "
+"come interfaccia pubblica stabile."
+msgstr "It is an infrastructural detail shared by the plotting functions. Documenting it clarifies the package behaviour, but it is not intended as a stable public interface."
+

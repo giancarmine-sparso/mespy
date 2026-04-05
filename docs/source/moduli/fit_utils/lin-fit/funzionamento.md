@@ -2,7 +2,7 @@
 
 Questa pagina descrive il flusso interno di `lin_fit` e l'ordine con cui vengono applicate validazioni, stima dei coefficienti, eventuale aggiornamento iterativo dei pesi, diagnostiche e plotting. A differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere la lista dei parametri, ma mostrare come la funzione costruisce davvero il fit lineare pesato.
 
-I frammenti seguenti sono estratti dal codice attuale di `src/mespy/fit_utils.py`. Le formule di base riprendono e adattano la formulazione teorica gia presente nella documentazione legacy `fit_utils.tex`; il criterio di arresto, le diagnostiche restituite e la banda del grafico sono invece spiegati a partire dall'implementazione attuale. Gli helper privati vengono citati solo per chiarire il flusso; i dettagli completi sono documentati in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), [`_fit_coefficients`](../../../checks/fit_utils/fit-coefficients.md), [`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-limits.md) e [`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md). Quando servono i simboli $\bar{x}_w$, $\mathrm{Var}_w$ e $\mathrm{Cov}_w$, il riferimento pratico sono le funzioni pubbliche [`weighted_mean`](../../stats_utils/weighted-mean.md), [`variance`](../../stats_utils/variance.md) e [`covariance`](../../stats_utils/covariance.md).
+I frammenti seguenti sono estratti dal codice attuale di `src/mespy/fit_utils.py`. Le formule di base riprendono e adattano la formulazione teorica gia presente nella documentazione legacy `fit_utils.tex`; il criterio di arresto, le diagnostiche restituite e la banda del grafico sono invece spiegati a partire dall'implementazione attuale. Gli helper privati vengono citati solo per chiarire il flusso; i dettagli completi sono documentati in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), [`_fit_coefficients`](../../../checks/fit_utils/fit-coefficients.md), [`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-limits.md), [`_validate_decimals`](../../../checks/plot_utils/validate-decimals.md), [`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md) e [`_style_context`](../../../checks/plot_utils/style-context.md). Quando servono i simboli $\bar{x}_w$, $\mathrm{Var}_w$ e $\mathrm{Cov}_w$, il riferimento pratico sono le funzioni pubbliche [`weighted_mean`](../../stats_utils/weighted-mean.md), [`variance`](../../stats_utils/variance.md) e [`covariance`](../../stats_utils/covariance.md).
 
 ## Sequenza di esecuzione
 
@@ -10,14 +10,15 @@ L'implementazione segue questa sequenza:
 
 1. Converte `x`, `y` e `sigma_y` in vettori `float64` monodimensionali e finiti.
 2. Verifica che `x`, `y` e `sigma_y` abbiano la stessa lunghezza e che i punti siano almeno 3.
-3. Valida `tol` come scalare positivo e `max_iter` come intero positivo.
-4. Se `sigma_x` e presente, lo valida come vettore strettamente positivo con la stessa forma di `x`.
-5. Costruisce i pesi iniziali $w_i = 1 / \sigma_{y_i}^2$.
-6. Stima una prima retta con `_fit_coefficients(...)`.
-7. Se `sigma_x` e presente, aggiorna iterativamente i pesi usando la varianza efficace $\sigma_{\mathrm{eff},i}^2 = \sigma_{y_i}^2 + m^2 \sigma_{x_i}^2$ finche la variazione relativa della pendenza scende sotto `tol`.
-8. Calcola varianze dei parametri, covarianza, correlazione, residui, `chi2`, `reduced_chi2` e altre diagnostiche.
-9. Se `show_plot=True`, costruisce una figura a due pannelli con dati, retta e residui.
-10. Restituisce un [`LinearFitResult`](../linear-fit-result.md) con tutti i risultati numerici e la figura opzionale.
+3. Valida `decimals` come intero non negativo e leggibile.
+4. Valida `tol` come scalare positivo e `max_iter` come intero positivo.
+5. Se `sigma_x` e presente, lo valida come vettore strettamente positivo con la stessa forma di `x`.
+6. Costruisce i pesi iniziali $w_i = 1 / \sigma_{y_i}^2$.
+7. Stima una prima retta con `_fit_coefficients(...)`.
+8. Se `sigma_x` e presente, aggiorna iterativamente i pesi usando la varianza efficace $\sigma_{\mathrm{eff},i}^2 = \sigma_{y_i}^2 + m^2 \sigma_{x_i}^2$ finche la variazione relativa della pendenza scende sotto `tol`.
+9. Calcola varianze dei parametri, covarianza, correlazione, residui, `chi2`, `reduced_chi2` e altre diagnostiche.
+10. Se `show_plot=True`, entra in `_style_context(style)` e costruisce una figura a due pannelli con dati, retta e residui.
+11. Restituisce un [`LinearFitResult`](../linear-fit-result.md) con tutti i risultati numerici e la figura opzionale.
 
 ## Validazione input e setup numerico
 
@@ -32,6 +33,8 @@ if x_values.shape != y_values.shape or x_values.shape != sigma_y_values.shape:
 n = x_values.size
 if n < 3:
     raise ValueError("Servono almeno 3 punti per effettuare un fit lineare")
+
+decimals = _validate_decimals(decimals)
 
 tol_value = _validate_positive_scalar("tol", tol)
 max_iter_value = _validate_max_iter(max_iter)
@@ -55,6 +58,7 @@ Questo primo blocco definisce il contratto numerico del fit.
 - `x`, `y` e `sigma_y` non vengono usati direttamente: prima passano attraverso validatori che impongono array numerici, monodimensionali e finiti.
 - `sigma_y` e, se presente, `sigma_x` devono essere strettamente positivi. Questo e essenziale per poter costruire pesi fisicamente e numericamente sensati.
 - La funzione rifiuta dataset con meno di 3 punti, perche il fit lineare restituisce due parametri e poi usa `dof = n - 2` nelle diagnostiche.
+- `decimals` viene validato anche quando `show_plot=False`, perche fa parte del contratto generale della funzione e della formattazione della legenda quando il grafico e attivo.
 - I pesi iniziali del caso base sono
 
 $$
@@ -305,51 +309,78 @@ if save_path is not None and not show_plot:
 fig = None
 
 if show_plot:
-    figure_size = _validate_figsize(figsize)
+    with _style_context(style):
+        if xlim is not None:
+            xlim = _validate_axis_limits(...)
+        if ylim is not None:
+            ylim = _validate_axis_limits(...)
 
-    if xlim is not None:
-        xlim = _validate_axis_limits(...)
-    if ylim is not None:
-        ylim = _validate_axis_limits(...)
+        subplots_kwargs = {
+            "gridspec_kw": {"height_ratios": [3, 1]},
+            "sharex": True,
+            "constrained_layout": True,
+        }
+        if figsize is not None:
+            subplots_kwargs["figsize"] = _validate_figsize(figsize)
+        if dpi is not None:
+            subplots_kwargs["dpi"] = dpi
 
-    fig, (ax_fit, ax_res) = plt.subplots(
-        2,
-        1,
-        figsize=figure_size,
-        dpi=dpi,
-        gridspec_kw={"height_ratios": [3, 1]},
-        sharex=True,
-        constrained_layout=True,
-    )
+        fig, (ax_fit, ax_res) = plt.subplots(2, 1, **subplots_kwargs)
 
-    ax_fit.errorbar(...)
+        errorbar_kwargs = {
+            "yerr": sigma_y_values,
+            "xerr": sigma_x_values if use_sigma_x else None,
+            "fmt": "o",
+            "markersize": 4,
+            "elinewidth": 1,
+            "capsize": 3,
+            "alpha": data_alpha,
+        }
+        if point_color is not None:
+            errorbar_kwargs["color"] = point_color
+            errorbar_kwargs["ecolor"] = point_color
 
-    fmt = f".{decimals}f"
-    x_fit = np.linspace(x_values.min(), x_values.max(), 200)
-    y_fit = slope * x_fit + intercept
-    fit_label = (
-        f"Fit: m={slope:{fmt}}, c={intercept:{fmt}}"
-        if show_fit_params
-        else "Fit"
-    )
-    ax_fit.plot(x_fit, y_fit, color=C_MEAN, linewidth=1.5, label=fit_label)
+        ax_fit.errorbar(x_values, y_values, **errorbar_kwargs)
 
-    if show_band:
-        x_bar = weighted_mean(x_values, weights)
-        sigma_y_fit = np.sqrt(
-            1.0 / sum_w + (x_fit - x_bar) ** 2 / (var_x * sum_w)
+        fmt = f".{decimals}f"
+        x_fit = np.linspace(x_values.min(), x_values.max(), 200)
+        y_fit = slope * x_fit + intercept
+        fit_label = (
+            f"Fit: m={slope:{fmt}}, c={intercept:{fmt}}"
+            if show_fit_params
+            else "Fit"
         )
-        ax_fit.fill_between(
-            x_fit,
-            y_fit - sigma_y_fit,
-            y_fit + sigma_y_fit,
-            color=C_BAND_B,
-            alpha=band_alpha,
-            label=r"$\pm 1 \sigma$ retta",
-        )
+        ax_fit.plot(x_fit, y_fit, color=fit_color, linewidth=1.5, label=fit_label)
 
-    ax_res.errorbar(...)
-    ax_res.axhline(0, color=C_MEAN, linewidth=1, linestyle="--")
+        if show_band:
+            x_bar = weighted_mean(x_values, weights)
+            sigma_y_fit = np.sqrt(
+                1.0 / sum_w + (x_fit - x_bar) ** 2 / (var_x * sum_w)
+            )
+            ax_fit.fill_between(
+                x_fit,
+                y_fit - sigma_y_fit,
+                y_fit + sigma_y_fit,
+                color=band_color,
+                alpha=band_alpha,
+                label=r"$\pm 1 \sigma$ retta",
+            )
+
+        ax_res.errorbar(x_values, residuals, **errorbar_kwargs)
+        ax_res.axhline(0, color=fit_color, linewidth=1, linestyle="--")
+
+        if not show_grid:
+            ax_fit.grid(False)
+            ax_res.grid(False)
+        elif grid_alpha is not None:
+            ax_fit.grid(True, axis="y", alpha=grid_alpha)
+            ax_res.grid(True, axis="y", alpha=grid_alpha)
+
+        if save_path is not None:
+            savefig_kwargs = {"bbox_inches": "tight"}
+            if dpi is not None:
+                savefig_kwargs["dpi"] = dpi
+            fig.savefig(save_path, **savefig_kwargs)
 
 return LinearFitResult(
     slope=float(slope),
@@ -373,10 +404,14 @@ L'ultima parte gestisce plotting e packaging finale del risultato.
 
 - `save_path` puo essere usato solo se `show_plot=True`. La funzione controlla questa incompatibilita prima di entrare nel ramo Matplotlib.
 - Se `show_plot=False`, tutta la parte grafica viene saltata e `figure` nel risultato finale vale `None`.
+- Quando il grafico e attivo, `lin_fit` usa lo stesso [`_style_context`](../../../checks/plot_utils/style-context.md) di [`histogram`](../../plot_utils/histogram.md): `style=None` mantiene gli `rcParams` correnti, `style="mespy"` carica lo stile del package, qualunque altra stringa viene passata a Matplotlib.
 - Quando il grafico e attivo, `lin_fit` crea sempre due pannelli verticali: in alto il fit, in basso i residui.
+- `figsize` e `dpi` vengono passati a `plt.subplots(...)` solo quando sono stati specificati. In assenza di override, decide lo stile attivo.
+- `point_color`, quando presente, viene applicato sia ai marker sia alle barre d'errore; `fit_color` viene usato per la retta e per la linea orizzontale dei residui; `band_color` controlla la fascia attorno alla retta.
 - `xlim` viene applicato sia a `ax_fit` sia a `ax_res`, mentre `ylim` viene applicato solo al pannello superiore.
-- `show_grid` controlla solo la griglia del pannello del fit; il pannello residui ha sempre la linea orizzontale a zero, ma non una griglia dedicata.
+- `show_grid=False` spegne esplicitamente la griglia su entrambi i pannelli; `show_grid=True` con `grid_alpha is None` lascia la griglia allo stile attivo; `grid_alpha` esplicito applica una griglia sull'asse `y` di entrambi i pannelli.
 - `decimals` e `show_fit_params` influiscono solo sulla stringa della legenda della retta, non sul calcolo numerico del fit.
+- Il salvataggio usa sempre `bbox_inches="tight"`; il `dpi` viene passato a `savefig(...)` solo quando e esplicitato.
 
 La retta visualizzata e
 
@@ -416,7 +451,9 @@ Alcune combinazioni di parametri definiscono il comportamento pratico piu import
 - `sigma_x` attiva il ramo iterativo e rende rilevanti `tol` e `max_iter`.
 - `tol` e una soglia di convergenza numerica sulla pendenza relativa, non una soglia statistica sulla qualita del fit.
 - Se `sigma_x` non e presente, il fit usa solo i pesi `1 / sigma_y**2`, non itera e marca subito `converged=True`.
-- `show_plot=False` disattiva tutta la parte Matplotlib: in questo caso `figure=None`, `xlim` e `ylim` non vengono nemmeno validati e `decimals` non ha effetti osservabili.
+- `style=None` usa gli `rcParams` correnti, `style="mespy"` usa lo stile del package, qualunque altra stringa passa direttamente da Matplotlib.
+- `point_color`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc` e `grid_alpha` sovrascrivono lo stile solo quando non sono `None`.
+- `show_plot=False` disattiva tutta la parte Matplotlib: in questo caso `figure=None` e `xlim` e `ylim` non vengono nemmeno validati, ma `decimals`, `tol` e `max_iter` continuano a essere controllati.
 - `save_path` non e un salvataggio indipendente dal plotting: e ammesso solo insieme a `show_plot=True`.
 - `show_fit_params=True` cambia la label della retta da `"Fit"` a una stringa con `m` e `c` formattati con `decimals`.
 - `show_band` controlla solo la banda attorno alla retta, non il calcolo del fit.

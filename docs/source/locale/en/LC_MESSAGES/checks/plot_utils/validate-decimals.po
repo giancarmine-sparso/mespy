@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the mespy package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mespy \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-05 19:48+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/checks/plot_utils/validate-decimals.md:1
+msgid "_validate_decimals"
+msgstr "_validate_decimals"
+
+#: ../../source/checks/plot_utils/validate-decimals.md:3
+msgid "Firma"
+msgstr "Signature"
+
+#: ../../source/checks/plot_utils/validate-decimals.md:9
+msgid "Che problema risolve"
+msgstr "What problem it solves"
+
+#: ../../source/checks/plot_utils/validate-decimals.md:11
+msgid ""
+"Verifica che la precisione usata per etichette e legende resti leggibile "
+"e coerente tra le funzioni di plotting del package."
+msgstr "Ensures that the precision used for labels and legends remains readable and consistent across the package plotting functions."
+
+#: ../../source/checks/plot_utils/validate-decimals.md:13
+msgid "Contratto sugli input"
+msgstr "Input contract"
+
+#: ../../source/checks/plot_utils/validate-decimals.md:15
+msgid "`decimals` deve essere un intero vero oppure uno `np.integer`."
+msgstr "`decimals` must be a real integer or an `np.integer`."
+
+#: ../../source/checks/plot_utils/validate-decimals.md:16
+msgid "I booleani vengono rifiutati esplicitamente."
+msgstr "Booleans are explicitly rejected."
+
+#: ../../source/checks/plot_utils/validate-decimals.md:17
+msgid "Il valore deve essere compreso tra 0 e 20."
+msgstr "The value must be between 0 and 20."
+
+#: ../../source/checks/plot_utils/validate-decimals.md:19
+msgid "Dove viene usata"
+msgstr "Where it is used"
+
+#: ../../source/checks/plot_utils/validate-decimals.md:21
+msgid ""
+"in [`histogram`](../../moduli/plot_utils/histogram.md) per formattare "
+"tick, media e banda"
+msgstr "in [`histogram`](../../moduli/plot_utils/histogram.md) to format ticks, the mean, and the band"
+
+#: ../../source/checks/plot_utils/validate-decimals.md:22
+msgid ""
+"in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) per formattare la "
+"legenda del fit quando serve"
+msgstr "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) to format the fit legend when needed"
+
+#: ../../source/checks/plot_utils/validate-decimals.md:24
+msgid "Come fallisce"
+msgstr "How it fails"
+
+#: ../../source/checks/plot_utils/validate-decimals.md:26
+msgid "`ValueError` se `decimals` non e un intero"
+msgstr "`ValueError` if `decimals` is not an integer"
+
+#: ../../source/checks/plot_utils/validate-decimals.md:27
+msgid "`ValueError` se `decimals < 0`"
+msgstr "`ValueError` if `decimals < 0`"
+
+#: ../../source/checks/plot_utils/validate-decimals.md:28
+msgid "`ValueError` se `decimals > 20`"
+msgstr "`ValueError` if `decimals > 20`"
+
+#: ../../source/checks/plot_utils/validate-decimals.md:30
+msgid "Perche resta privata"
+msgstr "Why it remains private"
+
+#: ../../source/checks/plot_utils/validate-decimals.md:32
+msgid ""
+"E una regola di validazione orientata alla presentazione, condivisa "
+"internamente dalle API di plotting ma non pensata come utilita pubblica "
+"autonoma."
+msgstr "It is a presentation-oriented validation rule, shared internally by the plotting APIs but not intended as a standalone public utility."
+

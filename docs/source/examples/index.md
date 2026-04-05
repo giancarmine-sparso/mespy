@@ -7,6 +7,7 @@ Questa sezione raccoglie notebook brevi, orientati all'uso del package. Gli esem
 - [Workflow base](basic-workflow.md)
 - [Istogramma](histogram.ipynb)
 - [Fit lineare](linear-fit.ipynb)
+- [Stile dei grafici](plot-style.ipynb)
 - [Statistiche](stats-utils.ipynb)
 
 ```{toctree}
@@ -16,5 +17,6 @@ Questa sezione raccoglie notebook brevi, orientati all'uso del package. Gli esem
 basic-workflow
 histogram
 linear-fit
+plot-style
 stats-utils
 ```

@@ -72,6 +72,30 @@ def test_histogram_accepts_custom_plot_styling_kwargs():
     plt.close("all")
 
 
+def test_histogram_uses_mespy_style_by_default_and_can_disable_it():
+    data = np.linspace(-1.0, 1.0, 20)
+    custom_facecolor = "xkcd:pale pink"
+
+    with plt.rc_context({"axes.facecolor": custom_facecolor}):
+        fig_default, ax_default = histogram(
+            data,
+            show_grid=False,
+            show_legend=False,
+        )
+        fig_none, ax_none = histogram(
+            data,
+            style=None,
+            show_grid=False,
+            show_legend=False,
+        )
+
+    assert ax_default.get_facecolor() == pytest.approx(matplotlib.colors.to_rgba("white"))
+    assert ax_none.get_facecolor() == pytest.approx(
+        matplotlib.colors.to_rgba(custom_facecolor)
+    )
+    plt.close("all")
+
+
 def test_histogram_requires_keyword_only_optional_arguments():
     data = np.linspace(-1.0, 1.0, 40)
     with pytest.raises(TypeError):

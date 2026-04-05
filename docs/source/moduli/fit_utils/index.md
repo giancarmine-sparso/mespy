@@ -1,6 +1,6 @@
 # fit_utils.py
 
-`fit_utils.py` contiene il fit lineare pesato del package e il tipo di ritorno associato. E il modulo piu denso del progetto, perche combina statistica, validazione degli input e plotting opzionale.
+`fit_utils.py` contiene il fit lineare pesato del package e il tipo di ritorno associato. E il modulo piu denso del progetto, perche combina statistica, validazione degli input e plotting opzionale, riusando anche il sistema di stile gia definito in `plot_utils`.
 
 ## Import principali
 
@@ -9,14 +9,15 @@
 - Librerie esterne:
   `numpy as np`, `numpy.typing.ArrayLike`, `numpy.typing.NDArray`
 - Import interni da `plot_utils`:
-  `C_BAND_B`, `C_BAR`, `C_MEAN`,
+  [`_style_context`](../../checks/plot_utils/style-context.md),
   [`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md),
+  [`_validate_decimals`](../../checks/plot_utils/validate-decimals.md),
   [`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)
 - Import interni da `stats_utils`:
   [`_as_float_vector`](../../checks/stats_utils/as-float-vector.md),
+  [`weighted_mean`](../stats_utils/weighted-mean.md),
   [`covariance`](../stats_utils/covariance.md),
-  [`variance`](../stats_utils/variance.md),
-  [`weighted_mean`](../stats_utils/weighted-mean.md)
+  [`variance`](../stats_utils/variance.md)
 
 ## Cosa espone
 
@@ -26,10 +27,11 @@
 ## Di cosa si occupa
 
 - validare `x`, `y`, `sigma_y` e opzionalmente `sigma_x`
+- validare `decimals`, `tol` e `max_iter`
 - stimare pendenza e intercetta con minimi quadrati pesati
 - aggiornare iterativamente i pesi quando esistono incertezze anche su `x`
 - calcolare residui, `chi2`, `reduced_chi2`, correlazione e altre diagnostiche
-- creare, se richiesto, una figura matplotlib con pannello del fit e pannello dei residui
+- creare, se richiesto, una figura matplotlib con pannello del fit e pannello dei residui usando lo stesso sistema di stile di `histogram`
 
 ## Helper collegati
 
@@ -37,6 +39,10 @@
 - [`_validate_positive_scalar`](../../checks/fit_utils/validate-positive-scalar.md)
 - [`_validate_max_iter`](../../checks/fit_utils/validate-max-iter.md)
 - [`_fit_coefficients`](../../checks/fit_utils/fit-coefficients.md)
+- [`_style_context`](../../checks/plot_utils/style-context.md)
+- [`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md)
+- [`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)
+- [`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)
 
 ## Pagine di dettaglio
 

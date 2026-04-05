@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"POT-Creation-Date: 2026-04-05 19:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:1
 msgid "Funzionamento"
@@ -24,43 +24,41 @@ msgstr "Implementation"
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:3
 msgid ""
-"Questa pagina descrive il flusso interno di `lin_fit` e l'ordine con cui vengono applicate "
-"validazioni, stima dei coefficienti, eventuale aggiornamento iterativo dei pesi, diagnostiche e "
-"plotting. A differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere la lista "
-"dei parametri, ma mostrare come la funzione costruisce davvero il fit lineare pesato."
+"Questa pagina descrive il flusso interno di `lin_fit` e l'ordine con cui "
+"vengono applicate validazioni, stima dei coefficienti, eventuale "
+"aggiornamento iterativo dei pesi, diagnostiche e plotting. A differenza "
+"di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere la lista "
+"dei parametri, ma mostrare come la funzione costruisce davvero il fit "
+"lineare pesato."
 msgstr ""
-"This page describes the internal flow of `lin_fit` and the order in which validation, coefficient"
-" estimation, optional iterative weight updates, diagnostics, and plotting are applied. Unlike "
-"[Overview](panoramica.md), the goal here is not to repeat the parameter list, but to show how the"
-" function actually builds the weighted linear fit."
+"This page describes the internal flow of `lin_fit` and the order in which"
+" validation, coefficient estimation, optional iterative weight updates, "
+"diagnostics, and plotting are applied. Unlike [Overview](panoramica.md), "
+"the goal here is not to repeat the parameter list, but to show how the "
+"function actually builds the weighted linear fit."
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:5
 #, python-brace-format
 msgid ""
-"I frammenti seguenti sono estratti dal codice attuale di `src/mespy/fit_utils.py`. Le formule di "
-"base riprendono e adattano la formulazione teorica gia presente nella documentazione legacy "
-"`fit_utils.tex`; il criterio di arresto, le diagnostiche restituite e la banda del grafico sono "
-"invece spiegati a partire dall'implementazione attuale. Gli helper privati vengono citati solo "
-"per chiarire il flusso; i dettagli completi sono documentati in "
+"I frammenti seguenti sono estratti dal codice attuale di "
+"`src/mespy/fit_utils.py`. Le formule di base riprendono e adattano la "
+"formulazione teorica gia presente nella documentazione legacy "
+"`fit_utils.tex`; il criterio di arresto, le diagnostiche restituite e la "
+"banda del grafico sono invece spiegati a partire dall'implementazione "
+"attuale. Gli helper privati vengono citati solo per chiarire il flusso; i"
+" dettagli completi sono documentati in "
 "[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), "
 "[`_fit_coefficients`](../../../checks/fit_utils/fit-coefficients.md), "
-"[`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-limits.md) e "
-"[`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md). Quando servono i simboli "
-"$\\bar{x}_w$, $\\mathrm{Var}_w$ e $\\mathrm{Cov}_w$, il riferimento pratico sono le funzioni "
-"pubbliche [`weighted_mean`](../../stats_utils/weighted-mean.md), "
-"[`variance`](../../stats_utils/variance.md) e [`covariance`](../../stats_utils/covariance.md)."
-msgstr ""
-"The following snippets are taken from the current `src/mespy/fit_utils.py` implementation. The "
-"base formulas adapt the theoretical formulation already present in the legacy `fit_utils.tex` "
-"documentation; the stopping criterion, returned diagnostics, and plot band are instead explained "
-"from the current implementation. Private helpers are mentioned only to clarify the flow; complete"
-" details are documented in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), "
-"[`_fit_coefficients`](../../../checks/fit_utils/fit-coefficients.md), "
-"[`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-limits.md), and "
-"[`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md). When the symbols "
-"$\\bar{x}_w$, $\\mathrm{Var}_w$, and $\\mathrm{Cov}_w$ are needed, the practical references are "
-"the public functions [`weighted_mean`](../../stats_utils/weighted-mean.md), "
-"[`variance`](../../stats_utils/variance.md), and [`covariance`](../../stats_utils/covariance.md)."
+"[`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-"
+"limits.md), [`_validate_decimals`](../../../checks/plot_utils/validate-"
+"decimals.md), [`_validate_figsize`](../../../checks/plot_utils/validate-"
+"figsize.md) e [`_style_context`](../../../checks/plot_utils/style-"
+"context.md). Quando servono i simboli $\\bar{x}_w$, $\\mathrm{Var}_w$ e "
+"$\\mathrm{Cov}_w$, il riferimento pratico sono le funzioni pubbliche "
+"[`weighted_mean`](../../stats_utils/weighted-mean.md), "
+"[`variance`](../../stats_utils/variance.md) e "
+"[`covariance`](../../stats_utils/covariance.md)."
+msgstr "The following snippets are taken from the current `src/mespy/fit_utils.py` implementation. The base formulas adapt the theoretical formulation already present in the legacy `fit_utils.tex` documentation; the stopping criterion, returned diagnostics, and plot band are instead explained from the current implementation. Private helpers are mentioned only to clarify the flow; complete details are documented in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), [`_fit_coefficients`](../../../checks/fit_utils/fit-coefficients.md), [`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-limits.md), [`_validate_decimals`](../../../checks/plot_utils/validate-decimals.md), [`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md), and [`_style_context`](../../../checks/plot_utils/style-context.md). When the symbols $\\bar{x}_w$, $\\mathrm{Var}_w$, and $\\mathrm{Cov}_w$ are needed, the practical references are the public functions [`weighted_mean`](../../stats_utils/weighted-mean.md), [`variance`](../../stats_utils/variance.md), and [`covariance`](../../stats_utils/covariance.md)."
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:7
 msgid "Sequenza di esecuzione"
@@ -71,115 +69,146 @@ msgid "L'implementazione segue questa sequenza:"
 msgstr "The implementation follows this sequence:"
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:11
-msgid "Converte `x`, `y` e `sigma_y` in vettori `float64` monodimensionali e finiti."
-msgstr "Converts `x`, `y`, and `sigma_y` into one-dimensional, finite `float64` vectors."
+msgid ""
+"Converte `x`, `y` e `sigma_y` in vettori `float64` monodimensionali e "
+"finiti."
+msgstr ""
+"Converts `x`, `y`, and `sigma_y` into one-dimensional, finite `float64` "
+"vectors."
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:12
-msgid "Verifica che `x`, `y` e `sigma_y` abbiano la stessa lunghezza e che i punti siano almeno 3."
-msgstr "Checks that `x`, `y`, and `sigma_y` have the same length and that there are at least 3 points."
+msgid ""
+"Verifica che `x`, `y` e `sigma_y` abbiano la stessa lunghezza e che i "
+"punti siano almeno 3."
+msgstr ""
+"Checks that `x`, `y`, and `sigma_y` have the same length and that there "
+"are at least 3 points."
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:13
+msgid "Valida `decimals` come intero non negativo e leggibile."
+msgstr "Validates `decimals` as a readable non-negative integer."
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:14
 msgid "Valida `tol` come scalare positivo e `max_iter` come intero positivo."
 msgstr "Validates `tol` as a positive scalar and `max_iter` as a positive integer."
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:14
-msgid "Se `sigma_x` e presente, lo valida come vettore strettamente positivo con la stessa forma di `x`."
-msgstr ""
-"If `sigma_x` is provided, it validates it as a strictly positive vector with the same shape as "
-"`x`."
-
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:15
+msgid ""
+"Se `sigma_x` e presente, lo valida come vettore strettamente positivo con"
+" la stessa forma di `x`."
+msgstr ""
+"If `sigma_x` is provided, it validates it as a strictly positive vector "
+"with the same shape as `x`."
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:16
 #, python-brace-format
 msgid "Costruisce i pesi iniziali $w_i = 1 / \\sigma_{y_i}^2$."
 msgstr "Builds the initial weights $w_i = 1 / \\sigma_{y_i}^2$."
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:16
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:17
 msgid "Stima una prima retta con `_fit_coefficients(...)`."
 msgstr "Estimates an initial line with `_fit_coefficients(...)`."
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:17
-msgid ""
-"Se `sigma_x` e presente, aggiorna iterativamente i pesi usando la varianza efficace "
-"$\\sigma_{\\mathrm{eff},i}^2 = \\sigma_{y_i}^2 + m^2 \\sigma_{x_i}^2$ finche la variazione "
-"relativa della pendenza scende sotto `tol`."
-msgstr ""
-"If `sigma_x` is provided, it iteratively updates the weights using the effective variance "
-"$\\sigma_{\\mathrm{eff},i}^2 = \\sigma_{y_i}^2 + m^2 \\sigma_{x_i}^2$ until the relative change "
-"in the slope falls below `tol`."
-
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:18
 msgid ""
-"Calcola varianze dei parametri, covarianza, correlazione, residui, `chi2`, `reduced_chi2` e altre"
-" diagnostiche."
+"Se `sigma_x` e presente, aggiorna iterativamente i pesi usando la "
+"varianza efficace $\\sigma_{\\mathrm{eff},i}^2 = \\sigma_{y_i}^2 + m^2 "
+"\\sigma_{x_i}^2$ finche la variazione relativa della pendenza scende "
+"sotto `tol`."
 msgstr ""
-"Computes parameter variances, covariance, correlation, residuals, `chi2`, `reduced_chi2`, and "
-"other diagnostics."
+"If `sigma_x` is provided, it iteratively updates the weights using the "
+"effective variance $\\sigma_{\\mathrm{eff},i}^2 = \\sigma_{y_i}^2 + m^2 "
+"\\sigma_{x_i}^2$ until the relative change in the slope falls below "
+"`tol`."
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:19
-msgid "Se `show_plot=True`, costruisce una figura a due pannelli con dati, retta e residui."
-msgstr "If `show_plot=True`, it builds a two-panel figure with data, fitted line, and residuals."
+msgid ""
+"Calcola varianze dei parametri, covarianza, correlazione, residui, "
+"`chi2`, `reduced_chi2` e altre diagnostiche."
+msgstr ""
+"Computes parameter variances, covariance, correlation, residuals, `chi2`,"
+" `reduced_chi2`, and other diagnostics."
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:20
 msgid ""
-"Restituisce un [`LinearFitResult`](../linear-fit-result.md) con tutti i risultati numerici e la "
-"figura opzionale."
-msgstr ""
-"Returns a [`LinearFitResult`](../linear-fit-result.md) with all numeric results and the optional "
-"figure."
+"Se `show_plot=True`, entra in `_style_context(style)` e costruisce una "
+"figura a due pannelli con dati, retta e residui."
+msgstr "If `show_plot=True`, it enters `_style_context(style)` and builds a two-panel figure with data, fitted line, and residuals."
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:22
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:21
+msgid ""
+"Restituisce un [`LinearFitResult`](../linear-fit-result.md) con tutti i "
+"risultati numerici e la figura opzionale."
+msgstr ""
+"Returns a [`LinearFitResult`](../linear-fit-result.md) with all numeric "
+"results and the optional figure."
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:23
 msgid "Validazione input e setup numerico"
 msgstr "Input validation and numerical setup"
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:53
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:56
 msgid "Questo primo blocco definisce il contratto numerico del fit."
 msgstr "This first block defines the numeric contract of the fit."
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:55
-msgid ""
-"`x`, `y` e `sigma_y` non vengono usati direttamente: prima passano attraverso validatori che "
-"impongono array numerici, monodimensionali e finiti."
-msgstr ""
-"`x`, `y`, and `sigma_y` are not used directly: they first pass through validators that enforce "
-"numeric, one-dimensional, finite arrays."
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:56
-msgid ""
-"`sigma_y` e, se presente, `sigma_x` devono essere strettamente positivi. Questo e essenziale per "
-"poter costruire pesi fisicamente e numericamente sensati."
-msgstr ""
-"`sigma_y` and, if provided, `sigma_x` must be strictly positive. This is essential to build "
-"weights that are physically and numerically meaningful."
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:57
-msgid ""
-"La funzione rifiuta dataset con meno di 3 punti, perche il fit lineare restituisce due parametri "
-"e poi usa `dof = n - 2` nelle diagnostiche."
-msgstr ""
-"The function rejects datasets with fewer than 3 points, because the linear fit returns two "
-"parameters and then uses `dof = n - 2` in its diagnostics."
-
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:58
+msgid ""
+"`x`, `y` e `sigma_y` non vengono usati direttamente: prima passano "
+"attraverso validatori che impongono array numerici, monodimensionali e "
+"finiti."
+msgstr ""
+"`x`, `y`, and `sigma_y` are not used directly: they first pass through "
+"validators that enforce numeric, one-dimensional, finite arrays."
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:59
+msgid ""
+"`sigma_y` e, se presente, `sigma_x` devono essere strettamente positivi. "
+"Questo e essenziale per poter costruire pesi fisicamente e numericamente "
+"sensati."
+msgstr ""
+"`sigma_y` and, if provided, `sigma_x` must be strictly positive. This is "
+"essential to build weights that are physically and numerically "
+"meaningful."
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:60
+msgid ""
+"La funzione rifiuta dataset con meno di 3 punti, perche il fit lineare "
+"restituisce due parametri e poi usa `dof = n - 2` nelle diagnostiche."
+msgstr ""
+"The function rejects datasets with fewer than 3 points, because the "
+"linear fit returns two parameters and then uses `dof = n - 2` in its "
+"diagnostics."
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:61
+msgid ""
+"`decimals` viene validato anche quando `show_plot=False`, perche fa parte"
+" del contratto generale della funzione e della formattazione della "
+"legenda quando il grafico e attivo."
+msgstr "`decimals` is validated even when `show_plot=False`, because it is part of the function's general contract and of legend formatting when the plot is active."
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:62
 msgid "I pesi iniziali del caso base sono"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:60
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:64
 msgid ""
 "\n"
 "w_i = \\frac{1}{\\sigma_{y_i}^2}.\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:64
-msgid ""
-"Questa e la formulazione standard del fit lineare pesato quando le incertezze sono solo sulle "
-"ordinate."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:66
-msgid "Le quantita pesate che compaiono piu avanti si appoggiano alle funzioni statistiche del package:"
-msgstr ""
-
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:68
+msgid ""
+"Questa e la formulazione standard del fit lineare pesato quando le "
+"incertezze sono solo sulle ordinate."
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:70
+msgid ""
+"Le quantita pesate che compaiono piu avanti si appoggiano alle funzioni "
+"statistiche del package:"
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:72
 #, python-brace-format
 msgid ""
 "\n"
@@ -188,27 +217,30 @@ msgid ""
 "\\bar{y}_w = \\frac{\\sum_i w_i y_i}{\\sum_i w_i}.\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:74
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:78
 msgid ""
 "Nel codice queste medie non vengono riscritte a mano: vengono delegate a "
-"[`weighted_mean`](../../stats_utils/weighted-mean.md). Lo stesso vale per varianza e covarianza "
-"pesata, che vengono delegate a [`variance`](../../stats_utils/variance.md) e "
+"[`weighted_mean`](../../stats_utils/weighted-mean.md). Lo stesso vale per"
+" varianza e covarianza pesata, che vengono delegate a "
+"[`variance`](../../stats_utils/variance.md) e "
 "[`covariance`](../../stats_utils/covariance.md)."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:76
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:80
 msgid "Stima dei coefficienti e ramo iterativo"
 msgstr "Coefficient estimation and iterative branch"
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:118
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:122
 msgid "Qui avviene la stima vera e propria della retta."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:120
-msgid "Nel caso base, `_fit_coefficients(...)` usa varianza e covarianza pesata di `x` e `y` per stimare"
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:124
+msgid ""
+"Nel caso base, `_fit_coefficients(...)` usa varianza e covarianza pesata "
+"di `x` e `y` per stimare"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:122
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:126
 msgid ""
 "\n"
 "\\hat{m} = \\frac{\\mathrm{Cov}_w(x,y)}{\\mathrm{Var}_w(x)},\n"
@@ -216,46 +248,52 @@ msgid ""
 "\\hat{c} = \\bar{y}_w - \\hat{m}\\,\\bar{x}_w.\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:128
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:132
 #, python-brace-format
 msgid ""
-"La quantita `var_x` restituita dall'helper coincide con $\\mathrm{Var}_w(x)$ e viene riusata "
-"anche nel calcolo delle incertezze sui parametri."
+"La quantita `var_x` restituita dall'helper coincide con "
+"$\\mathrm{Var}_w(x)$ e viene riusata anche nel calcolo delle incertezze "
+"sui parametri."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:130
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:134
 msgid ""
-"Se `x` non ha abbastanza variabilita, `_fit_coefficients(...)` fallisce. In pratica il codice "
-"richiede che la varianza pesata di `x` sia finita e non troppo vicina a zero."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:131
-msgid "Se `sigma_x is None`, il fit si ferma qui: `iterations = 0` e `converged = True`."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:133
-msgid "Quando invece sono presenti incertezze anche su `x`, la funzione passa a un algoritmo iterativo."
+"Se `x` non ha abbastanza variabilita, `_fit_coefficients(...)` fallisce. "
+"In pratica il codice richiede che la varianza pesata di `x` sia finita e "
+"non troppo vicina a zero."
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:135
-msgid "La varianza efficace di ogni punto diventa"
+msgid ""
+"Se `sigma_x is None`, il fit si ferma qui: `iterations = 0` e `converged "
+"= True`."
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:137
+msgid ""
+"Quando invece sono presenti incertezze anche su `x`, la funzione passa a "
+"un algoritmo iterativo."
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:139
+msgid "La varianza efficace di ogni punto diventa"
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:141
 msgid ""
 "\n"
 "\\sigma_{\\mathrm{eff},i}^2 = \\sigma_{y_i}^2 + m^2 \\sigma_{x_i}^2.\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:141
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:145
 #, python-brace-format
 msgid ""
-"Questa formula ha una motivazione teorica precisa: nel modello lineare $y = mx + c$, "
-"un'incertezza orizzontale $\\sigma_{x_i}$ puo essere propagata lungo l'asse verticale con la "
-"regola lineare"
+"Questa formula ha una motivazione teorica precisa: nel modello lineare $y"
+" = mx + c$, un'incertezza orizzontale $\\sigma_{x_i}$ puo essere "
+"propagata lungo l'asse verticale con la regola lineare"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:143
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:147
 msgid ""
 "\n"
 "\\sigma_{y,\\mathrm{da}\\,x,i}^2 \\approx\n"
@@ -263,17 +301,20 @@ msgid ""
 "= m^2 \\sigma_{x_i}^2.\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:149
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:153
 msgid ""
-"In altre parole, `lin_fit` usa l'idea della varianza efficace: tratta l'errore su `x` come un "
-"contributo aggiuntivo all'errore su `y`, ottenendo una singola varianza verticale per punto."
+"In altre parole, `lin_fit` usa l'idea della varianza efficace: tratta "
+"l'errore su `x` come un contributo aggiuntivo all'errore su `y`, "
+"ottenendo una singola varianza verticale per punto."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:150
-msgid "Questo porta naturalmente alla quantita che il fit cerca di rendere il piu piccola possibile:"
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:154
+msgid ""
+"Questo porta naturalmente alla quantita che il fit cerca di rendere il "
+"piu piccola possibile:"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:152
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:156
 msgid ""
 "\n"
 "\\chi^2_{\\mathrm{eff}}(m,c) =\n"
@@ -282,185 +323,198 @@ msgid ""
 "{\\sigma_{y_i}^2 + m^2 \\sigma_{x_i}^2}.\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:159
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:163
 msgid ""
-"Qui si vede perche serve iterare: nel denominatore compare la pendenza `m`. Quindi i pesi "
-"dipendono proprio dalla quantita che stiamo cercando di stimare."
+"Qui si vede perche serve iterare: nel denominatore compare la pendenza "
+"`m`. Quindi i pesi dipendono proprio dalla quantita che stiamo cercando "
+"di stimare."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:160
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:164
 msgid ""
-"Per questo il metodo non puo chiudersi in un solo passaggio come nel caso con sole incertezze su "
-"`y`. La funzione procede invece per passi successivi:"
+"Per questo il metodo non puo chiudersi in un solo passaggio come nel caso"
+" con sole incertezze su `y`. La funzione procede invece per passi "
+"successivi:"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:162
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:166
 msgid ""
 "\n"
 "m^{(k)}\n"
 "\\;\\longrightarrow\\;\n"
-"w_i^{(k)} = \\frac{1}{\\sigma_{y_i}^2 + \\left(m^{(k)}\\right)^2 \\sigma_{x_i}^2}\n"
+"w_i^{(k)} = \\frac{1}{\\sigma_{y_i}^2 + \\left(m^{(k)}\\right)^2 "
+"\\sigma_{x_i}^2}\n"
 "\\;\\longrightarrow\\;\n"
 "\\left(m^{(k+1)}, c^{(k+1)}\\right).\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:170
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:174
 msgid ""
-"In pratica il procedimento e questo: si parte da una prima stima di `m`, si calcolano i pesi con "
-"quella stima, si ricalcola la retta con i nuovi pesi e si ripete finche il risultato cambia "
-"pochissimo."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:171
-msgid ""
-"La funzione non usa un metodo geometrico completo che minimizza direttamente tutte le distanze "
-"nel piano. Fa una scelta piu semplice: trasforma l'effetto di `sigma_x` in un contributo "
-"aggiuntivo all'incertezza verticale su `y`. E proprio questa idea che porta alla formula della "
-"varianza efficace usata nel codice."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:173
-msgid "I nuovi pesi sono quindi"
+"In pratica il procedimento e questo: si parte da una prima stima di `m`, "
+"si calcolano i pesi con quella stima, si ricalcola la retta con i nuovi "
+"pesi e si ripete finche il risultato cambia pochissimo."
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:175
+msgid ""
+"La funzione non usa un metodo geometrico completo che minimizza "
+"direttamente tutte le distanze nel piano. Fa una scelta piu semplice: "
+"trasforma l'effetto di `sigma_x` in un contributo aggiuntivo "
+"all'incertezza verticale su `y`. E proprio questa idea che porta alla "
+"formula della varianza efficace usata nel codice."
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:177
+msgid "I nuovi pesi sono quindi"
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:179
 msgid ""
 "\n"
 "w_i = \\frac{1}{\\sigma_{\\mathrm{eff},i}^2}.\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:179
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:183
 msgid ""
-"A ogni iterazione il codice ricalcola la retta con questi nuovi pesi e misura la variazione "
-"relativa della pendenza tramite"
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:185
-msgid ""
-"Il criterio di arresto guarda la pendenza, non l'intercetta, perche nella formula dei pesi "
-"compare solo `m`. Se `m` smette quasi di cambiare, allora smettono quasi di cambiare anche "
-"$\\sigma_{\\mathrm{eff},i}^2$ e quindi i pesi."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:186
-msgid ""
-"L'intercetta non entra nella varianza efficace. Quando i pesi sono ormai quasi stabili, anche `c`"
-" e `var_x` si assestano di conseguenza."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:187
-msgid ""
-"La scelta di usare una variazione relativa, invece di una assoluta, serve a non legare il test "
-"alle unita di misura. Per esempio, una stessa differenza numerica su `m` puo sembrare grande o "
-"piccola a seconda di come sono misurati `x` e `y`."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:188
-msgid ""
-"Il denominatore usa `max(abs(next_slope), 1e-300)` per evitare una divisione per zero quando la "
-"pendenza stimata e molto piccola o nulla."
+"A ogni iterazione il codice ricalcola la retta con questi nuovi pesi e "
+"misura la variazione relativa della pendenza tramite"
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:189
 msgid ""
-"Il valore `1e-300` non ha un significato fisico o statistico: e solo una protezione numerica "
-"molto piccola per evitare problemi quando `next_slope` e vicino a zero."
+"Il criterio di arresto guarda la pendenza, non l'intercetta, perche nella"
+" formula dei pesi compare solo `m`. Se `m` smette quasi di cambiare, "
+"allora smettono quasi di cambiare anche $\\sigma_{\\mathrm{eff},i}^2$ e "
+"quindi i pesi."
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:190
-msgid "La convergenza e dichiarata quando `rel_change < tol_value`."
+msgid ""
+"L'intercetta non entra nella varianza efficace. Quando i pesi sono ormai "
+"quasi stabili, anche `c` e `var_x` si assestano di conseguenza."
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:191
 msgid ""
-"Anche `tol` va letto come parametro numerico, non come una costante teorica universale. Nel "
-"repository non compare una derivazione speciale del valore di default: la scelta pratica e usare "
-"una soglia relativa molto piccola (`1e-10`) per fermarsi quando la pendenza, e quindi anche i "
-"pesi, stanno ormai cambiando in modo trascurabile."
+"La scelta di usare una variazione relativa, invece di una assoluta, serve"
+" a non legare il test alle unita di misura. Per esempio, una stessa "
+"differenza numerica su `m` puo sembrare grande o piccola a seconda di "
+"come sono misurati `x` e `y`."
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:192
 msgid ""
-"In modo molto concreto, `tol` risponde a questa domanda: \"quanto deve essere piccolo l'ultimo "
-"cambiamento della pendenza per poter dire che il procedimento si e assestato?\" Non misura quanto"
-" il fit sia \"buono\" dal punto di vista fisico e non va letta come una soglia su `chi2`."
+"Il denominatore usa `max(abs(next_slope), 1e-300)` per evitare una "
+"divisione per zero quando la pendenza stimata e molto piccola o nulla."
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:193
 msgid ""
-"Ridurre `tol` significa chiedere un assestamento ancora piu stretto e quindi, spesso, piu "
-"iterazioni. Aumentare `tol` significa fermarsi prima, accettando una stabilita finale un po meno "
-"rigorosa."
+"Il valore `1e-300` non ha un significato fisico o statistico: e solo una "
+"protezione numerica molto piccola per evitare problemi quando "
+"`next_slope` e vicino a zero."
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:194
-msgid "`iterations` conta quanti aggiornamenti dei pesi sono stati effettuati davvero."
+msgid "La convergenza e dichiarata quando `rel_change < tol_value`."
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:195
-msgid "`converged` indica se il criterio di arresto e stato soddisfatto prima di esaurire `max_iter`."
+msgid ""
+"Anche `tol` va letto come parametro numerico, non come una costante "
+"teorica universale. Nel repository non compare una derivazione speciale "
+"del valore di default: la scelta pratica e usare una soglia relativa "
+"molto piccola (`1e-10`) per fermarsi quando la pendenza, e quindi anche i"
+" pesi, stanno ormai cambiando in modo trascurabile."
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:196
 msgid ""
-"`max_iter` completa il criterio di stop come limite di sicurezza: non decide da solo la "
-"convergenza, ma impedisce che un caso difficile o molto lento lasci il ciclo aperto troppo a "
-"lungo."
+"In modo molto concreto, `tol` risponde a questa domanda: \"quanto deve "
+"essere piccolo l'ultimo cambiamento della pendenza per poter dire che il "
+"procedimento si e assestato?\" Non misura quanto il fit sia \"buono\" dal"
+" punto di vista fisico e non va letta come una soglia su `chi2`."
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:197
 msgid ""
-"Se il ciclo termina senza convergere, la funzione alza `RuntimeError` invece di restituire un "
-"risultato parziale."
+"Ridurre `tol` significa chiedere un assestamento ancora piu stretto e "
+"quindi, spesso, piu iterazioni. Aumentare `tol` significa fermarsi prima,"
+" accettando una stabilita finale un po meno rigorosa."
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:198
+msgid ""
+"`iterations` conta quanti aggiornamenti dei pesi sono stati effettuati "
+"davvero."
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:199
+msgid ""
+"`converged` indica se il criterio di arresto e stato soddisfatto prima di"
+" esaurire `max_iter`."
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:200
+msgid ""
+"`max_iter` completa il criterio di stop come limite di sicurezza: non "
+"decide da solo la convergenza, ma impedisce che un caso difficile o molto"
+" lento lasci il ciclo aperto troppo a lungo."
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:201
+msgid ""
+"Se il ciclo termina senza convergere, la funzione alza `RuntimeError` "
+"invece di restituire un risultato parziale."
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:203
 msgid "Diagnostiche del fit"
 msgstr "Fit diagnostics"
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:220
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:224
 msgid ""
-"Dopo aver fissato i pesi finali, `lin_fit` costruisce le principali grandezze diagnostiche del "
-"modello."
+"Dopo aver fissato i pesi finali, `lin_fit` costruisce le principali "
+"grandezze diagnostiche del modello."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:222
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:226
 msgid "Se chiamiamo"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:224
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:228
 msgid ""
 "\n"
 "S_w = \\sum_i w_i,\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:228
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:232
 msgid "allora il codice usa le formule"
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:230
-msgid ""
-"\n"
-"\\mathrm{Var}(m) = \\frac{1}{\\mathrm{Var}_w(x)\\,S_w},\n"
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:234
 msgid ""
 "\n"
-"\\mathrm{Var}(c) = \\frac{\\overline{x^2}_w}{\\mathrm{Var}_w(x)\\,S_w},\n"
+"\\mathrm{Var}(m) = \\frac{1}{\\mathrm{Var}_w(x)\\,S_w},\n"
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:238
 msgid ""
 "\n"
-"\\mathrm{Cov}(m,c) = -\\frac{\\bar{x}_w}{\\mathrm{Var}_w(x)\\,S_w}.\n"
+"\\mathrm{Var}(c) = \\frac{\\overline{x^2}_w}{\\mathrm{Var}_w(x)\\,S_w},\n"
 msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:242
+msgid ""
+"\n"
+"\\mathrm{Cov}(m,c) = -\\frac{\\bar{x}_w}{\\mathrm{Var}_w(x)\\,S_w}.\n"
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:246
 msgid "Da qui seguono direttamente"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:244
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:248
 msgid ""
 "\n"
 "\\sigma_m = \\sqrt{\\mathrm{Var}(m)},\n"
@@ -468,67 +522,70 @@ msgid ""
 "\\sigma_c = \\sqrt{\\mathrm{Var}(c)},\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:250
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:254
 msgid "e il coefficiente di correlazione tra pendenza e intercetta"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:252
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:256
 msgid ""
 "\n"
 "\\rho_{mc} = \\frac{\\mathrm{Cov}(m,c)}{\\sigma_m \\sigma_c}.\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:256
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:260
 msgid "I residui sono definiti come"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:258
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:262
 msgid ""
 "\n"
 "r_i = y_i - (m x_i + c),\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:262
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:266
 msgid "e i gradi di liberta sono"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:264
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:268
 #, python-brace-format
 msgid ""
 "\n"
 "\\mathrm{dof} = n - 2.\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:268
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:272
 msgid "La dispersione sintetica dei residui e calcolata come"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:270
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:274
 msgid ""
 "\n"
 "\\mathrm{residual\\_std} =\n"
 "\\sqrt{\\frac{\\sum_i r_i^2}{\\mathrm{dof}}}.\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:275
-msgid "Per il chi quadrato, invece, il codice usa una varianza di fit che dipende dal ramo seguito:"
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:279
+msgid ""
+"Per il chi quadrato, invece, il codice usa una varianza di fit che "
+"dipende dal ramo seguito:"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:277
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:281
 msgid ""
 "\n"
 "\\sigma_{\\mathrm{fit},i}^2 =\n"
 "\\begin{cases}\n"
 "\\sigma_{y_i}^2 & \\text{se } \\sigma_x \\text{ non e presente} \\\\\n"
-"\\sigma_{y_i}^2 + m^2 \\sigma_{x_i}^2 & \\text{se } \\sigma_x \\text{ e presente}\n"
+"\\sigma_{y_i}^2 + m^2 \\sigma_{x_i}^2 & \\text{se } \\sigma_x \\text{ e "
+"presente}\n"
 "\\end{cases}\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:285
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:289
 msgid "e quindi"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:287
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:291
 msgid ""
 "\n"
 "\\chi^2 = \\sum_i \\frac{r_i^2}{\\sigma_{\\mathrm{fit},i}^2},\n"
@@ -536,92 +593,129 @@ msgid ""
 "\\chi^2_\\nu = \\frac{\\chi^2}{\\mathrm{dof}}.\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:293
-msgid "Alcune osservazioni pratiche aiutano a leggere questi numeri nel modo corretto."
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:297
+msgid ""
+"Alcune osservazioni pratiche aiutano a leggere questi numeri nel modo "
+"corretto."
 msgstr "A few practical observations help interpret these numbers correctly."
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:295
-msgid ""
-"`residual_std` non pesa i residui con le incertezze sperimentali: misura solo la dispersione "
-"quadratica dei residui attorno alla retta."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:296
-msgid ""
-"`chi2` e `reduced_chi2` invece confrontano i residui con le incertezze del modello, quindi hanno "
-"una lettura statistica diversa."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:297
-msgid "Nel caso con `sigma_x`, sia i pesi finali sia `chi2` usano la stessa forma di varianza efficace."
-msgstr ""
-
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:299
+msgid ""
+"`residual_std` non pesa i residui con le incertezze sperimentali: misura "
+"solo la dispersione quadratica dei residui attorno alla retta."
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:300
+msgid ""
+"`chi2` e `reduced_chi2` invece confrontano i residui con le incertezze "
+"del modello, quindi hanno una lettura statistica diversa."
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:301
+msgid ""
+"Nel caso con `sigma_x`, sia i pesi finali sia `chi2` usano la stessa "
+"forma di varianza efficace."
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:303
 msgid "Grafico opzionale e oggetto di ritorno"
 msgstr "Optional plot and return object"
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:372
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:403
 msgid "L'ultima parte gestisce plotting e packaging finale del risultato."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:374
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:405
 msgid ""
-"`save_path` puo essere usato solo se `show_plot=True`. La funzione controlla questa "
-"incompatibilita prima di entrare nel ramo Matplotlib."
+"`save_path` puo essere usato solo se `show_plot=True`. La funzione "
+"controlla questa incompatibilita prima di entrare nel ramo Matplotlib."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:375
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:406
 msgid ""
-"Se `show_plot=False`, tutta la parte grafica viene saltata e `figure` nel risultato finale vale "
-"`None`."
+"Se `show_plot=False`, tutta la parte grafica viene saltata e `figure` nel"
+" risultato finale vale `None`."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:376
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:407
 msgid ""
-"Quando il grafico e attivo, `lin_fit` crea sempre due pannelli verticali: in alto il fit, in "
-"basso i residui."
+"Quando il grafico e attivo, `lin_fit` usa lo stesso "
+"[`_style_context`](../../../checks/plot_utils/style-context.md) di "
+"[`histogram`](../../plot_utils/histogram.md): `style=None` mantiene gli "
+"`rcParams` correnti, `style=\"mespy\"` carica lo stile del package, "
+"qualunque altra stringa viene passata a Matplotlib."
+msgstr "When plotting is active, `lin_fit` uses the same [`_style_context`](../../../checks/plot_utils/style-context.md) as [`histogram`](../../plot_utils/histogram.md): `style=None` keeps the current `rcParams`, `style=\"mespy\"` loads the package style, and any other string is passed to Matplotlib."
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:408
+msgid ""
+"Quando il grafico e attivo, `lin_fit` crea sempre due pannelli verticali:"
+" in alto il fit, in basso i residui."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:377
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:409
 msgid ""
-"`xlim` viene applicato sia a `ax_fit` sia a `ax_res`, mentre `ylim` viene applicato solo al "
-"pannello superiore."
+"`figsize` e `dpi` vengono passati a `plt.subplots(...)` solo quando sono "
+"stati specificati. In assenza di override, decide lo stile attivo."
+msgstr "`figsize` and `dpi` are passed to `plt.subplots(...)` only when they have been specified. Without overrides, the active style decides."
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:410
+msgid ""
+"`point_color`, quando presente, viene applicato sia ai marker sia alle "
+"barre d'errore; `fit_color` viene usato per la retta e per la linea "
+"orizzontale dei residui; `band_color` controlla la fascia attorno alla "
+"retta."
+msgstr "`point_color`, when provided, is applied to both markers and error bars; `fit_color` is used for the fitted line and for the horizontal residual line; `band_color` controls the band around the line."
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:411
+msgid ""
+"`xlim` viene applicato sia a `ax_fit` sia a `ax_res`, mentre `ylim` viene"
+" applicato solo al pannello superiore."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:378
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:412
 msgid ""
-"`show_grid` controlla solo la griglia del pannello del fit; il pannello residui ha sempre la "
-"linea orizzontale a zero, ma non una griglia dedicata."
+"`show_grid=False` spegne esplicitamente la griglia su entrambi i "
+"pannelli; `show_grid=True` con `grid_alpha is None` lascia la griglia "
+"allo stile attivo; `grid_alpha` esplicito applica una griglia sull'asse "
+"`y` di entrambi i pannelli."
+msgstr "`show_grid=False` turns the grid off explicitly on both panels; `show_grid=True` with `grid_alpha is None` leaves the grid to the active style; an explicit `grid_alpha` applies a grid on the `y` axis of both panels."
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:413
+msgid ""
+"`decimals` e `show_fit_params` influiscono solo sulla stringa della "
+"legenda della retta, non sul calcolo numerico del fit."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:379
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:414
 msgid ""
-"`decimals` e `show_fit_params` influiscono solo sulla stringa della legenda della retta, non sul "
-"calcolo numerico del fit."
-msgstr ""
+"Il salvataggio usa sempre `bbox_inches=\"tight\"`; il `dpi` viene passato"
+" a `savefig(...)` solo quando e esplicitato."
+msgstr "Saving always uses `bbox_inches=\"tight\"`; `dpi` is passed to `savefig(...)` only when it is explicitly provided."
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:381
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:416
 msgid "La retta visualizzata e"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:383
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:418
 msgid ""
 "\n"
 "y_{\\mathrm{fit}}(x) = m x + c.\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:387
-msgid "Se `show_band=True`, il codice costruisce anche una banda attorno alla retta usando"
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:422
+msgid ""
+"Se `show_band=True`, il codice costruisce anche una banda attorno alla "
+"retta usando"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:389
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:424
 #, python-brace-format
 msgid ""
 "\n"
 "\\bar{x}_w = \\mathrm{weighted\\_mean}(x, w),\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:393
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:428
 msgid ""
 "\n"
 "\\sigma_{\\mathrm{line}}(x) =\n"
@@ -632,94 +726,131 @@ msgid ""
 "}.\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:402
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:437
 msgid "Il grafico mostra quindi"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:404
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:439
 msgid ""
 "\n"
 "y_{\\mathrm{fit}}(x) \\pm \\sigma_{\\mathrm{line}}(x).\n"
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:408
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:443
 msgid ""
-"Questa e la formula implementata oggi nel codice: non viene moltiplicata per `reduced_chi2` ne "
-"per altri fattori di scala aggiuntivi."
+"Questa e la formula implementata oggi nel codice: non viene moltiplicata "
+"per `reduced_chi2` ne per altri fattori di scala aggiuntivi."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:410
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:445
 msgid ""
-"Il valore restituito non e una coppia `(fig, ax)` ma un [`LinearFitResult`](../linear-fit-"
-"result.md), cioe un contenitore immutabile che raccoglie parametri del fit, incertezze, "
-"diagnostiche, residui e figura opzionale."
+"Il valore restituito non e una coppia `(fig, ax)` ma un [`LinearFitResult"
+"`](../linear-fit-result.md), cioe un contenitore immutabile che raccoglie"
+" parametri del fit, incertezze, diagnostiche, residui e figura opzionale."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:412
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:447
 msgid "Interazioni importanti tra parametri"
 msgstr "Important interactions between parameters"
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:414
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:449
 msgid ""
-"Alcune combinazioni di parametri definiscono il comportamento pratico piu importante della "
-"funzione."
+"Alcune combinazioni di parametri definiscono il comportamento pratico piu"
+" importante della funzione."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:416
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:451
 msgid "`sigma_x` attiva il ramo iterativo e rende rilevanti `tol` e `max_iter`."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:417
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:452
 msgid ""
-"`tol` e una soglia di convergenza numerica sulla pendenza relativa, non una soglia statistica "
-"sulla qualita del fit."
+"`tol` e una soglia di convergenza numerica sulla pendenza relativa, non "
+"una soglia statistica sulla qualita del fit."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:418
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:453
 msgid ""
-"Se `sigma_x` non e presente, il fit usa solo i pesi `1 / sigma_y**2`, non itera e marca subito "
-"`converged=True`."
+"Se `sigma_x` non e presente, il fit usa solo i pesi `1 / sigma_y**2`, non"
+" itera e marca subito `converged=True`."
 msgstr ""
 
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:419
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:454
 msgid ""
-"`show_plot=False` disattiva tutta la parte Matplotlib: in questo caso `figure=None`, `xlim` e "
-"`ylim` non vengono nemmeno validati e `decimals` non ha effetti osservabili."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:420
-msgid ""
-"`save_path` non e un salvataggio indipendente dal plotting: e ammesso solo insieme a "
-"`show_plot=True`."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:421
-msgid ""
-"`show_fit_params=True` cambia la label della retta da `\"Fit\"` a una stringa con `m` e `c` "
-"formattati con `decimals`."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:422
-msgid "`show_band` controlla solo la banda attorno alla retta, non il calcolo del fit."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:423
-msgid "`show_legend=False` lascia comunque disegnati punti, retta e banda, ma senza legenda."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:424
-msgid "`xlim` agisce su entrambi i pannelli condivisi, mentre `ylim` limita solo il pannello superiore."
-msgstr ""
-
-#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:426
-msgid "Esempio commentato"
-msgstr "Commented example"
+"`style=None` usa gli `rcParams` correnti, `style=\"mespy\"` usa lo stile "
+"del package, qualunque altra stringa passa direttamente da Matplotlib."
+msgstr "`style=None` uses the current `rcParams`, `style=\"mespy\"` uses the package style, and any other string is passed straight through Matplotlib."
 
 #: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:455
 msgid ""
-"In questo esempio la presenza di `sigma_x` forza il ramo iterativo con varianza efficace. Il "
-"risultato finale resta un [`LinearFitResult`](../linear-fit-result.md): i campi `slope`, "
-"`intercept`, `reduced_chi2`, `iterations` e `converged` permettono di leggere subito sia l'esito "
-"numerico del fit sia il comportamento dell'algoritmo."
+"`point_color`, `title_fontsize`, `title_pad`, `legend_fontsize`, "
+"`legend_loc` e `grid_alpha` sovrascrivono lo stile solo quando non sono "
+"`None`."
+msgstr "`point_color`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, and `grid_alpha` override the style only when they are not `None`."
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:456
+msgid ""
+"`show_plot=False` disattiva tutta la parte Matplotlib: in questo caso "
+"`figure=None` e `xlim` e `ylim` non vengono nemmeno validati, ma "
+"`decimals`, `tol` e `max_iter` continuano a essere controllati."
+msgstr "`show_plot=False` disables the entire Matplotlib branch: in that case `figure=None`, and `xlim` and `ylim` are not even validated, but `decimals`, `tol`, and `max_iter` are still checked."
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:457
+msgid ""
+"`save_path` non e un salvataggio indipendente dal plotting: e ammesso "
+"solo insieme a `show_plot=True`."
 msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:458
+msgid ""
+"`show_fit_params=True` cambia la label della retta da `\"Fit\"` a una "
+"stringa con `m` e `c` formattati con `decimals`."
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:459
+msgid ""
+"`show_band` controlla solo la banda attorno alla retta, non il calcolo "
+"del fit."
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:460
+msgid ""
+"`show_legend=False` lascia comunque disegnati punti, retta e banda, ma "
+"senza legenda."
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:461
+msgid ""
+"`xlim` agisce su entrambi i pannelli condivisi, mentre `ylim` limita solo"
+" il pannello superiore."
+msgstr ""
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:463
+msgid "Esempio commentato"
+msgstr "Commented example"
+
+#: ../../source/moduli/fit_utils/lin-fit/funzionamento.md:492
+msgid ""
+"In questo esempio la presenza di `sigma_x` forza il ramo iterativo con "
+"varianza efficace. Il risultato finale resta un [`LinearFitResult"
+"`](../linear-fit-result.md): i campi `slope`, `intercept`, "
+"`reduced_chi2`, `iterations` e `converged` permettono di leggere subito "
+"sia l'esito numerico del fit sia il comportamento dell'algoritmo."
+msgstr ""
+
+#~ msgid ""
+#~ "`show_grid` controlla solo la griglia "
+#~ "del pannello del fit; il pannello "
+#~ "residui ha sempre la linea orizzontale"
+#~ " a zero, ma non una griglia "
+#~ "dedicata."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "`show_plot=False` disattiva tutta la parte "
+#~ "Matplotlib: in questo caso `figure=None`, "
+#~ "`xlim` e `ylim` non vengono nemmeno "
+#~ "validati e `decimals` non ha effetti "
+#~ "osservabili."
+#~ msgstr ""
 

@@ -7,15 +7,14 @@ import numpy as np
 from numpy.typing import ArrayLike, NDArray
 
 from .plot_utils import (
-    C_BAND_B,
-    C_BAR,
-    C_MEAN,
+    _style_context,
     _validate_axis_limits,
+    _validate_decimals,
     _validate_figsize,
 )
-from .stats_utils import _as_float_vector, covariance as weighted_covariance
+from .stats_utils import _as_float_vector, weighted_mean
+from .stats_utils import covariance as weighted_covariance
 from .stats_utils import variance as weighted_variance
-from .stats_utils import weighted_mean
 
 if TYPE_CHECKING:
     from matplotlib.figure import Figure
@@ -52,9 +51,7 @@ def _validate_positive_vector(
     vector = _as_float_vector(name, values)
 
     if expected_shape is not None and vector.shape != expected_shape:
-        raise ValueError(
-            f"{name} deve avere la stessa lunghezza di x, y e sigma_y"
-        )
+        raise ValueError(f"{name} deve avere la stessa lunghezza di x, y e sigma_y")
 
     if np.any(vector <= 0):
         raise ValueError(f"{name} deve contenere solo valori strettamente positivi")
@@ -100,12 +97,13 @@ def lin_fit(
     sigma_y: ArrayLike,
     *,
     sigma_x: ArrayLike | None = None,
+    tol: float = 1e-10,
+    max_iter: int = 100,
+    style: str | None = "mespy",
     xlabel: str = "x [xu]",
     ylabel: str = "y [uy]",
     title: str | None = None,
     decimals: int = 3,
-    tol: float = 1e-10,
-    max_iter: int = 100,
     show_plot: bool = True,
     show_band: bool = True,
     show_legend: bool = True,
@@ -113,26 +111,174 @@ def lin_fit(
     show_grid: bool = True,
     xlim: ArrayLike | None = None,
     ylim: ArrayLike | None = None,
-    figsize: ArrayLike = (8, 5),
-    dpi: int = 300,
+    figsize: ArrayLike | None = None,
+    dpi: int | None = None,
     save_path: str | None = None,
-    title_fontsize: int | float = 14,
-    title_pad: int | float = 10,
-    legend_fontsize: int | float = 9,
-    legend_loc: str = "best",
-    data_alpha: float = 1.0,
-    band_alpha: float = 0.20,
-    grid_alpha: float = 0.3,
+    title_fontsize: int | float | None = None,
+    title_pad: int | float | None = None,
+    legend_fontsize: int | float | None = None,
+    legend_loc: str | None = None,
+    point_color: str
+    | None = None,  # gestito da lines.color / patch.facecolor nello stile
+    fit_color: str = "#D65F5F",  # nessun rcParam equivalente
+    band_color: str = "#EE854A",  # nessun rcParam equivalente
+    data_alpha: float = 1.0,  # nessun rcParam equivalente
+    band_alpha: float = 0.20,  # nessun rcParam equivalente
+    grid_alpha: float | None = None,  # gestito da grid.alpha nello stile
 ) -> LinearFitResult:
     """
-    Fit lineare pesato y = m*x + c con propagazione delle incertezze.
+    Fit lineare pesato y = m·x + c con propagazione delle incertezze.
 
-    Stima pendenza e intercetta tramite minimi quadrati pesati
-    (pesi w_i = 1/sigma_y_i^2). Se e' fornito sigma_x usa la
-    varianza efficace sigma_eff_i^2 = sigma_y_i^2 + m^2*sigma_x_i^2
-    aggiornata iterativamente. Calcola le incertezze sui parametri,
-    i residui, alcune diagnostiche del fit e, opzionalmente, genera
-    un grafico a due pannelli (dati + retta, residui).
+    Stima pendenza e intercetta tramite minimi quadrati pesati con pesi
+    wᵢ = 1/σyᵢ². Se ``sigma_x`` è fornito, aggiorna iterativamente la
+    varianza efficace σeff² = σy² + m²·σx² fino a convergenza della
+    pendenza. Calcola le incertezze sui parametri, la covarianza, i
+    residui e le diagnostiche del fit (χ², χ² ridotto). Opzionalmente
+    genera un grafico a due pannelli (dati + retta di fit, residui).
+
+    I parametri estetici con equivalente ``rcParams`` (figsize, dpi,
+    colori, griglia, titolo, legenda) sono gestiti dal file di stile
+    ``mespy.mplstyle`` quando ``style="mespy"``. Passando un valore
+    esplicito ai relativi parametri della funzione, lo stile viene
+    sovrascritto solo per quella chiamata.
+
+    Parameters
+    ----------
+    x : array-like
+        Valori della variabile indipendente.
+    y : array-like
+        Valori della variabile dipendente; deve avere la stessa
+        lunghezza di ``x``.
+    sigma_y : array-like
+        Incertezze (positive) sui valori di ``y``; deve avere la
+        stessa lunghezza di ``x``.
+    sigma_x : array-like or None, optional
+        Incertezze (positive) sui valori di ``x``. Se fornito, attiva
+        la varianza efficace e l'aggiornamento iterativo della pendenza
+        (default ``None``).
+    tol : float, optional
+        Tolleranza relativa sulla variazione della pendenza tra due
+        iterazioni successive; usata solo quando ``sigma_x`` è fornito
+        (default ``1e-10``).
+    max_iter : int, optional
+        Numero massimo di iterazioni per la convergenza; usato solo
+        quando ``sigma_x`` è fornito (default ``100``).
+    style : str or None, optional
+        Nome del file di stile matplotlib da applicare. ``None`` lascia
+        invariato lo stile corrente (default ``"mespy"``).
+    xlabel : str, optional
+        Etichetta dell'asse x (default ``"x [xu]"``).
+    ylabel : str, optional
+        Etichetta dell'asse y (default ``"y [uy]"``).
+    title : str or None, optional
+        Titolo del grafico. ``None`` genera un titolo automatico
+        (default ``None``).
+    decimals : int, optional
+        Numero di cifre decimali nei risultati mostrati nel grafico;
+        deve essere compreso tra 0 e 20 (default ``3``).
+    show_plot : bool, optional
+        Se ``True``, genera e mostra il grafico a due pannelli
+        (default ``True``).
+    show_band : bool, optional
+        Se ``True``, traccia la fascia ±1σ attorno alla retta di fit
+        (default ``True``).
+    show_legend : bool, optional
+        Se ``True``, mostra la legenda (default ``True``).
+    show_fit_params : bool, optional
+        Se ``True``, aggiunge pendenza e intercetta alla legenda
+        (default ``False``).
+    show_grid : bool, optional
+        Se ``True``, mostra la griglia (default ``True``).
+    xlim : array-like or None, optional
+        Coppia ``(min, max)`` per i limiti dell'asse x. ``None`` =
+        limiti automatici (default ``None``).
+    ylim : array-like or None, optional
+        Coppia ``(min, max)`` per i limiti dell'asse y. ``None`` =
+        limiti automatici (default ``None``).
+    figsize : array-like or None, optional
+        Coppia ``(larghezza, altezza)`` in pollici. ``None`` = valore
+        dal file di stile (default ``None``).
+    dpi : int or None, optional
+        Risoluzione della figura in DPI. ``None`` = valore dal file di
+        stile (default ``None``).
+    save_path : str or None, optional
+        Percorso in cui salvare automaticamente la figura al termine.
+        ``None`` = nessun salvataggio (default ``None``).
+    title_fontsize : int or float or None, optional
+        Dimensione del font del titolo. ``None`` = valore dal file di
+        stile (default ``None``).
+    title_pad : int or float or None, optional
+        Spaziatura in punti tra il titolo e il grafico. ``None`` =
+        valore dal file di stile (default ``None``).
+    legend_fontsize : int or float or None, optional
+        Dimensione del font della legenda. ``None`` = valore dal file
+        di stile (default ``None``).
+    legend_loc : str or None, optional
+        Posizione della legenda (es. ``"upper right"``). ``None`` =
+        valore dal file di stile (default ``None``).
+    point_color : str or None, optional
+        Colore dei punti dati. ``None`` = colore dal file di stile
+        (default ``None``).
+    fit_color : str, optional
+        Colore della retta di fit (default ``"#D65F5F"``).
+    band_color : str, optional
+        Colore della fascia ±1σ attorno alla retta (default
+        ``"#EE854A"``).
+    data_alpha : float, optional
+        Trasparenza dei punti dati, tra 0 e 1 (default ``1.0``).
+    band_alpha : float, optional
+        Trasparenza della fascia ±1σ, tra 0 e 1 (default ``0.20``).
+    grid_alpha : float or None, optional
+        Trasparenza della griglia, tra 0 e 1. ``None`` = valore dal
+        file di stile (default ``None``).
+
+    Returns
+    -------
+    LinearFitResult
+        Dataclass frozen con i seguenti campi:
+
+        - ``slope`` : float — pendenza stimata m.
+        - ``intercept`` : float — intercetta stimata c.
+        - ``slope_std`` : float — incertezza sulla pendenza.
+        - ``intercept_std`` : float — incertezza sull'intercetta.
+        - ``covariance`` : float — covarianza tra pendenza e intercetta.
+        - ``correlation`` : float — correlazione tra pendenza e intercetta.
+        - ``residuals`` : numpy.ndarray — residui yᵢ − (m·xᵢ + c).
+        - ``residual_std`` : float — deviazione standard dei residui.
+        - ``chi2`` : float — chi quadro del fit.
+        - ``reduced_chi2`` : float — chi quadro ridotto (χ²/dof).
+        - ``dof`` : int — gradi di libertà (n − 2).
+        - ``iterations`` : int — iterazioni eseguite (0 se sigma_x è None).
+        - ``converged`` : bool — ``True`` se il fit è convergito.
+        - ``figure`` : matplotlib.figure.Figure or None — figura prodotta,
+          ``None`` se ``show_plot=False``.
+
+    Raises
+    ------
+    ValueError
+        Se ``x``, ``y`` e ``sigma_y`` hanno lunghezze diverse.
+    ValueError
+        Se il numero di punti è inferiore a 3.
+    ValueError
+        Se ``sigma_y`` o ``sigma_x`` contengono valori non positivi.
+    ValueError
+        Se la forma di ``sigma_x`` non corrisponde a quella di ``x``.
+    ValueError
+        Se ``decimals`` non è un intero oppure è fuori dall'intervallo
+        [0, 20].
+    ValueError
+        Se ``tol`` non è finito o non è positivo.
+    ValueError
+        Se ``max_iter`` non è positivo.
+    ValueError
+        Se ``xlim`` o ``ylim`` non sono sequenze di due elementi finiti.
+    ValueError
+        Se ``save_path`` è specificato ma ``show_plot=False``.
+    ValueError
+        Se ``x`` contiene meno di 2 valori distinti.
+    RuntimeError
+        Se il fit non converge entro ``max_iter`` iterazioni (solo quando
+        ``sigma_x`` è fornito).
     """
     x_values = _as_float_vector("x", x)
     y_values = _as_float_vector("y", y)
@@ -144,6 +290,8 @@ def lin_fit(
     n = x_values.size
     if n < 3:
         raise ValueError("Servono almeno 3 punti per effettuare un fit lineare")
+
+    decimals = _validate_decimals(decimals)
 
     tol_value = _validate_positive_scalar("tol", tol)
     max_iter_value = _validate_max_iter(max_iter)
@@ -222,118 +370,127 @@ def lin_fit(
     fig = None
 
     if show_plot:
-        figure_size = _validate_figsize(figsize)
+        with _style_context(style):
+            if xlim is not None:
+                xlim = _validate_axis_limits(
+                    xlim,
+                    name="xlim",
+                    min_label="xmin",
+                    max_label="xmax",
+                )
 
-        if xlim is not None:
-            xlim = _validate_axis_limits(
-                xlim,
-                name="xlim",
-                min_label="xmin",
-                max_label="xmax",
+            if ylim is not None:
+                ylim = _validate_axis_limits(
+                    ylim,
+                    name="ylim",
+                    min_label="ymin",
+                    max_label="ymax",
+                )
+
+            subplots_kwargs: dict = {
+                "gridspec_kw": {"height_ratios": [3, 1]},
+                "sharex": True,
+                "constrained_layout": True,
+            }
+            if figsize is not None:
+                subplots_kwargs["figsize"] = _validate_figsize(figsize)
+            if dpi is not None:
+                subplots_kwargs["dpi"] = dpi
+
+            import matplotlib.pyplot as plt
+
+            fig, (ax_fit, ax_res) = plt.subplots(2, 1, **subplots_kwargs)
+
+            errorbar_kwargs: dict = {
+                "yerr": sigma_y_values,
+                "xerr": sigma_x_values if use_sigma_x else None,
+                "fmt": "o",
+                "markersize": 4,
+                "elinewidth": 1,
+                "capsize": 3,
+                "alpha": data_alpha,
+            }
+            if point_color is not None:
+                errorbar_kwargs["color"] = point_color
+                errorbar_kwargs["ecolor"] = point_color
+
+            ax_fit.errorbar(x_values, y_values, **errorbar_kwargs)
+
+            fmt = f".{decimals}f"
+            x_fit = np.linspace(x_values.min(), x_values.max(), 200)
+            y_fit = slope * x_fit + intercept
+            fit_label = (
+                f"Fit: m={slope:{fmt}}, c={intercept:{fmt}}"
+                if show_fit_params
+                else "Fit"
             )
-
-        if ylim is not None:
-            ylim = _validate_axis_limits(
-                ylim,
-                name="ylim",
-                min_label="ymin",
-                max_label="ymax",
-            )
-
-        import matplotlib.pyplot as plt
-
-        fig, (ax_fit, ax_res) = plt.subplots(
-            2,
-            1,
-            figsize=figure_size,
-            dpi=dpi,
-            gridspec_kw={"height_ratios": [3, 1]},
-            sharex=True,
-            constrained_layout=True,
-        )
-
-        ax_fit.errorbar(
-            x_values,
-            y_values,
-            yerr=sigma_y_values,
-            xerr=sigma_x_values if use_sigma_x else None,
-            fmt="o",
-            color=C_BAR,
-            markersize=4,
-            ecolor=C_BAR,
-            elinewidth=1,
-            capsize=3,
-            alpha=data_alpha,
-        )
-
-        fmt = f".{decimals}f"
-        x_fit = np.linspace(x_values.min(), x_values.max(), 200)
-        y_fit = slope * x_fit + intercept
-        fit_label = (
-            f"Fit: m={slope:{fmt}}, c={intercept:{fmt}}"
-            if show_fit_params
-            else "Fit"
-        )
-        ax_fit.plot(x_fit, y_fit, color=C_MEAN, linewidth=1.5, label=fit_label)
-
-        if show_band:
-            x_bar = weighted_mean(x_values, weights)
-            sigma_y_fit = np.sqrt(
-                1.0 / sum_w + (x_fit - x_bar) ** 2 / (var_x * sum_w)
-            )
-            ax_fit.fill_between(
+            ax_fit.plot(
                 x_fit,
-                y_fit - sigma_y_fit,
-                y_fit + sigma_y_fit,
-                color=C_BAND_B,
-                alpha=band_alpha,
-                label=r"$\pm 1 \sigma$ retta",
+                y_fit,
+                color=fit_color,
+                linewidth=1.5,
+                label=fit_label,
             )
 
-        ax_fit.set_ylabel(ylabel)
-        if title is not None:
-            ax_fit.set_title(title, fontsize=title_fontsize, pad=title_pad)
+            if show_band:
+                x_bar = weighted_mean(x_values, weights)
+                sigma_y_fit = np.sqrt(
+                    1.0 / sum_w + (x_fit - x_bar) ** 2 / (var_x * sum_w)
+                )
+                ax_fit.fill_between(
+                    x_fit,
+                    y_fit - sigma_y_fit,
+                    y_fit + sigma_y_fit,
+                    color=band_color,
+                    alpha=band_alpha,
+                    label=r"$\pm 1 \sigma$ retta",
+                )
 
-        if show_grid:
-            ax_fit.grid(
-                True,
-                axis="y",
-                linestyle="-",
-                linewidth=0.5,
-                alpha=grid_alpha,
-                zorder=0,
-            )
-        else:
-            ax_fit.grid(False, axis="y")
+            ax_fit.set_ylabel(ylabel)
 
-        if show_legend:
-            ax_fit.legend(fontsize=legend_fontsize, framealpha=0.9, loc=legend_loc)
+            if title is not None:
+                title_kwargs: dict = {}
+                if title_fontsize is not None:
+                    title_kwargs["fontsize"] = title_fontsize
+                if title_pad is not None:
+                    title_kwargs["pad"] = title_pad
+                ax_fit.set_title(title, **title_kwargs)
 
-        ax_res.errorbar(
-            x_values,
-            residuals,
-            yerr=sigma_y_values,
-            xerr=sigma_x_values if use_sigma_x else None,
-            fmt="o",
-            color=C_BAR,
-            markersize=4,
-            ecolor=C_BAR,
-            elinewidth=1,
-            capsize=3,
-            alpha=data_alpha,
-        )
-        ax_res.axhline(0, color=C_MEAN, linewidth=1, linestyle="--")
-        ax_res.set_xlabel(xlabel)
-        ax_res.set_ylabel("Residui")
+            if not show_grid:
+                ax_fit.grid(False)
+            elif grid_alpha is not None:
+                ax_fit.grid(True, axis="y", alpha=grid_alpha)
+            # altrimenti: la griglia e gestita dallo stile (axes.grid, grid.alpha, ...)
 
-        if xlim is not None:
-            ax_fit.set_xlim(xlim)
-            ax_res.set_xlim(xlim)
-        if ylim is not None:
-            ax_fit.set_ylim(ylim)
+            if show_legend:
+                legend_kwargs: dict = {}
+                if legend_fontsize is not None:
+                    legend_kwargs["fontsize"] = legend_fontsize
+                if legend_loc is not None:
+                    legend_kwargs["loc"] = legend_loc
+                ax_fit.legend(**legend_kwargs)
 
-        if save_path is not None:
-            fig.savefig(save_path, dpi=dpi, bbox_inches="tight")
+            ax_res.errorbar(x_values, residuals, **errorbar_kwargs)
+            ax_res.axhline(0, color=fit_color, linewidth=1, linestyle="--")
+            ax_res.set_xlabel(xlabel)
+            ax_res.set_ylabel("Residui")
+
+            if not show_grid:
+                ax_res.grid(False)
+            elif grid_alpha is not None:
+                ax_res.grid(True, axis="y", alpha=grid_alpha)
+
+            if xlim is not None:
+                ax_fit.set_xlim(xlim)
+                ax_res.set_xlim(xlim)
+            if ylim is not None:
+                ax_fit.set_ylim(ylim)
+
+            if save_path is not None:
+                savefig_kwargs: dict = {"bbox_inches": "tight"}
+                if dpi is not None:
+                    savefig_kwargs["dpi"] = dpi
+                fig.savefig(save_path, **savefig_kwargs)
 
     return LinearFitResult(
         slope=float(slope),

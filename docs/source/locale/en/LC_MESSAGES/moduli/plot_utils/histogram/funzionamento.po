@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"POT-Creation-Date: 2026-04-05 19:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:1
 msgid "Funzionamento"
@@ -24,30 +24,31 @@ msgstr "Implementation"
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:3
 msgid ""
-"Questa pagina descrive il flusso interno di `histogram` e l'ordine con cui vengono applicate "
-"validazioni, scelta dei bin e aggiunte grafiche. A differenza di [Panoramica](panoramica.md), qui"
-" l'obiettivo non e ripetere la lista dei parametri, ma mostrare come la funzione costruisce "
-"davvero l'istogramma."
+"Questa pagina descrive il flusso interno di `histogram` e l'ordine con "
+"cui vengono applicate validazioni, scelta dei bin e aggiunte grafiche. A "
+"differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere"
+" la lista dei parametri, ma mostrare come la funzione costruisce davvero "
+"l'istogramma."
 msgstr ""
-"This page describes the internal flow of `histogram` and the order in which validation, bin "
-"selection, and plotting additions are applied. Unlike [Overview](panoramica.md), the goal here is"
-" not to repeat the parameter list, but to show how the function actually builds the histogram."
+"This page describes the internal flow of `histogram` and the order in "
+"which validation, bin selection, and plotting additions are applied. "
+"Unlike [Overview](panoramica.md), the goal here is not to repeat the "
+"parameter list, but to show how the function actually builds the "
+"histogram."
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:5
 msgid ""
-"I frammenti seguenti sono estratti dal codice attuale di `src/mespy/plot_utils.py`. Gli helper "
-"privati vengono citati solo per chiarire il flusso; i dettagli completi sono documentati in "
+"I frammenti seguenti sono estratti dal codice attuale di "
+"`src/mespy/plot_utils.py`. Gli helper privati vengono citati solo per "
+"chiarire il flusso; i dettagli completi sono documentati in "
 "[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), "
-"[`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-limits.md), "
-"[`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md) e "
-"[`standard_deviation`](../../stats_utils/standard-deviation.md)."
-msgstr ""
-"The following snippets are taken from the current `src/mespy/plot_utils.py` implementation. "
-"Private helpers are mentioned only to clarify the flow; complete details are documented in "
-"[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), "
-"[`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-limits.md), "
-"[`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md), and "
-"[`standard_deviation`](../../stats_utils/standard-deviation.md)."
+"[`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-"
+"limits.md), [`_validate_figsize`](../../../checks/plot_utils/validate-"
+"figsize.md), [`_validate_decimals`](../../../checks/plot_utils/validate-"
+"decimals.md), [`_style_context`](../../../checks/plot_utils/style-"
+"context.md) e [`standard_deviation`](../../stats_utils/standard-"
+"deviation.md)."
+msgstr "The following snippets are taken from the current `src/mespy/plot_utils.py` implementation. Private helpers are mentioned only to clarify the flow; complete details are documented in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), [`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-limits.md), [`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md), [`_validate_decimals`](../../../checks/plot_utils/validate-decimals.md), [`_style_context`](../../../checks/plot_utils/style-context.md), and [`standard_deviation`](../../stats_utils/standard-deviation.md)."
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:7
 msgid "Sequenza di esecuzione"
@@ -58,280 +59,430 @@ msgid "L'implementazione segue questa sequenza:"
 msgstr "The implementation follows this sequence:"
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:11
-msgid "Converte `x` in un vettore `float64` monodimensionale e finito con `_as_float_vector(\"x\", x)`."
-msgstr "Converts `x` into a one-dimensional, finite `float64` vector with `_as_float_vector(\"x\", x)`."
+msgid ""
+"Converte `x` in un vettore `float64` monodimensionale e finito con "
+"`_as_float_vector(\"x\", x)`."
+msgstr ""
+"Converts `x` into a one-dimensional, finite `float64` vector with "
+"`_as_float_vector(\"x\", x)`."
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:12
-msgid "Se `xlim` o `ylim` sono forniti, li valida subito come coppie di valori finiti."
-msgstr "If `xlim` or `ylim` are provided, it validates them immediately as pairs of finite values."
+msgid "Valida `decimals` come intero non negativo e leggibile."
+msgstr "Validates `decimals` as a readable non-negative integer."
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:13
 msgid ""
-"Se `ax is None`, crea una nuova figura con `plt.subplots(...)`; altrimenti riusa la figura "
-"associata all'asse ricevuto."
-msgstr ""
-"If `ax is None`, it creates a new figure with `plt.subplots(...)`; otherwise it reuses the figure"
-" associated with the provided axis."
+"Entra in `_style_context(style)` per applicare lo stile richiesto e "
+"uniformare il comportamento nei notebook."
+msgstr "Enters `_style_context(style)` to apply the requested style and make behaviour consistent across notebooks."
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:14
-msgid "Costruisce `hist_range_tuple` se `hist_range` e presente, e verifica che soddisfi `xmin < xmax`."
-msgstr "Builds `hist_range_tuple` if `hist_range` is provided, and checks that it satisfies `xmin < xmax`."
+msgid "Se `xlim` o `ylim` sono forniti, li valida come coppie di valori finiti."
+msgstr "If `xlim` or `ylim` are provided, it validates them as pairs of finite values."
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:15
 msgid ""
-"Se `bin_width` e valorizzato, controlla che sia positivo, impone `bins == \"auto\"` e costruisce "
-"esplicitamente i bordi dei bin con `np.arange(...)`."
+"Se `ax is None`, crea una nuova figura con `plt.subplots(...)`; "
+"altrimenti riusa la figura associata all'asse ricevuto."
 msgstr ""
-"If `bin_width` is provided, it checks that it is positive, enforces `bins == \"auto\"`, and "
-"explicitly builds the bin edges with `np.arange(...)`."
+"If `ax is None`, it creates a new figure with `plt.subplots(...)`; "
+"otherwise it reuses the figure associated with the provided axis."
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:16
-msgid "Chiama `ax.hist(...)` per disegnare l'istogramma e recuperare `bin_edges`."
-msgstr "Calls `ax.hist(...)` to draw the histogram and retrieve `bin_edges`."
+msgid ""
+"Costruisce `hist_range_tuple` se `hist_range` e presente, e verifica che "
+"soddisfi `xmin < xmax`."
+msgstr ""
+"Builds `hist_range_tuple` if `hist_range` is provided, and checks that it"
+" satisfies `xmin < xmax`."
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:17
 msgid ""
-"Se richiesto, usa `bin_edges` per impostare tick e label dell'asse x, poi applica l'eventuale "
-"rotazione."
+"Se `bin_width` e valorizzato, controlla che sia positivo, impone `bins =="
+" \"auto\"` e costruisce esplicitamente i bordi dei bin con "
+"`np.arange(...)`."
 msgstr ""
-"If requested, it uses `bin_edges` to set x-axis ticks and labels, then applies any requested "
-"rotation."
+"If `bin_width` is provided, it checks that it is positive, enforces `bins"
+" == \"auto\"`, and explicitly builds the bin edges with `np.arange(...)`."
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:18
-msgid "Calcola media aritmetica e deviazione standard del campione."
-msgstr "Computes the arithmetic mean and standard deviation of the sample."
+msgid ""
+"Prepara `hist_kwargs`, aggiungendo `bar_color` ed `edgecolor` solo quando"
+" sono stati passati esplicitamente."
+msgstr "Prepares `hist_kwargs`, adding `bar_color` and `edgecolor` only when they were passed explicitly."
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:19
-msgid "Se attivi, aggiunge la linea della media e la banda `+- 1 sigma`."
-msgstr "If enabled, it adds the mean line and the `+- 1 sigma` band."
+msgid "Chiama `ax.hist(...)` per disegnare l'istogramma e recuperare `bin_edges`."
+msgstr "Calls `ax.hist(...)` to draw the histogram and retrieve `bin_edges`."
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:20
 msgid ""
-"Imposta etichette, titolo, griglia, legenda, limiti assi, eventuale salvataggio e infine "
-"restituisce `(fig, ax)`."
-msgstr "Sets labels, title, grid, legend, axis limits, optional saving, and finally returns `(fig, ax)`."
+"Se richiesto, usa `bin_edges` per impostare tick e label dell'asse x, poi"
+" applica l'eventuale rotazione."
+msgstr ""
+"If requested, it uses `bin_edges` to set x-axis ticks and labels, then "
+"applies any requested rotation."
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:21
+msgid "Calcola media aritmetica e deviazione standard del campione."
+msgstr "Computes the arithmetic mean and standard deviation of the sample."
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:22
-msgid "Validazione input e setup figura"
-msgstr "Input validation and figure setup"
+msgid "Se attivi, aggiunge la linea della media e la banda `+- 1 sigma`."
+msgstr "If enabled, it adds the mean line and the `+- 1 sigma` band."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:56
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:23
+msgid ""
+"Imposta etichette, titolo, griglia, legenda, limiti assi, eventuale "
+"salvataggio e infine restituisce `(fig, ax)`."
+msgstr ""
+"Sets labels, title, grid, legend, axis limits, optional saving, and "
+"finally returns `(fig, ax)`."
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:24
+msgid ""
+"In ambiente IPython/Jupyter, `_style_context` mostra esplicitamente le "
+"nuove figure prima di uscire dal context manager."
+msgstr "In IPython/Jupyter environments, `_style_context` explicitly displays the new figures before leaving the context manager."
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:26
+msgid "Validazione input, stile e setup figura"
+msgstr "Input validation, style, and figure setup"
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:62
 msgid "Questo primo blocco fissa il contratto di ingresso della funzione."
 msgstr "This first block sets the function's input contract."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:58
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:64
 msgid ""
-"`x` non viene passato direttamente a Matplotlib: prima viene normalizzato in `values`, che deve "
-"essere un array numerico monodimensionale, non vuoto e senza valori non finiti."
+"`x` non viene passato direttamente a Matplotlib: prima viene normalizzato"
+" in `values`, che deve essere un array numerico monodimensionale, non "
+"vuoto e senza valori non finiti."
 msgstr ""
-"`x` is not passed directly to Matplotlib: it is first normalized into `values`, which must be a "
-"one-dimensional, non-empty numeric array without non-finite values."
+"`x` is not passed directly to Matplotlib: it is first normalized into "
+"`values`, which must be a one-dimensional, non-empty numeric array "
+"without non-finite values."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:59
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:65
 msgid ""
-"`xlim` e `ylim` vengono controllati prima di qualunque disegno. Se sono presenti, devono essere "
-"coppie valide di numeri finiti."
-msgstr ""
-"`xlim` and `ylim` are checked before any drawing happens. If they are present, they must be valid"
-" pairs of finite numbers."
+"`decimals` viene validato subito e resta disponibile sia per i tick "
+"dell'asse x sia per le label testuali di media e banda."
+msgstr "`decimals` is validated immediately and remains available both for x-axis ticks and for the textual labels of the mean and band."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:60
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:66
 msgid ""
-"`figsize` viene validato solo quando la figura viene creata internamente. Se l'utente passa `ax`,"
-" la funzione non crea una nuova figura e riusa `ax.get_figure()`."
-msgstr ""
-"`figsize` is validated only when the figure is created internally. If the user passes `ax`, the "
-"function does not create a new figure and reuses `ax.get_figure()`."
+"`_style_context(style)` centralizza tre casi distinti: `style=None` usa "
+"gli `rcParams` correnti, `style=\"mespy\"` carica il file "
+"`mespy.mplstyle`, ogni altra stringa viene passata a "
+"`plt.style.context(...)`."
+msgstr "`_style_context(style)` centralizes three distinct cases: `style=None` uses the current `rcParams`, `style=\"mespy\"` loads the `mespy.mplstyle` file, and any other string is passed to `plt.style.context(...)`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:61
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:67
 msgid ""
-"`constrained_layout=True` fa parte del comportamento standard quando `histogram` crea da sola la "
-"figura."
+"`xlim` e `ylim` vengono controllati prima di qualunque disegno. Se sono "
+"presenti, devono essere coppie valide di numeri finiti."
 msgstr ""
+"`xlim` and `ylim` are checked before any drawing happens. If they are "
+"present, they must be valid pairs of finite numbers."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:63
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:68
+msgid ""
+"`figsize` e `dpi` vengono passati a `plt.subplots(...)` solo quando sono "
+"esplicitati. Se l'utente passa `ax`, la funzione non crea una nuova "
+"figura e riusa `ax.get_figure()`."
+msgstr "`figsize` and `dpi` are passed to `plt.subplots(...)` only when they are explicitly provided. If the user passes `ax`, the function does not create a new figure and reuses `ax.get_figure()`."
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:69
+msgid ""
+"`constrained_layout=True` fa parte del comportamento standard quando "
+"`histogram` crea da sola la figura."
+msgstr "`constrained_layout=True` is part of the standard behaviour when `histogram` creates the figure on its own."
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:70
+msgid ""
+"In notebook IPython/Jupyter, lo stesso context manager gestisce anche il "
+"display esplicito delle nuove figure per evitare interazioni scomode con "
+"`plt.style.context(...)`."
+msgstr "In IPython/Jupyter notebooks, the same context manager also handles explicit display of new figures to avoid awkward interactions with `plt.style.context(...)`."
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:72
 msgid "Range e costruzione dei bin"
 msgstr "Range and bin construction"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:95
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:104
 msgid "Qui la funzione decide il dominio numerico su cui costruire l'istogramma."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:97
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:106
 msgid ""
-"Se `hist_range` e presente, viene validato con lo stesso helper dei limiti degli assi, ma con un "
-"controllo aggiuntivo: deve valere strettamente `xmin < xmax`."
+"Se `hist_range` e presente, viene validato con lo stesso helper dei "
+"limiti degli assi, ma con un controllo aggiuntivo: deve valere "
+"strettamente `xmin < xmax`."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:98
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:107
 msgid ""
-"Se `hist_range` non e presente, `xmin` e `xmax` vengono ricavati direttamente dai dati validati "
-"in `values`."
+"Se `hist_range` non e presente, `xmin` e `xmax` vengono ricavati "
+"direttamente dai dati validati in `values`."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:99
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:108
 msgid ""
-"`bin_width` non modifica solo la larghezza dei bin: cambia proprio la strategia di costruzione, "
-"perche i bordi vengono generati esplicitamente con `np.arange(...)`."
+"`bin_width` non modifica solo la larghezza dei bin: cambia proprio la "
+"strategia di costruzione, perche i bordi vengono generati esplicitamente "
+"con `np.arange(...)`."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:100
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:109
 msgid ""
-"Il calcolo di `start` e `stop` usa `floor` e `ceil`, quindi i bin vengono allineati a multipli "
-"interi di `bin_width` che coprano tutto l'intervallo considerato."
+"Il calcolo di `start` e `stop` usa `floor` e `ceil`, quindi i bin vengono"
+" allineati a multipli interi di `bin_width` che coprano tutto "
+"l'intervallo considerato."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:102
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:111
 msgid "Chiamata a `ax.hist(...)` e formattazione dell'asse x"
 msgstr "Calling `ax.hist(...)` and formatting the x axis"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:125
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:137
 msgid "Questo e il punto in cui il grafico viene davvero disegnato."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:127
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:139
 msgid ""
-"La funzione usa `density=False`, quindi l'istogramma e sempre a conteggi, non a densita "
-"normalizzata."
+"La funzione usa `density=False`, quindi l'istogramma e sempre a conteggi,"
+" non a densita normalizzata."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:128
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:140
 msgid ""
-"`ax.hist(...)` restituisce `bin_edges`, che diventano la sorgente ufficiale per i tick dell'asse "
-"x quando `show_bin_ticks=True`."
+"`bar_color` ed `edgecolor` non hanno un default hardcoded nella funzione:"
+" vengono inoltrati a Matplotlib solo se l'utente li passa. Altrimenti "
+"decide lo stile attivo."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:129
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:141
 msgid ""
-"Le etichette dei bordi non vengono calcolate in modo indipendente: vengono formattate "
-"direttamente dai `bin_edges` prodotti da Matplotlib."
+"`ax.hist(...)` restituisce `bin_edges`, che diventano la sorgente "
+"ufficiale per i tick dell'asse x quando `show_bin_ticks=True`."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:130
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:142
+msgid ""
+"Le etichette dei bordi non vengono calcolate in modo indipendente: "
+"vengono formattate direttamente dai `bin_edges` prodotti da Matplotlib."
+msgstr ""
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:143
 #, python-brace-format
 msgid ""
-"`decimals` controlla solo la rappresentazione testuale dei bordi, tramite `fmt = "
-"f\".{decimals}f\"`."
+"`decimals` controlla la rappresentazione testuale dei bordi tramite `fmt "
+"= f\".{decimals}f\"`, ma la stessa formattazione verra riusata anche per "
+"media e banda."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:131
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:144
 msgid ""
-"`tick_rotation` e indipendente da `show_bin_ticks`: se diverso da zero, la rotazione viene "
-"comunque applicata all'asse x."
+"`tick_rotation` e indipendente da `show_bin_ticks`: se diverso da zero, "
+"la rotazione viene comunque applicata all'asse x."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:133
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:146
 msgid "Media, banda e finalizzazione del grafico"
 msgstr "Mean, band, and plot finalization"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:188
-msgid "L'ultima parte aggiunge gli elementi statistici e completa la configurazione dell'asse."
-msgstr ""
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:190
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:208
 msgid ""
-"La media `mu` e calcolata con `np.mean(values)`, mentre `sigma` viene delegata a "
-"[`standard_deviation`](../../stats_utils/standard-deviation.md) e quindi dipende da `ddof`."
+"L'ultima parte aggiunge gli elementi statistici e completa la "
+"configurazione dell'asse."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:191
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:210
 msgid ""
-"`show_mean` e `show_band` sono indipendenti: si puo mostrare solo la linea, solo la banda, "
-"entrambe oppure nessuna delle due."
+"La media `mu` e calcolata con `np.mean(values)`, mentre `sigma` viene "
+"delegata a [`standard_deviation`](../../stats_utils/standard-"
+"deviation.md) e quindi dipende da `ddof`."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:192
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:211
 msgid ""
-"La legenda della media usa `mean_symbol`, mentre la banda viene etichettata come `+- 1 sigma` in "
-"forma matematica."
+"`show_mean` e `show_band` sono indipendenti: si puo mostrare solo la "
+"linea, solo la banda, entrambe oppure nessuna delle due."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:193
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:212
+msgid ""
+"`mean_color` e `band_color` restano sempre override espliciti della "
+"singola chiamata; non vengono recuperati da `rcParams`."
+msgstr "`mean_color` and `band_color` always remain explicit per-call overrides; they are not recovered from `rcParams`."
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:213
+msgid ""
+"La legenda della media usa `mean_symbol`, mentre la banda viene "
+"etichettata come `+- 1 sigma` in forma matematica."
+msgstr ""
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:214
 msgid "Se `ylabel` e `None`, la funzione usa il default esplicito `\"Conteggi\"`."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:194
-msgid "La griglia, quando attiva, viene applicata solo all'asse `y`."
-msgstr ""
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:195
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:215
 msgid ""
-"Il salvataggio avviene alla fine con `bbox_inches=\"tight\"`, prima della restituzione di `(fig, "
-"ax)`."
-msgstr ""
+"Titolo e legenda ricevono keyword aggiuntive solo quando l'utente le ha "
+"valorizzate; in tutti gli altri casi resta valida la configurazione dello"
+" stile attivo."
+msgstr "Title and legend receive extra keyword arguments only when the user has provided them; in all other cases, the active style configuration remains in effect."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:197
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:216
+msgid ""
+"La griglia segue tre rami distinti: `show_grid=False` la spegne "
+"esplicitamente, `show_grid=True` con `grid_alpha is None` la lascia allo "
+"stile attivo, `show_grid=True` con `grid_alpha` esplicito applica una "
+"griglia sull'asse `y` con quell'opacita."
+msgstr "The grid follows three distinct branches: `show_grid=False` turns it off explicitly, `show_grid=True` with `grid_alpha is None` leaves it to the active style, and `show_grid=True` with an explicit `grid_alpha` applies a grid on the `y` axis with that opacity."
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:217
+msgid ""
+"Il salvataggio avviene alla fine con `bbox_inches=\"tight\"`; il `dpi` "
+"viene passato a `savefig(...)` solo se l'utente lo ha richiesto."
+msgstr "Saving happens at the end with `bbox_inches=\"tight\"`; `dpi` is passed to `savefig(...)` only if the user explicitly requested it."
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:219
 msgid "Interazioni importanti tra parametri"
 msgstr "Important interactions between parameters"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:199
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:221
 msgid ""
-"Alcune combinazioni di parametri definiscono il comportamento pratico piu importante della "
-"funzione."
+"Alcune combinazioni di parametri definiscono il comportamento pratico piu"
+" importante della funzione."
 msgstr ""
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:201
-msgid "`bin_width` e `bins` sono mutualmente esclusivi, salvo il caso default in cui `bins == \"auto\"`."
-msgstr ""
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:202
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:223
 msgid ""
-"`hist_range` ha due ruoli diversi: se `bin_width` e assente, viene passato a `ax.hist(..., "
-"range=...)`; se `bin_width` e presente, viene usato per determinare `xmin` e `xmax` da cui "
-"costruire i bordi dei bin."
+"`bin_width` e `bins` sono mutualmente esclusivi, salvo il caso default in"
+" cui `bins == \"auto\"`."
 msgstr ""
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:203
-msgid ""
-"`show_bin_ticks=True` usa i `bin_edges` restituiti da Matplotlib, non una ricostruzione separata "
-"fatta da `mespy`."
-msgstr ""
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:204
-msgid ""
-"`ddof` influisce solo sul calcolo di `sigma` e quindi sulla banda `+- 1 sigma`; non cambia i "
-"conteggi dell'istogramma."
-msgstr ""
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:205
-msgid "`ylabel=None` non lascia l'asse senza etichetta: produce sempre `\"Conteggi\"`."
-msgstr ""
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:206
-msgid ""
-"`show_grid` non attiva una griglia completa sul piano, ma solo una griglia orizzontale legata "
-"all'asse `y`."
-msgstr ""
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:207
-msgid ""
-"`save_path` salva sempre la figura finale, anche quando `ax` e stato passato dall'esterno e la "
-"figura non e stata creata dentro `histogram`."
-msgstr ""
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:209
-msgid "Esempio commentato"
-msgstr "Commented example"
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:224
-msgid "In questo esempio:"
+msgid ""
+"`hist_range` ha due ruoli diversi: se `bin_width` e assente, viene "
+"passato a `ax.hist(..., range=...)`; se `bin_width` e presente, viene "
+"usato per determinare `xmin` e `xmax` da cui costruire i bordi dei bin."
 msgstr ""
 
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:225
+msgid ""
+"`style=None` usa gli `rcParams` correnti, `style=\"mespy\"` usa lo stile "
+"del package, qualunque altra stringa passa direttamente da Matplotlib."
+msgstr "`style=None` uses the current `rcParams`, `style=\"mespy\"` uses the package style, and any other string is passed straight through Matplotlib."
+
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:226
-msgid "`hist_range` definisce l'intervallo numerico da cui ricavare `xmin` e `xmax`"
-msgstr ""
+msgid ""
+"`bar_color`, `edgecolor`, `title_fontsize`, `title_pad`, "
+"`legend_fontsize`, `legend_loc` e `grid_alpha` sovrascrivono lo stile "
+"solo quando non sono `None`."
+msgstr "`bar_color`, `edgecolor`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, and `grid_alpha` override the style only when they are not `None`."
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:227
 msgid ""
-"`bin_width=0.5` forza la costruzione esplicita dei bordi dei bin e quindi esclude l'uso di `bins`"
-" diverso da `\"auto\"`"
+"`show_bin_ticks=True` usa i `bin_edges` restituiti da Matplotlib, non una"
+" ricostruzione separata fatta da `mespy`."
 msgstr ""
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:228
-msgid "la linea della media e la banda `+- 1 sigma` vengono aggiunte dopo il disegno dell'istogramma"
+msgid ""
+"`ddof` influisce solo sul calcolo di `sigma` e quindi sulla banda `+- 1 "
+"sigma`; non cambia i conteggi dell'istogramma."
 msgstr ""
 
 #: ../../source/moduli/plot_utils/histogram/funzionamento.md:229
-msgid "i tick dell'asse x, se attivi, vengono mostrati usando i bordi dei bin formattati con 2 decimali"
+msgid ""
+"`ylabel=None` non lascia l'asse senza etichetta: produce sempre "
+"`\"Conteggi\"`."
 msgstr ""
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:230
+msgid ""
+"`figsize` ha effetto solo quando `ax is None`; `dpi` puo invece influire "
+"sia sulla creazione della figura sia sul salvataggio, ma sempre solo se "
+"esplicitato."
+msgstr "`figsize` only has an effect when `ax is None`; `dpi` can instead affect both figure creation and saving, but always only when it is explicitly provided."
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:231
+msgid ""
+"`show_grid` non attiva una griglia completa sul piano, ma solo una "
+"griglia orizzontale legata all'asse `y` quando la funzione interviene "
+"direttamente."
+msgstr ""
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:232
+msgid ""
+"`save_path` salva sempre la figura finale, anche quando `ax` e stato "
+"passato dall'esterno e la figura non e stata creata dentro `histogram`."
+msgstr ""
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:233
+msgid ""
+"Nei notebook, `_style_context` mostra solo le figure nuove create nel "
+"blocco e poi le chiude, per evitare il doppio display automatico."
+msgstr "In notebooks, `_style_context` shows only the new figures created inside the block and then closes them, to avoid double automatic display."
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:235
+msgid "Esempio commentato"
+msgstr "Commented example"
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:251
+msgid "In questo esempio:"
+msgstr ""
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:253
+msgid ""
+"`hist_range` definisce l'intervallo numerico da cui ricavare `xmin` e "
+"`xmax`"
+msgstr ""
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:254
+msgid ""
+"`bin_width=0.5` forza la costruzione esplicita dei bordi dei bin e quindi"
+" esclude l'uso di `bins` diverso da `\"auto\"`"
+msgstr ""
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:255
+msgid ""
+"`style=\"mespy\"` chiede esplicitamente lo stile del package per quella "
+"sola chiamata"
+msgstr "`style=\"mespy\"` explicitly requests the package style for that single call"
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:256
+msgid ""
+"la linea della media e la banda `+- 1 sigma` vengono aggiunte dopo il "
+"disegno dell'istogramma"
+msgstr ""
+
+#: ../../source/moduli/plot_utils/histogram/funzionamento.md:257
+msgid ""
+"i tick dell'asse x, se attivi, vengono mostrati usando i bordi dei bin "
+"formattati con 2 decimali"
+msgstr "if x-axis ticks are enabled, they are shown using the bin edges formatted with 2 decimal places"
+
+#~ msgid ""
+#~ "`decimals` controlla solo la rappresentazione"
+#~ " testuale dei bordi, tramite `fmt ="
+#~ " f\".{decimals}f\"`."
+#~ msgstr ""
+
+#~ msgid "La griglia, quando attiva, viene applicata solo all'asse `y`."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Il salvataggio avviene alla fine con "
+#~ "`bbox_inches=\"tight\"`, prima della restituzione"
+#~ " di `(fig, ax)`."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "`show_grid` non attiva una griglia "
+#~ "completa sul piano, ma solo una "
+#~ "griglia orizzontale legata all'asse `y`."
+#~ msgstr ""
 

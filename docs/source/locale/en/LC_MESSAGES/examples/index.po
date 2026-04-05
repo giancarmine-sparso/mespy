@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"POT-Creation-Date: 2026-04-05 19:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -24,12 +24,13 @@ msgstr "Examples"
 
 #: ../../source/examples/index.md:3
 msgid ""
-"Questa sezione raccoglie notebook brevi, orientati all'uso del package. Gli esempi "
-"sono pensati come punto di partenza per notebook o script, non come riferimento "
-"formale dell'API."
+"Questa sezione raccoglie notebook brevi, orientati all'uso del package. "
+"Gli esempi sono pensati come punto di partenza per notebook o script, non"
+" come riferimento formale dell'API."
 msgstr ""
-"This section collects short notebooks focused on using the package. The examples are "
-"designed as a starting point for notebooks or scripts, not as formal API reference."
+"This section collects short notebooks focused on using the package. The "
+"examples are designed as a starting point for notebooks or scripts, not "
+"as formal API reference."
 
 #: ../../source/examples/index.md:5
 msgid "Esempi disponibili"
@@ -48,6 +49,10 @@ msgid "[Fit lineare](linear-fit.ipynb)"
 msgstr "[Linear fit](linear-fit.ipynb)"
 
 #: ../../source/examples/index.md:10
+msgid "[Stile dei grafici](plot-style.ipynb)"
+msgstr "[Plot styling](plot-style.ipynb)"
+
+#: ../../source/examples/index.md:11
 msgid "[Statistiche](stats-utils.ipynb)"
 msgstr "[Statistics](stats-utils.ipynb)"
 

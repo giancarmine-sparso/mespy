@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"POT-Creation-Date: 2026-04-05 19:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../source/moduli/plot_utils/index.md:1
 msgid "plot_utils.py"
@@ -24,99 +24,153 @@ msgstr "plot_utils.py"
 
 #: ../../source/moduli/plot_utils/index.md:3
 msgid ""
-"`plot_utils.py` raccoglie gli strumenti di visualizzazione del package. Al momento il modulo "
-"espone una funzione pubblica, `histogram`, e definisce alcuni helper privati per validare limiti "
-"degli assi e dimensioni della figura."
-msgstr ""
-"`plot_utils.py` collects the package visualization tools. At the moment the module exposes one "
-"public function, `histogram`, and defines a few private helpers to validate axis limits and "
-"figure size."
+"`plot_utils.py` raccoglie gli strumenti di visualizzazione del package. "
+"Ospita `histogram` e un piccolo gruppo di helper privati condivisi anche "
+"con `fit_utils` per validazione, gestione dello stile e comportamento "
+"coerente nei notebook."
+msgstr "`plot_utils.py` gathers the package's visualization tools. It hosts `histogram` and a small group of private helpers shared with `fit_utils` for validation, style management, and consistent behaviour in notebooks."
 
 #: ../../source/moduli/plot_utils/index.md:5
 msgid "Import principali"
 msgstr "Main imports"
 
 #: ../../source/moduli/plot_utils/index.md:7
-msgid "Standard library: `typing.TYPE_CHECKING`"
-msgstr ""
+msgid ""
+"Standard library: `contextlib.contextmanager`, "
+"`importlib.resources.as_file`, `importlib.resources.files`, "
+"`typing.TYPE_CHECKING`"
+msgstr "Standard library: `contextlib.contextmanager`, `importlib.resources.as_file`, `importlib.resources.files`, `typing.TYPE_CHECKING`"
 
-#: ../../source/moduli/plot_utils/index.md:9
+#: ../../source/moduli/plot_utils/index.md:12
 msgid "Librerie esterne: `numpy as np`, `numpy.typing.ArrayLike`"
 msgstr "External libraries: `numpy as np`, `numpy.typing.ArrayLike`"
 
-#: ../../source/moduli/plot_utils/index.md:11
-msgid ""
-"Import interni: [`_as_float_vector`](../../checks/stats_utils/as-float-vector.md), "
-"[`standard_deviation`](../stats_utils/standard-deviation.md)"
-msgstr ""
-"Internal imports: [`_as_float_vector`](../../checks/stats_utils/as-float-vector.md), "
-"[`standard_deviation`](../stats_utils/standard-deviation.md)"
-
 #: ../../source/moduli/plot_utils/index.md:14
-msgid "Tipi importati solo per annotazioni: `matplotlib.axes.Axes`, `matplotlib.figure.Figure`"
-msgstr "Types imported only for annotations: `matplotlib.axes.Axes`, `matplotlib.figure.Figure`"
+msgid ""
+"Import interni: [`_as_float_vector`](../../checks/stats_utils/as-float-"
+"vector.md), [`standard_deviation`](../stats_utils/standard-deviation.md)"
+msgstr ""
+"Internal imports: [`_as_float_vector`](../../checks/stats_utils/as-float-"
+"vector.md), [`standard_deviation`](../stats_utils/standard-deviation.md)"
 
 #: ../../source/moduli/plot_utils/index.md:17
-msgid "Costanti definite nel modulo"
-msgstr "Constants defined in the module"
-
-#: ../../source/moduli/plot_utils/index.md:19
-msgid "`C_BAR`: colore delle barre dell'istogramma"
-msgstr "`C_BAR`: color used for histogram bars"
+msgid ""
+"Tipi importati solo per annotazioni: `matplotlib.axes.Axes`, "
+"`matplotlib.figure.Figure`"
+msgstr ""
+"Types imported only for annotations: `matplotlib.axes.Axes`, "
+"`matplotlib.figure.Figure`"
 
 #: ../../source/moduli/plot_utils/index.md:20
-msgid "`C_MEAN`: colore della linea della media"
-msgstr "`C_MEAN`: color used for the mean line"
-
-#: ../../source/moduli/plot_utils/index.md:21
-msgid "`C_BAND_A` e `C_BAND_B`: colori della palette usata anche da `fit_utils`"
-msgstr "`C_BAND_A` and `C_BAND_B`: colors from the palette also used by `fit_utils`"
-
-#: ../../source/moduli/plot_utils/index.md:23
 msgid "Cosa espone"
 msgstr "What it exports"
 
-#: ../../source/moduli/plot_utils/index.md:25 ../../source/moduli/plot_utils/index.md:42
+#: ../../source/moduli/plot_utils/index.md:22
+#: ../../source/moduli/plot_utils/index.md:44
 msgid "[`histogram`](histogram.md)"
 msgstr "[`histogram`](histogram.md)"
 
-#: ../../source/moduli/plot_utils/index.md:27
+#: ../../source/moduli/plot_utils/index.md:24
 msgid "Di cosa si occupa"
 msgstr "What it does"
 
+#: ../../source/moduli/plot_utils/index.md:26
+msgid ""
+"validare input numerici, limiti degli assi, `figsize` e precisione "
+"testuale"
+msgstr "validate numeric inputs, axis limits, `figsize`, and textual precision"
+
+#: ../../source/moduli/plot_utils/index.md:27
+msgid ""
+"applicare temporaneamente lo stile `mespy`, gli `rcParams` correnti o un "
+"altro stile Matplotlib"
+msgstr "temporarily apply the `mespy` style, the current `rcParams`, or another Matplotlib style"
+
+#: ../../source/moduli/plot_utils/index.md:28
+msgid "gestire il display delle figure create dentro notebook IPython/Jupyter"
+msgstr "manage the display of figures created inside IPython/Jupyter notebooks"
+
 #: ../../source/moduli/plot_utils/index.md:29
-msgid "validare input numerici per l'istogramma"
-msgstr "validate numeric inputs for the histogram"
-
-#: ../../source/moduli/plot_utils/index.md:30
-msgid "validare `xlim`, `ylim`, `hist_range` e `figsize`"
-msgstr "validate `xlim`, `ylim`, `hist_range`, and `figsize`"
-
-#: ../../source/moduli/plot_utils/index.md:31
 msgid "creare una nuova figura oppure disegnare su un asse esistente"
 msgstr "create a new figure or draw on an existing axis"
 
-#: ../../source/moduli/plot_utils/index.md:32
+#: ../../source/moduli/plot_utils/index.md:30
 msgid "mostrare opzionalmente media, banda a una sigma, legenda e griglia"
 msgstr "optionally show the mean, a one-sigma band, legend, and grid"
 
-#: ../../source/moduli/plot_utils/index.md:34
+#: ../../source/moduli/plot_utils/index.md:32
 msgid "Helper collegati"
 msgstr "Related helpers"
 
-#: ../../source/moduli/plot_utils/index.md:36
+#: ../../source/moduli/plot_utils/index.md:34
 msgid "[`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md)"
 msgstr "[`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md)"
 
-#: ../../source/moduli/plot_utils/index.md:37
+#: ../../source/moduli/plot_utils/index.md:35
 msgid "[`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)"
 msgstr "[`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)"
 
+#: ../../source/moduli/plot_utils/index.md:36
+msgid "[`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)"
+msgstr "[`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)"
+
+#: ../../source/moduli/plot_utils/index.md:37
+msgid "[`_in_ipython`](../../checks/plot_utils/in-ipython.md)"
+msgstr "[`_in_ipython`](../../checks/plot_utils/in-ipython.md)"
+
 #: ../../source/moduli/plot_utils/index.md:38
+msgid "[`_display_new_figures`](../../checks/plot_utils/display-new-figures.md)"
+msgstr "[`_display_new_figures`](../../checks/plot_utils/display-new-figures.md)"
+
+#: ../../source/moduli/plot_utils/index.md:39
+msgid "[`_style_context`](../../checks/plot_utils/style-context.md)"
+msgstr "[`_style_context`](../../checks/plot_utils/style-context.md)"
+
+#: ../../source/moduli/plot_utils/index.md:40
 msgid "[`_as_float_vector`](../../checks/stats_utils/as-float-vector.md)"
 msgstr "[`_as_float_vector`](../../checks/stats_utils/as-float-vector.md)"
 
-#: ../../source/moduli/plot_utils/index.md:40
+#: ../../source/moduli/plot_utils/index.md:42
 msgid "Pagina di dettaglio"
 msgstr "Detailed page"
+
+#~ msgid ""
+#~ "`plot_utils.py` raccoglie gli strumenti di "
+#~ "visualizzazione del package. Al momento "
+#~ "il modulo espone una funzione pubblica,"
+#~ " `histogram`, e definisce alcuni helper "
+#~ "privati per validare limiti degli assi"
+#~ " e dimensioni della figura."
+#~ msgstr ""
+#~ "`plot_utils.py` collects the package "
+#~ "visualization tools. At the moment the"
+#~ " module exposes one public function, "
+#~ "`histogram`, and defines a few private"
+#~ " helpers to validate axis limits and"
+#~ " figure size."
+
+#~ msgid "Standard library: `typing.TYPE_CHECKING`"
+#~ msgstr ""
+
+#~ msgid "Costanti definite nel modulo"
+#~ msgstr "Constants defined in the module"
+
+#~ msgid "`C_BAR`: colore delle barre dell'istogramma"
+#~ msgstr "`C_BAR`: color used for histogram bars"
+
+#~ msgid "`C_MEAN`: colore della linea della media"
+#~ msgstr "`C_MEAN`: color used for the mean line"
+
+#~ msgid ""
+#~ "`C_BAND_A` e `C_BAND_B`: colori della "
+#~ "palette usata anche da `fit_utils`"
+#~ msgstr ""
+#~ "`C_BAND_A` and `C_BAND_B`: colors from "
+#~ "the palette also used by `fit_utils`"
+
+#~ msgid "validare input numerici per l'istogramma"
+#~ msgstr "validate numeric inputs for the histogram"
+
+#~ msgid "validare `xlim`, `ylim`, `hist_range` e `figsize`"
+#~ msgstr "validate `xlim`, `ylim`, `hist_range`, and `figsize`"
 
