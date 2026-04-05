@@ -13,6 +13,22 @@ if TYPE_CHECKING:
     from matplotlib.axes import Axes
     from matplotlib.figure import Figure
 
+import importlib.resources as _ir
+
+STYLELIB = _ir.files("mespy") / "stylelib"
+
+
+def _resolve_style(style: str) -> str:
+    """Risolve un nome breve (es. 'pub') al path assoluto in stylelib/."""
+    try:
+        ref = _ir.files("mespy") / "stylelib" / f"{style}.mplstyle"
+        with _ir.as_file(ref) as p:
+            if p.exists():
+                return str(p)
+    except Exception:
+        pass
+    return style  # fallback: nomi built-in come "seaborn-v0_8"
+
 
 def _validate_axis_limits(
     limits: ArrayLike,
@@ -344,7 +360,7 @@ def histogram(
 
     decimals = _validate_decimals(decimals)
 
-    with _style_context(style):
+    with _style_context(_resolve_style(style)):
         if xlim is not None:
             xlim = _validate_axis_limits(
                 xlim,

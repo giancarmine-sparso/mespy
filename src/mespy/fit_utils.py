@@ -7,6 +7,7 @@ import numpy as np
 from numpy.typing import ArrayLike, NDArray
 
 from .plot_utils import (
+    _resolve_style,
     _style_context,
     _validate_axis_limits,
     _validate_decimals,
@@ -370,7 +371,7 @@ def lin_fit(
     fig = None
 
     if show_plot:
-        with _style_context(style):
+        with _style_context(_resolve_style(style)):
             if xlim is not None:
                 xlim = _validate_axis_limits(
                     xlim,

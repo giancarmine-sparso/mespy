@@ -1,0 +1,65 @@
+# mespy.mplstyle — publication-ready defaults
+# Compatible with mespy.plot_utils
+
+# --- Typography ---
+text.usetex: False                    # True se hai LaTeX installato
+font.family: serif
+font.serif: STIXTwoText, DejaVu Serif, serif
+mathtext.fontset: stix               # Notazione matematica coerente con STIXTwo
+font.size: 9                         # Base; tutto il resto scala da qui
+
+axes.titlesize: 10
+axes.titlepad: 6
+axes.labelsize: 9
+xtick.labelsize: 8
+ytick.labelsize: 8
+legend.fontsize: 8
+legend.title_fontsize: 8
+
+# --- Figure ---
+figure.figsize: 3.5, 2.6             # Single-column (APS/Elsevier standard ~3.5 in)
+figure.dpi: 150                      # Anteprima schermo; savefig usa il proprio
+figure.constrained_layout.use: True
+
+# --- Save ---
+savefig.dpi: 300
+savefig.bbox: tight
+savefig.pad_inches: 0.05
+
+# --- Axes ---
+axes.facecolor: white
+axes.linewidth: 0.8
+axes.labelpad: 4
+axes.axisbelow: True
+
+# --- Grid (discreta — molti journal la omettono) ---
+axes.grid: True
+axes.grid.axis: y
+grid.alpha: 0.25
+grid.linewidth: 0.4
+grid.linestyle: -
+
+# --- Ticks ---
+xtick.direction: in
+ytick.direction: in
+xtick.major.width: 0.8
+ytick.major.width: 0.8
+xtick.minor.visible: False
+ytick.minor.visible: False
+
+# --- Lines & patches ---
+lines.linewidth: 1.2
+patch.facecolor: 4878CF
+patch.edgecolor: white
+patch.force_edgecolor: True
+patch.linewidth: 0.6
+
+# --- Legend ---
+legend.loc: best
+legend.framealpha: 0.85
+legend.edgecolor: 0.8
+legend.borderpad: 0.4
+legend.handlelength: 1.5
+
+# --- Color cycle (seaborn colorblind, BSD license) ---
+axes.prop_cycle: cycler('color', ['4878CF', 'D65F5F', 'EE854A', '6ACC64', '956CB4', '8C613C', 'DC7EC0', '797979', 'D5BB67', '82C6E2'])
