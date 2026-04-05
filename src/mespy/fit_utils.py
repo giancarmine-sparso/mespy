@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -488,7 +489,8 @@ def lin_fit(
                 ax_fit.set_ylim(ylim)
 
             if save_path is not None:
-                savefig_kwargs: dict = {"bbox_inches": "tight"}
+                save_path = Path(save_path).with_suffix(".pdf")
+                savefig_kwargs: dict = {"bbox_inches": "tight", "format": "pdf"}
                 if dpi is not None:
                     savefig_kwargs["dpi"] = dpi
                 fig.savefig(save_path, **savefig_kwargs)

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from importlib.resources import as_file, files
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -490,10 +491,10 @@ def histogram(
         if ylim is not None:
             ax.set_ylim(ylim)
 
-        if save_path is not None:
-            savefig_kwargs: dict = {"bbox_inches": "tight"}
-            if dpi is not None:
-                savefig_kwargs["dpi"] = dpi
-            fig.savefig(save_path, **savefig_kwargs)
-
+    if save_path is not None:
+        save_path = Path(save_path).with_suffix(".pdf")
+        savefig_kwargs: dict = {"bbox_inches": "tight", "format": "pdf"}
+        if dpi is not None:
+            savefig_kwargs["dpi"] = dpi
+        fig.savefig(save_path, **savefig_kwargs)
     return fig, ax
