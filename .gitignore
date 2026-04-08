@@ -25,6 +25,7 @@ ref.ipynb
 # Claude - Codex
 .claude
 .codex
+CLAUDE.md
 
 # Dati grezzi potenzialmente sensibili o pesanti
 data/raw/
