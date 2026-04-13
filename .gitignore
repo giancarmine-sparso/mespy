@@ -30,7 +30,7 @@ CLAUDE.md
 # Dati grezzi potenzialmente sensibili o pesanti
 data/raw/
 data/processed/
-trials/ 
+trials/
 
 # Output grafici generati automaticamente
 figures/

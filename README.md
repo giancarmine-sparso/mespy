@@ -34,15 +34,35 @@ The root namespace stays intentionally small. Additional public types, such as `
 `mespy` requires Python `>= 3.12`.
 
 ```bash
+pip install git+https://github.com/giancarmine-sparso/mespy.git
+```
+
+## Development Setup
+
+To set up a local development environment:
+
+### Unix / macOS
+
+```bash
 git clone https://github.com/giancarmine-sparso/mespy
 cd mespy
 make setup
 ```
 
-If you want to activate the virtual environment manually:
+To activate the virtual environment manually:
 
 ```bash
 source .venv/bin/activate
+```
+
+### Windows
+
+```cmd
+git clone https://github.com/giancarmine-sparso/mespy
+cd mespy
+python -m venv .venv
+.venv\Scripts\activate
+pip install -e ".[dev]"
 ```
 
 ## Documentation
@@ -55,7 +75,7 @@ Build the documentation with:
 make docs
 ```
 
-The generated site includes both English and Italian outputs, with English as the default landing page. Complete usage workflows and notebooks are available in `docs/source/examples`.
+The generated site includes both English and Italian outputs, with English as the default landing page. The documentation also includes usage examples for the available functions. Complete usage workflows and notebooks are available in `docs/source/examples`.
 
 ## Project Structure
 
