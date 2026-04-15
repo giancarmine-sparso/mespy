@@ -213,6 +213,7 @@ def histogram(
     band_alpha: float = 0.15,  # nessun rcParam equivalente
     grid_alpha: float | None = None,  # gestito da grid.alpha nello stile
     mean_symbol: str = r"\bar{x}",
+    band_symbol: str = r"\pm \sigma",
 ) -> tuple[Figure, Axes]:
     """
     Istogramma di una distribuzione sperimentale.
@@ -458,7 +459,7 @@ def histogram(
                 mu + sigma,
                 color=band_color,
                 alpha=band_alpha,
-                label=rf"$\pm 1\sigma = {sigma:{fmt}}$",
+                label=rf"${band_symbol} = {sigma:{fmt}}$",
             )
 
         ax.set_xlabel(xlabel)
