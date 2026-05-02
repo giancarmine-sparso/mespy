@@ -8,7 +8,7 @@ Disegnare un istogramma di un campione sperimentale, con opzioni per evidenziare
 
 - `x`: dati da istogrammare.
 - `ddof`: parametro passato a `standard_deviation` per la banda.
-- `style`: `None` usa gli `rcParams` correnti, `"mespy"` carica lo stile del package, qualunque altra stringa viene passata a Matplotlib come nome stile.
+- `style`: `None` usa gli `rcParams` correnti; i nomi degli stili inclusi nel package vengono risolti automaticamente; qualunque altra stringa viene passata a Matplotlib come nome stile.
 - `bins`: numero di bin, algoritmo automatico o array dei bordi.
 - `bin_width`: larghezza fissa dei bin. Non puo essere usata insieme a `bins` diverso da `"auto"`.
 - `hist_range`: coppia `(xmin, xmax)` usata come range dell'istogramma.

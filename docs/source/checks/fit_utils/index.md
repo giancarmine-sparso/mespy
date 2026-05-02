@@ -12,6 +12,7 @@ Questa sottosezione raccoglie i validatori e i piccoli blocchi di calcolo che so
 ## Vedi anche
 
 - [`_style_context`](../plot_utils/style-context.md)
+- [`_resolve_style`](../plot_utils/resolve-style.md)
 - [`_validate_axis_limits`](../plot_utils/validate-axis-limits.md)
 - [`_validate_decimals`](../plot_utils/validate-decimals.md)
 - [`_validate_figsize`](../plot_utils/validate-figsize.md)
