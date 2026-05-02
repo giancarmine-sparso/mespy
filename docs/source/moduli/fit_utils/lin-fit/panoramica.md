@@ -12,11 +12,11 @@ Eseguire un fit lineare pesato `y = m x + c` su dati sperimentali con incertezze
 - `decimals`: precisione testuale usata nelle etichette del fit. Deve essere un intero compreso tra 0 e 20.
 - `tol`: tolleranza relativa usata nel criterio di convergenza quando `sigma_x` e presente.
 - `max_iter`: massimo numero di aggiornamenti dei pesi.
-- `style`: `None` usa gli `rcParams` correnti, `"mespy"` carica lo stile del package, qualunque altra stringa viene passata a Matplotlib come nome stile.
+- `style`: `None` usa gli `rcParams` correnti; i nomi degli stili inclusi nel package vengono risolti automaticamente; qualunque altra stringa viene passata a Matplotlib come nome stile.
 - `show_plot`, `show_band`, `show_legend`, `show_fit_params`, `show_grid`: controllano la parte grafica.
 - `xlabel`, `ylabel`, `title`, `xlim`, `ylim`, `figsize`, `dpi`, `save_path`: regolano la figura. `figsize` e `dpi` vengono passati alla creazione della figura solo quando esplicitati.
 - `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`: override puntuali di titolo e legenda. Se lasciati a `None`, la funzione usa lo stile attivo.
-- `point_color`, `fit_color`, `band_color`, `data_alpha`, `band_alpha`, `grid_alpha`: regolano colori e trasparenze di punti, retta, banda e griglia. `point_color=None` e `grid_alpha=None` lasciano decidere allo stile attivo.
+- `point_color`, `fit_color`, `band_color`, `data_alpha`, `band_alpha`, `grid_alpha`: regolano colori e trasparenze di punti, retta, banda e griglia. I colori lasciati a `None` vengono ricavati dal ciclo colori dello stile attivo; `grid_alpha=None` lascia decidere allo stile attivo.
 
 ## Restituisce
 

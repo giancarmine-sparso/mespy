@@ -1,22 +1,74 @@
-# Tipografia coerente con il preambolo LaTeX
+# report.mplstyle — figure per relazioni di laboratorio (A4, corpo 11pt)
+# Pensato come stile completo: plt.style.use("report")
+# Convenzione di accompagnamento: dati neri, fit C1 (rosso) dal prop_cycle.
+
+# --- Tipografia (coerente con preambolo LuaLaTeX, STIX Two) ---
+text.usetex: False
 font.family: serif
-font.serif: STIX Two Text, DejaVu Serif
+font.serif: STIX Two Text, DejaVu Serif, serif
 mathtext.fontset: stix
+font.size: 10
+axes.titlesize: 12
+axes.titlepad: 8
+axes.labelsize: 11
+xtick.labelsize: 9
+ytick.labelsize: 9
+legend.fontsize: 9
+legend.title_fontsize: 9
 axes.formatter.use_mathtext: True
 axes.formatter.useoffset: False
 
-# Tick "da rivista"
+# --- Figure ---
+figure.figsize: 6.0, 4.0
+figure.dpi: 100
+figure.constrained_layout.use: True
+
+# --- Save ---
+savefig.dpi: 300
+savefig.bbox: tight
+savefig.pad_inches: 0.05
+
+# --- Axes ---
+axes.facecolor: white
+axes.linewidth: 0.8
+axes.labelpad: 4
+axes.axisbelow: True
+
+# --- Grid (entrambi gli assi: serve per leggere coppie (x, y) nei fit) ---
+axes.grid: True
+axes.grid.axis: both
+grid.alpha: 0.25
+grid.linewidth: 0.4
+grid.linestyle: -
+
+# --- Tick "da rivista" ---
 xtick.direction: in
 ytick.direction: in
 xtick.top: True
 ytick.right: True
+xtick.major.width: 0.8
+ytick.major.width: 0.8
 xtick.minor.visible: True
 ytick.minor.visible: True
 
-# Errorbar e marker
-errorbar.capsize: 3
+# --- Lines, marker, errorbar ---
+lines.linewidth: 1.5
 lines.markersize: 4
 lines.markeredgewidth: 1
+errorbar.capsize: 3
 
-# Per plot x-y serve la griglia su entrambi gli assi
-axes.grid.axis: both
+# --- Patch (per istogrammi anche dentro relazioni) ---
+patch.facecolor: 4878CF
+patch.edgecolor: white
+patch.force_edgecolor: True
+patch.linewidth: 0.6
+
+# --- Legend ---
+legend.loc: best
+legend.framealpha: 0.85
+legend.edgecolor: 0.8
+legend.borderpad: 0.4
+legend.handlelength: 1.5
+
+# --- Color cycle: rosso in C1 per la convenzione "dati C0 / fit C1" ---
+axes.prop_cycle: cycler('color', ['4878CF', 'D65F5F', 'EE854A', '6ACC64', '956CB4', '8C613C', 'DC7EC0', '797979', 'D5BB67', '82C6E2'])

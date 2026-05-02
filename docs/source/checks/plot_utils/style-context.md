@@ -16,6 +16,8 @@ Applica uno stile Matplotlib temporaneo e rende coerente il comportamento delle 
 - `style="mespy"` carica il file di stile incluso nel package.
 - Qualunque altra stringa viene passata a Matplotlib come nome stile.
 
+Nelle funzioni pubbliche lo stile passa prima da [`_resolve_style`](resolve-style.md), così anche gli altri stili bundled possono essere richiamati con il nome breve.
+
 ## Dove viene usata
 
 - in [`histogram`](../../moduli/plot_utils/histogram.md)

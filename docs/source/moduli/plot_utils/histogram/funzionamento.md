@@ -10,7 +10,7 @@ L'implementazione segue questa sequenza:
 
 1. Converte `x` in un vettore `float64` monodimensionale e finito con `_as_float_vector("x", x)`.
 2. Valida `decimals` come intero non negativo e leggibile.
-3. Entra in `_style_context(style)` per applicare lo stile richiesto e uniformare il comportamento nei notebook.
+3. Risolve il nome stile con `_resolve_style(style)` ed entra in `_style_context(...)` per applicarlo e uniformare il comportamento nei notebook.
 4. Se `xlim` o `ylim` sono forniti, li valida come coppie di valori finiti.
 5. Se `ax is None`, crea una nuova figura con `plt.subplots(...)`; altrimenti riusa la figura associata all'asse ricevuto.
 6. Costruisce `hist_range_tuple` se `hist_range` e presente, e verifica che soddisfi `xmin < xmax`.
@@ -29,7 +29,7 @@ L'implementazione segue questa sequenza:
 values = _as_float_vector("x", x)
 decimals = _validate_decimals(decimals)
 
-with _style_context(style):
+with _style_context(_resolve_style(style)):
     if xlim is not None:
         xlim = _validate_axis_limits(
             xlim,
@@ -63,7 +63,7 @@ Questo primo blocco fissa il contratto di ingresso della funzione.
 
 - `x` non viene passato direttamente a Matplotlib: prima viene normalizzato in `values`, che deve essere un array numerico monodimensionale, non vuoto e senza valori non finiti.
 - `decimals` viene validato subito e resta disponibile sia per i tick dell'asse x sia per le label testuali di media e banda.
-- `_style_context(style)` centralizza tre casi distinti: `style=None` usa gli `rcParams` correnti, `style="mespy"` carica il file `mespy.mplstyle`, ogni altra stringa viene passata a `plt.style.context(...)`.
+- `_resolve_style(style)` permette di usare i nomi brevi degli stili inclusi nel package; `_style_context(...)` centralizza poi tre casi distinti: `style=None` usa gli `rcParams` correnti, `style="mespy"` carica il file `mespy.mplstyle`, ogni altra stringa viene passata a `plt.style.context(...)`.
 - `xlim` e `ylim` vengono controllati prima di qualunque disegno. Se sono presenti, devono essere coppie valide di numeri finiti.
 - `figsize` e `dpi` vengono passati a `plt.subplots(...)` solo quando sono esplicitati. Se l'utente passa `ax`, la funzione non crea una nuova figura e riusa `ax.get_figure()`.
 - `constrained_layout=True` fa parte del comportamento standard quando `histogram` crea da sola la figura.
@@ -149,6 +149,11 @@ Questo e il punto in cui il grafico viene davvero disegnato.
 mu = float(np.mean(values))
 sigma = standard_deviation(values, ddof=ddof)
 
+if mean_color is None:
+    mean_color = "C1"
+if band_color is None:
+    band_color = "C2"
+
 if show_mean:
     ax.axvline(
         mu,
@@ -164,7 +169,7 @@ if show_band:
         mu + sigma,
         color=band_color,
         alpha=band_alpha,
-        label=rf"$\pm 1\sigma = {sigma:{fmt}}$",
+        label=rf"${band_symbol} = {sigma:{fmt}}$",
     )
 
 ax.set_xlabel(xlabel)
@@ -209,8 +214,8 @@ L'ultima parte aggiunge gli elementi statistici e completa la configurazione del
 
 - La media `mu` e calcolata con `np.mean(values)`, mentre `sigma` viene delegata a [`standard_deviation`](../../stats_utils/standard-deviation.md) e quindi dipende da `ddof`.
 - `show_mean` e `show_band` sono indipendenti: si puo mostrare solo la linea, solo la banda, entrambe oppure nessuna delle due.
-- `mean_color` e `band_color` restano sempre override espliciti della singola chiamata; non vengono recuperati da `rcParams`.
-- La legenda della media usa `mean_symbol`, mentre la banda viene etichettata come `+- 1 sigma` in forma matematica.
+- `mean_color` e `band_color` sovrascrivono lo stile solo quando non sono `None`; altrimenti la funzione usa i colori del ciclo attivo.
+- La legenda della media usa `mean_symbol`, mentre quella della banda usa `band_symbol`.
 - Se `ylabel` e `None`, la funzione usa il default esplicito `"Conteggi"`.
 - Titolo e legenda ricevono keyword aggiuntive solo quando l'utente le ha valorizzate; in tutti gli altri casi resta valida la configurazione dello stile attivo.
 - La griglia segue tre rami distinti: `show_grid=False` la spegne esplicitamente, `show_grid=True` con `grid_alpha is None` la lascia allo stile attivo, `show_grid=True` con `grid_alpha` esplicito applica una griglia sull'asse `y` con quell'opacita.
@@ -222,8 +227,8 @@ Alcune combinazioni di parametri definiscono il comportamento pratico piu import
 
 - `bin_width` e `bins` sono mutualmente esclusivi, salvo il caso default in cui `bins == "auto"`.
 - `hist_range` ha due ruoli diversi: se `bin_width` e assente, viene passato a `ax.hist(..., range=...)`; se `bin_width` e presente, viene usato per determinare `xmin` e `xmax` da cui costruire i bordi dei bin.
-- `style=None` usa gli `rcParams` correnti, `style="mespy"` usa lo stile del package, qualunque altra stringa passa direttamente da Matplotlib.
-- `bar_color`, `edgecolor`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc` e `grid_alpha` sovrascrivono lo stile solo quando non sono `None`.
+- `style=None` usa gli `rcParams` correnti; `style="mespy"`, `style="report"` e gli altri stili inclusi vengono risolti dal package; qualunque altra stringa passa direttamente da Matplotlib.
+- `bar_color`, `mean_color`, `band_color`, `edgecolor`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc` e `grid_alpha` sovrascrivono lo stile solo quando non sono `None`.
 - `show_bin_ticks=True` usa i `bin_edges` restituiti da Matplotlib, non una ricostruzione separata fatta da `mespy`.
 - `ddof` influisce solo sul calcolo di `sigma` e quindi sulla banda `+- 1 sigma`; non cambia i conteggi dell'istogramma.
 - `ylabel=None` non lascia l'asse senza etichetta: produce sempre `"Conteggi"`.

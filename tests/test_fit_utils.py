@@ -1,4 +1,5 @@
 import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
@@ -91,6 +92,30 @@ def test_lin_fit_accepts_custom_plot_styling_kwargs():
         collection.get_alpha() == pytest.approx(0.35)
         for collection in ax_fit.collections
         if collection.get_alpha() is not None
+    )
+
+
+def test_lin_fit_resolves_default_fit_and_band_colors_from_requested_style():
+    x, y, sigma_y, _, _ = make_placebo_data()
+
+    with plt.style.context("report"):
+        expected_fit_color = matplotlib.rcParams["axes.prop_cycle"].by_key()["color"][1]
+
+    result = lin_fit(x, y, sigma_y, style="report", show_plot=True)
+
+    ax_fit = result.figure.axes[0]
+    fit_line = next(line for line in ax_fit.lines if line.get_label() == "Fit")
+    fit_band = next(
+        collection
+        for collection in ax_fit.collections
+        if collection.get_label() == r"$\pm 1 \sigma$ retta"
+    )
+
+    assert matplotlib.colors.to_rgba(fit_line.get_color()) == pytest.approx(
+        matplotlib.colors.to_rgba(expected_fit_color)
+    )
+    assert fit_band.get_facecolor()[0] == pytest.approx(
+        matplotlib.colors.to_rgba(expected_fit_color, alpha=0.20)
     )
 
 

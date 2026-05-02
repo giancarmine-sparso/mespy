@@ -120,10 +120,10 @@ def lin_fit(
     title_pad: int | float | None = None,
     legend_fontsize: int | float | None = None,
     legend_loc: str | None = None,
-    point_color: str
-    | None = None,  # gestito da lines.color / patch.facecolor nello stile
-    fit_color: str = "#D65F5F",  # nessun rcParam equivalente
-    band_color: str = "#EE854A",  # nessun rcParam equivalente
+    point_color: str | None = None,  # default: "C0" dal prop_cycle attivo
+    fit_color: str | None = None,  # default: "C1" dal prop_cycle attivo
+    band_color: str
+    | None = None,  # default: "C1" dal prop_cycle attivo (o "C2", vedi sotto)
     data_alpha: float = 1.0,  # nessun rcParam equivalente
     band_alpha: float = 0.20,  # nessun rcParam equivalente
     grid_alpha: float | None = None,  # gestito da grid.alpha nello stile
@@ -221,11 +221,12 @@ def lin_fit(
     point_color : str or None, optional
         Colore dei punti dati. ``None`` = colore dal file di stile
         (default ``None``).
-    fit_color : str, optional
-        Colore della retta di fit (default ``"#D65F5F"``).
-    band_color : str, optional
-        Colore della fascia ±1σ attorno alla retta (default
-        ``"#EE854A"``).
+    fit_color : str or None, optional
+        Colore della retta di fit. ``None`` = secondo colore del ciclo
+        colori dello stile attivo (default ``None``).
+    band_color : str or None, optional
+        Colore della fascia ±1σ attorno alla retta. ``None`` = secondo
+        colore del ciclo colori dello stile attivo (default ``None``).
     data_alpha : float, optional
         Trasparenza dei punti dati, tra 0 e 1 (default ``1.0``).
     band_alpha : float, optional
@@ -373,6 +374,25 @@ def lin_fit(
 
     if show_plot:
         with _style_context(_resolve_style(style)):
+            import matplotlib as mpl
+
+            cycle_colors = mpl.rcParams["axes.prop_cycle"].by_key().get("color", [])
+            point_plot_color = (
+                point_color
+                if point_color is not None
+                else (cycle_colors[0] if len(cycle_colors) > 0 else "C0")
+            )
+            fit_plot_color = (
+                fit_color
+                if fit_color is not None
+                else (cycle_colors[1] if len(cycle_colors) > 1 else "C1")
+            )
+            band_plot_color = (
+                band_color
+                if band_color is not None
+                else (cycle_colors[1] if len(cycle_colors) > 1 else "C1")
+            )
+
             if xlim is not None:
                 xlim = _validate_axis_limits(
                     xlim,
@@ -412,9 +432,9 @@ def lin_fit(
                 "capsize": 3,
                 "alpha": data_alpha,
             }
-            if point_color is not None:
-                errorbar_kwargs["color"] = point_color
-                errorbar_kwargs["ecolor"] = point_color
+            if point_plot_color is not None:
+                errorbar_kwargs["color"] = point_plot_color
+                errorbar_kwargs["ecolor"] = point_plot_color
 
             ax_fit.errorbar(x_values, y_values, **errorbar_kwargs)
 
@@ -429,7 +449,7 @@ def lin_fit(
             ax_fit.plot(
                 x_fit,
                 y_fit,
-                color=fit_color,
+                color=fit_plot_color,
                 linewidth=1.5,
                 label=fit_label,
             )
@@ -443,7 +463,7 @@ def lin_fit(
                     x_fit,
                     y_fit - sigma_y_fit,
                     y_fit + sigma_y_fit,
-                    color=band_color,
+                    color=band_plot_color,
                     alpha=band_alpha,
                     label=r"$\pm 1 \sigma$ retta",
                 )
@@ -473,7 +493,7 @@ def lin_fit(
                 ax_fit.legend(**legend_kwargs)
 
             ax_res.errorbar(x_values, residuals, **errorbar_kwargs)
-            ax_res.axhline(0, color=fit_color, linewidth=1, linestyle="--")
+            ax_res.axhline(0, color=fit_plot_color, linewidth=1, linestyle="--")
             ax_res.set_xlabel(xlabel)
             ax_res.set_ylabel("Residui")
 

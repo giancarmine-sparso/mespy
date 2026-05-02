@@ -206,8 +206,8 @@ def histogram(
     legend_fontsize: int | float | None = None,
     legend_loc: str | None = None,
     bar_color: str | None = None,  # gestito da patch.facecolor nello stile
-    mean_color: str = "#D65F5F",  # nessun rcParam equivalente
-    band_color: str = "#EE854A",  # nessun rcParam equivalente
+    mean_color: str | None = None,  # default: "C1" dal prop_cycle attivo
+    band_color: str | None = None,  # default: "C2" dal prop_cycle attivo
     edgecolor: str | None = None,  # gestito da patch.edgecolor nello stile
     hist_alpha: float = 0.85,  # nessun rcParam equivalente
     band_alpha: float = 0.15,  # nessun rcParam equivalente
@@ -315,11 +315,12 @@ def histogram(
     bar_color : str or None, optional
         Colore di riempimento delle barre. ``None`` = colore dal file
         di stile (default ``None``).
-    mean_color : str, optional
-        Colore della linea verticale della media
-        (default ``"#D65F5F"``).
-    band_color : str, optional
-        Colore della fascia ±1σ (default ``"#EE854A"``).
+    mean_color : str or None, optional
+        Colore della linea verticale della media. ``None`` = secondo
+        colore del ciclo colori dello stile attivo (default ``None``).
+    band_color : str or None, optional
+        Colore della fascia ±1σ. ``None`` = terzo colore del ciclo
+        colori dello stile attivo (default ``None``).
     edgecolor : str or None, optional
         Colore dei bordi delle barre. ``None`` = valore dal file di
         stile (default ``None``).
@@ -333,6 +334,9 @@ def histogram(
     mean_symbol : str, optional
         Simbolo LaTeX usato per la media nell'annotazione della legenda
         (default ``r"\\bar{x}"``).
+    band_symbol : str, optional
+        Simbolo LaTeX usato per la banda nell'annotazione della legenda
+        (default ``r"\\pm \\sigma"``).
 
     Returns
     -------
@@ -443,6 +447,11 @@ def histogram(
 
         mu = float(np.mean(values))
         sigma = standard_deviation(values, ddof=ddof)
+
+        if mean_color is None:
+            mean_color = "C1"
+        if band_color is None:
+            band_color = "C2"
 
         if show_mean:
             ax.axvline(

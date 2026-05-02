@@ -20,7 +20,7 @@ Disegnare un istogramma di un campione sperimentale, con opzioni per evidenziare
 - `figsize`, `dpi`, `save_path`: parametri di creazione e salvataggio della figura. `figsize` e `dpi` vengono passati alla creazione della figura solo quando esplicitati.
 - `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`: override puntuali di titolo e legenda. Se lasciati a `None`, la funzione usa lo stile attivo.
 - `bar_color`, `edgecolor`: override puntuali dei colori delle barre. Se lasciati a `None`, la funzione usa i valori forniti da stile o `rcParams`.
-- `mean_color`, `band_color`, `hist_alpha`, `band_alpha`, `grid_alpha`, `mean_symbol`: controllano linea della media, banda `+- 1 sigma`, trasparenze e simbolo in legenda. `grid_alpha=None` lascia la griglia allo stile attivo.
+- `mean_color`, `band_color`, `hist_alpha`, `band_alpha`, `grid_alpha`, `mean_symbol`, `band_symbol`: controllano linea della media, banda `+- 1 sigma`, trasparenze e simboli in legenda. `mean_color=None`, `band_color=None` e `grid_alpha=None` lasciano decidere allo stile attivo.
 
 ## Restituisce
 

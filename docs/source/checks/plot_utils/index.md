@@ -7,6 +7,7 @@ Questa sottosezione documenta i controlli privati e i piccoli helper usati da `p
 - [`_validate_axis_limits`](validate-axis-limits.md)
 - [`_validate_figsize`](validate-figsize.md)
 - [`_validate_decimals`](validate-decimals.md)
+- [`_resolve_style`](resolve-style.md)
 - [`_in_ipython`](in-ipython.md)
 - [`_display_new_figures`](display-new-figures.md)
 - [`_style_context`](style-context.md)
@@ -18,6 +19,7 @@ Questa sottosezione documenta i controlli privati e i piccoli helper usati da `p
 validate-axis-limits
 validate-figsize
 validate-decimals
+resolve-style
 in-ipython
 display-new-figures
 style-context

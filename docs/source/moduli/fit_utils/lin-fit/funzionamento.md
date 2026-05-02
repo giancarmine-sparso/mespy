@@ -309,7 +309,26 @@ if save_path is not None and not show_plot:
 fig = None
 
 if show_plot:
-    with _style_context(style):
+    with _style_context(_resolve_style(style)):
+        import matplotlib as mpl
+
+        cycle_colors = mpl.rcParams["axes.prop_cycle"].by_key().get("color", [])
+        point_plot_color = (
+            point_color
+            if point_color is not None
+            else (cycle_colors[0] if len(cycle_colors) > 0 else "C0")
+        )
+        fit_plot_color = (
+            fit_color
+            if fit_color is not None
+            else (cycle_colors[1] if len(cycle_colors) > 1 else "C1")
+        )
+        band_plot_color = (
+            band_color
+            if band_color is not None
+            else (cycle_colors[1] if len(cycle_colors) > 1 else "C1")
+        )
+
         if xlim is not None:
             xlim = _validate_axis_limits(...)
         if ylim is not None:
@@ -336,9 +355,9 @@ if show_plot:
             "capsize": 3,
             "alpha": data_alpha,
         }
-        if point_color is not None:
-            errorbar_kwargs["color"] = point_color
-            errorbar_kwargs["ecolor"] = point_color
+        if point_plot_color is not None:
+            errorbar_kwargs["color"] = point_plot_color
+            errorbar_kwargs["ecolor"] = point_plot_color
 
         ax_fit.errorbar(x_values, y_values, **errorbar_kwargs)
 
@@ -350,7 +369,13 @@ if show_plot:
             if show_fit_params
             else "Fit"
         )
-        ax_fit.plot(x_fit, y_fit, color=fit_color, linewidth=1.5, label=fit_label)
+        ax_fit.plot(
+            x_fit,
+            y_fit,
+            color=fit_plot_color,
+            linewidth=1.5,
+            label=fit_label,
+        )
 
         if show_band:
             x_bar = weighted_mean(x_values, weights)
@@ -361,13 +386,13 @@ if show_plot:
                 x_fit,
                 y_fit - sigma_y_fit,
                 y_fit + sigma_y_fit,
-                color=band_color,
+                color=band_plot_color,
                 alpha=band_alpha,
                 label=r"$\pm 1 \sigma$ retta",
             )
 
         ax_res.errorbar(x_values, residuals, **errorbar_kwargs)
-        ax_res.axhline(0, color=fit_color, linewidth=1, linestyle="--")
+        ax_res.axhline(0, color=fit_plot_color, linewidth=1, linestyle="--")
 
         if not show_grid:
             ax_fit.grid(False)
@@ -404,10 +429,10 @@ L'ultima parte gestisce plotting e packaging finale del risultato.
 
 - `save_path` puo essere usato solo se `show_plot=True`. La funzione controlla questa incompatibilita prima di entrare nel ramo Matplotlib.
 - Se `show_plot=False`, tutta la parte grafica viene saltata e `figure` nel risultato finale vale `None`.
-- Quando il grafico e attivo, `lin_fit` usa lo stesso [`_style_context`](../../../checks/plot_utils/style-context.md) di [`histogram`](../../plot_utils/histogram.md): `style=None` mantiene gli `rcParams` correnti, `style="mespy"` carica lo stile del package, qualunque altra stringa viene passata a Matplotlib.
+- Quando il grafico e attivo, `lin_fit` risolve prima il nome stile con [`_resolve_style`](../../../checks/plot_utils/resolve-style.md) e poi usa lo stesso [`_style_context`](../../../checks/plot_utils/style-context.md) di [`histogram`](../../plot_utils/histogram.md): `style=None` mantiene gli `rcParams` correnti, i nomi degli stili bundled puntano al file `.mplstyle` corrispondente, qualunque altra stringa viene passata a Matplotlib.
 - Quando il grafico e attivo, `lin_fit` crea sempre due pannelli verticali: in alto il fit, in basso i residui.
 - `figsize` e `dpi` vengono passati a `plt.subplots(...)` solo quando sono stati specificati. In assenza di override, decide lo stile attivo.
-- `point_color`, quando presente, viene applicato sia ai marker sia alle barre d'errore; `fit_color` viene usato per la retta e per la linea orizzontale dei residui; `band_color` controlla la fascia attorno alla retta.
+- `point_color`, quando presente, viene applicato sia ai marker sia alle barre d'errore; `fit_color` viene usato per la retta e per la linea orizzontale dei residui; `band_color` controlla la fascia attorno alla retta. Quando questi colori sono `None`, vengono ricavati dal ciclo colori dello stile attivo.
 - `xlim` viene applicato sia a `ax_fit` sia a `ax_res`, mentre `ylim` viene applicato solo al pannello superiore.
 - `show_grid=False` spegne esplicitamente la griglia su entrambi i pannelli; `show_grid=True` con `grid_alpha is None` lascia la griglia allo stile attivo; `grid_alpha` esplicito applica una griglia sull'asse `y` di entrambi i pannelli.
 - `decimals` e `show_fit_params` influiscono solo sulla stringa della legenda della retta, non sul calcolo numerico del fit.
@@ -451,8 +476,8 @@ Alcune combinazioni di parametri definiscono il comportamento pratico piu import
 - `sigma_x` attiva il ramo iterativo e rende rilevanti `tol` e `max_iter`.
 - `tol` e una soglia di convergenza numerica sulla pendenza relativa, non una soglia statistica sulla qualita del fit.
 - Se `sigma_x` non e presente, il fit usa solo i pesi `1 / sigma_y**2`, non itera e marca subito `converged=True`.
-- `style=None` usa gli `rcParams` correnti, `style="mespy"` usa lo stile del package, qualunque altra stringa passa direttamente da Matplotlib.
-- `point_color`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc` e `grid_alpha` sovrascrivono lo stile solo quando non sono `None`.
+- `style=None` usa gli `rcParams` correnti; `style="mespy"`, `style="report"` e gli altri stili inclusi vengono risolti dal package; qualunque altra stringa passa direttamente da Matplotlib.
+- `point_color`, `fit_color`, `band_color`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc` e `grid_alpha` sovrascrivono lo stile solo quando non sono `None`.
 - `show_plot=False` disattiva tutta la parte Matplotlib: in questo caso `figure=None` e `xlim` e `ylim` non vengono nemmeno validati, ma `decimals`, `tol` e `max_iter` continuano a essere controllati.
 - `save_path` non e un salvataggio indipendente dal plotting: e ammesso solo insieme a `show_plot=True`.
 - `show_fit_params=True` cambia la label della retta da `"Fit"` a una stringa con `m` e `c` formattati con `decimals`.
