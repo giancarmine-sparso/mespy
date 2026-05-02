@@ -1,0 +1,22 @@
+# Tipografia coerente con il preambolo LaTeX
+font.family: serif
+font.serif: STIX Two Text, DejaVu Serif
+mathtext.fontset: stix
+axes.formatter.use_mathtext: True
+axes.formatter.useoffset: False
+
+# Tick "da rivista"
+xtick.direction: in
+ytick.direction: in
+xtick.top: True
+ytick.right: True
+xtick.minor.visible: True
+ytick.minor.visible: True
+
+# Errorbar e marker
+errorbar.capsize: 3
+lines.markersize: 4
+lines.markeredgewidth: 1
+
+# Per plot x-y serve la griglia su entrambi gli assi
+axes.grid.axis: both

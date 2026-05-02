@@ -1,5 +1,5 @@
-# mespy.mplstyle — publication-ready defaults
-# Compatible with mespy.plot_utils
+# column.mplstyle — single-column figures for papers/posters
+# Sized for ~3.5 inch column width (APS/Elsevier). Use as: plt.style.use("column")
 
 # --- Typography ---
 text.usetex: False                    # True se hai LaTeX installato
@@ -40,12 +40,14 @@ grid.linewidth: 0.4
 grid.linestyle: -
 
 # --- Ticks ---
+xtick.top:true
+ytick.right:true
 xtick.direction: in
 ytick.direction: in
 xtick.major.width: 0.8
 ytick.major.width: 0.8
-xtick.minor.visible: False
-ytick.minor.visible: False
+xtick.minor.visible: True
+ytick.minor.visible: True
 
 # --- Lines & patches ---
 lines.linewidth: 1.2
@@ -53,7 +55,6 @@ patch.facecolor: 4878CF
 patch.edgecolor: white
 patch.force_edgecolor: True
 patch.linewidth: 0.6
-
 # --- Legend ---
 legend.loc: best
 legend.framealpha: 0.85
