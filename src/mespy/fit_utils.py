@@ -104,6 +104,7 @@ def lin_fit(
     style: str | None = "mespy",
     xlabel: str = "x [xu]",
     ylabel: str = "y [uy]",
+    residuals_label: str = "Residuals",
     title: str | None = None,
     decimals: int = 3,
     show_plot: bool = True,
@@ -129,159 +130,167 @@ def lin_fit(
     grid_alpha: float | None = None,  # gestito da grid.alpha nello stile
 ) -> LinearFitResult:
     """
-    Fit lineare pesato y = m·x + c con propagazione delle incertezze.
+    Weighted linear fit ``y = m * x + c`` with uncertainty propagation.
 
-    Stima pendenza e intercetta tramite minimi quadrati pesati con pesi
-    wᵢ = 1/σyᵢ². Se ``sigma_x`` è fornito, aggiorna iterativamente la
-    varianza efficace σeff² = σy² + m²·σx² fino a convergenza della
-    pendenza. Calcola le incertezze sui parametri, la covarianza, i
-    residui e le diagnostiche del fit (χ², χ² ridotto). Opzionalmente
-    genera un grafico a due pannelli (dati + retta di fit, residui).
+    Estimates slope and intercept through weighted least squares using
+    weights ``w_i = 1 / sigma_y_i**2``. If ``sigma_x`` is provided, the
+    function iteratively updates the effective variance
+    ``sigma_eff**2 = sigma_y**2 + m**2 * sigma_x**2`` until the slope
+    converges. It computes parameter uncertainties, covariance,
+    residuals, and fit diagnostics (``chi2`` and reduced ``chi2``).
+    Optionally, it generates a two-panel plot (data + fit line,
+    residuals).
 
-    I parametri estetici con equivalente ``rcParams`` (figsize, dpi,
-    colori, griglia, titolo, legenda) sono gestiti dal file di stile
-    ``mespy.mplstyle`` quando ``style="mespy"``. Passando un valore
-    esplicito ai relativi parametri della funzione, lo stile viene
-    sovrascritto solo per quella chiamata.
+    Aesthetic parameters with an ``rcParams`` counterpart (``figsize``,
+    ``dpi``, colors, grid, title, legend) are managed by the
+    ``mespy.mplstyle`` style file when ``style="mespy"``. Passing an
+    explicit value to the corresponding function parameters overrides
+    the style for that call only.
 
     Parameters
     ----------
     x : array-like
-        Valori della variabile indipendente.
+        Values of the independent variable.
     y : array-like
-        Valori della variabile dipendente; deve avere la stessa
-        lunghezza di ``x``.
+        Values of the dependent variable; must have the same length as
+        ``x``.
     sigma_y : array-like
-        Incertezze (positive) sui valori di ``y``; deve avere la
-        stessa lunghezza di ``x``.
+        Positive uncertainties on ``y``; must have the same length as
+        ``x``.
     sigma_x : array-like or None, optional
-        Incertezze (positive) sui valori di ``x``. Se fornito, attiva
-        la varianza efficace e l'aggiornamento iterativo della pendenza
+        Positive uncertainties on ``x``. If provided, enables the
+        effective variance update and iterative slope refinement
         (default ``None``).
     tol : float, optional
-        Tolleranza relativa sulla variazione della pendenza tra due
-        iterazioni successive; usata solo quando ``sigma_x`` è fornito
+        Relative tolerance for the slope change between successive
+        iterations; used only when ``sigma_x`` is provided
         (default ``1e-10``).
     max_iter : int, optional
-        Numero massimo di iterazioni per la convergenza; usato solo
-        quando ``sigma_x`` è fornito (default ``100``).
+        Maximum number of iterations for convergence; used only when
+        ``sigma_x`` is provided (default ``100``).
     style : str or None, optional
-        Nome del file di stile matplotlib da applicare. ``None`` lascia
-        invariato lo stile corrente (default ``"mespy"``).
+        Name of the matplotlib style sheet to apply. ``None`` leaves
+        the current style unchanged (default ``"mespy"``).
     xlabel : str, optional
-        Etichetta dell'asse x (default ``"x [xu]"``).
+        Label for the x-axis (default ``"x [xu]"``).
     ylabel : str, optional
-        Etichetta dell'asse y (default ``"y [uy]"``).
+        Label for the y-axis (default ``"y [uy]"``).
+    residuals_label : str, optional
+        Label for the residuals y-axis in the lower panel
+        (default ``"Residuals"``).
     title : str or None, optional
-        Titolo del grafico. ``None`` genera un titolo automatico
+        Plot title. ``None`` generates an automatic title
         (default ``None``).
     decimals : int, optional
-        Numero di cifre decimali nei risultati mostrati nel grafico;
-        deve essere compreso tra 0 e 20 (default ``3``).
+        Number of decimal digits in the values displayed on the plot;
+        must be between 0 and 20 (default ``3``).
     show_plot : bool, optional
-        Se ``True``, genera e mostra il grafico a due pannelli
+        If ``True``, generates and shows the two-panel plot
         (default ``True``).
     show_band : bool, optional
-        Se ``True``, traccia la fascia ±1σ attorno alla retta di fit
+        If ``True``, draws the +/-1 sigma band around the fit line
         (default ``True``).
     show_legend : bool, optional
-        Se ``True``, mostra la legenda (default ``True``).
+        If ``True``, shows the legend (default ``True``).
     show_fit_params : bool, optional
-        Se ``True``, aggiunge pendenza e intercetta alla legenda
+        If ``True``, adds slope and intercept to the legend
         (default ``False``).
     show_grid : bool, optional
-        Se ``True``, mostra la griglia (default ``True``).
+        If ``True``, shows the grid (default ``True``).
     xlim : array-like or None, optional
-        Coppia ``(min, max)`` per i limiti dell'asse x. ``None`` =
-        limiti automatici (default ``None``).
+        Pair ``(min, max)`` for the x-axis limits. ``None`` uses
+        automatic limits (default ``None``).
     ylim : array-like or None, optional
-        Coppia ``(min, max)`` per i limiti dell'asse y. ``None`` =
-        limiti automatici (default ``None``).
+        Pair ``(min, max)`` for the y-axis limits. ``None`` uses
+        automatic limits (default ``None``).
     figsize : array-like or None, optional
-        Coppia ``(larghezza, altezza)`` in pollici. ``None`` = valore
-        dal file di stile (default ``None``).
+        Pair ``(width, height)`` in inches. ``None`` uses the value
+        from the style file (default ``None``).
     dpi : int or None, optional
-        Risoluzione della figura in DPI. ``None`` = valore dal file di
-        stile (default ``None``).
+        Figure resolution in DPI. ``None`` uses the value from the
+        style file (default ``None``).
     save_path : str or None, optional
-        Percorso in cui salvare automaticamente la figura al termine.
-        ``None`` = nessun salvataggio (default ``None``).
+        Path where the figure is automatically saved at the end.
+        ``None`` disables saving (default ``None``).
     title_fontsize : int or float or None, optional
-        Dimensione del font del titolo. ``None`` = valore dal file di
-        stile (default ``None``).
-    title_pad : int or float or None, optional
-        Spaziatura in punti tra il titolo e il grafico. ``None`` =
-        valore dal file di stile (default ``None``).
-    legend_fontsize : int or float or None, optional
-        Dimensione del font della legenda. ``None`` = valore dal file
-        di stile (default ``None``).
-    legend_loc : str or None, optional
-        Posizione della legenda (es. ``"upper right"``). ``None`` =
-        valore dal file di stile (default ``None``).
-    point_color : str or None, optional
-        Colore dei punti dati. ``None`` = colore dal file di stile
+        Title font size. ``None`` uses the value from the style file
         (default ``None``).
+    title_pad : int or float or None, optional
+        Spacing in points between the title and the plot. ``None``
+        uses the value from the style file (default ``None``).
+    legend_fontsize : int or float or None, optional
+        Legend font size. ``None`` uses the value from the style file
+        (default ``None``).
+    legend_loc : str or None, optional
+        Legend position (for example ``"upper right"``). ``None`` uses
+        the value from the style file (default ``None``).
+    point_color : str or None, optional
+        Color of the data points. ``None`` uses the color from the
+        style file (default ``None``).
     fit_color : str or None, optional
-        Colore della retta di fit. ``None`` = secondo colore del ciclo
-        colori dello stile attivo (default ``None``).
+        Color of the fit line. ``None`` uses the second color in the
+        active style color cycle (default ``None``).
     band_color : str or None, optional
-        Colore della fascia ±1σ attorno alla retta. ``None`` = secondo
-        colore del ciclo colori dello stile attivo (default ``None``).
+        Color of the +/-1 sigma band around the line. ``None`` uses
+        the second color in the active style color cycle
+        (default ``None``).
     data_alpha : float, optional
-        Trasparenza dei punti dati, tra 0 e 1 (default ``1.0``).
+        Opacity of the data points, between 0 and 1 (default ``1.0``).
     band_alpha : float, optional
-        Trasparenza della fascia ±1σ, tra 0 e 1 (default ``0.20``).
+        Opacity of the +/-1 sigma band, between 0 and 1
+        (default ``0.20``).
     grid_alpha : float or None, optional
-        Trasparenza della griglia, tra 0 e 1. ``None`` = valore dal
-        file di stile (default ``None``).
+        Grid opacity, between 0 and 1. ``None`` uses the value from
+        the style file (default ``None``).
 
     Returns
     -------
     LinearFitResult
-        Dataclass frozen con i seguenti campi:
+        Frozen dataclass with the following fields:
 
-        - ``slope`` : float — pendenza stimata m.
-        - ``intercept`` : float — intercetta stimata c.
-        - ``slope_std`` : float — incertezza sulla pendenza.
-        - ``intercept_std`` : float — incertezza sull'intercetta.
-        - ``covariance`` : float — covarianza tra pendenza e intercetta.
-        - ``correlation`` : float — correlazione tra pendenza e intercetta.
-        - ``residuals`` : numpy.ndarray — residui yᵢ − (m·xᵢ + c).
-        - ``residual_std`` : float — deviazione standard dei residui.
-        - ``chi2`` : float — chi quadro del fit.
-        - ``reduced_chi2`` : float — chi quadro ridotto (χ²/dof).
-        - ``dof`` : int — gradi di libertà (n − 2).
-        - ``iterations`` : int — iterazioni eseguite (0 se sigma_x è None).
-        - ``converged`` : bool — ``True`` se il fit è convergito.
-        - ``figure`` : matplotlib.figure.Figure or None — figura prodotta,
-          ``None`` se ``show_plot=False``.
+        - ``slope`` : float - estimated slope ``m``.
+        - ``intercept`` : float - estimated intercept ``c``.
+        - ``slope_std`` : float - uncertainty on the slope.
+        - ``intercept_std`` : float - uncertainty on the intercept.
+        - ``covariance`` : float - covariance between slope and intercept.
+        - ``correlation`` : float - correlation between slope and intercept.
+        - ``residuals`` : numpy.ndarray - residuals ``y_i - (m * x_i + c)``.
+        - ``residual_std`` : float - standard deviation of the residuals.
+        - ``chi2`` : float - chi-squared of the fit.
+        - ``reduced_chi2`` : float - reduced chi-squared (``chi2 / dof``).
+        - ``dof`` : int - degrees of freedom (``n - 2``).
+        - ``iterations`` : int - number of performed iterations
+          (0 if ``sigma_x`` is ``None``).
+        - ``converged`` : bool - ``True`` if the fit converged.
+        - ``figure`` : matplotlib.figure.Figure or None - generated
+          figure, ``None`` if ``show_plot=False``.
 
     Raises
     ------
     ValueError
-        Se ``x``, ``y`` e ``sigma_y`` hanno lunghezze diverse.
+        If ``x``, ``y``, and ``sigma_y`` have different lengths.
     ValueError
-        Se il numero di punti è inferiore a 3.
+        If the number of points is smaller than 3.
     ValueError
-        Se ``sigma_y`` o ``sigma_x`` contengono valori non positivi.
+        If ``sigma_y`` or ``sigma_x`` contains non-positive values.
     ValueError
-        Se la forma di ``sigma_x`` non corrisponde a quella di ``x``.
+        If the shape of ``sigma_x`` does not match ``x``.
     ValueError
-        Se ``decimals`` non è un intero oppure è fuori dall'intervallo
-        [0, 20].
+        If ``decimals`` is not an integer or is outside the range
+        ``[0, 20]``.
     ValueError
-        Se ``tol`` non è finito o non è positivo.
+        If ``tol`` is not finite or is not positive.
     ValueError
-        Se ``max_iter`` non è positivo.
+        If ``max_iter`` is not positive.
     ValueError
-        Se ``xlim`` o ``ylim`` non sono sequenze di due elementi finiti.
+        If ``xlim`` or ``ylim`` is not a finite two-element sequence.
     ValueError
-        Se ``save_path`` è specificato ma ``show_plot=False``.
+        If ``save_path`` is specified but ``show_plot=False``.
     ValueError
-        Se ``x`` contiene meno di 2 valori distinti.
+        If ``x`` contains fewer than 2 distinct values.
     RuntimeError
-        Se il fit non converge entro ``max_iter`` iterazioni (solo quando
-        ``sigma_x`` è fornito).
+        If the fit does not converge within ``max_iter`` iterations
+        (only when ``sigma_x`` is provided).
     """
     x_values = _as_float_vector("x", x)
     y_values = _as_float_vector("y", y)
@@ -495,7 +504,7 @@ def lin_fit(
             ax_res.errorbar(x_values, residuals, **errorbar_kwargs)
             ax_res.axhline(0, color=fit_plot_color, linewidth=1, linestyle="--")
             ax_res.set_xlabel(xlabel)
-            ax_res.set_ylabel("Residui")
+            ax_res.set_ylabel(residuals_label)
 
             if not show_grid:
                 ax_res.grid(False)
