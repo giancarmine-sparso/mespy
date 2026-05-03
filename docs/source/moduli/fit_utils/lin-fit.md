@@ -14,6 +14,9 @@ lin_fit(
     style: str | None = "mespy",
     xlabel: str = "x [xu]",
     ylabel: str = "y [uy]",
+    residuals_label: str = "Residuals",
+    band_label: str = r"$\pm 1 \sigma$ retta",
+    fit_label: str = r"Fit",
     title: str | None = None,
     decimals: int = 3,
     show_plot: bool = True,
@@ -44,6 +47,8 @@ lin_fit(
 Di default applica lo stile Matplotlib `mespy`; passa `style=None` per usare gli `rcParams` correnti oppure il nome di un altro stile per delegare a Matplotlib.
 
 I parametri `figsize`, `dpi`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, `point_color`, `fit_color`, `band_color` e `grid_alpha` possono ereditare lo stile attivo quando lasciati a `None`. I parametri `data_alpha` e `band_alpha` restano invece override espliciti della singola chiamata.
+
+`fit_label` e `band_label` permettono di personalizzare i testi della legenda di retta e banda. In particolare, `fit_label` viene usato solo quando `show_fit_params=False`; con `show_fit_params=True` la funzione genera automaticamente una label con `m` e `c`.
 
 Questa pagina resta il punto di accesso rapido alla funzione. I dettagli pratici sono raccolti in [Panoramica](lin-fit/panoramica.md), mentre [Funzionamento](lin-fit/funzionamento.md) e predisposta come sottopagina separata.
 

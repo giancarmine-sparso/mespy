@@ -105,6 +105,8 @@ def lin_fit(
     xlabel: str = "x [xu]",
     ylabel: str = "y [uy]",
     residuals_label: str = "Residuals",
+    band_label: str = r"$\pm 1 \sigma$ retta",
+    fit_label: str = r"Fit",
     title: str | None = None,
     decimals: int = 3,
     show_plot: bool = True,
@@ -178,6 +180,14 @@ def lin_fit(
     residuals_label : str, optional
         Label for the residuals y-axis in the lower panel
         (default ``"Residuals"``).
+    band_label : str, optional
+        Legend label for the +/-1 sigma band around the fit line;
+        used only when ``show_band=True``
+        (default ``"$\\pm 1 \\sigma$ retta"``).
+    fit_label : str, optional
+        Legend label for the fit line when ``show_fit_params=False``.
+        If ``show_fit_params=True``, the legend label is generated
+        automatically from slope and intercept (default ``"Fit"``).
     title : str or None, optional
         Plot title. ``None`` generates an automatic title
         (default ``None``).
@@ -453,7 +463,7 @@ def lin_fit(
             fit_label = (
                 f"Fit: m={slope:{fmt}}, c={intercept:{fmt}}"
                 if show_fit_params
-                else "Fit"
+                else fit_label
             )
             ax_fit.plot(
                 x_fit,
@@ -474,7 +484,7 @@ def lin_fit(
                     y_fit + sigma_y_fit,
                     color=band_plot_color,
                     alpha=band_alpha,
-                    label=r"$\pm 1 \sigma$ retta",
+                    label=band_label,
                 )
 
             ax_fit.set_ylabel(ylabel)

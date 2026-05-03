@@ -367,7 +367,7 @@ if show_plot:
         fit_label = (
             f"Fit: m={slope:{fmt}}, c={intercept:{fmt}}"
             if show_fit_params
-            else "Fit"
+            else fit_label
         )
         ax_fit.plot(
             x_fit,
@@ -388,7 +388,7 @@ if show_plot:
                 y_fit + sigma_y_fit,
                 color=band_plot_color,
                 alpha=band_alpha,
-                label=r"$\pm 1 \sigma$ retta",
+                label=band_label,
             )
 
         ax_res.errorbar(x_values, residuals, **errorbar_kwargs)
@@ -435,7 +435,7 @@ L'ultima parte gestisce plotting e packaging finale del risultato.
 - `point_color`, quando presente, viene applicato sia ai marker sia alle barre d'errore; `fit_color` viene usato per la retta e per la linea orizzontale dei residui; `band_color` controlla la fascia attorno alla retta. Quando questi colori sono `None`, vengono ricavati dal ciclo colori dello stile attivo.
 - `xlim` viene applicato sia a `ax_fit` sia a `ax_res`, mentre `ylim` viene applicato solo al pannello superiore.
 - `show_grid=False` spegne esplicitamente la griglia su entrambi i pannelli; `show_grid=True` con `grid_alpha is None` lascia la griglia allo stile attivo; `grid_alpha` esplicito applica una griglia sull'asse `y` di entrambi i pannelli.
-- `decimals` e `show_fit_params` influiscono solo sulla stringa della legenda della retta, non sul calcolo numerico del fit.
+- `decimals`, `show_fit_params` e `fit_label` influiscono solo sulla stringa della legenda della retta, non sul calcolo numerico del fit.
 - Il salvataggio usa sempre `bbox_inches="tight"`; il `dpi` viene passato a `savefig(...)` solo quando e esplicitato.
 
 La retta visualizzata e
@@ -480,7 +480,9 @@ Alcune combinazioni di parametri definiscono il comportamento pratico piu import
 - `point_color`, `fit_color`, `band_color`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc` e `grid_alpha` sovrascrivono lo stile solo quando non sono `None`.
 - `show_plot=False` disattiva tutta la parte Matplotlib: in questo caso `figure=None` e `xlim` e `ylim` non vengono nemmeno validati, ma `decimals`, `tol` e `max_iter` continuano a essere controllati.
 - `save_path` non e un salvataggio indipendente dal plotting: e ammesso solo insieme a `show_plot=True`.
-- `show_fit_params=True` cambia la label della retta da `"Fit"` a una stringa con `m` e `c` formattati con `decimals`.
+- `fit_label` controlla la label della retta solo quando `show_fit_params=False`.
+- `show_fit_params=True` sostituisce `fit_label` con una stringa automatica contenente `m` e `c` formattati con `decimals`.
+- `band_label` controlla il testo della legenda della banda solo quando `show_band=True`.
 - `show_band` controlla solo la banda attorno alla retta, non il calcolo del fit.
 - `show_legend=False` lascia comunque disegnati punti, retta e banda, ma senza legenda.
 - `xlim` agisce su entrambi i pannelli condivisi, mentre `ylim` limita solo il pannello superiore.

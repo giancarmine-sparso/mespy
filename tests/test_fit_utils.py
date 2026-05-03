@@ -119,6 +119,24 @@ def test_lin_fit_resolves_default_fit_and_band_colors_from_requested_style():
     )
 
 
+def test_lin_fit_accepts_custom_fit_and_band_labels():
+    x, y, sigma_y, _, _ = make_placebo_data()
+
+    result = lin_fit(
+        x,
+        y,
+        sigma_y,
+        show_plot=True,
+        fit_label="Retta custom",
+        band_label="Banda custom",
+    )
+
+    labels = [text.get_text() for text in result.figure.axes[0].get_legend().get_texts()]
+
+    assert "Retta custom" in labels
+    assert "Banda custom" in labels
+
+
 def test_lin_fit_with_sigma_x_uses_iterative_effective_variance():
     x, y, sigma_y, sigma_x, m_true, c_true = make_placebo_data_with_sigma_x()
 
@@ -183,12 +201,20 @@ def test_lin_fit_show_legend_false_hides_legend():
 def test_lin_fit_show_fit_params_adds_coefficients_to_legend():
     x, y, sigma_y, _, _ = make_placebo_data()
 
-    result = lin_fit(x, y, sigma_y, show_plot=True, show_fit_params=True)
+    result = lin_fit(
+        x,
+        y,
+        sigma_y,
+        show_plot=True,
+        show_fit_params=True,
+        fit_label="Retta custom",
+    )
 
     ax_fit = result.figure.axes[0]
     labels = [text.get_text() for text in ax_fit.get_legend().get_texts()]
 
     assert any(label.startswith("Fit: m=") for label in labels)
+    assert "Retta custom" not in labels
 
 
 def test_lin_fit_save_path_saves_figure(tmp_path):
