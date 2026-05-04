@@ -127,6 +127,7 @@ def lin_fit(
     fit_color: str | None = None,  # default: "C1" dal prop_cycle attivo
     band_color: str
     | None = None,  # default: "C1" dal prop_cycle attivo (o "C2", vedi sotto)
+    res_line_color: str | None = None,
     data_alpha: float = 1.0,  # nessun rcParam equivalente
     band_alpha: float = 0.20,  # nessun rcParam equivalente
     grid_alpha: float | None = None,  # gestito da grid.alpha nello stile
@@ -244,6 +245,9 @@ def lin_fit(
         Color of the +/-1 sigma band around the line. ``None`` uses
         the second color in the active style color cycle
         (default ``None``).
+    res_line_color : str or None, optional
+        Color of the zero reference line in the residuals panel.
+        ``None`` uses the fit line color (default ``None``).
     data_alpha : float, optional
         Opacity of the data points, between 0 and 1 (default ``1.0``).
     band_alpha : float, optional
@@ -512,7 +516,12 @@ def lin_fit(
                 ax_fit.legend(**legend_kwargs)
 
             ax_res.errorbar(x_values, residuals, **errorbar_kwargs)
-            ax_res.axhline(0, color=fit_plot_color, linewidth=1, linestyle="--")
+            ax_res.axhline(
+                0,
+                color=res_line_color if res_line_color is not None else fit_plot_color,
+                linewidth=1,
+                linestyle="--",
+            )
             ax_res.set_xlabel(xlabel)
             ax_res.set_ylabel(residuals_label)
 
