@@ -17,7 +17,7 @@ Eseguire un fit lineare pesato `y = m x + c` su dati sperimentali con incertezze
 - `xlabel`, `ylabel`, `residuals_label`, `title`, `xlim`, `ylim`, `figsize`, `dpi`, `save_path`: regolano testi, assi e salvataggio della figura. `figsize` e `dpi` vengono passati alla creazione della figura solo quando esplicitati.
 - `fit_label`, `band_label`: personalizzano i testi della legenda di retta e banda. `fit_label` viene usato solo quando `show_fit_params=False`; se `show_fit_params=True`, la label della retta viene costruita automaticamente con `m` e `c`.
 - `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`: override puntuali di titolo e legenda. Se lasciati a `None`, la funzione usa lo stile attivo.
-- `point_color`, `fit_color`, `band_color`, `data_alpha`, `band_alpha`, `grid_alpha`: regolano colori e trasparenze di punti, retta, banda e griglia. I colori lasciati a `None` vengono ricavati dal ciclo colori dello stile attivo; `grid_alpha=None` lascia decidere allo stile attivo.
+- `point_color`, `fit_color`, `band_color`, `res_line_color`, `data_alpha`, `band_alpha`, `grid_alpha`: regolano colori e trasparenze di punti, retta, banda, linea di zero dei residui e griglia. `res_line_color=None` riusa il colore effettivo della retta di fit; gli altri colori lasciati a `None` vengono ricavati dal ciclo colori dello stile attivo; `grid_alpha=None` lascia decidere allo stile attivo.
 
 ## Restituisce
 

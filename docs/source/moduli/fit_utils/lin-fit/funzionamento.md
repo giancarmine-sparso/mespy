@@ -432,7 +432,7 @@ L'ultima parte gestisce plotting e packaging finale del risultato.
 - Quando il grafico e attivo, `lin_fit` risolve prima il nome stile con [`_resolve_style`](../../../checks/plot_utils/resolve-style.md) e poi usa lo stesso [`_style_context`](../../../checks/plot_utils/style-context.md) di [`histogram`](../../plot_utils/histogram.md): `style=None` mantiene gli `rcParams` correnti, i nomi degli stili bundled puntano al file `.mplstyle` corrispondente, qualunque altra stringa viene passata a Matplotlib.
 - Quando il grafico e attivo, `lin_fit` crea sempre due pannelli verticali: in alto il fit, in basso i residui.
 - `figsize` e `dpi` vengono passati a `plt.subplots(...)` solo quando sono stati specificati. In assenza di override, decide lo stile attivo.
-- `point_color`, quando presente, viene applicato sia ai marker sia alle barre d'errore; `fit_color` viene usato per la retta e per la linea orizzontale dei residui; `band_color` controlla la fascia attorno alla retta. Quando questi colori sono `None`, vengono ricavati dal ciclo colori dello stile attivo.
+- `point_color`, quando presente, viene applicato sia ai marker sia alle barre d'errore; `fit_color` viene usato per la retta; `band_color` controlla la fascia attorno alla retta; `res_line_color` controlla la linea orizzontale a zero nel pannello dei residui. Quando `res_line_color` e `None`, la linea dei residui riusa il colore effettivo della retta; gli altri colori lasciati a `None` vengono ricavati dal ciclo colori dello stile attivo.
 - `xlim` viene applicato sia a `ax_fit` sia a `ax_res`, mentre `ylim` viene applicato solo al pannello superiore.
 - `show_grid=False` spegne esplicitamente la griglia su entrambi i pannelli; `show_grid=True` con `grid_alpha is None` lascia la griglia allo stile attivo; `grid_alpha` esplicito applica una griglia sull'asse `y` di entrambi i pannelli.
 - `decimals`, `show_fit_params` e `fit_label` influiscono solo sulla stringa della legenda della retta, non sul calcolo numerico del fit.
@@ -477,7 +477,7 @@ Alcune combinazioni di parametri definiscono il comportamento pratico piu import
 - `tol` e una soglia di convergenza numerica sulla pendenza relativa, non una soglia statistica sulla qualita del fit.
 - Se `sigma_x` non e presente, il fit usa solo i pesi `1 / sigma_y**2`, non itera e marca subito `converged=True`.
 - `style=None` usa gli `rcParams` correnti; `style="mespy"`, `style="report"` e gli altri stili inclusi vengono risolti dal package; qualunque altra stringa passa direttamente da Matplotlib.
-- `point_color`, `fit_color`, `band_color`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc` e `grid_alpha` sovrascrivono lo stile solo quando non sono `None`.
+- `point_color`, `fit_color`, `band_color`, `res_line_color`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc` e `grid_alpha` sovrascrivono lo stile solo quando non sono `None`.
 - `show_plot=False` disattiva tutta la parte Matplotlib: in questo caso `figure=None` e `xlim` e `ylim` non vengono nemmeno validati, ma `decimals`, `tol` e `max_iter` continuano a essere controllati.
 - `save_path` non e un salvataggio indipendente dal plotting: e ammesso solo insieme a `show_plot=True`.
 - `fit_label` controlla la label della retta solo quando `show_fit_params=False`.
