@@ -105,6 +105,7 @@ def lin_fit(
     xlabel: str = "x [xu]",
     ylabel: str = "y [uy]",
     residuals_label: str = "Residuals",
+    normalize_residuals: bool = False,
     band_label: str = r"$\pm 1 \sigma$ retta",
     fit_label: str = r"Fit",
     title: str | None = None,
@@ -142,7 +143,7 @@ def lin_fit(
     converges. It computes parameter uncertainties, covariance,
     residuals, and fit diagnostics (``chi2`` and reduced ``chi2``).
     Optionally, it generates a two-panel plot (data + fit line,
-    residuals).
+    regular or normalized residuals).
 
     Aesthetic parameters with an ``rcParams`` counterpart (``figsize``,
     ``dpi``, colors, grid, title, legend) are managed by the
@@ -181,6 +182,11 @@ def lin_fit(
     residuals_label : str, optional
         Label for the residuals y-axis in the lower panel
         (default ``"Residuals"``).
+    normalize_residuals : bool, optional
+        If ``True``, the lower panel plots residuals normalized by
+        ``sigma_eff``. This affects only the plot: the
+        ``LinearFitResult.residuals`` field always contains the
+        physical residuals ``y_i - (m * x_i + c)`` (default ``False``).
     band_label : str, optional
         Legend label for the +/-1 sigma band around the fit line;
         used only when ``show_band=True``
@@ -387,6 +393,9 @@ def lin_fit(
     residual_std = float(np.sqrt(np.sum(residuals**2) / dof))
 
     sigma_fit2 = sigma_y2 if sigma_x2 is None else sigma_y2 + slope**2 * sigma_x2
+
+    normalized_residuals = residuals / np.sqrt(sigma_fit2)
+
     chi2 = float(np.sum((residuals**2) / sigma_fit2))
     reduced_chi2 = float(chi2 / dof)
 
@@ -515,7 +524,25 @@ def lin_fit(
                     legend_kwargs["loc"] = legend_loc
                 ax_fit.legend(**legend_kwargs)
 
-            ax_res.errorbar(x_values, residuals, **errorbar_kwargs)
+            residuals_plot = (
+                normalized_residuals if normalize_residuals else residuals
+            )
+            residuals_yerr = (
+                np.ones_like(normalized_residuals)
+                if normalize_residuals
+                else sigma_y_values
+            )
+            residuals_axis_label = (
+                r"Residuals / $\sigma_\mathrm{eff}$"
+                if normalize_residuals and residuals_label == "Residuals"
+                else residuals_label
+            )
+            residuals_errorbar_kwargs = {
+                **errorbar_kwargs,
+                "yerr": residuals_yerr,
+            }
+
+            ax_res.errorbar(x_values, residuals_plot, **residuals_errorbar_kwargs)
             ax_res.axhline(
                 0,
                 color=res_line_color if res_line_color is not None else fit_plot_color,
@@ -523,7 +550,7 @@ def lin_fit(
                 linestyle="--",
             )
             ax_res.set_xlabel(xlabel)
-            ax_res.set_ylabel(residuals_label)
+            ax_res.set_ylabel(residuals_axis_label)
 
             if not show_grid:
                 ax_res.grid(False)

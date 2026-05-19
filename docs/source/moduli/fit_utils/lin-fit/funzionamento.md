@@ -17,7 +17,7 @@ L'implementazione segue questa sequenza:
 7. Stima una prima retta con `_fit_coefficients(...)`.
 8. Se `sigma_x` e presente, aggiorna iterativamente i pesi usando la varianza efficace $\sigma_{\mathrm{eff},i}^2 = \sigma_{y_i}^2 + m^2 \sigma_{x_i}^2$ finche la variazione relativa della pendenza scende sotto `tol`.
 9. Calcola varianze dei parametri, covarianza, correlazione, residui, `chi2`, `reduced_chi2` e altre diagnostiche.
-10. Se `show_plot=True`, entra in `_style_context(style)` e costruisce una figura a due pannelli con dati, retta e residui.
+10. Se `show_plot=True`, entra in `_style_context(style)` e costruisce una figura a due pannelli con dati, retta e residui fisici o normalizzati.
 11. Restituisce un [`LinearFitResult`](../linear-fit-result.md) con tutti i risultati numerici e la figura opzionale.
 
 ## Validazione input e setup numerico
@@ -217,6 +217,9 @@ dof = n - 2
 residual_std = float(np.sqrt(np.sum(residuals**2) / dof))
 
 sigma_fit2 = sigma_y2 if sigma_x2 is None else sigma_y2 + slope**2 * sigma_x2
+
+normalized_residuals = residuals / np.sqrt(sigma_fit2)
+
 chi2 = float(np.sum((residuals**2) / sigma_fit2))
 reduced_chi2 = float(chi2 / dof)
 ```
@@ -294,11 +297,21 @@ $$
 \chi^2_\nu = \frac{\chi^2}{\mathrm{dof}}.
 $$
 
+La stessa varianza di fit viene usata anche per costruire i residui normalizzati disponibili nel ramo di plotting:
+
+$$
+r_{\mathrm{norm},i} =
+\frac{r_i}{\sigma_{\mathrm{fit},i}}.
+$$
+
+Questa grandezza non viene salvata nel [`LinearFitResult`](../linear-fit-result.md): serve solo per scegliere cosa disegnare nel pannello inferiore quando `normalize_residuals=True`.
+
 Alcune osservazioni pratiche aiutano a leggere questi numeri nel modo corretto.
 
 - `residual_std` non pesa i residui con le incertezze sperimentali: misura solo la dispersione quadratica dei residui attorno alla retta.
 - `chi2` e `reduced_chi2` invece confrontano i residui con le incertezze del modello, quindi hanno una lettura statistica diversa.
 - Nel caso con `sigma_x`, sia i pesi finali sia `chi2` usano la stessa forma di varianza efficace.
+- `normalize_residuals` non modifica `residuals`, `residual_std`, `chi2` o `reduced_chi2`: cambia solo i valori disegnati nel pannello dei residui.
 
 ## Grafico opzionale e oggetto di ritorno
 
@@ -391,8 +404,27 @@ if show_plot:
                 label=band_label,
             )
 
-        ax_res.errorbar(x_values, residuals, **errorbar_kwargs)
+        residuals_plot = (
+            normalized_residuals if normalize_residuals else residuals
+        )
+        residuals_yerr = (
+            np.ones_like(normalized_residuals)
+            if normalize_residuals
+            else sigma_y_values
+        )
+        residuals_axis_label = (
+            r"Residuals / $\sigma_\mathrm{eff}$"
+            if normalize_residuals and residuals_label == "Residuals"
+            else residuals_label
+        )
+        residuals_errorbar_kwargs = {
+            **errorbar_kwargs,
+            "yerr": residuals_yerr,
+        }
+
+        ax_res.errorbar(x_values, residuals_plot, **residuals_errorbar_kwargs)
         ax_res.axhline(0, color=fit_plot_color, linewidth=1, linestyle="--")
+        ax_res.set_ylabel(residuals_axis_label)
 
         if not show_grid:
             ax_fit.grid(False)
@@ -431,6 +463,9 @@ L'ultima parte gestisce plotting e packaging finale del risultato.
 - Se `show_plot=False`, tutta la parte grafica viene saltata e `figure` nel risultato finale vale `None`.
 - Quando il grafico e attivo, `lin_fit` risolve prima il nome stile con [`_resolve_style`](../../../checks/plot_utils/resolve-style.md) e poi usa lo stesso [`_style_context`](../../../checks/plot_utils/style-context.md) di [`histogram`](../../plot_utils/histogram.md): `style=None` mantiene gli `rcParams` correnti, i nomi degli stili bundled puntano al file `.mplstyle` corrispondente, qualunque altra stringa viene passata a Matplotlib.
 - Quando il grafico e attivo, `lin_fit` crea sempre due pannelli verticali: in alto il fit, in basso i residui.
+- Con `normalize_residuals=False`, il pannello inferiore mostra i residui fisici `r_i` e le barre verticali hanno ampiezza `sigma_y`, come nel pannello superiore.
+- Con `normalize_residuals=True`, il pannello inferiore mostra `r_i / sigma_fit_i`; le barre verticali diventano unitarie perche l'asse e adimensionale.
+- Se `normalize_residuals=True` e `residuals_label` e ancora `"Residuals"`, la label del pannello inferiore viene sostituita automaticamente con `Residuals / sigma_eff`. Una label passata esplicitamente dall'utente viene invece rispettata.
 - `figsize` e `dpi` vengono passati a `plt.subplots(...)` solo quando sono stati specificati. In assenza di override, decide lo stile attivo.
 - `point_color`, quando presente, viene applicato sia ai marker sia alle barre d'errore; `fit_color` viene usato per la retta; `band_color` controlla la fascia attorno alla retta; `res_line_color` controlla la linea orizzontale a zero nel pannello dei residui. Quando `res_line_color` e `None`, la linea dei residui riusa il colore effettivo della retta; gli altri colori lasciati a `None` vengono ricavati dal ciclo colori dello stile attivo.
 - `xlim` viene applicato sia a `ax_fit` sia a `ax_res`, mentre `ylim` viene applicato solo al pannello superiore.
@@ -486,6 +521,7 @@ Alcune combinazioni di parametri definiscono il comportamento pratico piu import
 - `show_band` controlla solo la banda attorno alla retta, non il calcolo del fit.
 - `show_legend=False` lascia comunque disegnati punti, retta e banda, ma senza legenda.
 - `xlim` agisce su entrambi i pannelli condivisi, mentre `ylim` limita solo il pannello superiore.
+- `normalize_residuals=True` modifica solo il pannello inferiore del grafico: il risultato restituito continua a contenere residui fisici non normalizzati.
 
 ## Esempio commentato
 

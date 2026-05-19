@@ -31,7 +31,7 @@
 - stimare pendenza e intercetta con minimi quadrati pesati
 - aggiornare iterativamente i pesi quando esistono incertezze anche su `x`
 - calcolare residui, `chi2`, `reduced_chi2`, correlazione e altre diagnostiche
-- creare, se richiesto, una figura matplotlib con pannello del fit e pannello dei residui usando lo stesso sistema di stile di `histogram`
+- creare, se richiesto, una figura matplotlib con pannello del fit e pannello dei residui fisici o normalizzati usando lo stesso sistema di stile di `histogram`
 
 ## Helper collegati
 

@@ -33,6 +33,22 @@ def make_placebo_data_with_sigma_x():
     return x_obs, y, sigma_y, sigma_x, m_true, c_true
 
 
+def get_residual_marker_ydata(result):
+    ax_res = result.figure.axes[1]
+    marker_line = next(line for line in ax_res.lines if line.get_marker() == "o")
+    return marker_line.get_ydata()
+
+
+def get_residual_vertical_errorbar_half_lengths(result):
+    ax_res = result.figure.axes[1]
+    half_lengths = []
+    for collection in ax_res.collections:
+        for segment in collection.get_segments():
+            if len(segment) == 2 and np.allclose(segment[0, 0], segment[1, 0]):
+                half_lengths.append(abs(segment[1, 1] - segment[0, 1]) / 2)
+    return np.array(half_lengths)
+
+
 def test_lin_fit_returns_typed_result_and_expected_parameters():
     x, y, sigma_y, m_true, c_true = make_placebo_data()
 
@@ -155,6 +171,61 @@ def test_lin_fit_with_sigma_x_uses_iterative_effective_variance():
     assert result_sigma_x.converged is True
     assert result_sigma_x.slope_std > result_base.slope_std
     assert result_sigma_x.intercept_std > result_base.intercept_std
+
+
+def test_lin_fit_can_plot_normalized_residuals_without_normalizing_result():
+    x, y, sigma_y, _, _ = make_placebo_data()
+
+    result = lin_fit(
+        x,
+        y,
+        sigma_y,
+        show_plot=True,
+        normalize_residuals=True,
+    )
+
+    expected_physical_residuals = y - result.slope * x - result.intercept
+    expected_normalized_residuals = result.residuals / sigma_y
+
+    np.testing.assert_allclose(result.residuals, expected_physical_residuals)
+    np.testing.assert_allclose(
+        get_residual_marker_ydata(result),
+        expected_normalized_residuals,
+    )
+    np.testing.assert_allclose(
+        get_residual_vertical_errorbar_half_lengths(result),
+        np.ones_like(sigma_y),
+    )
+    assert result.figure.axes[1].get_ylabel() == r"Residuals / $\sigma_\mathrm{eff}$"
+
+
+def test_lin_fit_normalized_residuals_use_effective_sigma_with_sigma_x():
+    x, y, sigma_y, sigma_x, _, _ = make_placebo_data_with_sigma_x()
+
+    result = lin_fit(
+        x,
+        y,
+        sigma_y,
+        sigma_x=sigma_x,
+        show_plot=True,
+        normalize_residuals=True,
+        residuals_label="Pull",
+    )
+
+    sigma_eff = np.sqrt(sigma_y**2 + result.slope**2 * sigma_x**2)
+    expected_physical_residuals = y - result.slope * x - result.intercept
+    expected_normalized_residuals = result.residuals / sigma_eff
+
+    np.testing.assert_allclose(result.residuals, expected_physical_residuals)
+    np.testing.assert_allclose(
+        get_residual_marker_ydata(result),
+        expected_normalized_residuals,
+    )
+    np.testing.assert_allclose(
+        get_residual_vertical_errorbar_half_lengths(result),
+        np.ones_like(sigma_y),
+    )
+    assert result.figure.axes[1].get_ylabel() == "Pull"
 
 
 def test_lin_fit_without_plot_returns_no_figure():

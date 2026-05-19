@@ -16,7 +16,7 @@ Raccogliere in un unico contenitore tipizzato i parametri del fit, le incertezze
 - `intercept_std`: incertezza standard sull'intercetta.
 - `covariance`: covarianza tra i due parametri del fit.
 - `correlation`: coefficiente di correlazione tra pendenza e intercetta.
-- `residuals`: vettore dei residui `y - (m x + c)`.
+- `residuals`: vettore dei residui fisici `y - (m x + c)`, sempre non normalizzati anche quando `lin_fit(..., normalize_residuals=True)` mostra residui normalizzati nel grafico.
 - `residual_std`: stima sintetica della dispersione dei residui.
 - `chi2`: chi quadrato del fit.
 - `reduced_chi2`: chi quadrato ridotto.
@@ -45,4 +45,4 @@ print(result.reduced_chi2)
 
 ## Note
 
-La classe non esegue calcoli da sola: e una rappresentazione dell'output prodotto da [`lin_fit`](lin-fit.md).
+La classe non esegue calcoli da sola: e una rappresentazione dell'output prodotto da [`lin_fit`](lin-fit.md). Il parametro `normalize_residuals` di `lin_fit` non aggiunge campi e non cambia i valori numerici contenuti in questa classe; agisce solo sul pannello dei residui della figura.
