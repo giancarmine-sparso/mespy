@@ -9,6 +9,7 @@
 - Librerie esterne:
   `numpy as np`, `numpy.typing.ArrayLike`, `numpy.typing.NDArray`
 - Import interni da `plot_utils`:
+  [`_resolve_style`](../../checks/plot_utils/resolve-style.md),
   [`_style_context`](../../checks/plot_utils/style-context.md),
   [`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md),
   [`_validate_decimals`](../../checks/plot_utils/validate-decimals.md),
@@ -39,7 +40,9 @@
 - [`_validate_positive_vector`](../../checks/fit_utils/validate-positive-vector.md)
 - [`_validate_positive_scalar`](../../checks/fit_utils/validate-positive-scalar.md)
 - [`_validate_max_iter`](../../checks/fit_utils/validate-max-iter.md)
+- [`_validate_fit_method`](../../checks/fit_utils/validate-fit-method.md)
 - [`_fit_coefficients`](../../checks/fit_utils/fit-coefficients.md)
+- [`_resolve_style`](../../checks/plot_utils/resolve-style.md)
 - [`_style_context`](../../checks/plot_utils/style-context.md)
 - [`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md)
 - [`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)

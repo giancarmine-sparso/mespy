@@ -1,3 +1,7 @@
+from pathlib import Path
+import tomllib
+
+
 SUPPORTED_LANGUAGES = [
     {"code": "en", "label": "English"},
     {"code": "it", "label": "Italiano"},
@@ -7,7 +11,11 @@ SUPPORTED_LANGUAGES = [
 project = "MesPy"
 copyright = "2026, Giancarmine Sparso"
 author = "Giancarmine Sparso"
-release = "1.0.0"
+_pyproject = tomllib.loads(
+    (Path(__file__).resolve().parents[2] / "pyproject.toml").read_text(encoding="utf-8")
+)
+release = _pyproject["project"]["version"]
+version = release
 
 
 templates_path = ["_templates"]

@@ -31,7 +31,7 @@ Un `pd.DataFrame` con i dati caricati e, se richiesto, gia rinominati o filtrati
 from mespy import load_csv
 
 df = load_csv(
-    "data/reference/test_misure.csv",
+    "docs/source/examples/data/test_misure.csv",
     rename_columns={"misura_n": "n", "lunghezza_mm": "lunghezza", "sigma_mm": "sigma"},
     required_columns=["n", "lunghezza", "sigma"],
     missing="drop",

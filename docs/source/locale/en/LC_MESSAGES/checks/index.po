@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 19:48+0200\n"
+"POT-Creation-Date: 2026-07-12 15:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -85,42 +85,50 @@ msgid "[`_validate_decimals`](plot_utils/validate-decimals.md)"
 msgstr "[`_validate_decimals`](plot_utils/validate-decimals.md)"
 
 #: ../../source/checks/index.md:23
+msgid "[`_resolve_style`](plot_utils/resolve-style.md)"
+msgstr "[`_resolve_style`](plot_utils/resolve-style.md)"
+
+#: ../../source/checks/index.md:24
 msgid "[`_in_ipython`](plot_utils/in-ipython.md)"
 msgstr "[`_in_ipython`](plot_utils/in-ipython.md)"
 
-#: ../../source/checks/index.md:24
+#: ../../source/checks/index.md:25
 msgid "[`_display_new_figures`](plot_utils/display-new-figures.md)"
 msgstr "[`_display_new_figures`](plot_utils/display-new-figures.md)"
 
-#: ../../source/checks/index.md:25
+#: ../../source/checks/index.md:26
 msgid "[`_style_context`](plot_utils/style-context.md)"
 msgstr "[`_style_context`](plot_utils/style-context.md)"
 
-#: ../../source/checks/index.md:27
+#: ../../source/checks/index.md:28
 msgid "fit_utils"
 msgstr "fit_utils"
 
-#: ../../source/checks/index.md:29
+#: ../../source/checks/index.md:30
 msgid "[`_validate_positive_vector`](fit_utils/validate-positive-vector.md)"
 msgstr "[`_validate_positive_vector`](fit_utils/validate-positive-vector.md)"
 
-#: ../../source/checks/index.md:30
+#: ../../source/checks/index.md:31
 msgid "[`_validate_positive_scalar`](fit_utils/validate-positive-scalar.md)"
 msgstr "[`_validate_positive_scalar`](fit_utils/validate-positive-scalar.md)"
 
-#: ../../source/checks/index.md:31
+#: ../../source/checks/index.md:32
 msgid "[`_validate_max_iter`](fit_utils/validate-max-iter.md)"
 msgstr "[`_validate_max_iter`](fit_utils/validate-max-iter.md)"
 
-#: ../../source/checks/index.md:32
+#: ../../source/checks/index.md:33
+msgid "[`_validate_fit_method`](fit_utils/validate-fit-method.md)"
+msgstr "[`_validate_fit_method`](fit_utils/validate-fit-method.md)"
+
+#: ../../source/checks/index.md:34
 msgid "[`_fit_coefficients`](fit_utils/fit-coefficients.md)"
 msgstr "[`_fit_coefficients`](fit_utils/fit-coefficients.md)"
 
-#: ../../source/checks/index.md:34
+#: ../../source/checks/index.md:36
 msgid "Nota importante"
 msgstr "Important note"
 
-#: ../../source/checks/index.md:36
+#: ../../source/checks/index.md:38
 msgid ""
 "Il fatto che queste funzioni siano documentate non significa che siano "
 "stabili come interfaccia pubblica. Sono descritte per chiarezza "
@@ -129,4 +137,3 @@ msgstr ""
 "The fact that these functions are documented does not mean they are "
 "stable public interfaces. They are described for design clarity and to "
 "make maintenance of the package easier."
-

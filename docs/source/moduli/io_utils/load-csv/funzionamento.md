@@ -113,7 +113,7 @@ Questo dettaglio e importante per evitare che simboli presenti nei dati vengano 
 from mespy import load_csv
 
 df = load_csv(
-    "data/reference/test_misure.csv",
+    "docs/source/examples/data/test_misure.csv",
     rename_columns={"misura_n": "n", "lunghezza_mm": "lunghezza", "sigma_mm": "sigma"},
     required_columns=["n", "lunghezza", "sigma"],
     missing="drop",
@@ -122,7 +122,7 @@ df = load_csv(
 
 In questo esempio:
 
-- il file di esempio viene letto direttamente dalla cartella `data/reference`
+- il file di esempio viene letto dalla cartella `docs/source/examples/data`
 - le colonne vengono rinominate subito dopo il caricamento
 - il controllo su `required_columns` verifica i nomi finali `n`, `lunghezza` e `sigma`
 - eventuali righe con valori mancanti vengono rimosse prima della restituzione

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 20:28+0200\n"
+"POT-Creation-Date: 2026-07-12 15:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -24,15 +24,15 @@ msgstr "fit_utils.py"
 
 #: ../../source/moduli/fit_utils/index.md:3
 msgid ""
-"`fit_utils.py` contiene il fit lineare pesato del package e il tipo di "
-"ritorno associato. E il modulo piu denso del progetto, perche combina "
-"statistica, validazione degli input e plotting opzionale, riusando anche "
-"il sistema di stile gia definito in `plot_utils`."
+"`fit_utils.py` contiene il fit lineare del package e il tipo di ritorno "
+"associato. E il modulo piu denso del progetto, perche combina statistica,"
+" validazione degli input e plotting opzionale, riusando anche il sistema "
+"di stile gia definito in `plot_utils`."
 msgstr ""
-"`fit_utils.py` contains the package's weighted linear fit and its "
-"associated return type. It is the densest module in the project because "
-"it combines statistics, input validation, and optional plotting, while "
-"also reusing the style system defined in `plot_utils`."
+"`fit_utils.py` contains the linear fit of the package and the associated "
+"return type. It is the densest module of the project, because it combines"
+" statistics, input validation and optional plotting, also reusing the "
+"style system already defined in `plot_utils`."
 
 #: ../../source/moduli/fit_utils/index.md:5
 msgid "Import principali"
@@ -53,6 +53,7 @@ msgstr ""
 #: ../../source/moduli/fit_utils/index.md:11
 msgid ""
 "Import interni da `plot_utils`: "
+"[`_resolve_style`](../../checks/plot_utils/resolve-style.md), "
 "[`_style_context`](../../checks/plot_utils/style-context.md), "
 "[`_validate_axis_limits`](../../checks/plot_utils/validate-axis-"
 "limits.md), [`_validate_decimals`](../../checks/plot_utils/validate-"
@@ -60,13 +61,14 @@ msgid ""
 "figsize.md)"
 msgstr ""
 "Internal imports from `plot_utils`: "
+"[`_resolve_style`](../../checks/plot_utils/resolve-style.md), "
 "[`_style_context`](../../checks/plot_utils/style-context.md), "
 "[`_validate_axis_limits`](../../checks/plot_utils/validate-axis-"
 "limits.md), [`_validate_decimals`](../../checks/plot_utils/validate-"
 "decimals.md), [`_validate_figsize`](../../checks/plot_utils/validate-"
 "figsize.md)"
 
-#: ../../source/moduli/fit_utils/index.md:16
+#: ../../source/moduli/fit_utils/index.md:17
 msgid ""
 "Import interni da `stats_utils`: "
 "[`_as_float_vector`](../../checks/stats_utils/as-float-vector.md), "
@@ -80,41 +82,46 @@ msgstr ""
 "[`covariance`](../stats_utils/covariance.md), "
 "[`variance`](../stats_utils/variance.md)"
 
-#: ../../source/moduli/fit_utils/index.md:22
+#: ../../source/moduli/fit_utils/index.md:23
 msgid "Cosa espone"
 msgstr "What it exports"
 
-#: ../../source/moduli/fit_utils/index.md:24
-#: ../../source/moduli/fit_utils/index.md:49
+#: ../../source/moduli/fit_utils/index.md:25
+#: ../../source/moduli/fit_utils/index.md:53
 msgid "[`LinearFitResult`](linear-fit-result.md)"
 msgstr "[`LinearFitResult`](linear-fit-result.md)"
 
-#: ../../source/moduli/fit_utils/index.md:25
-#: ../../source/moduli/fit_utils/index.md:50
-msgid "[`lin_fit`](lin-fit.md)"
-msgstr "[`lin_fit`](lin-fit.md)"
+#: ../../source/moduli/fit_utils/index.md:26
+msgid "[`lin_fit`](lin-fit.md), con incertezze assolute o scalate dai residui"
+msgstr ""
+"[`lin_fit`](lin-fit.md), with absolute uncertainties or scaled by the "
+"residuals"
 
-#: ../../source/moduli/fit_utils/index.md:27
+#: ../../source/moduli/fit_utils/index.md:28
 msgid "Di cosa si occupa"
 msgstr "What it does"
 
-#: ../../source/moduli/fit_utils/index.md:29
+#: ../../source/moduli/fit_utils/index.md:30
 msgid "validare `x`, `y`, `sigma_y` e opzionalmente `sigma_x`"
 msgstr "validate `x`, `y`, `sigma_y`, and optionally `sigma_x`"
 
-#: ../../source/moduli/fit_utils/index.md:30
+#: ../../source/moduli/fit_utils/index.md:31
 msgid "validare `decimals`, `tol` e `max_iter`"
 msgstr "validate `decimals`, `tol`, and `max_iter`"
 
-#: ../../source/moduli/fit_utils/index.md:31
-msgid "stimare pendenza e intercetta con minimi quadrati pesati"
-msgstr "estimate slope and intercept with weighted least squares"
-
 #: ../../source/moduli/fit_utils/index.md:32
+msgid "stimare pendenza e intercetta con minimi quadrati pesati o non pesati"
+msgstr "estimate slope and intercept with weighted or unweighted least squares"
+
+#: ../../source/moduli/fit_utils/index.md:33
+msgid "stimare una scala globale di incertezza dai residui"
+msgstr "estimate a global scale of uncertainty from the residuals"
+
+#: ../../source/moduli/fit_utils/index.md:34
 msgid "aggiornare iterativamente i pesi quando esistono incertezze anche su `x`"
 msgstr "update the weights iteratively when uncertainties on `x` are also present"
 
-#: ../../source/moduli/fit_utils/index.md:33
+#: ../../source/moduli/fit_utils/index.md:35
 msgid ""
 "calcolare residui, `chi2`, `reduced_chi2`, correlazione e altre "
 "diagnostiche"
@@ -122,63 +129,71 @@ msgstr ""
 "compute residuals, `chi2`, `reduced_chi2`, correlation, and other "
 "diagnostics"
 
-#: ../../source/moduli/fit_utils/index.md:34
+#: ../../source/moduli/fit_utils/index.md:36
 msgid ""
 "creare, se richiesto, una figura matplotlib con pannello del fit e "
-"pannello dei residui usando lo stesso sistema di stile di `histogram`"
+"pannello dei residui fisici o normalizzati usando lo stesso sistema di "
+"stile di `histogram`"
 msgstr ""
-"create, when requested, a matplotlib figure with a fit panel and a "
-"residuals panel, using the same style system as `histogram`"
+"create, if required, a matplotlib figure with fit panel and physical or "
+"normalized residuals panel using the same style system as `histogram`"
 
-#: ../../source/moduli/fit_utils/index.md:36
+#: ../../source/moduli/fit_utils/index.md:38
 msgid "Helper collegati"
 msgstr "Related helpers"
 
-#: ../../source/moduli/fit_utils/index.md:38
-msgid ""
-"[`_validate_positive_vector`](../../checks/fit_utils/validate-positive-"
-"vector.md)"
-msgstr ""
-"[`_validate_positive_vector`](../../checks/fit_utils/validate-positive-"
-"vector.md)"
-
-#: ../../source/moduli/fit_utils/index.md:39
-msgid ""
-"[`_validate_positive_scalar`](../../checks/fit_utils/validate-positive-"
-"scalar.md)"
-msgstr ""
-"[`_validate_positive_scalar`](../../checks/fit_utils/validate-positive-"
-"scalar.md)"
-
 #: ../../source/moduli/fit_utils/index.md:40
+msgid ""
+"[`_validate_positive_vector`](../../checks/fit_utils/validate-positive-"
+"vector.md)"
+msgstr ""
+"[`_validate_positive_vector`](../../checks/fit_utils/validate-positive-"
+"vector.md)"
+
+#: ../../source/moduli/fit_utils/index.md:41
+msgid ""
+"[`_validate_positive_scalar`](../../checks/fit_utils/validate-positive-"
+"scalar.md)"
+msgstr ""
+"[`_validate_positive_scalar`](../../checks/fit_utils/validate-positive-"
+"scalar.md)"
+
+#: ../../source/moduli/fit_utils/index.md:42
 msgid "[`_validate_max_iter`](../../checks/fit_utils/validate-max-iter.md)"
 msgstr "[`_validate_max_iter`](../../checks/fit_utils/validate-max-iter.md)"
 
-#: ../../source/moduli/fit_utils/index.md:41
+#: ../../source/moduli/fit_utils/index.md:43
+msgid "[`_validate_fit_method`](../../checks/fit_utils/validate-fit-method.md)"
+msgstr "[`_validate_fit_method`](../../checks/fit_utils/validate-fit-method.md)"
+
+#: ../../source/moduli/fit_utils/index.md:44
 msgid "[`_fit_coefficients`](../../checks/fit_utils/fit-coefficients.md)"
 msgstr "[`_fit_coefficients`](../../checks/fit_utils/fit-coefficients.md)"
 
-#: ../../source/moduli/fit_utils/index.md:42
-#, fuzzy
-msgid "[`_style_context`](../../checks/plot_utils/style-context.md)"
-msgstr "[`_fit_coefficients`](../../checks/fit_utils/fit-coefficients.md)"
-
-#: ../../source/moduli/fit_utils/index.md:43
-#, fuzzy
-msgid "[`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md)"
-msgstr "[`_validate_max_iter`](../../checks/fit_utils/validate-max-iter.md)"
-
-#: ../../source/moduli/fit_utils/index.md:44
-#, fuzzy
-msgid "[`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)"
-msgstr "[`_validate_max_iter`](../../checks/fit_utils/validate-max-iter.md)"
-
 #: ../../source/moduli/fit_utils/index.md:45
-#, fuzzy
-msgid "[`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)"
-msgstr "[`_validate_max_iter`](../../checks/fit_utils/validate-max-iter.md)"
+msgid "[`_resolve_style`](../../checks/plot_utils/resolve-style.md)"
+msgstr "[`_resolve_style`](../../checks/plot_utils/resolve-style.md)"
+
+#: ../../source/moduli/fit_utils/index.md:46
+msgid "[`_style_context`](../../checks/plot_utils/style-context.md)"
+msgstr "[`_style_context`](../../checks/plot_utils/style-context.md)"
 
 #: ../../source/moduli/fit_utils/index.md:47
+msgid "[`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md)"
+msgstr "[`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md)"
+
+#: ../../source/moduli/fit_utils/index.md:48
+msgid "[`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)"
+msgstr "[`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)"
+
+#: ../../source/moduli/fit_utils/index.md:49
+msgid "[`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)"
+msgstr "[`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)"
+
+#: ../../source/moduli/fit_utils/index.md:51
 msgid "Pagine di dettaglio"
 msgstr "Detailed pages"
 
+#: ../../source/moduli/fit_utils/index.md:54
+msgid "[`lin_fit`](lin-fit.md)"
+msgstr "[`lin_fit`](lin-fit.md)"

@@ -12,7 +12,7 @@ Controlla che un parametro scalare sia numerico, finito e strettamente positivo.
 
 ## Contratto sugli input
 
-- `value` deve essere interpretabile come numero finito.
+- `value` deve essere un numero finito.
 - `value` deve essere maggiore di zero.
 
 ## Dove viene usata
@@ -21,7 +21,7 @@ Controlla che un parametro scalare sia numerico, finito e strettamente positivo.
 
 ## Come fallisce
 
-- `ValueError` se `value` non e finito
+- `ValueError` se `value` non e numerico o non e finito
 - `ValueError` se `value <= 0`
 
 ## Perche resta privata

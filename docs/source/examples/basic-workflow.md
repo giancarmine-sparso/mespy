@@ -1,7 +1,7 @@
 # Workflow base
 
 Questo esempio mostra un uso tipico del package: caricamento del CSV, statistica descrittiva e istogramma finale.
-Il file usato qui e `data/reference/test_misure.csv`, gia incluso nel repository.
+Il file usato qui e `docs/source/examples/data/test_misure.csv`, gia incluso nel repository.
 
 ## Esempio
 
@@ -9,7 +9,7 @@ Il file usato qui e `data/reference/test_misure.csv`, gia incluso nel repository
 from mespy import histogram, load_csv, standard_deviation, weighted_mean
 
 df = load_csv(
-    "data/reference/test_misure.csv",
+    "docs/source/examples/data/test_misure.csv",
     required_columns=["lunghezza_mm", "sigma_mm"],
     missing="drop",
 )

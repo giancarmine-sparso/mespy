@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 19:48+0200\n"
+"POT-Creation-Date: 2026-07-12 15:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../source/moduli/fit_utils/lin-fit.md:50
+#: ../../source/moduli/fit_utils/lin-fit.md:66
 msgid "Panoramica"
 msgstr "Overview"
 
-#: ../../source/moduli/fit_utils/lin-fit.md:50
+#: ../../source/moduli/fit_utils/lin-fit.md:66
 msgid "Funzionamento"
 msgstr "Implementation"
 
@@ -34,31 +34,105 @@ msgstr "lin_fit"
 msgid "Firma"
 msgstr "Signature"
 
-#: ../../source/moduli/fit_utils/lin-fit.md:42
+#: ../../source/moduli/fit_utils/lin-fit.md:48
 msgid ""
-"`lin_fit` esegue un fit lineare pesato `y = m x + c` su dati "
-"sperimentali, con supporto opzionale alle incertezze anche su `x`."
+"`lin_fit` esegue un fit lineare `y = m x + c` su dati sperimentali, con "
+"supporto alle incertezze assolute di input e alla scala stimata dai "
+"residui."
 msgstr ""
-"`lin_fit` performs a weighted linear fit `y = m x + c` on experimental "
-"data, with optional support for uncertainties on `x` as well."
+"`lin_fit` performs a linear fit `y = m x + c` on experimental data, with "
+"support for absolute input uncertainties and the scale estimated from the"
+" residuals."
 
-#: ../../source/moduli/fit_utils/lin-fit.md:44
+#: ../../source/moduli/fit_utils/lin-fit.md:50
+msgid ""
+"Con `fit_method=\"absolute\"` usa le incertezze assolute passate in "
+"`sigma_y` e, se presente, `sigma_x`. Questo resta il comportamento di "
+"default ed e compatibile con le chiamate esistenti."
+msgstr ""
+"With `fit_method=\"absolute\"` use the absolute uncertainties passed in "
+"`sigma_y` and, if present, `sigma_x`. This remains the default behavior "
+"and is compatible with existing calls."
+
+#: ../../source/moduli/fit_utils/lin-fit.md:52
+msgid ""
+"Con `fit_method=\"residual\"` stima un fattore globale di incertezza dai "
+"residui. Se ometti `sigma_y`, esegue un fit lineare non pesato e usa "
+"`residual_std` come incertezza verticale comune. Se passi `sigma_y`, "
+"quelle incertezze definiscono i pesi relativi e le incertezze finali "
+"vengono scalate con il chi quadrato ridotto grezzo osservato."
+msgstr ""
+"With `fit_method=\"residual\"` it estimates a global factor of "
+"uncertainty from residues. If you omit `sigma_y`, it performs an "
+"unweighted linear fit and uses `residual_std` as the common vertical "
+"uncertainty. If you pass `sigma_y`, those uncertainties define the "
+"relative weights and the final uncertainties are scaled with the observed"
+" raw reduced chi-square."
+
+#: ../../source/moduli/fit_utils/lin-fit.md:54
 msgid ""
 "Di default applica lo stile Matplotlib `mespy`; passa `style=None` per "
 "usare gli `rcParams` correnti oppure il nome di un altro stile per "
 "delegare a Matplotlib."
-msgstr "By default it applies the `mespy` Matplotlib style; pass `style=None` to use the current `rcParams`, or the name of another style to delegate to Matplotlib."
+msgstr ""
+"By default it applies the `mespy` Matplotlib style; pass `style=None` to "
+"use the current `rcParams`, or the name of another style to delegate to "
+"Matplotlib."
 
-#: ../../source/moduli/fit_utils/lin-fit.md:46
+#: ../../source/moduli/fit_utils/lin-fit.md:56
 msgid ""
 "I parametri `figsize`, `dpi`, `title_fontsize`, `title_pad`, "
-"`legend_fontsize`, `legend_loc`, `point_color` e `grid_alpha` possono "
-"ereditare lo stile attivo quando lasciati a `None`. I parametri "
-"`fit_color`, `band_color`, `data_alpha` e `band_alpha` restano invece "
-"override espliciti della singola chiamata."
-msgstr "The `figsize`, `dpi`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, `point_color`, and `grid_alpha` parameters can inherit from the active style when left as `None`. The `fit_color`, `band_color`, `data_alpha`, and `band_alpha` parameters remain explicit per-call overrides instead."
+"`legend_fontsize`, `legend_loc`, `point_color`, `fit_color`, "
+"`band_color`, `res_line_color` e `grid_alpha` possono ereditare lo stile "
+"attivo quando lasciati a `None`. I parametri `data_alpha` e `band_alpha` "
+"restano invece override espliciti della singola chiamata."
+msgstr ""
+"The parameters `figsize`, `dpi`, `title_fontsize`, `title_pad`, "
+"`legend_fontsize`, `legend_loc`, `point_color`, `fit_color`, "
+"`band_color`, `res_line_color` and `grid_alpha` can inherit the active "
+"style when left to `None`. The parameters `data_alpha` and `band_alpha` "
+"remain explicit overrides of the single call."
 
-#: ../../source/moduli/fit_utils/lin-fit.md:48
+#: ../../source/moduli/fit_utils/lin-fit.md:58
+msgid ""
+"`fit_label` e `band_label` permettono di personalizzare i testi della "
+"legenda di retta e banda. In particolare, `fit_label` viene usato solo "
+"quando `show_fit_params=False`; con `show_fit_params=True` la funzione "
+"genera automaticamente una label con `m` e `c`."
+msgstr ""
+"`fit_label` and `band_label` allow you to customize the texts of the line"
+" and band legend. In particular, `fit_label` is used only when "
+"`show_fit_params=False`; with `show_fit_params=True` the function "
+"automatically generates a label with `m` and `c`."
+
+#: ../../source/moduli/fit_utils/lin-fit.md:60
+msgid ""
+"`normalize_residuals` controlla solo il pannello inferiore del grafico. "
+"Con il default `False`, il pannello mostra i residui fisici `y_i - (m x_i"
+" + c)`. Con `True`, mostra invece i residui normalizzati `r_i / "
+"sigma_eff_i`, usando la stessa varianza efficace impiegata per `chi2`. Il"
+" campo `LinearFitResult.residuals` resta sempre non normalizzato."
+msgstr ""
+"`normalize_residuals` only controls the bottom panel of the chart. With "
+"default `False`, the panel shows the physical residues `y_i - (m x_i + "
+"c)`. With `True`, it shows the normalized residuals `r_i / sigma_eff_i`, "
+"using the same effective variance used for `chi2`. The "
+"`LinearFitResult.residuals` field is always not normalized."
+
+#: ../../source/moduli/fit_utils/lin-fit.md:62
+msgid ""
+"Con `fit_method=\"residual\"`, `LinearFitResult.scale_factor` contiene il"
+" fattore stimato. Nel caso non pesato coincide con la deviazione standard"
+" dei residui; nel caso con `sigma_y` fornito rappresenta il fattore "
+"moltiplicativo applicato alle incertezze di input."
+msgstr ""
+"With `fit_method=\"residual\"`, `LinearFitResult.scale_factor` contains "
+"the estimated factor. In the unweighed case it coincides with the "
+"standard deviation of the residues; in the case with `sigma_y` provided "
+"it represents the multiplication factor applied to the input "
+"uncertainties."
+
+#: ../../source/moduli/fit_utils/lin-fit.md:64
 msgid ""
 "Questa pagina resta il punto di accesso rapido alla funzione. I dettagli "
 "pratici sono raccolti in [Panoramica](lin-fit/panoramica.md), mentre "
@@ -68,4 +142,3 @@ msgstr ""
 "This page remains the quick access point for the function. Practical "
 "details are collected in [Overview](lin-fit/panoramica.md), while [How it"
 " works](lin-fit/funzionamento.md) is prepared as a separate subpage."
-

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 19:48+0200\n"
+"POT-Creation-Date: 2026-07-12 15:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -35,7 +35,9 @@ msgid ""
 "Applica uno stile Matplotlib temporaneo e rende coerente il comportamento"
 " delle figure create da `mespy`, soprattutto nei notebook "
 "IPython/Jupyter."
-msgstr "Applies a temporary Matplotlib style and keeps the behaviour of figures created by `mespy` consistent, especially in IPython/Jupyter notebooks."
+msgstr ""
+"Applies a temporary Matplotlib style and keeps the behaviour of figures "
+"created by `mespy` consistent, especially in IPython/Jupyter notebooks."
 
 #: ../../source/checks/plot_utils/style-context.md:13
 msgid "Contratto sugli input"
@@ -45,7 +47,9 @@ msgstr "Input contract"
 msgid ""
 "`style=None` non aggiunge uno stile extra e lascia validi gli `rcParams` "
 "correnti."
-msgstr "`style=None` does not add any extra style and leaves the current `rcParams` in effect."
+msgstr ""
+"`style=None` does not add any extra style and leaves the current "
+"`rcParams` in effect."
 
 #: ../../source/checks/plot_utils/style-context.md:16
 msgid "`style=\"mespy\"` carica il file di stile incluso nel package."
@@ -56,41 +60,58 @@ msgid "Qualunque altra stringa viene passata a Matplotlib come nome stile."
 msgstr "Any other string is passed to Matplotlib as a style name."
 
 #: ../../source/checks/plot_utils/style-context.md:19
+msgid ""
+"Nelle funzioni pubbliche lo stile passa prima da [`_resolve_style"
+"`](resolve-style.md), così anche gli altri stili bundled possono essere "
+"richiamati con il nome breve."
+msgstr ""
+"In public functions the style first goes through [`_resolve_style"
+"`](resolve-style.md), so other bundled styles can also be called with the"
+" short name."
+
+#: ../../source/checks/plot_utils/style-context.md:21
 msgid "Dove viene usata"
 msgstr "Where it is used"
 
-#: ../../source/checks/plot_utils/style-context.md:21
+#: ../../source/checks/plot_utils/style-context.md:23
 msgid "in [`histogram`](../../moduli/plot_utils/histogram.md)"
 msgstr "in [`histogram`](../../moduli/plot_utils/histogram.md)"
 
-#: ../../source/checks/plot_utils/style-context.md:22
+#: ../../source/checks/plot_utils/style-context.md:24
 msgid "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md)"
 msgstr "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md)"
 
-#: ../../source/checks/plot_utils/style-context.md:24
+#: ../../source/checks/plot_utils/style-context.md:26
 msgid "Come fallisce"
 msgstr "How it fails"
 
-#: ../../source/checks/plot_utils/style-context.md:26
+#: ../../source/checks/plot_utils/style-context.md:28
 msgid ""
 "Se Matplotlib non riesce a caricare lo stile richiesto, propaga l'errore "
 "del backend di stile sottostante."
-msgstr "If Matplotlib cannot load the requested style, it propagates the error raised by the underlying style backend."
+msgstr ""
+"If Matplotlib cannot load the requested style, it propagates the error "
+"raised by the underlying style backend."
 
-#: ../../source/checks/plot_utils/style-context.md:27
+#: ../../source/checks/plot_utils/style-context.md:29
 msgid ""
 "In ambiente notebook, alla fine del blocco mostra le nuove figure create "
 "e poi le chiude per evitare il doppio display automatico."
-msgstr "In notebook environments, at the end of the block it shows the new figures that were created and then closes them to avoid double automatic display."
+msgstr ""
+"In notebook environments, at the end of the block it shows the new "
+"figures that were created and then closes them to avoid double automatic "
+"display."
 
-#: ../../source/checks/plot_utils/style-context.md:29
+#: ../../source/checks/plot_utils/style-context.md:31
 msgid "Perche resta privata"
 msgstr "Why it remains private"
 
-#: ../../source/checks/plot_utils/style-context.md:31
+#: ../../source/checks/plot_utils/style-context.md:33
 msgid ""
 "E un dettaglio infrastrutturale condiviso dalle funzioni di plotting. "
 "Documentarlo chiarisce il comportamento del package, ma non e pensato "
 "come interfaccia pubblica stabile."
-msgstr "It is an infrastructural detail shared by the plotting functions. Documenting it clarifies the package behaviour, but it is not intended as a stable public interface."
-
+msgstr ""
+"It is an infrastructural detail shared by the plotting functions. "
+"Documenting it clarifies the package behaviour, but it is not intended as"
+" a stable public interface."

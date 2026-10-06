@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 19:48+0200\n"
+"POT-Creation-Date: 2026-07-12 15:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -27,7 +27,10 @@ msgid ""
 "Questa sottosezione documenta i controlli privati e i piccoli helper "
 "usati da `plot_utils` per validare input, applicare stili Matplotlib e "
 "gestire il display delle figure nei notebook."
-msgstr "This subsection documents the private checks and small helpers used by `plot_utils` to validate inputs, apply Matplotlib styles, and manage figure display in notebooks."
+msgstr ""
+"This subsection documents the private checks and small helpers used by "
+"`plot_utils` to validate inputs, apply Matplotlib styles, and manage "
+"figure display in notebooks."
 
 #: ../../source/checks/plot_utils/index.md:5
 msgid "Pagine disponibili"
@@ -46,14 +49,17 @@ msgid "[`_validate_decimals`](validate-decimals.md)"
 msgstr "[`_validate_decimals`](validate-decimals.md)"
 
 #: ../../source/checks/plot_utils/index.md:10
+msgid "[`_resolve_style`](resolve-style.md)"
+msgstr "[`_resolve_style`](resolve-style.md)"
+
+#: ../../source/checks/plot_utils/index.md:11
 msgid "[`_in_ipython`](in-ipython.md)"
 msgstr "[`_in_ipython`](in-ipython.md)"
 
-#: ../../source/checks/plot_utils/index.md:11
+#: ../../source/checks/plot_utils/index.md:12
 msgid "[`_display_new_figures`](display-new-figures.md)"
 msgstr "[`_display_new_figures`](display-new-figures.md)"
 
-#: ../../source/checks/plot_utils/index.md:12
+#: ../../source/checks/plot_utils/index.md:13
 msgid "[`_style_context`](style-context.md)"
 msgstr "[`_style_context`](style-context.md)"
-

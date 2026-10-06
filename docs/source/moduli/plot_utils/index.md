@@ -34,6 +34,7 @@
 - [`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md)
 - [`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)
 - [`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)
+- [`_resolve_style`](../../checks/plot_utils/resolve-style.md)
 - [`_in_ipython`](../../checks/plot_utils/in-ipython.md)
 - [`_display_new_figures`](../../checks/plot_utils/display-new-figures.md)
 - [`_style_context`](../../checks/plot_utils/style-context.md)

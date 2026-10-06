@@ -7,6 +7,7 @@ Questa sottosezione raccoglie i validatori e i piccoli blocchi di calcolo che so
 - [`_validate_positive_vector`](validate-positive-vector.md)
 - [`_validate_positive_scalar`](validate-positive-scalar.md)
 - [`_validate_max_iter`](validate-max-iter.md)
+- [`_validate_fit_method`](validate-fit-method.md)
 - [`_fit_coefficients`](fit-coefficients.md)
 
 ## Vedi anche
@@ -24,5 +25,6 @@ Questa sottosezione raccoglie i validatori e i piccoli blocchi di calcolo che so
 validate-positive-vector
 validate-positive-scalar
 validate-max-iter
+validate-fit-method
 fit-coefficients
 ```

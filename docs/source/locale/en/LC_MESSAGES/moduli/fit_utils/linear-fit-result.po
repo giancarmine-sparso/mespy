@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"POT-Creation-Date: 2026-07-12 15:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -28,11 +28,11 @@ msgstr "Definition"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:5
 msgid ""
-"`LinearFitResult` e una `dataclass` immutabile con `slots=True`, usata come oggetto "
-"di ritorno di [`lin_fit`](lin-fit.md)."
+"`LinearFitResult` e una `dataclass` immutabile con `slots=True`, usata "
+"come oggetto di ritorno di [`lin_fit`](lin-fit.md)."
 msgstr ""
-"`LinearFitResult` is an immutable `dataclass` with `slots=True`, used as the return "
-"object of [`lin_fit`](lin-fit.md)."
+"`LinearFitResult` is an immutable `dataclass` with `slots=True`, used as "
+"the return object of [`lin_fit`](lin-fit.md)."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:7
 msgid "Scopo"
@@ -40,11 +40,11 @@ msgstr "Purpose"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:9
 msgid ""
-"Raccogliere in un unico contenitore tipizzato i parametri del fit, le incertezze "
-"associate, i residui, le diagnostiche e la figura opzionale."
+"Raccogliere in un unico contenitore tipizzato i parametri del fit, le "
+"incertezze associate, i residui, le diagnostiche e la figura opzionale."
 msgstr ""
-"Collect the fit parameters, associated uncertainties, residuals, diagnostics, and "
-"optional figure in a single typed container."
+"Collect the fit parameters, associated uncertainties, residuals, "
+"diagnostics, and optional figure in a single typed container."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:11
 msgid "Campi"
@@ -75,8 +75,14 @@ msgid "`correlation`: coefficiente di correlazione tra pendenza e intercetta."
 msgstr "`correlation`: correlation coefficient between slope and intercept."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:19
-msgid "`residuals`: vettore dei residui `y - (m x + c)`."
-msgstr "`residuals`: vector of residuals `y - (m x + c)`."
+msgid ""
+"`residuals`: vettore dei residui fisici `y - (m x + c)`, sempre non "
+"normalizzati anche quando `lin_fit(..., normalize_residuals=True)` mostra"
+" residui normalizzati nel grafico."
+msgstr ""
+"`residuals`: vector of physical residues `y - (m x + c)`, always not "
+"normalized even when `lin_fit(..., normalize_residuals=True)` shows "
+"normalized residues in the graph."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:20
 msgid "`residual_std`: stima sintetica della dispersione dei residui."
@@ -100,49 +106,87 @@ msgstr "`iterations`: number of weight updates performed."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:25
 msgid ""
-"`converged`: indica se l'iterazione con `sigma_x` ha soddisfatto il criterio di "
-"arresto."
+"`converged`: indica se l'iterazione con `sigma_x` ha soddisfatto il "
+"criterio di arresto."
 msgstr ""
-"`converged`: indicates whether the iteration with `sigma_x` satisfied the stopping "
-"criterion."
+"`converged`: indicates whether the iteration with `sigma_x` satisfied the"
+" stopping criterion."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:26
 msgid "`figure`: oggetto matplotlib oppure `None` se `show_plot=False`."
 msgstr "`figure`: matplotlib object or `None` when `show_plot=False`."
 
+#: ../../source/moduli/fit_utils/linear-fit-result.md:27
+msgid ""
+"`fit_method`: modello di incertezza usato, `\"absolute\"` oppure "
+"`\"residual\"`."
+msgstr "`fit_method`: uncertainty model used, `\"absolute\"` or `\"residual\"`."
+
 #: ../../source/moduli/fit_utils/linear-fit-result.md:28
+msgid ""
+"`scale_factor`: fattore globale applicato alle incertezze con "
+"`fit_method=\"residual\"`; vale `1.0` con `fit_method=\"absolute\"`."
+msgstr ""
+"`scale_factor`: global factor applied to uncertainties with "
+"`fit_method=\"residual\"`; `1.0` with `fit_method=\"absolute\"` is valid."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:30
 msgid "Quando leggerlo"
 msgstr "When to read it"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:30
+#: ../../source/moduli/fit_utils/linear-fit-result.md:32
 msgid "Usa questo oggetto quando vuoi:"
 msgstr "Use this object when you want to:"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:32
-msgid "recuperare i parametri del fit senza dover parsare una stringa o una legenda"
+#: ../../source/moduli/fit_utils/linear-fit-result.md:34
+msgid ""
+"recuperare i parametri del fit senza dover parsare una stringa o una "
+"legenda"
 msgstr "retrieve the fit parameters without having to parse a string or a legend"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:33
+#: ../../source/moduli/fit_utils/linear-fit-result.md:35
 msgid "controllare la qualita del fit tramite residui e `reduced_chi2`"
 msgstr "check fit quality through residuals and `reduced_chi2`"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:34
+#: ../../source/moduli/fit_utils/linear-fit-result.md:36
 msgid "decidere se salvare o riusare la figura generata"
 msgstr "decide whether to save or reuse the generated figure"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:36
+#: ../../source/moduli/fit_utils/linear-fit-result.md:38
 msgid "Esempio"
 msgstr "Example"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:46
+#: ../../source/moduli/fit_utils/linear-fit-result.md:49
 msgid "Note"
 msgstr "Notes"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:48
+#: ../../source/moduli/fit_utils/linear-fit-result.md:51
 msgid ""
-"La classe non esegue calcoli da sola: e una rappresentazione dell'output prodotto da "
-"[`lin_fit`](lin-fit.md)."
+"La classe non esegue calcoli da sola: e una rappresentazione dell'output "
+"prodotto da [`lin_fit`](lin-fit.md). Il parametro `normalize_residuals` "
+"di `lin_fit` non aggiunge campi e non cambia i valori numerici contenuti "
+"in questa classe; agisce solo sul pannello dei residui della figura. Il "
+"campo `scale_factor` e invece parte del calcolo: con "
+"`fit_method=\"residual\"` descrive la scala di incertezza stimata dai "
+"residui."
 msgstr ""
-"The class does not perform calculations on its own: it is a representation of the "
-"output produced by [`lin_fit`](lin-fit.md)."
+"The class does not perform calculations on its own: and a representation "
+"of the output produced by [`lin_fit`](lin-fit.md). The "
+"`normalize_residuals` parameter of `lin_fit` does not add fields and does"
+" not change the numerical values contained in this class; it only acts on"
+" the residual panel of the figure. The `scale_factor` field is instead "
+"part of the calculation: with `fit_method=\"residual\"` it describes the "
+"scale of uncertainty estimated by the residuals."
 
+#~ msgid "`residuals`: vettore dei residui `y - (m x + c)`."
+#~ msgstr "`residuals`: vector of residuals `y - (m x + c)`."
+
+#~ msgid ""
+#~ "La classe non esegue calcoli da "
+#~ "sola: e una rappresentazione dell'output "
+#~ "prodotto da [`lin_fit`](lin-fit.md)."
+#~ msgstr ""
+#~ "The class does not perform calculations"
+#~ " on its own: it is a "
+#~ "representation of the output produced by"
+#~ " [`lin_fit`](lin-fit.md)."

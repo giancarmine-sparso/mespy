@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 20:28+0200\n"
+"POT-Creation-Date: 2026-07-12 15:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -30,6 +30,11 @@ msgid ""
 "e di formattazione riusati da `lin_fit` vedi anche gli [helper di "
 "`plot_utils`](../plot_utils/index.md)."
 msgstr ""
+"This subsection collects the validators and small calculation blocks that"
+" support the internal flow of `lin_fit`. Only the native `fit_utils` "
+"helpers remain documented here: for the graphic, style and formatting "
+"controls reused by `lin_fit` see also the "
+"[`plot_utils`](../plot_utils/index.md) helpers."
 
 #: ../../source/checks/fit_utils/index.md:5
 msgid "Pagine disponibili"
@@ -48,31 +53,36 @@ msgid "[`_validate_max_iter`](validate-max-iter.md)"
 msgstr "[`_validate_max_iter`](validate-max-iter.md)"
 
 #: ../../source/checks/fit_utils/index.md:10
+msgid "[`_validate_fit_method`](validate-fit-method.md)"
+msgstr "[`_validate_fit_method`](validate-fit-method.md)"
+
+#: ../../source/checks/fit_utils/index.md:11
 msgid "[`_fit_coefficients`](fit-coefficients.md)"
 msgstr "[`_fit_coefficients`](fit-coefficients.md)"
 
-#: ../../source/checks/fit_utils/index.md:12
+#: ../../source/checks/fit_utils/index.md:13
 msgid "Vedi anche"
-msgstr ""
-
-#: ../../source/checks/fit_utils/index.md:14
-msgid "[`_style_context`](../plot_utils/style-context.md)"
-msgstr ""
+msgstr "See also"
 
 #: ../../source/checks/fit_utils/index.md:15
-#, fuzzy
-msgid "[`_validate_axis_limits`](../plot_utils/validate-axis-limits.md)"
-msgstr "[`_validate_max_iter`](validate-max-iter.md)"
+msgid "[`_style_context`](../plot_utils/style-context.md)"
+msgstr "[`_style_context`](../plot_utils/style-context.md)"
 
 #: ../../source/checks/fit_utils/index.md:16
-#, fuzzy
-msgid "[`_validate_decimals`](../plot_utils/validate-decimals.md)"
-msgstr "[`_validate_max_iter`](validate-max-iter.md)"
+msgid "[`_resolve_style`](../plot_utils/resolve-style.md)"
+msgstr "[`_resolve_style`](../plot_utils/resolve-style.md)"
 
 #: ../../source/checks/fit_utils/index.md:17
-#, fuzzy
+msgid "[`_validate_axis_limits`](../plot_utils/validate-axis-limits.md)"
+msgstr "[`_validate_axis_limits`](../plot_utils/validate-axis-limits.md)"
+
+#: ../../source/checks/fit_utils/index.md:18
+msgid "[`_validate_decimals`](../plot_utils/validate-decimals.md)"
+msgstr "[`_validate_decimals`](../plot_utils/validate-decimals.md)"
+
+#: ../../source/checks/fit_utils/index.md:19
 msgid "[`_validate_figsize`](../plot_utils/validate-figsize.md)"
-msgstr "[`_validate_max_iter`](validate-max-iter.md)"
+msgstr "[`_validate_figsize`](../plot_utils/validate-figsize.md)"
 
 #~ msgid ""
 #~ "Questa sottosezione raccoglie i validatori "
@@ -83,4 +93,3 @@ msgstr "[`_validate_max_iter`](validate-max-iter.md)"
 #~ "This subsection collects the validators "
 #~ "and small calculation blocks that "
 #~ "support the internal flow of `lin_fit`."
-

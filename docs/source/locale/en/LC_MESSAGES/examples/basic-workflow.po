@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"POT-Creation-Date: 2026-07-12 15:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../source/examples/basic-workflow.md:1
 msgid "Workflow base"
@@ -24,12 +24,13 @@ msgstr "Basic workflow"
 
 #: ../../source/examples/basic-workflow.md:3
 msgid ""
-"Questo esempio mostra un uso tipico del package: caricamento del CSV, statistica descrittiva e "
-"istogramma finale. Il file usato qui e `data/reference/test_misure.csv`, gia incluso nel "
-"repository."
+"Questo esempio mostra un uso tipico del package: caricamento del CSV, "
+"statistica descrittiva e istogramma finale. Il file usato qui e "
+"`docs/source/examples/data/test_misure.csv`, gia incluso nel repository."
 msgstr ""
-"This example shows a typical use of the package: CSV loading, descriptive statistics, and a final"
-" histogram. The file used here is `data/reference/test_misure.csv`, already included in the "
+"This example shows a typical use of the package: CSV loading, descriptive"
+" statistics and final histogram. The file used here is "
+"`docs/source/examples/data/test_misure.csv`, already included in the "
 "repository."
 
 #: ../../source/examples/basic-workflow.md:6
@@ -55,4 +56,3 @@ msgstr "[`standard_deviation`](../moduli/stats_utils/standard-deviation.md)"
 #: ../../source/examples/basic-workflow.md:34
 msgid "[`histogram`](../moduli/plot_utils/histogram.md)"
 msgstr "[`histogram`](../moduli/plot_utils/histogram.md)"
-

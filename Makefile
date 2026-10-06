@@ -107,7 +107,7 @@ docs-gettext: venv
 	@$(SPHINX) -W -D nb_execution_mode=off -b gettext "$(SPHINX_SOURCE_DIR)" "$(SPHINX_GETTEXT_DIR)"
 
 docs-update-locale: venv docs-gettext
-	@$(SPHINX_INTL) -c "$(SPHINX_SOURCE_DIR)/conf.py" update -p "$(SPHINX_GETTEXT_DIR)" -l en
+	@$(SPHINX_INTL) -c "$(SPHINX_SOURCE_DIR)/conf.py" update -j 1 -p "$(SPHINX_GETTEXT_DIR)" -l en
 
 docs-build-locale: venv docs-update-locale
 	@$(SPHINX_INTL) -c "$(SPHINX_SOURCE_DIR)/conf.py" build -l en

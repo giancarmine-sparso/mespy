@@ -28,7 +28,7 @@ Questa documentazione e organizzata per modulo: ogni file principale ha una pagi
 from mespy import histogram, load_csv, weighted_mean
 
 df = load_csv(
-    "data/reference/test_misure.csv",
+    "docs/source/examples/data/test_misure.csv",
     required_columns=["lunghezza_mm", "sigma_mm"],
 )
 media = weighted_mean(df["lunghezza_mm"], 1 / df["sigma_mm"]**2)

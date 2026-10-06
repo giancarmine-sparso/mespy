@@ -6,6 +6,15 @@ import pytest
 matplotlib.use("Agg")
 
 from mespy import histogram
+from mespy.plot_utils import _resolve_style
+
+
+def test_resolve_style_supports_none_and_bundled_styles():
+    assert _resolve_style(None) is None
+    for style in ("mespy", "report", "column"):
+        resolved = _resolve_style(style)
+        assert resolved is not None
+        assert resolved.endswith(f"{style}.mplstyle")
 
 
 def test_histogram_returns_fig_and_ax():

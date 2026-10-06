@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 19:48+0200\n"
+"POT-Creation-Date: 2026-07-12 15:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -28,7 +28,10 @@ msgid ""
 "Ospita `histogram` e un piccolo gruppo di helper privati condivisi anche "
 "con `fit_utils` per validazione, gestione dello stile e comportamento "
 "coerente nei notebook."
-msgstr "`plot_utils.py` gathers the package's visualization tools. It hosts `histogram` and a small group of private helpers shared with `fit_utils` for validation, style management, and consistent behaviour in notebooks."
+msgstr ""
+"`plot_utils.py` gathers the package's visualization tools. It hosts "
+"`histogram` and a small group of private helpers shared with `fit_utils` "
+"for validation, style management, and consistent behaviour in notebooks."
 
 #: ../../source/moduli/plot_utils/index.md:5
 msgid "Import principali"
@@ -39,7 +42,10 @@ msgid ""
 "Standard library: `contextlib.contextmanager`, "
 "`importlib.resources.as_file`, `importlib.resources.files`, "
 "`typing.TYPE_CHECKING`"
-msgstr "Standard library: `contextlib.contextmanager`, `importlib.resources.as_file`, `importlib.resources.files`, `typing.TYPE_CHECKING`"
+msgstr ""
+"Standard library: `contextlib.contextmanager`, "
+"`importlib.resources.as_file`, `importlib.resources.files`, "
+"`typing.TYPE_CHECKING`"
 
 #: ../../source/moduli/plot_utils/index.md:12
 msgid "Librerie esterne: `numpy as np`, `numpy.typing.ArrayLike`"
@@ -66,7 +72,7 @@ msgid "Cosa espone"
 msgstr "What it exports"
 
 #: ../../source/moduli/plot_utils/index.md:22
-#: ../../source/moduli/plot_utils/index.md:44
+#: ../../source/moduli/plot_utils/index.md:45
 msgid "[`histogram`](histogram.md)"
 msgstr "[`histogram`](histogram.md)"
 
@@ -84,7 +90,9 @@ msgstr "validate numeric inputs, axis limits, `figsize`, and textual precision"
 msgid ""
 "applicare temporaneamente lo stile `mespy`, gli `rcParams` correnti o un "
 "altro stile Matplotlib"
-msgstr "temporarily apply the `mespy` style, the current `rcParams`, or another Matplotlib style"
+msgstr ""
+"temporarily apply the `mespy` style, the current `rcParams`, or another "
+"Matplotlib style"
 
 #: ../../source/moduli/plot_utils/index.md:28
 msgid "gestire il display delle figure create dentro notebook IPython/Jupyter"
@@ -115,22 +123,27 @@ msgid "[`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)"
 msgstr "[`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)"
 
 #: ../../source/moduli/plot_utils/index.md:37
+#, fuzzy
+msgid "[`_resolve_style`](../../checks/plot_utils/resolve-style.md)"
+msgstr "[`_style_context`](../../checks/plot_utils/style-context.md)"
+
+#: ../../source/moduli/plot_utils/index.md:38
 msgid "[`_in_ipython`](../../checks/plot_utils/in-ipython.md)"
 msgstr "[`_in_ipython`](../../checks/plot_utils/in-ipython.md)"
 
-#: ../../source/moduli/plot_utils/index.md:38
+#: ../../source/moduli/plot_utils/index.md:39
 msgid "[`_display_new_figures`](../../checks/plot_utils/display-new-figures.md)"
 msgstr "[`_display_new_figures`](../../checks/plot_utils/display-new-figures.md)"
 
-#: ../../source/moduli/plot_utils/index.md:39
+#: ../../source/moduli/plot_utils/index.md:40
 msgid "[`_style_context`](../../checks/plot_utils/style-context.md)"
 msgstr "[`_style_context`](../../checks/plot_utils/style-context.md)"
 
-#: ../../source/moduli/plot_utils/index.md:40
+#: ../../source/moduli/plot_utils/index.md:41
 msgid "[`_as_float_vector`](../../checks/stats_utils/as-float-vector.md)"
 msgstr "[`_as_float_vector`](../../checks/stats_utils/as-float-vector.md)"
 
-#: ../../source/moduli/plot_utils/index.md:42
+#: ../../source/moduli/plot_utils/index.md:43
 msgid "Pagina di dettaglio"
 msgstr "Detailed page"
 

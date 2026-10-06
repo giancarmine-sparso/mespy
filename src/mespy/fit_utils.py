@@ -65,7 +65,12 @@ def _validate_positive_vector(
 
 
 def _validate_positive_scalar(name: str, value: float) -> float:
-    if not np.isfinite(value) or value <= 0:
+    try:
+        is_valid = bool(np.isfinite(value)) and value > 0
+    except (TypeError, ValueError):
+        is_valid = False
+
+    if not is_valid:
         raise ValueError(f"{name} deve essere un numero finito strettamente positivo")
     return float(value)
 

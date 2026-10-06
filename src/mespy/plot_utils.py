@@ -19,7 +19,7 @@ import importlib.resources as _ir
 STYLELIB = _ir.files("mespy") / "stylelib"
 
 
-def _resolve_style(style: str) -> str:
+def _resolve_style(style: str | None) -> str | None:
     """Risolve un nome breve (es. 'pub') al path assoluto in stylelib/."""
     try:
         ref = _ir.files("mespy") / "stylelib" / f"{style}.mplstyle"

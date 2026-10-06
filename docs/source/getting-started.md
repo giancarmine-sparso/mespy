@@ -18,7 +18,7 @@ Ogni modulo raccoglie la panoramica concettuale e le pagine dedicate alle singol
 from mespy import histogram, load_csv, variance
 
 df = load_csv(
-    "data/reference/test_misure.csv",
+    "docs/source/examples/data/test_misure.csv",
     rename_columns={"misura_n": "n", "lunghezza_mm": "lunghezza", "sigma_mm": "sigma"},
     required_columns=["n", "lunghezza", "sigma"],
     missing="drop",

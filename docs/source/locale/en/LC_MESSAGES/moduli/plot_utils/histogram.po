@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 19:48+0200\n"
+"POT-Creation-Date: 2026-07-12 15:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../source/moduli/plot_utils/histogram.md:53
+#: ../../source/moduli/plot_utils/histogram.md:54
 msgid "Panoramica"
 msgstr "Overview"
 
-#: ../../source/moduli/plot_utils/histogram.md:53
+#: ../../source/moduli/plot_utils/histogram.md:54
 msgid "Funzionamento"
 msgstr "Implementation"
 
@@ -34,7 +34,7 @@ msgstr "histogram"
 msgid "Firma"
 msgstr "Signature"
 
-#: ../../source/moduli/plot_utils/histogram.md:46
+#: ../../source/moduli/plot_utils/histogram.md:47
 msgid ""
 "`histogram` disegna un istogramma di un campione numerico e puo "
 "aggiungere media, banda `+- 1 sigma`, legenda, griglia e salvataggio "
@@ -48,16 +48,22 @@ msgstr ""
 "current `rcParams`, or the name of another style to delegate to "
 "Matplotlib."
 
-#: ../../source/moduli/plot_utils/histogram.md:49
+#: ../../source/moduli/plot_utils/histogram.md:50
+#, fuzzy
 msgid ""
 "I parametri `figsize`, `dpi`, `title_fontsize`, `title_pad`, "
-"`legend_fontsize`, `legend_loc`, `bar_color`, `edgecolor` e `grid_alpha` "
-"possono ereditare lo stile attivo quando lasciati a `None`. I parametri "
-"`mean_color`, `band_color`, `hist_alpha`, `band_alpha` e `mean_symbol` "
-"restano invece override espliciti della singola chiamata."
-msgstr "The `figsize`, `dpi`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, `bar_color`, `edgecolor`, and `grid_alpha` parameters can inherit from the active style when left as `None`. The `mean_color`, `band_color`, `hist_alpha`, `band_alpha`, and `mean_symbol` parameters remain explicit per-call overrides instead."
+"`legend_fontsize`, `legend_loc`, `bar_color`, `mean_color`, `band_color`,"
+" `edgecolor` e `grid_alpha` possono ereditare lo stile attivo quando "
+"lasciati a `None`. I parametri `hist_alpha`, `band_alpha`, `mean_symbol` "
+"e `band_symbol` restano invece override espliciti della singola chiamata."
+msgstr ""
+"The `figsize`, `dpi`, `title_fontsize`, `title_pad`, `legend_fontsize`, "
+"`legend_loc`, `bar_color`, `edgecolor`, and `grid_alpha` parameters can "
+"inherit from the active style when left as `None`. The `mean_color`, "
+"`band_color`, `hist_alpha`, `band_alpha`, and `mean_symbol` parameters "
+"remain explicit per-call overrides instead."
 
-#: ../../source/moduli/plot_utils/histogram.md:51
+#: ../../source/moduli/plot_utils/histogram.md:52
 msgid ""
 "Questa pagina resta il punto di ingresso rapido. I dettagli completi sono"
 " in [Panoramica](histogram/panoramica.md), mentre "
@@ -67,3 +73,4 @@ msgstr ""
 "This page remains the quick entry point. Full details are in "
 "[Overview](histogram/panoramica.md), while [How it "
 "works](histogram/funzionamento.md) is set up as a dedicated subpage."
+

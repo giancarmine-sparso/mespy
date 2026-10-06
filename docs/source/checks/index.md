@@ -30,6 +30,7 @@ Questa sezione documenta le funzioni private usate da `mespy` per validare input
 - [`_validate_positive_vector`](fit_utils/validate-positive-vector.md)
 - [`_validate_positive_scalar`](fit_utils/validate-positive-scalar.md)
 - [`_validate_max_iter`](fit_utils/validate-max-iter.md)
+- [`_validate_fit_method`](fit_utils/validate-fit-method.md)
 - [`_fit_coefficients`](fit_utils/fit-coefficients.md)
 
 ## Nota importante

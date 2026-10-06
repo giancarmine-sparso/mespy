@@ -25,6 +25,10 @@ msgid ""
 "light\" alt=\"MesPy\"><img src=\"_static/mespy-logo-horizontal-dark.svg\""
 " class=\"only-dark pst-js-only\" alt=\"MesPy\"></span>"
 msgstr ""
+"<span class=\"visually-hidden\">MesPy</span><span class=\"mespy-home-"
+"brand\"><img src=\"_static/mespy-logo-horizontal.svg\" class=\"only-"
+"light\" alt=\"MesPy\"><img src=\"_static/mespy-logo-horizontal-dark.svg\""
+" class=\"only-dark pst-js-only\" alt=\"MesPy\"></span>"
 
 #: ../../source/index.md:3
 msgid "`mespy` è una toolbox Python per l'analisi di dati sperimentali."

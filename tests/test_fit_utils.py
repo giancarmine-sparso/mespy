@@ -498,6 +498,9 @@ def test_lin_fit_rejects_invalid_tol_and_max_iter():
     with pytest.raises(ValueError, match="tol deve essere un numero finito strettamente positivo"):
         lin_fit(x, y, sigma_y, show_plot=False, tol=0.0)
 
+    with pytest.raises(ValueError, match="tol deve essere un numero finito strettamente positivo"):
+        lin_fit(x, y, sigma_y, show_plot=False, tol="non-numerico")
+
     with pytest.raises(ValueError, match="max_iter deve essere un intero positivo"):
         lin_fit(x, y, sigma_y, show_plot=False, max_iter=0)
 

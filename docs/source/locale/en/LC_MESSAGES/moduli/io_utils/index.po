@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../source/moduli/io_utils/index.md:1
 msgid "io_utils.py"
@@ -24,11 +24,12 @@ msgstr "io_utils.py"
 
 #: ../../source/moduli/io_utils/index.md:3
 msgid ""
-"`io_utils.py` si occupa del caricamento dei file CSV e concentra in un solo punto le scelte di "
-"validazione legate a colonne mancanti, rinomina dei campi e gestione dei valori `NaN`."
+"`io_utils.py` si occupa del caricamento dei file CSV e concentra in un "
+"solo punto le scelte di validazione legate a colonne mancanti, rinomina "
+"dei campi e gestione dei valori `NaN`."
 msgstr ""
-"`io_utils.py` handles CSV file loading and centralizes the validation choices related to missing "
-"columns, field renaming, and `NaN` handling."
+"`io_utils.py` handles CSV file loading and centralizes the validation "
+"choices related to missing columns, field renaming, and `NaN` handling."
 
 #: ../../source/moduli/io_utils/index.md:5
 msgid "Import principali"
@@ -36,17 +37,23 @@ msgstr "Main imports"
 
 #: ../../source/moduli/io_utils/index.md:7
 msgid ""
-"Standard library: `collections.abc.Collection`, `collections.abc.Mapping`, `pathlib.Path`, "
-"`typing.Literal`"
+"Standard library: `collections.abc.Collection`, "
+"`collections.abc.Mapping`, `pathlib.Path`, `typing.Literal`"
 msgstr ""
+"Standard library: `collections.abc.Collection`, "
+"`collections.abc.Mapping`, `pathlib.Path`, `typing.Literal`"
 
 #: ../../source/moduli/io_utils/index.md:9
 msgid "Librerie esterne: `pandas as pd`"
 msgstr "External libraries: `pandas as pd`"
 
 #: ../../source/moduli/io_utils/index.md:11
-msgid "Tipi definiti nel modulo: `MissingPolicy = Literal[\"error\", \"drop\", \"allow\"]`"
-msgstr "Types defined in the module: `MissingPolicy = Literal[\"error\", \"drop\", \"allow\"]`"
+msgid ""
+"Tipi definiti nel modulo: `MissingPolicy = Literal[\"error\", \"drop\", "
+"\"allow\"]`"
+msgstr ""
+"Types defined in the module: `MissingPolicy = Literal[\"error\", "
+"\"drop\", \"allow\"]`"
 
 #: ../../source/moduli/io_utils/index.md:14
 msgid "Cosa espone"
@@ -54,11 +61,11 @@ msgstr "What it exports"
 
 #: ../../source/moduli/io_utils/index.md:16
 msgid ""
-"[`load_csv`](load-csv.md): wrapper di `pandas.read_csv` con un contratto piu piccolo e "
-"prevedibile."
+"[`load_csv`](load-csv.md): wrapper di `pandas.read_csv` con un contratto "
+"piu piccolo e prevedibile."
 msgstr ""
-"[`load_csv`](load-csv.md): wrapper di `pandas.read_csv` con un contratto piu piccolo e "
-"prevedibile."
+"[`load_csv`](load-csv.md): wrapper di `pandas.read_csv` con un contratto "
+"piu piccolo e prevedibile."
 
 #: ../../source/moduli/io_utils/index.md:18
 msgid "Responsabilita del modulo"
@@ -90,13 +97,17 @@ msgstr "Relations with the rest of the package"
 
 #: ../../source/moduli/io_utils/index.md:28
 msgid ""
-"`io_utils.py` e il punto di ingresso per trasformare dati su disco in un `DataFrame` da passare "
-"poi alle funzioni di [`stats_utils`](../stats_utils/index.md), "
-"[`plot_utils`](../plot_utils/index.md) e [`fit_utils`](../fit_utils/index.md)."
+"`io_utils.py` e il punto di ingresso per trasformare dati su disco in un "
+"`DataFrame` da passare poi alle funzioni di "
+"[`stats_utils`](../stats_utils/index.md), "
+"[`plot_utils`](../plot_utils/index.md) e "
+"[`fit_utils`](../fit_utils/index.md)."
 msgstr ""
-"`io_utils.py` is the entry point for turning on-disk data into a `DataFrame` that can then be "
-"passed to the functions in [`stats_utils`](../stats_utils/index.md), "
-"[`plot_utils`](../plot_utils/index.md), and [`fit_utils`](../fit_utils/index.md)."
+"`io_utils.py` is the entry point for turning on-disk data into a "
+"`DataFrame` that can then be passed to the functions in "
+"[`stats_utils`](../stats_utils/index.md), "
+"[`plot_utils`](../plot_utils/index.md), and "
+"[`fit_utils`](../fit_utils/index.md)."
 
 #: ../../source/moduli/io_utils/index.md:30
 msgid "Pagina di dettaglio"
@@ -105,4 +116,3 @@ msgstr "Detailed page"
 #: ../../source/moduli/io_utils/index.md:32
 msgid "[`load_csv`](load-csv.md)"
 msgstr "[`load_csv`](load-csv.md)"
-
