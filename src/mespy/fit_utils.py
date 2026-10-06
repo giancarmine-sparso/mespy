@@ -174,7 +174,7 @@ def lin_fit(
     y: ArrayLike,
     sigma_y: ArrayLike | None = None,
     *,
-    fit_method: FitMethod = "absolute",
+    fit_method: FitMethod = "residual",
     sigma_x: ArrayLike | None = None,
     tol: float = 1e-10,
     max_iter: int = 100,
@@ -252,7 +252,7 @@ def lin_fit(
         ``sigma_x`` as absolute input uncertainties. ``"residual"``
         estimates one global scale factor from the residuals and
         applies it to parameter uncertainties, plotted error bars,
-        normalized residuals, and the fit band (default ``"absolute"``).
+        normalized residuals, and the fit band (default ``"residual"``).
     sigma_x : array-like or None, optional
         Positive uncertainties on ``x``. If provided, enables the
         effective variance update and iterative slope refinement

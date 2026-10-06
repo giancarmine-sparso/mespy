@@ -60,6 +60,7 @@ def test_lin_fit_returns_typed_result_and_expected_parameters():
         x,
         y,
         sigma_y,
+        fit_method="absolute",
         xlabel="x placebo",
         ylabel="y placebo",
         show_band=True,
@@ -113,7 +114,7 @@ def test_lin_fit_residual_without_sigma_y_estimates_common_uncertainty():
 def test_lin_fit_residual_with_sigma_y_scales_parameter_uncertainties():
     x, y, sigma_y, _, _ = make_placebo_data()
 
-    result_absolute = lin_fit(x, y, sigma_y, show_plot=False)
+    result_absolute = lin_fit(x, y, sigma_y, fit_method="absolute", show_plot=False)
     result_residual = lin_fit(
         x,
         y,
@@ -141,7 +142,9 @@ def test_lin_fit_residual_with_sigma_y_scales_parameter_uncertainties():
 def test_lin_fit_residual_with_sigma_x_scales_iterative_fit_uncertainties():
     x, y, sigma_y, sigma_x, _, _ = make_placebo_data_with_sigma_x()
 
-    result_absolute = lin_fit(x, y, sigma_y, sigma_x=sigma_x, show_plot=False)
+    result_absolute = lin_fit(
+        x, y, sigma_y, fit_method="absolute", sigma_x=sigma_x, show_plot=False
+    )
     result_residual = lin_fit(
         x,
         y,
@@ -256,11 +259,12 @@ def test_lin_fit_accepts_custom_fit_and_band_labels():
 def test_lin_fit_with_sigma_x_uses_iterative_effective_variance():
     x, y, sigma_y, sigma_x, m_true, c_true = make_placebo_data_with_sigma_x()
 
-    result_base = lin_fit(x, y, sigma_y, show_plot=False)
+    result_base = lin_fit(x, y, sigma_y, fit_method="absolute", show_plot=False)
     result_sigma_x = lin_fit(
         x,
         y,
         sigma_y,
+        fit_method="absolute",
         sigma_x=sigma_x,
         show_plot=False,
     )
@@ -280,6 +284,7 @@ def test_lin_fit_can_plot_normalized_residuals_without_normalizing_result():
         x,
         y,
         sigma_y,
+        fit_method="absolute",
         show_plot=True,
         normalize_residuals=True,
     )
@@ -306,6 +311,7 @@ def test_lin_fit_normalized_residuals_use_effective_sigma_with_sigma_x():
         x,
         y,
         sigma_y,
+        fit_method="absolute",
         sigma_x=sigma_x,
         show_plot=True,
         normalize_residuals=True,
@@ -406,7 +412,9 @@ def test_lin_fit_save_path_requires_show_plot():
 
 def test_lin_fit_raises_on_invalid_input():
     with pytest.raises(ValueError, match="sigma_y"):
-        lin_fit([1.0, 2.0, 3.0], [1.0, 2.0, 3.0], show_plot=False)
+        lin_fit(
+            [1.0, 2.0, 3.0], [1.0, 2.0, 3.0], fit_method="absolute", show_plot=False
+        )
 
     with pytest.raises(ValueError, match="fit_method"):
         lin_fit(

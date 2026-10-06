@@ -8,7 +8,7 @@ lin_fit(
     y: ArrayLike,
     sigma_y: ArrayLike | None = None,
     *,
-    fit_method: Literal["absolute", "residual"] = "absolute",
+    fit_method: Literal["absolute", "residual"] = "residual",
     sigma_x: ArrayLike | None = None,
     tol: float = 1e-10,
     max_iter: int = 100,
@@ -47,9 +47,9 @@ lin_fit(
 
 `lin_fit` esegue un fit lineare `y = m x + c` su dati sperimentali, con supporto alle incertezze assolute di input e alla scala stimata dai residui.
 
-Con `fit_method="absolute"` usa le incertezze assolute passate in `sigma_y` e, se presente, `sigma_x`. Questo resta il comportamento di default ed e compatibile con le chiamate esistenti.
+Con `fit_method="absolute"` usa le incertezze assolute passate in `sigma_y` e, se presente, `sigma_x`.
 
-Con `fit_method="residual"` stima un fattore globale di incertezza dai residui. Se ometti `sigma_y`, esegue un fit lineare non pesato e usa `residual_std` come incertezza verticale comune. Se passi `sigma_y`, quelle incertezze definiscono i pesi relativi e le incertezze finali vengono scalate con il chi quadrato ridotto grezzo osservato.
+Con `fit_method="residual"`, che e il comportamento di default, stima un fattore globale di incertezza dai residui. Se ometti `sigma_y`, esegue un fit lineare non pesato e usa `residual_std` come incertezza verticale comune. Se passi `sigma_y`, quelle incertezze definiscono i pesi relativi e le incertezze finali vengono scalate con il chi quadrato ridotto grezzo osservato.
 
 Di default applica lo stile Matplotlib `mespy`; passa `style=None` per usare gli `rcParams` correnti oppure il nome di un altro stile per delegare a Matplotlib.
 

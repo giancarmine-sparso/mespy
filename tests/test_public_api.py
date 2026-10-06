@@ -30,7 +30,7 @@ def test_public_api_freezes_key_signatures():
     assert load_csv_signature.parameters["missing"].default == "error"
     assert histogram_signature.parameters["ddof"].default == 0
     assert "max_iter" in lin_fit_signature.parameters
-    assert lin_fit_signature.parameters["fit_method"].default == "absolute"
+    assert lin_fit_signature.parameters["fit_method"].default == "residual"
 
 
 def test_package_includes_py_typed_marker():
