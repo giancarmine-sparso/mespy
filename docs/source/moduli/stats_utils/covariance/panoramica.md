@@ -33,4 +33,4 @@ print(covariance(x, y))
 
 ## Note
 
-La formula implementata e `E[xy] - E[x]E[y]`. Nel caso pesato, le medie sono pesate con lo stesso vettore `w`.
+La covarianza e definita come `E[(x - E[x])(y - E[y])]`, normalizzata per `n` oppure per `sum(w)`. Nel caso pesato, le medie sono pesate con lo stesso vettore `w`. Il calcolo centra i dati prima di moltiplicarli, cosi resta accurato anche con grandi offset.

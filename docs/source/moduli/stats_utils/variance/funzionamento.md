@@ -30,8 +30,8 @@ def variance(x: ArrayLike, w: ArrayLike | None = None, ddof: int | float = 0) ->
                 f"denominatore non positivo: len(x) - ddof = {n} - {ddof}"
             )
 
-        mean_x = float(np.mean(values))
-        return float(np.sum((values - mean_x) ** 2) / denom)
+        dx = values - float(np.mean(values))
+        return float((np.sum(dx * dx) - np.sum(dx) ** 2 / n) / denom)
 
     w_sum = float(np.sum(weights))
     denom = w_sum - ddof
@@ -40,8 +40,10 @@ def variance(x: ArrayLike, w: ArrayLike | None = None, ddof: int | float = 0) ->
             f"denominatore non positivo: sum(w) - ddof = {w_sum} - {ddof}"
         )
 
-    mean_x_w = float(np.sum(weights * values) / w_sum)
-    return float(np.sum(weights * (values - mean_x_w) ** 2) / denom)
+    dx = values - float(np.sum(weights * values) / w_sum)
+    return float(
+        (np.sum(weights * dx * dx) - np.sum(weights * dx) ** 2 / w_sum) / denom
+    )
 ```
 
 Il cuore della funzione e la separazione netta tra due definizioni operative della varianza.
@@ -69,6 +71,22 @@ $$
 $$
 
 La funzione non delega a `numpy.var(...)`: costruisce esplicitamente la media coerente con il ramo selezionato e poi somma gli scarti quadratici.
+
+## Stabilita numerica
+
+Il codice non somma direttamente $(x_i - \bar{x})^2$, ma usa la formula two-pass corretta (Chan, Golub, LeVeque):
+
+$$
+\sum_i w_i d_i^2 - \frac{\left(\sum_i w_i d_i\right)^2}{\sum_i w_i},
+\qquad
+d_i = x_i - \bar{x}_w,
+$$
+
+con $w_i = 1$ nel ramo non pesato. In aritmetica esatta $\sum_i w_i d_i = 0$, quindi il termine sottratto e nullo e la definizione resta quella scritta sopra.
+
+In virgola mobile la media calcolata ha un errore di arrotondamento $\delta$ che, con dati affetti da un grande offset (per esempio $x \approx 10^{15}$), vale circa un ulp dell'offset. Sommando solo gli scarti quadratici quell'errore entra nel risultato come $+\delta^2$; il termine correttivo lo rimuove.
+
+Il limite che resta e la rappresentazione: se le differenze tra i dati sono piu piccole dell'ulp dell'offset, l'informazione e gia persa in `float64` e nessun algoritmo puo recuperarla.
 
 ## Ruolo di `ddof` e condizioni di errore
 

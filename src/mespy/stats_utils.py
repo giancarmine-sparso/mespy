@@ -114,8 +114,11 @@ def variance(x: ArrayLike, w: ArrayLike | None = None, ddof: int | float = 0) ->
                 f"denominatore non positivo: len(x) - ddof = {n} - {ddof}"
             )
 
-        mean_x = float(np.mean(values))
-        return float(np.sum((values - mean_x) ** 2) / denom)
+        dx = values - float(np.mean(values))
+        # Two-pass corretto (Chan-Golub-LeVeque): il termine sottratto è zero
+        # in aritmetica esatta e compensa l'errore di arrotondamento della
+        # media, che con grandi offset vale circa ulp(offset).
+        return float((np.sum(dx * dx) - np.sum(dx) ** 2 / n) / denom)
 
     w_sum = float(np.sum(weights))
     denom = w_sum - ddof
@@ -124,15 +127,19 @@ def variance(x: ArrayLike, w: ArrayLike | None = None, ddof: int | float = 0) ->
             f"denominatore non positivo: sum(w) - ddof = {w_sum} - {ddof}"
         )
 
-    mean_x_w = float(np.sum(weights * values) / w_sum)
-    return float(np.sum(weights * (values - mean_x_w) ** 2) / denom)
+    dx = values - float(np.sum(weights * values) / w_sum)
+    return float(
+        (np.sum(weights * dx * dx) - np.sum(weights * dx) ** 2 / w_sum) / denom
+    )
 
 
 def covariance(x: ArrayLike, y: ArrayLike, w: ArrayLike | None = None) -> float:
     """
     Covarianza tra x e y, opzionalmente pesata.
 
-    Usa la formula Cov(x,y) = E[xy] - E[x]E[y].
+    Cov(x,y) = E[(x - E[x])(y - E[y])], con normalizzazione per N (o sum(w)).
+    Il calcolo centra i dati (two-pass corretto) invece di usare
+    E[xy] - E[x]E[y], che con grandi offset soffre di cancellazione.
 
     Parametri:
         x : array-like, prima variabile
@@ -155,16 +162,17 @@ def covariance(x: ArrayLike, y: ArrayLike, w: ArrayLike | None = None) -> float:
 
     weights = _validate_weights(x_values, w)
     if weights is None:
-        mean_xy = float(np.mean(x_values * y_values))
-        mean_x = float(np.mean(x_values))
-        mean_y = float(np.mean(y_values))
-    else:
-        w_sum = float(np.sum(weights))
-        mean_xy = float(np.sum(weights * x_values * y_values) / w_sum)
-        mean_x = float(np.sum(weights * x_values) / w_sum)
-        mean_y = float(np.sum(weights * y_values) / w_sum)
+        weights = np.ones_like(x_values)
 
-    return float(mean_xy - mean_x * mean_y)
+    w_sum = float(np.sum(weights))
+    dx = x_values - float(np.sum(weights * x_values) / w_sum)
+    dy = y_values - float(np.sum(weights * y_values) / w_sum)
+    # Two-pass corretto: il termine sottratto è zero in aritmetica esatta e
+    # compensa l'errore di arrotondamento delle medie.
+    return float(
+        (np.sum(weights * dx * dy) - np.sum(weights * dx) * np.sum(weights * dy) / w_sum)
+        / w_sum
+    )
 
 
 def standard_deviation(

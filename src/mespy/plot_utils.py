@@ -502,8 +502,10 @@ def histogram(
             ax.set_ylim(ylim)
 
     if save_path is not None:
-        save_path = Path(save_path).with_suffix(".pdf")
-        savefig_kwargs: dict = {"bbox_inches": "tight", "format": "pdf"}
+        save_path = Path(save_path)
+        if save_path.suffix == "":
+            save_path = save_path.with_suffix(".pdf")
+        savefig_kwargs: dict = {"bbox_inches": "tight"}
         if dpi is not None:
             savefig_kwargs["dpi"] = dpi
         fig.savefig(save_path, **savefig_kwargs)

@@ -61,4 +61,4 @@ fig, ax = histogram(
 - Se `ax` e `None`, la funzione crea una nuova figura con `plt.subplots`.
 - Se passi `ax`, la figura restituita e `ax.get_figure()`.
 - La validazione dei limiti, delle dimensioni e di `decimals` passa per [`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-limits.md), [`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md) e [`_validate_decimals`](../../../checks/plot_utils/validate-decimals.md).
-- `save_path` salva sempre con `bbox_inches="tight"`; il `dpi` viene aggiunto al salvataggio solo quando e esplicitato.
+- `save_path` salva sempre con `bbox_inches="tight"`; il `dpi` viene aggiunto al salvataggio solo quando e esplicitato. Il formato segue l'estensione del percorso; senza estensione viene usato `.pdf`.

@@ -123,9 +123,8 @@ msgid "[`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)"
 msgstr "[`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)"
 
 #: ../../source/moduli/plot_utils/index.md:37
-#, fuzzy
 msgid "[`_resolve_style`](../../checks/plot_utils/resolve-style.md)"
-msgstr "[`_style_context`](../../checks/plot_utils/style-context.md)"
+msgstr "[`_resolve_style`](../../checks/plot_utils/resolve-style.md)"
 
 #: ../../source/moduli/plot_utils/index.md:38
 msgid "[`_in_ipython`](../../checks/plot_utils/in-ipython.md)"

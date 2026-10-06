@@ -1,6 +1,6 @@
 # Funzionamento
 
-Questa pagina descrive il flusso interno di `covariance` e l'ordine con cui vengono applicate validazione separata di `x` e `y`, controllo di compatibilita delle forme, eventuale validazione dei pesi e calcolo finale della covarianza. A differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere i parametri, ma mostrare come la funzione costruisce davvero il risultato.
+Questa pagina descrive il flusso interno di `covariance` e l'ordine con cui vengono applicate validazione separata di `x` e `y`, controllo di compatibilita delle forme, eventuale validazione dei pesi e calcolo finale della covarianza sui dati centrati. A differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere i parametri, ma mostrare come la funzione costruisce davvero il risultato.
 
 I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. Gli helper privati vengono citati solo per chiarire il flusso; i dettagli completi sono documentati in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) e [`_validate_weights`](../../../checks/stats_utils/validate-weights.md).
 
@@ -11,11 +11,11 @@ L'implementazione segue questa sequenza:
 1. Converte `x` e `y` in vettori `float64` monodimensionali e finiti.
 2. Verifica che i due vettori abbiano la stessa forma.
 3. Se `w` e presente, lo valida rispetto alla forma di `x`.
-4. Se `w is None`, calcola `E[xy]`, `E[x]` ed `E[y]` come medie semplici.
-5. Se `w` e presente, calcola le stesse quantita come medie pesate con lo stesso vettore di pesi.
-6. Restituisce la differenza `mean_xy - mean_x * mean_y`.
+4. Se `w is None`, usa pesi unitari, cosi i due rami condividono lo stesso calcolo.
+5. Centra `x` e `y` sottraendo le rispettive medie (pesate se `w` e presente).
+6. Restituisce la somma pesata dei prodotti degli scarti, con il termine correttivo two-pass, divisa per `sum(w)`.
 
-## Validazione degli input e identita usata
+## Validazione degli input e centratura
 
 ```python
 def covariance(x: ArrayLike, y: ArrayLike, w: ArrayLike | None = None) -> float:
@@ -27,16 +27,15 @@ def covariance(x: ArrayLike, y: ArrayLike, w: ArrayLike | None = None) -> float:
 
     weights = _validate_weights(x_values, w)
     if weights is None:
-        mean_xy = float(np.mean(x_values * y_values))
-        mean_x = float(np.mean(x_values))
-        mean_y = float(np.mean(y_values))
-    else:
-        w_sum = float(np.sum(weights))
-        mean_xy = float(np.sum(weights * x_values * y_values) / w_sum)
-        mean_x = float(np.sum(weights * x_values) / w_sum)
-        mean_y = float(np.sum(weights * y_values) / w_sum)
+        weights = np.ones_like(x_values)
 
-    return float(mean_xy - mean_x * mean_y)
+    w_sum = float(np.sum(weights))
+    dx = x_values - float(np.sum(weights * x_values) / w_sum)
+    dy = y_values - float(np.sum(weights * y_values) / w_sum)
+    return float(
+        (np.sum(weights * dx * dy) - np.sum(weights * dx) * np.sum(weights * dy) / w_sum)
+        / w_sum
+    )
 ```
 
 Il primo tratto del flusso e interamente dedicato a mettere `x` e `y` sullo stesso piano numerico.
@@ -47,47 +46,41 @@ Il primo tratto del flusso e interamente dedicato a mettere `x` e `y` sullo stes
 
 ## Formula implementata
 
-La funzione usa l'identita
+La funzione calcola
 
 $$
-\mathrm{Cov}(x, y) = E[xy] - E[x]E[y].
-$$
-
-Nel caso non pesato questo significa
-
-$$
-E[xy] = \frac{1}{n}\sum_i x_i y_i,
+\mathrm{Cov}_w(x, y) = \frac{\sum_i w_i (x_i - \bar{x}_w)(y_i - \bar{y}_w)}{\sum_i w_i},
 \qquad
-E[x] = \frac{1}{n}\sum_i x_i,
+\bar{x}_w = \frac{\sum_i w_i x_i}{\sum_i w_i},
 \qquad
-E[y] = \frac{1}{n}\sum_i y_i.
+\bar{y}_w = \frac{\sum_i w_i y_i}{\sum_i w_i},
 $$
 
-Nel caso pesato le tre medie vengono sostituite da
+con $w_i = 1$ (e quindi $\sum_i w_i = n$) nel caso non pesato. Matematicamente coincide con l'identita $E[xy] - E[x]E[y]$, ma numericamente no.
+
+## Stabilita numerica
+
+L'identita $E[xy] - E[x]E[y]$ sottrae due quantita grandi e quasi uguali quando i dati hanno un offset grande rispetto alla loro dispersione: con $x \approx 10^{15}$ i due termini valgono circa $10^{15} \cdot E[y]$ e la differenza perde quasi tutte le cifre significative (cancellazione catastrofica).
+
+Centrando prima i dati, i prodotti $d^x_i d^y_i$ hanno l'ordine di grandezza della dispersione e la cancellazione scompare. Il termine correttivo
 
 $$
-E_w[xy] = \frac{\sum_i w_i x_i y_i}{\sum_i w_i},
-\qquad
-E_w[x] = \frac{\sum_i w_i x_i}{\sum_i w_i},
-\qquad
-E_w[y] = \frac{\sum_i w_i y_i}{\sum_i w_i}.
+\frac{\left(\sum_i w_i d^x_i\right)\left(\sum_i w_i d^y_i\right)}{\sum_i w_i}
 $$
 
-Il valore finale resta in entrambi i casi
+e nullo in aritmetica esatta e compensa l'errore di arrotondamento delle medie (formula two-pass corretta di Chan, Golub e LeVeque).
 
-$$
-\mathrm{Cov}(x, y) = \mathrm{mean\_xy} - \mathrm{mean\_x}\,\mathrm{mean\_y}.
-$$
+Il limite che resta e la rappresentazione: se le differenze tra i dati sono piu piccole dell'ulp dell'offset, l'informazione e gia persa in `float64` prima della chiamata.
 
 ## Interazioni importanti e limiti espliciti
 
 Alcune scelte dell'implementazione conviene renderle esplicite.
 
-- La funzione non introduce un parametro `ddof`: implementa solo la definizione basata su `E[xy] - E[x]E[y]`.
-- Gli stessi pesi vengono usati per tutte le medie del ramo pesato; non esistono pesi distinti per `x`, `y` o `xy`.
-- Se `w is None`, il flusso non passa da `weighted_mean(...)`: le medie sono scritte direttamente con `np.mean(...)`.
+- La funzione non introduce un parametro `ddof`: normalizza sempre per `n` oppure per `sum(w)`.
+- Gli stessi pesi vengono usati per entrambe le medie e per la somma finale; non esistono pesi distinti per `x` e `y`.
+- Se `w is None`, il flusso non passa da `weighted_mean(...)`: usa pesi unitari e lo stesso codice del ramo pesato.
 - Se `w` e presente, il codice non lo normalizza preventivamente; usa la normalizzazione implicita tramite divisione per `sum(w)`.
-- Errori su valori non finiti o pesi non positivi vengono intercettati prima dell'ultima formula, cosi la funzione non restituisce mai covarianze `nan` in silenzio.
+- Errori su valori non finiti o pesi non positivi vengono intercettati prima del calcolo, cosi la funzione non restituisce mai covarianze `nan` in silenzio.
 
 ## Esempio commentato
 
@@ -102,7 +95,7 @@ print(covariance(x, y))      # medie semplici
 print(covariance(x, y, w))   # medie pesate
 ```
 
-Le due chiamate condividono la stessa identita matematica, ma cambiano il modo in cui vengono costruite `mean_xy`, `mean_x` e `mean_y`.
+Le due chiamate condividono la stessa formula, ma cambiano il modo in cui vengono costruite le medie e la normalizzazione finale.
 
 - Senza pesi ogni punto contribuisce allo stesso modo.
 - Con `w`, i contributi passano tutti attraverso la stessa normalizzazione pesata.

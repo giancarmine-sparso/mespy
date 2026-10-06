@@ -202,6 +202,9 @@ if ylim is not None:
     ax.set_ylim(ylim)
 
 if save_path is not None:
+    save_path = Path(save_path)
+    if save_path.suffix == "":
+        save_path = save_path.with_suffix(".pdf")
     savefig_kwargs: dict = {"bbox_inches": "tight"}
     if dpi is not None:
         savefig_kwargs["dpi"] = dpi
@@ -220,6 +223,7 @@ L'ultima parte aggiunge gli elementi statistici e completa la configurazione del
 - Titolo e legenda ricevono keyword aggiuntive solo quando l'utente le ha valorizzate; in tutti gli altri casi resta valida la configurazione dello stile attivo.
 - La griglia segue tre rami distinti: `show_grid=False` la spegne esplicitamente, `show_grid=True` con `grid_alpha is None` la lascia allo stile attivo, `show_grid=True` con `grid_alpha` esplicito applica una griglia sull'asse `y` con quell'opacita.
 - Il salvataggio avviene alla fine con `bbox_inches="tight"`; il `dpi` viene passato a `savefig(...)` solo se l'utente lo ha richiesto.
+- Il formato del file segue l'estensione di `save_path`; se il percorso non ha estensione, viene aggiunto `.pdf`.
 
 ## Interazioni importanti tra parametri
 

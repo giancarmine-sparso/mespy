@@ -1,3 +1,5 @@
+from fractions import Fraction
+
 import numpy as np
 import pytest
 
@@ -96,6 +98,63 @@ def test_covariance_basic():
     x = np.array([1.0, 2.0, 3.0])
     y = np.array([2.0, 4.0, 6.0])
     assert covariance(x, y) == pytest.approx(4.0 / 3.0)
+
+
+OFFSET_X = np.arange(1.0, 7.0)
+OFFSET_Y = 0.8 * OFFSET_X + 0.3 + np.array([0.05, -0.04, 0.02, -0.03, 0.01, 0.0])
+OFFSET_W = 1.0 / np.array([0.05, 0.04, 0.06, 0.05, 0.03, 0.05]) ** 2
+
+
+def test_covariance_weighted_matches_numpy():
+    expected = np.cov(OFFSET_X, OFFSET_Y, bias=True, aweights=OFFSET_W)[0, 1]
+    assert covariance(OFFSET_X, OFFSET_Y, OFFSET_W) == pytest.approx(expected, rel=1e-14)
+    assert covariance(OFFSET_X, OFFSET_Y) == pytest.approx(
+        np.cov(OFFSET_X, OFFSET_Y, bias=True)[0, 1], rel=1e-14
+    )
+
+
+@pytest.mark.parametrize("w", [None, OFFSET_W])
+def test_covariance_large_offset(w):
+    # 1e15 + [1..6] è esattamente rappresentabile in float64 (ulp = 0.125):
+    # l'unica perdita possibile è quella dell'algoritmo.
+    reference = covariance(OFFSET_X, OFFSET_Y, w)
+    assert covariance(1e15 + OFFSET_X, OFFSET_Y, w) == pytest.approx(reference, rel=1e-12)
+
+
+def _exact_covariance(x, y, w):
+    """Covarianza esatta (razionale) dei valori float64 effettivamente passati."""
+    xs = [Fraction(v) for v in x]
+    ys = [Fraction(v) for v in y]
+    ws = [Fraction(1)] * len(xs) if w is None else [Fraction(v) for v in w]
+    w_sum = sum(ws)
+    mean_x = sum(wi * xi for wi, xi in zip(ws, xs)) / w_sum
+    mean_y = sum(wi * yi for wi, yi in zip(ws, ys)) / w_sum
+    return float(
+        sum(wi * (xi - mean_x) * (yi - mean_y) for wi, xi, yi in zip(ws, xs, ys)) / w_sum
+    )
+
+
+@pytest.mark.parametrize("w", [None, OFFSET_W])
+@pytest.mark.parametrize(("c", "d"), [(1e3, -7.0), (-1e8, 1e6), (1e12, 1e12), (1e15, 0.0)])
+def test_covariance_is_shift_invariant(w, c, d):
+    # Il riferimento è calcolato sui valori shiftati già arrotondati a float64:
+    # per y + 1e12 l'input perde ~1e-4 di risoluzione (ulp(1e12)) prima ancora
+    # di arrivare a covariance, e quella perdita non è imputabile all'algoritmo.
+    x_shifted = OFFSET_X + c
+    y_shifted = OFFSET_Y + d
+    expected = _exact_covariance(x_shifted, y_shifted, w)
+    assert covariance(x_shifted, y_shifted, w) == pytest.approx(expected, rel=1e-12)
+
+    if np.array_equal(x_shifted - c, OFFSET_X) and np.array_equal(y_shifted - d, OFFSET_Y):
+        # Shift rappresentabile senza perdita: coincide col caso non shiftato.
+        reference = covariance(OFFSET_X, OFFSET_Y, w)
+        assert covariance(x_shifted, y_shifted, w) == pytest.approx(reference, rel=1e-12)
+
+
+@pytest.mark.parametrize("w", [None, OFFSET_W])
+def test_variance_large_offset(w):
+    reference = variance(OFFSET_X, w)
+    assert variance(1e15 + OFFSET_X, w) == pytest.approx(reference, rel=1e-12)
 
 
 def test_covariance_raises_on_length_mismatch():

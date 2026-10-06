@@ -379,20 +379,25 @@ msgid ""
 "il controllo su `required_columns` verifica i nomi finali `n`, "
 "`lunghezza` e `sigma`"
 msgstr ""
+"the `required_columns` check verifies the final names `n`, `lunghezza`, "
+"and `sigma`"
 
 #: ../../source/moduli/io_utils/load-csv/funzionamento.md:128
 msgid ""
 "eventuali righe con valori mancanti vengono rimosse prima della "
 "restituzione"
-msgstr ""
+msgstr "any rows with missing values are dropped before returning"
 
 #: ../../source/moduli/io_utils/load-csv/funzionamento.md:130
 msgid ""
 "Il risultato finale e un `DataFrame` gia pronto per essere passato alle "
 "funzioni di analisi e plotting del package."
 msgstr ""
+"The final result is a `DataFrame` ready to be passed to the package's "
+"analysis and plotting functions."
 
 #~ msgid ""
 #~ "il file di esempio viene letto "
 #~ "direttamente dalla cartella `data/reference`"
 #~ msgstr ""
+

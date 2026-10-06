@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"POT-Creation-Date: 2026-10-06 17:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:1
 msgid "Funzionamento"
@@ -24,26 +24,31 @@ msgstr "Implementation"
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:3
 msgid ""
-"Questa pagina descrive il flusso interno di `covariance` e l'ordine con cui vengono applicate "
-"validazione separata di `x` e `y`, controllo di compatibilita delle forme, eventuale validazione "
-"dei pesi e calcolo finale della covarianza. A differenza di [Panoramica](panoramica.md), qui "
-"l'obiettivo non e ripetere i parametri, ma mostrare come la funzione costruisce davvero il "
-"risultato."
+"Questa pagina descrive il flusso interno di `covariance` e l'ordine con "
+"cui vengono applicate validazione separata di `x` e `y`, controllo di "
+"compatibilita delle forme, eventuale validazione dei pesi e calcolo "
+"finale della covarianza sui dati centrati. A differenza di "
+"[Panoramica](panoramica.md), qui l'obiettivo non e ripetere i parametri, "
+"ma mostrare come la funzione costruisce davvero il risultato."
 msgstr ""
-"This page describes the internal flow of `covariance` and the order in which separate validation "
-"of `x` and `y`, shape compatibility checks, optional weight validation, and final covariance "
-"calculation are applied. Unlike [Overview](panoramica.md), the goal here is not to repeat the "
-"parameters, but to show how the function actually builds the result."
+"This page describes the internal flow of `covariance` and the order in "
+"which separate validation of `x` and `y`, shape compatibility checks, "
+"optional weight validation, and the final covariance calculation on "
+"centered data are applied. Unlike [Overview](panoramica.md), the goal "
+"here is not to repeat the parameters, but to show how the function "
+"actually builds the result."
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:5
 msgid ""
-"I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. Gli helper "
-"privati vengono citati solo per chiarire il flusso; i dettagli completi sono documentati in "
+"I frammenti seguenti sono estratti dal codice attuale di "
+"`src/mespy/stats_utils.py`. Gli helper privati vengono citati solo per "
+"chiarire il flusso; i dettagli completi sono documentati in "
 "[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) e "
 "[`_validate_weights`](../../../checks/stats_utils/validate-weights.md)."
 msgstr ""
-"The following snippets are taken from the current `src/mespy/stats_utils.py` implementation. "
-"Private helpers are mentioned only to clarify the flow; complete details are documented in "
+"The following snippets are taken from the current "
+"`src/mespy/stats_utils.py` implementation. Private helpers are mentioned "
+"only to clarify the flow; complete details are documented in "
 "[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) and "
 "[`_validate_weights`](../../../checks/stats_utils/validate-weights.md)."
 
@@ -68,154 +73,316 @@ msgid "Se `w` e presente, lo valida rispetto alla forma di `x`."
 msgstr "If `w` is provided, it validates it against the shape of `x`."
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:14
-msgid "Se `w is None`, calcola `E[xy]`, `E[x]` ed `E[y]` come medie semplici."
-msgstr "If `w is None`, it computes `E[xy]`, `E[x]`, and `E[y]` as simple means."
+msgid ""
+"Se `w is None`, usa pesi unitari, cosi i due rami condividono lo stesso "
+"calcolo."
+msgstr ""
+"If `w is None`, uses unit weights, so both branches share the same "
+"computation."
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:15
-msgid "Se `w` e presente, calcola le stesse quantita come medie pesate con lo stesso vettore di pesi."
+msgid ""
+"Centra `x` e `y` sottraendo le rispettive medie (pesate se `w` e "
+"presente)."
 msgstr ""
-"If `w` is provided, it computes the same quantities as weighted means using the same weight "
-"vector."
+"Centers `x` and `y` by subtracting their respective means (weighted if "
+"`w` is given)."
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:16
-msgid "Restituisce la differenza `mean_xy - mean_x * mean_y`."
-msgstr "Returns the difference `mean_xy - mean_x * mean_y`."
+msgid ""
+"Restituisce la somma pesata dei prodotti degli scarti, con il termine "
+"correttivo two-pass, divisa per `sum(w)`."
+msgstr ""
+"Returns the weighted sum of the products of the deviations, with the two-"
+"pass correction term, divided by `sum(w)`."
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:18
-msgid "Validazione degli input e identita usata"
-msgstr "Input validation and identity used"
+msgid "Validazione degli input e centratura"
+msgstr "Input validation and centering"
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:42
-msgid "Il primo tratto del flusso e interamente dedicato a mettere `x` e `y` sullo stesso piano numerico."
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:41
+msgid ""
+"Il primo tratto del flusso e interamente dedicato a mettere `x` e `y` "
+"sullo stesso piano numerico."
 msgstr ""
-"The first part of the flow is entirely dedicated to putting `x` and `y` on the same numeric "
-"footing."
+"The first part of the flow is entirely dedicated to putting `x` and `y` "
+"on the same numeric footing."
+
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:43
+msgid ""
+"I due input vengono validati separatamente, quindi entrambi devono essere"
+" monodimensionali, non vuoti e composti da valori finiti."
+msgstr ""
+"The two inputs are validated separately, so both must be one-dimensional,"
+" non-empty, and composed of finite values."
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:44
 msgid ""
-"I due input vengono validati separatamente, quindi entrambi devono essere monodimensionali, non "
-"vuoti e composti da valori finiti."
+"Solo dopo questa normalizzazione la funzione controlla che "
+"`x_values.shape == y_values.shape`."
 msgstr ""
-"The two inputs are validated separately, so both must be one-dimensional, non-empty, and composed"
-" of finite values."
+"Only after this normalization does the function check that "
+"`x_values.shape == y_values.shape`."
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:45
-msgid "Solo dopo questa normalizzazione la funzione controlla che `x_values.shape == y_values.shape`."
-msgstr "Only after this normalization does the function check that `x_values.shape == y_values.shape`."
-
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:46
 msgid "Se i vettori non sono compatibili, il calcolo non parte nemmeno."
 msgstr "If the vectors are not compatible, the calculation does not even start."
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:48
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:47
 msgid "Formula implementata"
 msgstr "Implemented formula"
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:50
-msgid "La funzione usa l'identita"
-msgstr ""
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:49
+msgid "La funzione calcola"
+msgstr "The function computes"
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:52
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:51
+msgid ""
+"\n"
+"\\mathrm{Cov}_w(x, y) = \\frac{\\sum_i w_i (x_i - \\bar{x}_w)(y_i - "
+"\\bar{y}_w)}{\\sum_i w_i},\n"
+"\\qquad\n"
+"\\bar{x}_w = \\frac{\\sum_i w_i x_i}{\\sum_i w_i},\n"
+"\\qquad\n"
+"\\bar{y}_w = \\frac{\\sum_i w_i y_i}{\\sum_i w_i},\n"
+msgstr ""
+"\n"
+"\\mathrm{Cov}_w(x, y) = \\frac{\\sum_i w_i (x_i - \\bar{x}_w)(y_i - "
+"\\bar{y}_w)}{\\sum_i w_i},\n"
+"\\qquad\n"
+"\\bar{x}_w = \\frac{\\sum_i w_i x_i}{\\sum_i w_i},\n"
+"\\qquad\n"
+"\\bar{y}_w = \\frac{\\sum_i w_i y_i}{\\sum_i w_i},\n"
+
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:59
+msgid ""
+"con $w_i = 1$ (e quindi $\\sum_i w_i = n$) nel caso non pesato. "
+"Matematicamente coincide con l'identita $E[xy] - E[x]E[y]$, ma "
+"numericamente no."
+msgstr ""
+"with $w_i = 1$ (and therefore $\\sum_i w_i = n$) in the unweighted case. "
+"Mathematically it equals the identity $E[xy] - E[x]E[y]$, but numerically"
+" it does not."
+
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:61
+msgid "Stabilita numerica"
+msgstr "Numerical stability"
+
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:63
+#, python-brace-format
+msgid ""
+"L'identita $E[xy] - E[x]E[y]$ sottrae due quantita grandi e quasi uguali "
+"quando i dati hanno un offset grande rispetto alla loro dispersione: con "
+"$x \\approx 10^{15}$ i due termini valgono circa $10^{15} \\cdot E[y]$ e "
+"la differenza perde quasi tutte le cifre significative (cancellazione "
+"catastrofica)."
+msgstr ""
+"The identity $E[xy] - E[x]E[y]$ subtracts two large, nearly equal "
+"quantities when the data have an offset that is large compared with their"
+" spread: with $x \\approx 10^{15}$ both terms are about $10^{15} \\cdot "
+"E[y]$ and the difference loses almost all significant digits "
+"(catastrophic cancellation)."
+
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:65
+msgid ""
+"Centrando prima i dati, i prodotti $d^x_i d^y_i$ hanno l'ordine di "
+"grandezza della dispersione e la cancellazione scompare. Il termine "
+"correttivo"
+msgstr ""
+"Centering the data first makes the products $d^x_i d^y_i$ the size of the"
+" spread, and the cancellation disappears. The correction term"
+
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:67
 #, python-brace-format
 msgid ""
 "\n"
-"\\mathrm{Cov}(x, y) = E[xy] - E[x]E[y].\n"
+"\\frac{\\left(\\sum_i w_i d^x_i\\right)\\left(\\sum_i w_i "
+"d^y_i\\right)}{\\sum_i w_i}\n"
 msgstr ""
-
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:56
-msgid "Nel caso non pesato questo significa"
-msgstr ""
-
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:58
-#, python-brace-format
-msgid ""
 "\n"
-"E[xy] = \\frac{1}{n}\\sum_i x_i y_i,\n"
-"\\qquad\n"
-"E[x] = \\frac{1}{n}\\sum_i x_i,\n"
-"\\qquad\n"
-"E[y] = \\frac{1}{n}\\sum_i y_i.\n"
-msgstr ""
+"\\frac{\\left(\\sum_i w_i d^x_i\\right)\\left(\\sum_i w_i "
+"d^y_i\\right)}{\\sum_i w_i}\n"
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:66
-msgid "Nel caso pesato le tre medie vengono sostituite da"
-msgstr ""
-
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:68
-#, python-brace-format
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:71
 msgid ""
-"\n"
-"E_w[xy] = \\frac{\\sum_i w_i x_i y_i}{\\sum_i w_i},\n"
-"\\qquad\n"
-"E_w[x] = \\frac{\\sum_i w_i x_i}{\\sum_i w_i},\n"
-"\\qquad\n"
-"E_w[y] = \\frac{\\sum_i w_i y_i}{\\sum_i w_i}.\n"
+"e nullo in aritmetica esatta e compensa l'errore di arrotondamento delle "
+"medie (formula two-pass corretta di Chan, Golub e LeVeque)."
 msgstr ""
+"is zero in exact arithmetic and compensates for the rounding error of the"
+" means (corrected two-pass formula of Chan, Golub, and LeVeque)."
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:76
-msgid "Il valore finale resta in entrambi i casi"
-msgstr ""
-
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:78
-#, python-brace-format
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:73
 msgid ""
-"\n"
-"\\mathrm{Cov}(x, y) = \\mathrm{mean\\_xy} - \\mathrm{mean\\_x}\\,\\mathrm{mean\\_y}.\n"
+"Il limite che resta e la rappresentazione: se le differenze tra i dati "
+"sono piu piccole dell'ulp dell'offset, l'informazione e gia persa in "
+"`float64` prima della chiamata."
 msgstr ""
+"The remaining limit is representation: if the differences between data "
+"points are smaller than the ulp of the offset, the information is already"
+" lost in `float64` before the call."
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:82
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:75
 msgid "Interazioni importanti e limiti espliciti"
 msgstr "Important interactions and explicit limits"
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:84
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:77
 msgid "Alcune scelte dell'implementazione conviene renderle esplicite."
 msgstr "Some implementation choices are worth making explicit."
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:86
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:79
 msgid ""
-"La funzione non introduce un parametro `ddof`: implementa solo la definizione basata su `E[xy] - "
-"E[x]E[y]`."
+"La funzione non introduce un parametro `ddof`: normalizza sempre per `n` "
+"oppure per `sum(w)`."
 msgstr ""
+"The function does not introduce a `ddof` parameter: it always normalizes "
+"by `n` or by `sum(w)`."
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:87
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:80
 msgid ""
-"Gli stessi pesi vengono usati per tutte le medie del ramo pesato; non esistono pesi distinti per "
-"`x`, `y` o `xy`."
+"Gli stessi pesi vengono usati per entrambe le medie e per la somma "
+"finale; non esistono pesi distinti per `x` e `y`."
 msgstr ""
+"The same weights are used for both means and for the final sum; there are"
+" no separate weights for `x` and `y`."
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:88
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:81
 msgid ""
-"Se `w is None`, il flusso non passa da `weighted_mean(...)`: le medie sono scritte direttamente "
-"con `np.mean(...)`."
+"Se `w is None`, il flusso non passa da `weighted_mean(...)`: usa pesi "
+"unitari e lo stesso codice del ramo pesato."
 msgstr ""
+"If `w is None`, the flow does not go through `weighted_mean(...)`: it "
+"uses unit weights and the same code as the weighted branch."
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:89
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:82
 msgid ""
-"Se `w` e presente, il codice non lo normalizza preventivamente; usa la normalizzazione implicita "
-"tramite divisione per `sum(w)`."
+"Se `w` e presente, il codice non lo normalizza preventivamente; usa la "
+"normalizzazione implicita tramite divisione per `sum(w)`."
 msgstr ""
+"If `w` is given, the code does not normalize it beforehand; it uses the "
+"implicit normalization from dividing by `sum(w)`."
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:90
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:83
 msgid ""
-"Errori su valori non finiti o pesi non positivi vengono intercettati prima dell'ultima formula, "
-"cosi la funzione non restituisce mai covarianze `nan` in silenzio."
+"Errori su valori non finiti o pesi non positivi vengono intercettati "
+"prima del calcolo, cosi la funzione non restituisce mai covarianze `nan` "
+"in silenzio."
 msgstr ""
+"Errors from non-finite values or non-positive weights are caught before "
+"the computation, so the function never silently returns a `nan` "
+"covariance."
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:92
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:85
 msgid "Esempio commentato"
 msgstr "Commented example"
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:105
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:98
 msgid ""
-"Le due chiamate condividono la stessa identita matematica, ma cambiano il modo in cui vengono "
-"costruite `mean_xy`, `mean_x` e `mean_y`."
+"Le due chiamate condividono la stessa formula, ma cambiano il modo in cui"
+" vengono costruite le medie e la normalizzazione finale."
 msgstr ""
+"The two calls share the same formula, but differ in how the means and the"
+" final normalization are built."
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:107
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:100
 msgid "Senza pesi ogni punto contribuisce allo stesso modo."
-msgstr ""
+msgstr "Without weights, every point contributes equally."
 
-#: ../../source/moduli/stats_utils/covariance/funzionamento.md:108
-msgid "Con `w`, i contributi passano tutti attraverso la stessa normalizzazione pesata."
-msgstr ""
+#: ../../source/moduli/stats_utils/covariance/funzionamento.md:101
+msgid ""
+"Con `w`, i contributi passano tutti attraverso la stessa normalizzazione "
+"pesata."
+msgstr "With `w`, all contributions go through the same weighted normalization."
+
+#~ msgid "Se `w is None`, calcola `E[xy]`, `E[x]` ed `E[y]` come medie semplici."
+#~ msgstr ""
+#~ "If `w is None`, it computes "
+#~ "`E[xy]`, `E[x]`, and `E[y]` as simple"
+#~ " means."
+
+#~ msgid ""
+#~ "Se `w` e presente, calcola le "
+#~ "stesse quantita come medie pesate con"
+#~ " lo stesso vettore di pesi."
+#~ msgstr ""
+#~ "If `w` is provided, it computes "
+#~ "the same quantities as weighted means"
+#~ " using the same weight vector."
+
+#~ msgid "Restituisce la differenza `mean_xy - mean_x * mean_y`."
+#~ msgstr "Returns the difference `mean_xy - mean_x * mean_y`."
+
+#~ msgid "La funzione usa l'identita"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "\n"
+#~ "\\mathrm{Cov}(x, y) = E[xy] - E[x]E[y].\n"
+#~ msgstr ""
+
+#~ msgid "Nel caso non pesato questo significa"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "\n"
+#~ "E[xy] = \\frac{1}{n}\\sum_i x_i y_i,\n"
+#~ "\\qquad\n"
+#~ "E[x] = \\frac{1}{n}\\sum_i x_i,\n"
+#~ "\\qquad\n"
+#~ "E[y] = \\frac{1}{n}\\sum_i y_i.\n"
+#~ msgstr ""
+
+#~ msgid "Nel caso pesato le tre medie vengono sostituite da"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "\n"
+#~ "E_w[xy] = \\frac{\\sum_i w_i x_i y_i}{\\sum_i w_i},\n"
+#~ "\\qquad\n"
+#~ "E_w[x] = \\frac{\\sum_i w_i x_i}{\\sum_i w_i},\n"
+#~ "\\qquad\n"
+#~ "E_w[y] = \\frac{\\sum_i w_i y_i}{\\sum_i w_i}.\n"
+#~ msgstr ""
+
+#~ msgid "Il valore finale resta in entrambi i casi"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "\n"
+#~ "\\mathrm{Cov}(x, y) = \\mathrm{mean\\_xy} -"
+#~ " \\mathrm{mean\\_x}\\,\\mathrm{mean\\_y}.\n"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "La funzione non introduce un parametro"
+#~ " `ddof`: implementa solo la definizione "
+#~ "basata su `E[xy] - E[x]E[y]`."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Gli stessi pesi vengono usati per "
+#~ "tutte le medie del ramo pesato; "
+#~ "non esistono pesi distinti per `x`, "
+#~ "`y` o `xy`."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Se `w is None`, il flusso non "
+#~ "passa da `weighted_mean(...)`: le medie "
+#~ "sono scritte direttamente con `np.mean(...)`."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Errori su valori non finiti o pesi"
+#~ " non positivi vengono intercettati prima"
+#~ " dell'ultima formula, cosi la funzione "
+#~ "non restituisce mai covarianze `nan` in"
+#~ " silenzio."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Le due chiamate condividono la stessa"
+#~ " identita matematica, ma cambiano il "
+#~ "modo in cui vengono costruite `mean_xy`,"
+#~ " `mean_x` e `mean_y`."
+#~ msgstr ""
 

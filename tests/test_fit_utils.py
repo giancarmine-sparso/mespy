@@ -603,10 +603,6 @@ def test_lin_fit_rejects_unrepresentable_x_variance():
         lin_fit(x, np.arange(5.0), [0.1] * 5, show_plot=False)
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="stats_utils.covariance usa E[xy] - E[x]E[y] senza centrare i dati",
-)
 def test_lin_fit_large_offset_precision():
     x, y, sigma_y, _ = make_unit_change_data()
     reference = lin_fit(x, y, sigma_y, show_plot=False)
