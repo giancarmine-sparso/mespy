@@ -1,3 +1,7 @@
+import math
+import tomllib
+from pathlib import Path
+
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -482,6 +486,7 @@ def test_lin_fit_rejects_constant_x():
         lin_fit([1.0, 1.0, 1.0], [1.0, 2.0, 3.0], [0.1, 0.1, 0.1], show_plot=False)
 
 
+
 def test_lin_fit_rejects_scalar_axis_limits_when_plotting():
     x, y, sigma_y, _, _ = make_placebo_data()
 
@@ -518,3 +523,220 @@ def test_lin_fit_raises_when_sigma_x_fit_does_not_converge():
             max_iter=1,
             show_plot=False,
         )
+
+
+def _read_toml(path):
+    return tomllib.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def _collect_keys(document):
+    keys = set()
+    for key, value in document.items():
+        keys.add(key)
+        if isinstance(value, dict):
+            keys |= _collect_keys(value)
+    return keys
+
+
+def _make_manual_result(**overrides):
+    fields = {
+        "slope": 1.0,
+        "intercept": 0.0,
+        "slope_std": 0.1,
+        "intercept_std": 0.2,
+        "covariance": -0.01,
+        "correlation": -0.5,
+        "residuals": np.array([0.1, -0.2, 0.1]),
+        "residual_std": 0.2,
+        "chi2": 1.0,
+        "reduced_chi2": 1.0,
+        "dof": 1,
+        "iterations": 0,
+        "converged": True,
+        "figure": None,
+    }
+    fields.update(overrides)
+    return LinearFitResult(**fields)
+
+
+def test_to_toml_writes_file_and_returns_path(tmp_path):
+    x, y, sigma_y, _, _ = make_placebo_data()
+    result = lin_fit(x, y, sigma_y, show_plot=False)
+    target = tmp_path / "fit.toml"
+
+    written = result.to_toml(target)
+
+    assert isinstance(written, Path)
+    assert written == target
+    assert target.is_file()
+
+
+def test_to_toml_document_structure(tmp_path):
+    x, y, sigma_y, _, _ = make_placebo_data()
+    result = lin_fit(x, y, sigma_y, show_plot=False)
+
+    document = _read_toml(result.to_toml(tmp_path / "fit.toml"))
+
+    assert set(document) == {"mespy", "fit", "diagnostics", "residuals"}
+    assert document["mespy"]["schema_version"] == 1
+    assert document["mespy"]["result_type"] == "linear_fit"
+    assert isinstance(document["mespy"]["mespy_version"], str)
+    assert document["mespy"]["mespy_version"]
+
+
+def test_to_toml_values_round_trip_exactly(tmp_path):
+    x, y, sigma_y, _, _ = make_placebo_data()
+    result = lin_fit(x, y, sigma_y, show_plot=False)
+
+    document = _read_toml(result.to_toml(tmp_path / "fit.toml"))
+    fit = document["fit"]
+    diagnostics = document["diagnostics"]
+
+    for name in (
+        "slope",
+        "slope_std",
+        "intercept",
+        "intercept_std",
+        "covariance",
+        "correlation",
+        "scale_factor",
+    ):
+        assert fit[name] == getattr(result, name)
+    for name in ("chi2", "reduced_chi2", "residual_std"):
+        assert diagnostics[name] == getattr(result, name)
+
+    assert type(diagnostics["dof"]) is int
+    assert diagnostics["dof"] == result.dof
+    assert type(diagnostics["iterations"]) is int
+    assert diagnostics["iterations"] == result.iterations
+    assert diagnostics["converged"] is True
+
+
+def test_to_toml_residuals_are_numpy_converted(tmp_path):
+    x, y, sigma_y, _, _ = make_placebo_data()
+    result = lin_fit(x, y, sigma_y, show_plot=False)
+
+    values = _read_toml(result.to_toml(tmp_path / "fit.toml"))["residuals"]["values"]
+
+    assert isinstance(values, list)
+    assert all(type(value) is float for value in values)
+    assert np.array_equal(np.array(values), result.residuals)
+
+
+def test_to_toml_excludes_figure_and_matches_result_without_plot(tmp_path):
+    x, y, sigma_y, _, _ = make_placebo_data()
+    with_plot = lin_fit(x, y, sigma_y, show_plot=True)
+    without_plot = lin_fit(x, y, sigma_y, show_plot=False)
+
+    try:
+        assert with_plot.figure is not None
+        document = _read_toml(with_plot.to_toml(tmp_path / "plot.toml"))
+    finally:
+        plt.close(with_plot.figure)
+
+    assert without_plot.figure is None
+    assert "figure" not in _collect_keys(document)
+    assert document == _read_toml(without_plot.to_toml(tmp_path / "no_plot.toml"))
+
+
+@pytest.mark.parametrize("as_str", [True, False])
+def test_to_toml_accepts_str_and_path(tmp_path, as_str):
+    result = _make_manual_result()
+    target = tmp_path / "fit.toml"
+
+    written = result.to_toml(str(target) if as_str else target)
+
+    assert written == target
+    assert _read_toml(target)["fit"]["slope"] == 1.0
+
+
+def test_to_toml_appends_suffix_only_when_missing(tmp_path):
+    result = _make_manual_result()
+
+    assert result.to_toml(tmp_path / "fit_molla") == tmp_path / "fit_molla.toml"
+    assert (tmp_path / "fit_molla.toml").is_file()
+    assert result.to_toml(tmp_path / "fit.txt") == tmp_path / "fit.txt"
+    assert (tmp_path / "fit.txt").is_file()
+
+
+def test_to_toml_overwrites_existing_file(tmp_path):
+    target = tmp_path / "fit.toml"
+    target.write_text("contenuto [non valido", encoding="utf-8")
+
+    _make_manual_result(slope=2.5).to_toml(target)
+
+    assert _read_toml(target)["fit"]["slope"] == 2.5
+    assert sorted(path.name for path in tmp_path.iterdir()) == ["fit.toml"]
+
+
+@pytest.mark.parametrize(
+    ("fit_method", "with_sigma_y"),
+    [("absolute", True), ("residual", True), ("residual", False)],
+)
+def test_to_toml_records_fit_method(tmp_path, fit_method, with_sigma_y):
+    x, y, sigma_y, _, _ = make_placebo_data()
+    result = lin_fit(
+        x,
+        y,
+        sigma_y if with_sigma_y else None,
+        fit_method=fit_method,
+        show_plot=False,
+    )
+
+    fit = _read_toml(result.to_toml(tmp_path / "fit.toml"))["fit"]
+
+    assert fit["fit_method"] == fit_method
+    assert fit["scale_factor"] == result.scale_factor
+    if fit_method == "absolute":
+        assert fit["scale_factor"] == 1.0
+
+
+def test_to_toml_with_sigma_x_records_iterations(tmp_path):
+    x, y, sigma_y, sigma_x, _, _ = make_placebo_data_with_sigma_x()
+    result = lin_fit(x, y, sigma_y, sigma_x=sigma_x, show_plot=False)
+
+    diagnostics = _read_toml(result.to_toml(tmp_path / "fit.toml"))["diagnostics"]
+
+    assert diagnostics["iterations"] == result.iterations > 0
+    assert diagnostics["converged"] is True
+
+
+def test_to_toml_preserves_non_finite_values(tmp_path):
+    result = _make_manual_result(
+        chi2=math.inf,
+        correlation=math.nan,
+        residuals=np.array([0.1, -math.inf, math.nan]),
+    )
+
+    document = _read_toml(result.to_toml(tmp_path / "fit.toml"))
+
+    assert math.isinf(document["diagnostics"]["chi2"])
+    assert math.isnan(document["fit"]["correlation"])
+    values = document["residuals"]["values"]
+    assert values[0] == 0.1
+    assert values[1] == -math.inf
+    assert math.isnan(values[2])
+
+
+def test_to_toml_accepts_numpy_scalars(tmp_path):
+    result = _make_manual_result(
+        slope=np.float64(1.5),
+        dof=np.int64(3),
+        iterations=np.int64(2),
+        converged=np.bool_(True),
+    )
+
+    document = _read_toml(result.to_toml(tmp_path / "fit.toml"))
+
+    assert document["fit"]["slope"] == 1.5
+    assert type(document["diagnostics"]["dof"]) is int
+    assert document["diagnostics"]["dof"] == 3
+    assert document["diagnostics"]["iterations"] == 2
+    assert document["diagnostics"]["converged"] is True
+
+
+def test_to_toml_missing_directory_raises(tmp_path):
+    with pytest.raises(FileNotFoundError):
+        _make_manual_result().to_toml(tmp_path / "missing" / "fit.toml")
+
+    assert list(tmp_path.iterdir()) == []

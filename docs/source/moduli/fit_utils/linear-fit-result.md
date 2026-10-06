@@ -46,6 +46,26 @@ print(result.reduced_chi2)
 print(result.fit_method)
 ```
 
+## Esportazione in TOML
+
+Il metodo `to_toml(path)` salva il risultato numerico del fit in un file TOML leggibile e versionabile:
+
+```python
+fit = mespy.lin_fit(x, y, sigma_y)
+fit.to_toml("fit_molla.toml")
+```
+
+Il file contiene quattro tabelle:
+
+- `[mespy]`: `schema_version`, `mespy_version` e `result_type = "linear_fit"`, per riconoscere il formato del file.
+- `[fit]`: `fit_method`, `slope`, `slope_std`, `intercept`, `intercept_std`, `covariance`, `correlation` e `scale_factor`.
+- `[diagnostics]`: `chi2`, `reduced_chi2`, `dof`, `residual_std`, `iterations` e `converged`.
+- `[residuals]`: il vettore `values` con i residui fisici.
+
+Il campo `figure` non viene mai salvato: per conservare il grafico usa il parametro `save_path` di [`lin_fit`](lin-fit.md).
+
+Se `path` non ha estensione viene aggiunto `.toml`. Un file esistente viene sovrascritto in modo atomico, quindi non resta mai un file a meta. Il metodo restituisce il `Path` del file scritto. I valori vengono salvati con precisione completa: rileggendo il file con `tomllib` si ottengono esattamente gli stessi numeri.
+
 ## Note
 
 La classe non esegue calcoli da sola: e una rappresentazione dell'output prodotto da [`lin_fit`](lin-fit.md). Il parametro `normalize_residuals` di `lin_fit` non aggiunge campi e non cambia i valori numerici contenuti in questa classe; agisce solo sul pannello dei residui della figura. Il campo `scale_factor` e invece parte del calcolo: con `fit_method="residual"` descrive la scala di incertezza stimata dai residui.

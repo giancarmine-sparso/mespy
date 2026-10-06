@@ -23,6 +23,7 @@ dependencies = [
     "numpy",
     "pandas",
     "matplotlib",
+    "tomli-w>=1.0",
 ]
 
 [project.urls]

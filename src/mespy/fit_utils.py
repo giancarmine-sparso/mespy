@@ -2,11 +2,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Literal, cast
+from typing import TYPE_CHECKING, Any, Literal, cast
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 
+from ._toml import _mespy_header, _write_toml_document
 from .plot_utils import (
     _resolve_style,
     _style_context,
@@ -23,6 +24,8 @@ if TYPE_CHECKING:
 
 FloatVector = NDArray[np.float64]
 FitMethod = Literal["absolute", "residual"]
+
+_LINEAR_FIT_SCHEMA_VERSION = 1
 
 
 @dataclass(frozen=True, slots=True)
@@ -45,6 +48,56 @@ class LinearFitResult:
     figure: Figure | None
     fit_method: FitMethod = "absolute"
     scale_factor: float = 1.0
+
+    def to_toml(self, path: str | Path) -> Path:
+        """
+        Save the numerical result of the fit to a TOML file.
+
+        The file contains parameters, uncertainties, diagnostics and
+        residuals, plus a ``[mespy]`` table with ``schema_version``,
+        ``mespy_version`` and ``result_type``. The ``figure`` field is
+        never saved.
+
+        Parameters
+        ----------
+        path : str or Path
+            Destination path. If it has no extension, ``.toml`` is
+            appended. An existing file is overwritten atomically.
+
+        Returns
+        -------
+        Path
+            Path of the written file.
+        """
+        return _write_toml_document(_linear_fit_document(self), path)
+
+
+def _linear_fit_document(result: LinearFitResult) -> dict[str, Any]:
+    """Converte *result* in un documento TOML con soli tipi Python nativi."""
+    return {
+        "mespy": _mespy_header("linear_fit", _LINEAR_FIT_SCHEMA_VERSION),
+        "fit": {
+            "fit_method": str(result.fit_method),
+            "slope": float(result.slope),
+            "slope_std": float(result.slope_std),
+            "intercept": float(result.intercept),
+            "intercept_std": float(result.intercept_std),
+            "covariance": float(result.covariance),
+            "correlation": float(result.correlation),
+            "scale_factor": float(result.scale_factor),
+        },
+        "diagnostics": {
+            "chi2": float(result.chi2),
+            "reduced_chi2": float(result.reduced_chi2),
+            "dof": int(result.dof),
+            "residual_std": float(result.residual_std),
+            "iterations": int(result.iterations),
+            "converged": bool(result.converged),
+        },
+        "residuals": {
+            "values": np.asarray(result.residuals, dtype=float).tolist(),
+        },
+    }
 
 
 def _validate_positive_vector(

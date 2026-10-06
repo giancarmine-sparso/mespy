@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-12 15:36+0200\n"
+"POT-Creation-Date: 2026-10-06 17:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -157,10 +157,61 @@ msgid "Esempio"
 msgstr "Example"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:49
+msgid "Esportazione in TOML"
+msgstr "TOML export"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:51
+msgid ""
+"Il metodo `to_toml(path)` salva il risultato numerico del fit in un file "
+"TOML leggibile e versionabile:"
+msgstr "The `to_toml(path)` method saves the numerical result of the fit to a readable, version-controllable TOML file:"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:58
+msgid "Il file contiene quattro tabelle:"
+msgstr "The file contains four tables:"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:60
+msgid ""
+"`[mespy]`: `schema_version`, `mespy_version` e `result_type = "
+"\"linear_fit\"`, per riconoscere il formato del file."
+msgstr "`[mespy]`: `schema_version`, `mespy_version`, and `result_type = \"linear_fit\"`, to identify the file format."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:61
+msgid ""
+"`[fit]`: `fit_method`, `slope`, `slope_std`, `intercept`, "
+"`intercept_std`, `covariance`, `correlation` e `scale_factor`."
+msgstr "`[fit]`: `fit_method`, `slope`, `slope_std`, `intercept`, `intercept_std`, `covariance`, `correlation`, and `scale_factor`."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:62
+msgid ""
+"`[diagnostics]`: `chi2`, `reduced_chi2`, `dof`, `residual_std`, "
+"`iterations` e `converged`."
+msgstr "`[diagnostics]`: `chi2`, `reduced_chi2`, `dof`, `residual_std`, `iterations`, and `converged`."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:63
+msgid "`[residuals]`: il vettore `values` con i residui fisici."
+msgstr "`[residuals]`: the `values` vector with the physical residuals."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:65
+msgid ""
+"Il campo `figure` non viene mai salvato: per conservare il grafico usa il"
+" parametro `save_path` di [`lin_fit`](lin-fit.md)."
+msgstr "The `figure` field is never saved: to keep the plot, use the `save_path` parameter of [`lin_fit`](lin-fit.md)."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:67
+msgid ""
+"Se `path` non ha estensione viene aggiunto `.toml`. Un file esistente "
+"viene sovrascritto in modo atomico, quindi non resta mai un file a meta. "
+"Il metodo restituisce il `Path` del file scritto. I valori vengono "
+"salvati con precisione completa: rileggendo il file con `tomllib` si "
+"ottengono esattamente gli stessi numeri."
+msgstr "If `path` has no extension, `.toml` is appended. An existing file is overwritten atomically, so a half-written file is never left behind. The method returns the `Path` of the written file. Values are saved with full precision: reading the file back with `tomllib` gives exactly the same numbers."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:69
 msgid "Note"
 msgstr "Notes"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:51
+#: ../../source/moduli/fit_utils/linear-fit-result.md:71
 msgid ""
 "La classe non esegue calcoli da sola: e una rappresentazione dell'output "
 "prodotto da [`lin_fit`](lin-fit.md). Il parametro `normalize_residuals` "
@@ -190,3 +241,4 @@ msgstr ""
 #~ " on its own: it is a "
 #~ "representation of the output produced by"
 #~ " [`lin_fit`](lin-fit.md)."
+

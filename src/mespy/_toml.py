@@ -1,0 +1,59 @@
+"""Helper privati per esportare i risultati di mespy in file TOML."""
+
+from __future__ import annotations
+
+import os
+import uuid
+from importlib.metadata import PackageNotFoundError, version
+from pathlib import Path
+from typing import Any
+
+
+def _mespy_version() -> str:
+    try:
+        return version("mespy")
+    except PackageNotFoundError:
+        return "unknown"
+
+
+def _mespy_header(result_type: str, schema_version: int) -> dict[str, Any]:
+    """Tabella ``[mespy]`` comune a tutti i risultati esportati."""
+    return {
+        "schema_version": schema_version,
+        "mespy_version": _mespy_version(),
+        "result_type": result_type,
+    }
+
+
+def _normalize_toml_path(path: str | Path) -> Path:
+    """Aggiunge ``.toml`` solo se *path* non ha già un'estensione."""
+    toml_path = Path(path)
+    if toml_path.suffix == "":
+        toml_path = toml_path.with_suffix(".toml")
+    return toml_path
+
+
+def _write_toml_document(document: dict[str, Any], path: str | Path) -> Path:
+    """Scrive *document* in *path* in modo atomico e restituisce il path scritto.
+
+    Il documento viene serializzato interamente in memoria prima di toccare
+    il disco, poi scritto su un file temporaneo nella stessa directory e
+    spostato con ``os.replace``: un file esistente non resta mai troncato.
+    """
+    import tomli_w
+
+    toml_path = _normalize_toml_path(path)
+    data = tomli_w.dumps(document).encode("utf-8")
+
+    tmp_path = toml_path.with_name(f".{toml_path.name}.{uuid.uuid4().hex}.tmp")
+    # os.open con 0o666 rispetta l'umask: il file finale ha i permessi usuali.
+    fd = os.open(tmp_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o666)
+    try:
+        with os.fdopen(fd, "wb") as tmp_file:
+            tmp_file.write(data)
+        os.replace(tmp_path, toml_path)
+    except BaseException:
+        tmp_path.unlink(missing_ok=True)
+        raise
+
+    return toml_path

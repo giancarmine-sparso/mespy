@@ -19,10 +19,12 @@
   [`weighted_mean`](../stats_utils/weighted-mean.md),
   [`covariance`](../stats_utils/covariance.md),
   [`variance`](../stats_utils/variance.md)
+- Import interni da `_toml` (scrittura TOML con `tomli_w`):
+  `_mespy_header`, `_write_toml_document`
 
 ## Cosa espone
 
-- [`LinearFitResult`](linear-fit-result.md)
+- [`LinearFitResult`](linear-fit-result.md), con il metodo `to_toml` per esportare il risultato in TOML
 - [`lin_fit`](lin-fit.md), con incertezze assolute o scalate dai residui
 
 ## Di cosa si occupa
