@@ -486,6 +486,135 @@ def test_lin_fit_rejects_constant_x():
         lin_fit([1.0, 1.0, 1.0], [1.0, 2.0, 3.0], [0.1, 0.1, 0.1], show_plot=False)
 
 
+def make_unit_change_data():
+    x = np.arange(1.0, 7.0)
+    y = 0.8 * x + 0.3 + np.array([0.05, -0.04, 0.02, -0.03, 0.01, 0.0])
+    sigma_y = np.array([0.05, 0.04, 0.06, 0.05, 0.03, 0.05])
+    sigma_x = np.full_like(x, 0.02)
+    return x, y, sigma_y, sigma_x
+
+
+def test_lin_fit_accepts_small_scale_x():
+    x = np.array([1e-6, 2e-6, 3e-6, 4e-6])
+    y = np.array([1.0, 2.0, 3.0, 4.0])
+
+    result = lin_fit(x, y, [0.1, 0.1, 0.1, 0.1], show_plot=False)
+
+    assert result.slope == pytest.approx(1e6, rel=1e-10)
+    assert result.intercept == pytest.approx(0.0, abs=1e-10)
+
+
+@pytest.mark.parametrize("scale", [1e-9, 1e-12])
+def test_lin_fit_accepts_very_small_scale_x(scale):
+    x = scale * np.array([1.0, 2.0, 3.0, 4.0])
+    y = np.array([1.1, 1.9, 3.05, 3.95])
+
+    result = lin_fit(x, y, [0.1, 0.1, 0.1, 0.1], show_plot=False)
+
+    assert np.isfinite(result.slope)
+    assert result.slope * scale == pytest.approx(0.97, rel=1e-10)
+
+
+@pytest.mark.parametrize("scale", [1e-12, 1e-6, 1e6, 1e12])
+def test_lin_fit_is_invariant_under_unit_change_of_x(scale):
+    x, y, sigma_y, _ = make_unit_change_data()
+    reference = lin_fit(x, y, sigma_y, show_plot=False)
+
+    result = lin_fit(x * scale, y, sigma_y, show_plot=False)
+
+    # grandezze con unita di 1/x: scalano come 1/scale
+    assert result.slope * scale == pytest.approx(reference.slope, rel=1e-10)
+    assert result.slope_std * scale == pytest.approx(reference.slope_std, rel=1e-10)
+    assert result.covariance * scale == pytest.approx(reference.covariance, rel=1e-10)
+
+    # grandezze con unita di y o adimensionali: invarianti
+    for name in (
+        "intercept",
+        "intercept_std",
+        "correlation",
+        "chi2",
+        "reduced_chi2",
+        "residual_std",
+        "scale_factor",
+    ):
+        assert getattr(result, name) == pytest.approx(
+            getattr(reference, name), rel=1e-10
+        ), name
+    assert result.dof == reference.dof
+    np.testing.assert_allclose(result.residuals, reference.residuals, rtol=0, atol=1e-12)
+
+    predicted = result.slope * (x * scale) + result.intercept
+    expected = reference.slope * x + reference.intercept
+    np.testing.assert_allclose(predicted, expected, rtol=1e-12)
+
+
+@pytest.mark.parametrize("scale", [1e-12, 1e-6, 1e6, 1e12])
+def test_lin_fit_with_sigma_x_is_invariant_under_unit_change_of_x(scale):
+    x, y, sigma_y, sigma_x = make_unit_change_data()
+    reference = lin_fit(x, y, sigma_y, sigma_x=sigma_x, show_plot=False)
+
+    result = lin_fit(x * scale, y, sigma_y, sigma_x=sigma_x * scale, show_plot=False)
+
+    assert result.slope * scale == pytest.approx(reference.slope, rel=1e-10)
+    assert result.intercept == pytest.approx(reference.intercept, rel=1e-10)
+    assert result.chi2 == pytest.approx(reference.chi2, rel=1e-10)
+    assert result.iterations == reference.iterations
+    assert result.converged is True
+
+
+def test_lin_fit_accepts_minimal_two_distinct_values():
+    result = lin_fit([1.0, 1.0, 2.0], [1.0, 1.2, 3.0], [0.1, 0.1, 0.1], show_plot=False)
+
+    assert result.dof == 1
+    assert result.slope == pytest.approx(1.9)
+
+
+def test_lin_fit_accepts_partial_duplicates():
+    result = lin_fit(
+        [1.0, 1.0, 2.0, 2.0], [1.0, 1.1, 3.0, 3.1], [0.1] * 4, show_plot=False
+    )
+
+    assert result.slope == pytest.approx(2.0)
+
+
+def test_lin_fit_accepts_large_offset_x():
+    x, y, sigma_y, _ = make_unit_change_data()
+    reference = lin_fit(x, y, sigma_y, show_plot=False)
+
+    result = lin_fit(1e9 + x, y, sigma_y, show_plot=False)
+
+    assert result.slope == pytest.approx(reference.slope, rel=1e-6)
+
+
+def test_lin_fit_rejects_constant_large_x_with_uneven_weights():
+    # Con pesi non uniformi la varianza centrata di x costante puo non
+    # essere esattamente zero per arrotondamento: deve comunque fallire.
+    rng = np.random.default_rng(1)
+    for _ in range(50):
+        sigma_y = rng.uniform(0.1, 3.0, 3)
+        with pytest.raises(ValueError, match="valori distinti"):
+            lin_fit(np.full(3, 7e15), [1.0, 2.0, 3.0], sigma_y, show_plot=False)
+
+
+def test_lin_fit_rejects_unrepresentable_x_variance():
+    x = 1e-170 * np.arange(1.0, 6.0)
+
+    with pytest.raises(ValueError, match="non è rappresentabile"):
+        lin_fit(x, np.arange(5.0), [0.1] * 5, show_plot=False)
+
+
+@pytest.mark.xfail(
+    strict=True,
+    reason="stats_utils.covariance usa E[xy] - E[x]E[y] senza centrare i dati",
+)
+def test_lin_fit_large_offset_precision():
+    x, y, sigma_y, _ = make_unit_change_data()
+    reference = lin_fit(x, y, sigma_y, show_plot=False)
+
+    result = lin_fit(1e15 + x, y, sigma_y, show_plot=False)
+
+    assert result.slope == pytest.approx(reference.slope, rel=1e-9)
+
 
 def test_lin_fit_rejects_scalar_axis_limits_when_plotting():
     x, y, sigma_y, _, _ = make_placebo_data()

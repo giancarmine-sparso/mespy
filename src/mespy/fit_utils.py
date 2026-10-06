@@ -151,9 +151,17 @@ def _fit_coefficients(
     y: FloatVector,
     weights: FloatVector,
 ) -> tuple[float, float, float]:
-    var_x = weighted_variance(x, weights)
-    if not np.isfinite(var_x) or np.isclose(var_x, 0.0):
+    # Condizione esatta e invariante di scala: un confronto con tolleranza
+    # assoluta sulla varianza dipenderebbe dall'unita di misura di x.
+    if np.all(x == x[0]):
         raise ValueError("x deve contenere almeno due valori distinti")
+
+    var_x = weighted_variance(x, weights)
+    if not np.isfinite(var_x) or var_x <= 0.0:
+        raise ValueError(
+            "la varianza di x non è rappresentabile in float64 "
+            "(valori di x troppo piccoli o troppo grandi in modulo)"
+        )
 
     cov_xy = weighted_covariance(x, y, weights)
     slope = cov_xy / var_x
@@ -401,6 +409,9 @@ def lin_fit(
         If ``save_path`` is specified but ``show_plot=False``.
     ValueError
         If ``x`` contains fewer than 2 distinct values.
+    ValueError
+        If the weighted variance of ``x`` underflows or overflows in
+        ``float64`` (values of ``x`` extremely small or large in magnitude).
     RuntimeError
         If the fit does not converge within ``max_iter`` iterations
         (only when ``sigma_x`` is provided).

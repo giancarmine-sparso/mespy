@@ -18,7 +18,7 @@ Calcola un singolo aggiornamento dei coefficienti del fit lineare pesato: penden
 
 - `x`, `y` e `weights` devono essere gia validati dal chiamante.
 - `weights` deve contenere pesi strettamente positivi.
-- `x` deve avere varianza pesata finita e non nulla.
+- `x` deve contenere almeno due valori distinti.
 
 ## Dove viene usata
 
@@ -27,8 +27,8 @@ Calcola un singolo aggiornamento dei coefficienti del fit lineare pesato: penden
 
 ## Come fallisce
 
-- `ValueError` se la varianza pesata di `x` non e finita
-- `ValueError` se la varianza pesata di `x` e troppo vicina a zero, cioe se non ci sono abbastanza valori distinti per stimare la pendenza
+- `ValueError` se tutti i valori di `x` sono uguali: la pendenza non e identificabile. Il controllo e esatto e non dipende dall'unita di misura di `x`
+- `ValueError` se la varianza pesata di `x` non e rappresentabile in `float64`, cioe se il calcolo va in underflow o overflow perche i valori di `x` sono estremamente piccoli o grandi in modulo
 
 ## Perche resta privata
 
