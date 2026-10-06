@@ -21,39 +21,53 @@ def load_csv(
     skip_initial_space: bool = True,
 ) -> pd.DataFrame:
     """
-    Carica un file CSV in un DataFrame pandas con validazione.
+    Load a CSV file into a pandas DataFrame with validation.
 
-    Wrapper di ``pd.read_csv`` che aggiunge gestione di separatori,
-    decimali, rinominazione colonne, controllo colonne richieste
-    e trattamento esplicito dei valori mancanti.
+    Wrapper around ``pd.read_csv`` that adds handling of separators,
+    decimal marks, column renaming, required-column checks, and an
+    explicit policy for missing values.
 
-    Parametri
-    ---------
-    path : str o Path
-        Percorso del file CSV.
-    sep : str, default ","
-        Separatore di campo.
-    decimal : str, default "."
-        Carattere decimale (es. "," per formato italiano).
-    rename_columns : mapping o None
-        Mappa {nome_vecchio: nome_nuovo} per rinominare le colonne.
-    required_columns : collection o None
-        Colonne che devono essere presenti nel DataFrame dopo
-        l'eventuale rinomina.
-    missing : {"error", "drop", "allow"}, default "error"
-        Politica di gestione dei valori mancanti:
-        - ``"error"``: solleva ValueError in presenza di NaN
-        - ``"drop"``: rimuove le righe con NaN
-        - ``"allow"``: lascia i NaN nel DataFrame
-    comment : str o None, default None
-        Se valorizzato, passa il carattere di commento a ``pd.read_csv``.
-    skip_initial_space : bool, default True
-        Se True, ignora gli spazi immediatamente successivi al separatore.
+    Parameters
+    ----------
+    path : str or Path
+        Path to the CSV file.
+    sep : str, optional
+        Field separator (default ``","``).
+    decimal : str, optional
+        Decimal mark, e.g. ``","`` for Italian-formatted numbers
+        (default ``"."``).
+    rename_columns : mapping or None, optional
+        Mapping ``{old_name: new_name}`` used to rename columns
+        (default ``None``).
+    required_columns : collection or None, optional
+        Columns that must be present in the DataFrame after any
+        renaming (default ``None``).
+    missing : {"error", "drop", "allow"}, optional
+        Policy for missing values (default ``"error"``):
 
-    Restituisce
-    -----------
-    pd.DataFrame
-        DataFrame con i dati caricati e validati.
+        - ``"error"``: raise ``ValueError`` if any NaN is present
+        - ``"drop"``: drop rows containing NaN
+        - ``"allow"``: keep NaN in the DataFrame
+    comment : str or None, optional
+        If set, passed to ``pd.read_csv`` as the comment character
+        (default ``None``).
+    skip_initial_space : bool, optional
+        If ``True``, skip whitespace right after the separator
+        (default ``True``).
+
+    Returns
+    -------
+    pandas.DataFrame
+        DataFrame with the loaded and validated data.
+
+    Raises
+    ------
+    ValueError
+        If ``missing`` is not ``"error"``, ``"drop"`` or ``"allow"``.
+    ValueError
+        If any of ``required_columns`` is missing.
+    ValueError
+        If ``missing="error"`` and the file contains missing values.
     """
     if missing not in {"error", "drop", "allow"}:
         raise ValueError("missing deve essere uno tra: 'error', 'drop', 'allow'")

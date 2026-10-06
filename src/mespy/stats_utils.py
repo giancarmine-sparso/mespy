@@ -7,7 +7,7 @@ FloatVector = NDArray[np.float64]
 
 
 def _as_float_vector(name: str, values: ArrayLike, *, allow_empty: bool = False) -> FloatVector:
-    """Converte *values* in un array float64 monodimensionale e finito."""
+    """Convert *values* into a finite, one-dimensional float64 array."""
     vector = np.asarray(values, dtype=float)
 
     if vector.ndim != 1:
@@ -23,7 +23,7 @@ def _as_float_vector(name: str, values: ArrayLike, *, allow_empty: bool = False)
 
 
 def _validate_weights(x: FloatVector, w: ArrayLike | None) -> FloatVector | None:
-    """Valida un vettore di pesi positivo e compatibile con *x*."""
+    """Validate a positive weight vector with the same shape as *x*."""
     if w is None:
         return None
 
@@ -45,13 +45,23 @@ def _validate_weights(x: FloatVector, w: ArrayLike | None) -> FloatVector | None
 
 def median(x: ArrayLike) -> float:
     """
-    Mediana di x.
+    Median of ``x``.
 
-    Parametri:
-        x : array-like, dati
+    Parameters
+    ----------
+    x : array-like
+        Data.
 
-    Restituisce:
-        float, mediana di x
+    Returns
+    -------
+    float
+        Median of ``x``.
+
+    Raises
+    ------
+    ValueError
+        If ``x`` is empty, not one-dimensional, or contains non-finite
+        values.
     """
     values = _as_float_vector("x", x)
     return float(np.median(values))
@@ -59,17 +69,31 @@ def median(x: ArrayLike) -> float:
 
 def weighted_mean(x: ArrayLike, w: ArrayLike | None = None) -> float:
     """
-    Media di x, opzionalmente pesata.
+    Mean of ``x``, optionally weighted.
 
-    Se w=None, calcola la media aritmetica semplice.
-    I pesi w devono essere già calcolati come w_i = 1/sigma_i^2.
+    If ``w`` is ``None``, computes the plain arithmetic mean. Weights
+    must already be computed, e.g. as ``w_i = 1 / sigma_i**2``.
 
-    Parametri:
-        x : array-like, dati
-        w : array-like o None, pesi (default: tutti uguali)
+    Parameters
+    ----------
+    x : array-like
+        Data.
+    w : array-like or None, optional
+        Weights; ``None`` means all equal (default ``None``).
 
-    Restituisce:
-        float, media (pesata) di x
+    Returns
+    -------
+    float
+        (Weighted) mean of ``x``.
+
+    Raises
+    ------
+    ValueError
+        If ``x`` is empty, not one-dimensional, or contains non-finite
+        values.
+    ValueError
+        If ``w`` does not have the same shape as ``x``, contains
+        non-finite or non-positive values.
     """
     values = _as_float_vector("x", x)
     weights = _validate_weights(values, w)
@@ -82,26 +106,34 @@ def weighted_mean(x: ArrayLike, w: ArrayLike | None = None) -> float:
 
 def variance(x: ArrayLike, w: ArrayLike | None = None, ddof: int | float = 0) -> float:
     """
-    Varianza di x, opzionalmente pesata.
+    Variance of ``x``, optionally weighted.
 
-    Parametri:
-        x : array-like
-            Dati.
-        w : array-like o None, default None
-            Pesi associati ai dati. Se None, usa la formula non pesata.
-        ddof : int o float, default 0
-            Correzione sui gradi di libertà.
+    Parameters
+    ----------
+    x : array-like
+        Data.
+    w : array-like or None, optional
+        Weights associated with the data. If ``None``, the unweighted
+        formula is used (default ``None``).
+    ddof : int or float, optional
+        Delta degrees of freedom. The denominator is ``N - ddof``
+        (unweighted) or ``sum(w) - ddof`` (weighted) (default ``0``).
 
-    Restituisce:
-        float
-            Varianza di x.
+    Returns
+    -------
+    float
+        Variance of ``x``.
 
-    Errori:
-        ValueError se x è vuoto
-        ValueError se x o w contengono valori non finiti
-        ValueError se w non ha la stessa forma di x
-        ValueError se w contiene valori non positivi
-        ValueError se il denominatore è <= 0
+    Raises
+    ------
+    ValueError
+        If ``x`` is empty, not one-dimensional, or contains non-finite
+        values.
+    ValueError
+        If ``w`` does not have the same shape as ``x``, contains
+        non-finite or non-positive values.
+    ValueError
+        If the denominator is not positive.
     """
     values = _as_float_vector("x", x)
     weights = _validate_weights(values, w)
@@ -135,24 +167,37 @@ def variance(x: ArrayLike, w: ArrayLike | None = None, ddof: int | float = 0) ->
 
 def covariance(x: ArrayLike, y: ArrayLike, w: ArrayLike | None = None) -> float:
     """
-    Covarianza tra x e y, opzionalmente pesata.
+    Covariance between ``x`` and ``y``, optionally weighted.
 
-    Cov(x,y) = E[(x - E[x])(y - E[y])], con normalizzazione per N (o sum(w)).
-    Il calcolo centra i dati (two-pass corretto) invece di usare
-    E[xy] - E[x]E[y], che con grandi offset soffre di cancellazione.
+    ``Cov(x, y) = E[(x - E[x]) (y - E[y])]``, normalized by ``N`` (or
+    ``sum(w)``). The data are centered first (corrected two-pass
+    algorithm) instead of using ``E[xy] - E[x] E[y]``, which suffers
+    from cancellation with large offsets.
 
-    Parametri:
-        x : array-like, prima variabile
-        y : array-like, seconda variabile
-        w : array-like o None, pesi (default: tutti uguali)
+    Parameters
+    ----------
+    x : array-like
+        First variable.
+    y : array-like
+        Second variable.
+    w : array-like or None, optional
+        Weights; ``None`` means all equal (default ``None``).
 
-    Restituisce:
-        float, covarianza tra x e y
+    Returns
+    -------
+    float
+        Covariance between ``x`` and ``y``.
 
-    Errori:
-        ValueError se x e y hanno lunghezze diverse
-        ValueError se x, y o w contengono valori non finiti
-        ValueError se w ha forma incompatibile o contiene valori non positivi
+    Raises
+    ------
+    ValueError
+        If ``x`` or ``y`` is empty, not one-dimensional, or contains
+        non-finite values.
+    ValueError
+        If ``x`` and ``y`` have different lengths.
+    ValueError
+        If ``w`` does not have the same shape as ``x``, contains
+        non-finite or non-positive values.
     """
     x_values = _as_float_vector("x", x)
     y_values = _as_float_vector("y", y)
@@ -181,23 +226,36 @@ def standard_deviation(
     ddof: int | float = 0,
 ) -> float:
     """
-    Deviazione standard di x, opzionalmente pesata.
+    Standard deviation of ``x``, optionally weighted.
 
-    Parametri:
-        x : array-like
-            Dati.
-        w : array-like o None, default None
-            Pesi associati ai dati. Se None, usa la formula non pesata.
-        ddof : int o float, default 0
-            Delta degrees of freedom. Nel caso non pesato:
-                var = sum((x - mean)^2) / (N - ddof)
-            Nel caso pesato viene passato a variance(...).
+    Computed as the square root of :func:`variance`.
 
-    Restituisce:
-        float
-            Deviazione standard di x.
+    Parameters
+    ----------
+    x : array-like
+        Data.
+    w : array-like or None, optional
+        Weights associated with the data. If ``None``, the unweighted
+        formula is used (default ``None``).
+    ddof : int or float, optional
+        Delta degrees of freedom, passed to :func:`variance`. In the
+        unweighted case ``var = sum((x - mean)**2) / (N - ddof)``
+        (default ``0``).
 
-    Errori:
-        ValueError se x è vuoto
+    Returns
+    -------
+    float
+        Standard deviation of ``x``.
+
+    Raises
+    ------
+    ValueError
+        If ``x`` is empty, not one-dimensional, or contains non-finite
+        values.
+    ValueError
+        If ``w`` does not have the same shape as ``x``, contains
+        non-finite or non-positive values.
+    ValueError
+        If the denominator is not positive.
     """
     return float(np.sqrt(variance(x, w=w, ddof=ddof)))

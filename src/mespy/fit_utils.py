@@ -30,7 +30,7 @@ _LINEAR_FIT_SCHEMA_VERSION = 1
 
 @dataclass(frozen=True, slots=True)
 class LinearFitResult:
-    """Risultato immutabile di un fit lineare."""
+    """Immutable result of a linear fit."""
 
     slope: float
     intercept: float
@@ -73,7 +73,7 @@ class LinearFitResult:
 
 
 def _linear_fit_document(result: LinearFitResult) -> dict[str, Any]:
-    """Converte *result* in un documento TOML con soli tipi Python nativi."""
+    """Convert *result* into a TOML document made of native Python types only."""
     return {
         "mespy": _mespy_header("linear_fit", _LINEAR_FIT_SCHEMA_VERSION),
         "fit": {

@@ -1,4 +1,4 @@
-"""Helper privati per esportare i risultati di mespy in file TOML."""
+"""Private helpers for exporting mespy results to TOML files."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ def _mespy_version() -> str:
 
 
 def _mespy_header(result_type: str, schema_version: int) -> dict[str, Any]:
-    """Tabella ``[mespy]`` comune a tutti i risultati esportati."""
+    """``[mespy]`` table shared by every exported result."""
     return {
         "schema_version": schema_version,
         "mespy_version": _mespy_version(),
@@ -26,7 +26,7 @@ def _mespy_header(result_type: str, schema_version: int) -> dict[str, Any]:
 
 
 def _normalize_toml_path(path: str | Path) -> Path:
-    """Aggiunge ``.toml`` solo se *path* non ha già un'estensione."""
+    """Append ``.toml`` only if *path* has no extension yet."""
     toml_path = Path(path)
     if toml_path.suffix == "":
         toml_path = toml_path.with_suffix(".toml")
@@ -34,11 +34,11 @@ def _normalize_toml_path(path: str | Path) -> Path:
 
 
 def _write_toml_document(document: dict[str, Any], path: str | Path) -> Path:
-    """Scrive *document* in *path* in modo atomico e restituisce il path scritto.
+    """Atomically write *document* to *path* and return the written path.
 
-    Il documento viene serializzato interamente in memoria prima di toccare
-    il disco, poi scritto su un file temporaneo nella stessa directory e
-    spostato con ``os.replace``: un file esistente non resta mai troncato.
+    The document is fully serialized in memory before touching the disk,
+    then written to a temporary file in the same directory and moved into
+    place with ``os.replace``: an existing file is never left truncated.
     """
     import tomli_w
 

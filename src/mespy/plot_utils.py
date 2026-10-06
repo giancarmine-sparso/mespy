@@ -20,7 +20,7 @@ STYLELIB = _ir.files("mespy") / "stylelib"
 
 
 def _resolve_style(style: str | None) -> str | None:
-    """Risolve un nome breve (es. 'pub') al path assoluto in stylelib/."""
+    """Resolve a short name (e.g. 'pub') to its absolute path in stylelib/."""
     try:
         ref = _ir.files("mespy") / "stylelib" / f"{style}.mplstyle"
         with _ir.as_file(ref) as p:
@@ -98,7 +98,7 @@ def _validate_decimals(decimals: int) -> int:
 
 
 def _in_ipython() -> bool:
-    """True se siamo dentro un kernel IPython/Jupyter con display inline."""
+    """Return True when running inside an IPython/Jupyter kernel with inline display."""
     try:
         from IPython import get_ipython
 
@@ -113,9 +113,10 @@ def _in_ipython() -> bool:
 
 def _display_new_figures(existing_nums: set[int]) -> None:
     """
-    Mostra via IPython.display tutte le figure create dopo existing_nums.
-    Chiama plt.close() su di esse per evitare il doppio display automatico
-    del backend inline.
+    Show via IPython.display every figure created after existing_nums.
+
+    Calls plt.close() on them to avoid the inline backend displaying
+    them a second time.
     """
     import matplotlib.pyplot as plt
 
@@ -135,14 +136,16 @@ def _display_new_figures(existing_nums: set[int]) -> None:
 @contextmanager
 def _style_context(style: str | None):
     """
-    Applica uno stile Matplotlib temporaneo.
-    style=None      -> nessuno stile extra
-    style="mespy"   -> stile custom del package
-    style=altro     -> stile Matplotlib normale ("ggplot", "bmh", ...)
-    In ambienti IPython/Jupyter, le figure create all'interno del blocco
-    vengono mostrate esplicitamente prima di uscire dal context manager,
-    per aggirare un'interazione tra plt.style.context e il backend inline
-    che impedisce l'auto-display.
+    Apply a temporary Matplotlib style.
+
+    style=None      -> no extra style
+    style="mespy"   -> the package's custom style
+    style=other     -> a regular Matplotlib style ("ggplot", "bmh", ...)
+
+    In IPython/Jupyter environments, figures created inside the block
+    are displayed explicitly before leaving the context manager, to work
+    around an interaction between plt.style.context and the inline
+    backend that prevents automatic display.
     """
     import matplotlib.pyplot as plt
 
@@ -216,151 +219,149 @@ def histogram(
     band_symbol: str = r"\pm \sigma",
 ) -> tuple[Figure, Axes]:
     """
-    Istogramma di una distribuzione sperimentale.
+    Histogram of an experimental distribution.
 
-    Disegna un istogramma a conteggi dei dati in ``x``, con la
-    possibilità di evidenziare la media aritmetica (linea tratteggiata)
-    e la fascia ±1σ (banda trasparente).
+    Draws a count histogram of the data in ``x``, optionally
+    highlighting the arithmetic mean (dashed line) and the ±1σ band
+    (transparent band).
 
-    Se ``ax`` non è fornito, crea autonomamente una nuova figura;
-    altrimenti disegna sull'asse ricevuto, permettendo composizioni
-    con più subplot.
+    If ``ax`` is not provided, a new figure is created; otherwise the
+    histogram is drawn on the given axes, which allows composing
+    multiple subplots.
 
-    I parametri estetici con equivalente ``rcParams`` (figsize, dpi,
-    colori delle barre, griglia, titolo, legenda) sono gestiti dal file
-    di stile ``mespy.mplstyle`` quando ``style="mespy"``. Passando un
-    valore esplicito ai relativi parametri della funzione, lo stile
-    viene sovrascritto solo per quella chiamata.
+    Aesthetic parameters with an ``rcParams`` counterpart (figsize, dpi,
+    bar colors, grid, title, legend) are managed by the
+    ``mespy.mplstyle`` style file when ``style="mespy"``. Passing an
+    explicit value to the corresponding function parameters overrides
+    the style for that call only.
 
     Parameters
     ----------
     x : array-like
-        Campione numerico da visualizzare.
+        Numeric sample to plot.
     ddof : int or float, optional
-        Delta gradi di libertà per il calcolo della deviazione standard
+        Delta degrees of freedom used for the standard deviation
         (default ``0``).
     style : str or None, optional
-        Nome del file di stile matplotlib da applicare. ``None`` lascia
-        invariato lo stile corrente (default ``"mespy"``).
+        Name of the Matplotlib style to apply. ``None`` leaves the
+        current style unchanged (default ``"mespy"``).
     bins : int or str or array-like, optional
-        Numero di bin, strategia di binning accettata da
-        :func:`numpy.histogram_bin_edges` (es. ``"auto"``, ``"fd"``) o
-        array esplicito dei bordi (default ``"auto"``). Mutuamente
-        esclusivo con ``bin_width``.
+        Number of bins, a binning strategy accepted by
+        :func:`numpy.histogram_bin_edges` (e.g. ``"auto"``, ``"fd"``),
+        or an explicit array of bin edges (default ``"auto"``). Mutually
+        exclusive with ``bin_width``.
     bin_width : float or None, optional
-        Larghezza fissa di ogni bin. Mutuamente esclusivo con ``bins``
+        Fixed width of each bin. Mutually exclusive with ``bins``
         (default ``None``).
     hist_range : array-like or None, optional
-        Coppia ``(min, max)`` che delimita il range dei dati usato per
-        il calcolo dei bin. ``None`` = range completo dei dati
-        (default ``None``).
+        Pair ``(min, max)`` bounding the data range used to compute the
+        bins. ``None`` means the full data range (default ``None``).
     label : str, optional
-        Etichetta dei dati mostrata nella legenda (default ``"Dati"``).
+        Data label shown in the legend (default ``"Dati"``).
     xlabel : str, optional
-        Etichetta dell'asse x (default ``"Valore"``).
+        x-axis label (default ``"Valore"``).
     ylabel : str or None, optional
-        Etichetta dell'asse y. ``None`` imposta automaticamente
-        ``"Conteggi"`` (default ``None``).
+        y-axis label. ``None`` automatically sets ``"Conteggi"``
+        (default ``None``).
     title : str, optional
-        Titolo del grafico (default ``"Istogramma"``).
+        Plot title (default ``"Istogramma"``).
     show_bin_ticks : bool, optional
-        Se ``True``, aggiunge i bordi dei bin come tick sull'asse x
+        If ``True``, adds the bin edges as ticks on the x-axis
         (default ``True``).
     tick_rotation : int or float, optional
-        Rotazione in gradi delle etichette dei tick sull'asse x
-        (default ``0``).
+        Rotation in degrees of the x-axis tick labels (default ``0``).
     decimals : int, optional
-        Numero di cifre decimali nei valori annotati nel grafico;
-        deve essere compreso tra 0 e 20 (default ``3``).
+        Number of decimal digits in the values annotated on the plot;
+        must be between 0 and 20 (default ``3``).
     show_mean : bool, optional
-        Se ``True``, traccia la linea verticale tratteggiata sulla
-        media (default ``True``).
+        If ``True``, draws the dashed vertical line at the mean
+        (default ``True``).
     show_band : bool, optional
-        Se ``True``, evidenzia la fascia ±1σ attorno alla media
+        If ``True``, highlights the ±1σ band around the mean
         (default ``True``).
     show_legend : bool, optional
-        Se ``True``, mostra la legenda (default ``True``).
+        If ``True``, shows the legend (default ``True``).
     show_grid : bool, optional
-        Se ``True``, mostra la griglia (default ``True``).
+        If ``True``, shows the grid (default ``True``).
     xlim : array-like or None, optional
-        Coppia ``(min, max)`` per i limiti dell'asse x. ``None`` =
-        limiti automatici (default ``None``).
+        Pair ``(min, max)`` for the x-axis limits. ``None`` means
+        automatic limits (default ``None``).
     ylim : array-like or None, optional
-        Coppia ``(min, max)`` per i limiti dell'asse y. ``None`` =
-        limiti automatici (default ``None``).
+        Pair ``(min, max)`` for the y-axis limits. ``None`` means
+        automatic limits (default ``None``).
     ax : matplotlib.axes.Axes or None, optional
-        Asse su cui disegnare. Se ``None``, viene creata una nuova
-        figura (default ``None``).
+        Axes to draw on. If ``None``, a new figure is created
+        (default ``None``).
     figsize : array-like or None, optional
-        Coppia ``(larghezza, altezza)`` in pollici. ``None`` = valore
-        dal file di stile (default ``None``).
+        Pair ``(width, height)`` in inches. ``None`` means the value
+        from the style file (default ``None``).
     dpi : int or None, optional
-        Risoluzione della figura in DPI. ``None`` = valore dal file di
-        stile (default ``None``).
+        Figure resolution in DPI. ``None`` means the value from the
+        style file (default ``None``).
     save_path : str or None, optional
-        Percorso in cui salvare automaticamente la figura al termine.
-        ``None`` = nessun salvataggio (default ``None``).
+        Path where the figure is automatically saved at the end.
+        ``None`` means no saving (default ``None``).
     title_fontsize : int or float or None, optional
-        Dimensione del font del titolo. ``None`` = valore dal file di
-        stile (default ``None``).
+        Font size of the title. ``None`` means the value from the style
+        file (default ``None``).
     title_pad : int or float or None, optional
-        Spaziatura in punti tra il titolo e il grafico. ``None`` =
-        valore dal file di stile (default ``None``).
+        Spacing in points between the title and the plot. ``None``
+        means the value from the style file (default ``None``).
     legend_fontsize : int or float or None, optional
-        Dimensione del font della legenda. ``None`` = valore dal file
-        di stile (default ``None``).
+        Font size of the legend. ``None`` means the value from the
+        style file (default ``None``).
     legend_loc : str or None, optional
-        Posizione della legenda (es. ``"upper right"``). ``None`` =
-        valore dal file di stile (default ``None``).
+        Legend position (e.g. ``"upper right"``). ``None`` means the
+        value from the style file (default ``None``).
     bar_color : str or None, optional
-        Colore di riempimento delle barre. ``None`` = colore dal file
-        di stile (default ``None``).
+        Fill color of the bars. ``None`` means the color from the style
+        file (default ``None``).
     mean_color : str or None, optional
-        Colore della linea verticale della media. ``None`` = secondo
-        colore del ciclo colori dello stile attivo (default ``None``).
+        Color of the vertical mean line. ``None`` means the second color
+        of the active style's color cycle (default ``None``).
     band_color : str or None, optional
-        Colore della fascia ±1σ. ``None`` = terzo colore del ciclo
-        colori dello stile attivo (default ``None``).
+        Color of the ±1σ band. ``None`` means the third color of the
+        active style's color cycle (default ``None``).
     edgecolor : str or None, optional
-        Colore dei bordi delle barre. ``None`` = valore dal file di
-        stile (default ``None``).
+        Color of the bar edges. ``None`` means the value from the style
+        file (default ``None``).
     hist_alpha : float, optional
-        Trasparenza delle barre, tra 0 e 1 (default ``0.85``).
+        Bar transparency, between 0 and 1 (default ``0.85``).
     band_alpha : float, optional
-        Trasparenza della fascia ±1σ, tra 0 e 1 (default ``0.15``).
+        Transparency of the ±1σ band, between 0 and 1 (default ``0.15``).
     grid_alpha : float or None, optional
-        Trasparenza della griglia, tra 0 e 1. ``None`` = valore dal
-        file di stile (default ``None``).
+        Grid transparency, between 0 and 1. ``None`` means the value
+        from the style file (default ``None``).
     mean_symbol : str, optional
-        Simbolo LaTeX usato per la media nell'annotazione della legenda
+        LaTeX symbol used for the mean in the legend annotation
         (default ``r"\\bar{x}"``).
     band_symbol : str, optional
-        Simbolo LaTeX usato per la banda nell'annotazione della legenda
+        LaTeX symbol used for the band in the legend annotation
         (default ``r"\\pm \\sigma"``).
 
     Returns
     -------
     tuple[matplotlib.figure.Figure, matplotlib.axes.Axes]
-        Figura e asse prodotti. Se ``ax`` è fornito dall'esterno,
-        la figura restituita è quella a cui l'asse appartiene.
+        The produced figure and axes. If ``ax`` is provided by the
+        caller, the returned figure is the one the axes belong to.
 
     Raises
     ------
     ValueError
-        Se ``x`` è vuoto, contiene valori non finiti o non è
-        monodimensionale.
+        If ``x`` is empty, contains non-finite values, or is not
+        one-dimensional.
     ValueError
-        Se ``xlim``, ``ylim`` o ``hist_range`` non sono sequenze di
-        due elementi finiti, o se ``xmin >= xmax`` in ``hist_range``.
+        If ``xlim``, ``ylim`` or ``hist_range`` is not a sequence of
+        two finite elements, or if ``xmin >= xmax`` in ``hist_range``.
     ValueError
-        Se ``figsize`` contiene valori non positivi.
+        If ``figsize`` contains non-positive values.
     ValueError
-        Se ``decimals`` non è un intero oppure è fuori dall'intervallo
-        [0, 20].
+        If ``decimals`` is not an integer or is outside the range
+        ``[0, 20]``.
     ValueError
-        Se ``bin_width`` è minore o uguale a zero.
+        If ``bin_width`` is less than or equal to zero.
     ValueError
-        Se ``bins`` e ``bin_width`` sono forniti contemporaneamente.
+        If ``bins`` and ``bin_width`` are both provided.
     """
     values = _as_float_vector("x", x)
 

@@ -16,11 +16,11 @@ from .stats_utils import (
 
 
 def _register_styles() -> None:
-    """Registra tutti gli stili .mplstyle bundled in mespy/stylelib.
+    """Register every .mplstyle file bundled in mespy/stylelib.
 
-    Dopo l'import di mespy, gli stili sono attivabili per nome con
-    ``plt.style.use("mespy")``, ``plt.style.use("report")``, oppure
-    impilati: ``plt.style.use(["mespy", "report"])``.
+    After ``import mespy``, the styles can be activated by name with
+    ``plt.style.use("mespy")``, ``plt.style.use("report")``, or
+    stacked: ``plt.style.use(["mespy", "report"])``.
     """
     stylelib = files("mespy").joinpath("stylelib")
     for resource in stylelib.iterdir():
