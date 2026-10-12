@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import warnings
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal, cast
@@ -178,7 +179,7 @@ def lin_fit(
     y: ArrayLike,
     sigma_y: ArrayLike | None = None,
     *,
-    fit_method: FitMethod = "residual",
+    fit_method: FitMethod | None = None,
     sigma_x: ArrayLike | None = None,
     tol: float = 1e-10,
     max_iter: int = 100,
@@ -251,12 +252,17 @@ def lin_fit(
         ``x``. Required when ``fit_method="absolute"``. If omitted with
         ``fit_method="residual"``, the fit uses equal weights and
         estimates one common vertical uncertainty from the residuals.
-    fit_method : {"absolute", "residual"}, optional
+        If omitted while ``fit_method`` is left unspecified, the call
+        falls back to ``"residual"`` and emits a ``UserWarning``.
+    fit_method : {"absolute", "residual"} or None, optional
         Uncertainty model. ``"absolute"`` treats ``sigma_y`` and
         ``sigma_x`` as absolute input uncertainties. ``"residual"``
         estimates one global scale factor from the residuals and
         applies it to parameter uncertainties, plotted error bars,
-        normalized residuals, and the fit band (default ``"residual"``).
+        normalized residuals, and the fit band. ``None`` means
+        ``"absolute"``, with a fallback to ``"residual"`` (and a
+        ``UserWarning``) when ``sigma_y`` is not provided
+        (default ``None``).
     sigma_x : array-like or None, optional
         Positive uncertainties on ``x``. If provided, enables the
         effective variance update and iterative slope refinement
@@ -383,15 +389,26 @@ def lin_fit(
         - ``fit_method`` : {"absolute", "residual"} - uncertainty model used.
         - ``scale_factor`` : float - factor applied to the input
           uncertainties in residual-scale mode (``1`` in absolute mode).
+        - ``p_value`` : float - probability of obtaining a chi-squared
+          greater than or equal to the observed one, ``P(chi2_dof >= chi2)``.
+          ``nan`` with ``fit_method="residual"``, where ``chi2`` equals
+          ``dof`` by construction and the test is not defined.
+
+    Warns
+    -----
+    UserWarning
+        If ``fit_method`` is not specified and ``sigma_y`` is missing:
+        the call falls back to ``fit_method="residual"``.
 
     Raises
     ------
     ValueError
-        If ``fit_method`` is not ``"absolute"`` or ``"residual"``.
+        If ``fit_method`` is not ``"absolute"``, ``"residual"`` or ``None``.
     ValueError
-        If ``sigma_y`` is missing when ``fit_method="absolute"``.
+        If ``sigma_y`` is missing when ``fit_method="absolute"`` is given
+        explicitly.
     ValueError
-        If ``sigma_x`` is provided without ``sigma_y`` in residual-scale mode.
+        If ``sigma_x`` is provided without ``sigma_y``.
     ValueError
         If ``x``, ``y``, and ``sigma_y`` have different lengths.
     ValueError
@@ -420,6 +437,21 @@ def lin_fit(
         If the fit does not converge within ``max_iter`` iterations
         (only when ``sigma_x`` is provided).
     """
+    if fit_method is None:
+        if sigma_y is not None:
+            fit_method = "absolute"
+        elif sigma_x is not None:
+            raise ValueError("sigma_x richiede sigma_y")
+        else:
+            warnings.warn(
+                "sigma_y non fornito: lin_fit usa fit_method='residual' e stima "
+                "l'incertezza dai residui. Passa fit_method='residual' "
+                "esplicitamente per non vedere questo avviso.",
+                UserWarning,
+                stacklevel=2,
+            )
+            fit_method = "residual"
+
     fit_method = _validate_fit_method(fit_method)
     use_residual_scale = fit_method == "residual"
 
