@@ -1068,16 +1068,136 @@ def test_core_analytical_oracles(
         assert result.p_value == pytest.approx(math.erfc(math.sqrt(chi2 / 2)))
 
 
+@pytest.mark.parametrize("weighted", [False, True])
+def test_core_large_x_offset_preserves_residuals_and_diagnostics(weighted):
+    x = np.arange(1.0, 7.0)
+    y = 0.8 * x + 0.3 + np.array([0.05, -0.04, 0.02, -0.03, 0.01, 0.0])
+    sigma = np.array([0.05, 0.04, 0.06, 0.05, 0.03, 0.05]) if weighted else None
+    oracle_sigma = sigma if weighted else np.ones(6)
+    design = np.column_stack((x, np.ones(6)))
+    parameters = np.linalg.lstsq(
+        design / oracle_sigma[:, None], y / oracle_sigma, rcond=None
+    )[0]
+    expected_residuals = y - design @ parameters
+    baseline = solve_core(x, y, sigma)
+    shifted = solve_core(1e15 + x, y, sigma)
+
+    assert shifted.slope == pytest.approx(parameters[0], rel=1e-14)
+    np.testing.assert_allclose(shifted.residuals, expected_residuals, atol=3e-15)
+    assert shifted.residual_std == pytest.approx(
+        np.linalg.norm(expected_residuals) / 2, rel=1e-13
+    )
+    if weighted:
+        expected_chi2 = float(np.sum((expected_residuals / oracle_sigma) ** 2))
+        assert shifted.chi2 == pytest.approx(expected_chi2, rel=1e-13)
+        # Closed-form survival function for four degrees of freedom.
+        assert shifted.p_value == pytest.approx(
+            math.exp(-expected_chi2 / 2) * (1 + expected_chi2 / 2), rel=1e-13
+        )
+    assert shifted.slope == pytest.approx(baseline.slope, rel=1e-14)
+    np.testing.assert_allclose(
+        shifted.residuals, baseline.residuals, rtol=1e-13, atol=1e-15
+    )
+    assert shifted.residual_std == pytest.approx(baseline.residual_std, rel=1e-13)
+    assert shifted.chi2 == baseline.chi2
+    assert shifted.p_value == baseline.p_value
+    np.testing.assert_allclose(
+        shifted.predict(1e15 + x), y - baseline.residuals, atol=1e-14
+    )
+    np.testing.assert_allclose(
+        shifted.mean_std(1e15 + x), baseline.mean_std(x), rtol=1e-14
+    )
 
 
+def test_core_large_x_offset_uses_actual_representable_coordinates():
+    x = 1e155 + 1e140 * np.arange(6.0)
+    y = np.arange(6.0)
+    # Long-double arithmetic is not the oracle: solve a well-conditioned
+    # problem using the actual float64 offsets, not the unrounded arange.
+    local_x = (x - x[0]) / 1e140
+    design = np.column_stack((local_x, np.ones(6)))
+    local_parameters = np.linalg.lstsq(design, y, rcond=None)[0]
+    expected_residuals = y - design @ local_parameters
+
+    result = solve_core(x, y, np.ones(6))
+
+    assert result.slope == pytest.approx(local_parameters[0] / 1e140, rel=1e-14, abs=0)
+    np.testing.assert_allclose(result.residuals, expected_residuals, atol=2e-15)
+    assert result.chi2 == pytest.approx(
+        float(expected_residuals @ expected_residuals), rel=1e-11
+    )
+    assert all(
+        math.isfinite(getattr(result, name))
+        for name in ("intercept", "slope_std", "intercept_std", "covariance")
+    )
+    np.testing.assert_allclose(result.predict(x), design @ local_parameters, atol=2e-15)
 
 
+def test_core_tiny_absolute_sigma_does_not_overflow_sum_of_weights():
+    result = solve_core([0, 1, 2], [1, 2, 3], 1e-154)
+
+    assert result.slope == 1
+    assert result.intercept == 1
+    assert result.slope_std == pytest.approx(1e-154 / math.sqrt(2), rel=1e-14, abs=0)
+    assert result.intercept_std == pytest.approx(
+        1e-154 * math.sqrt(5 / 6), rel=1e-14, abs=0
+    )
+    assert result.covariance == pytest.approx(-5e-309, rel=1e-14, abs=0)
+    assert result.chi2 == 0
+    assert result.p_value == 1
+    np.testing.assert_array_equal(result.residuals, np.zeros(3))
 
 
+def test_core_tiny_x_accepts_representable_outputs_even_when_variance_overflows():
+    result = solve_core([0, 1e-200, 2e-200], [0, 1, 3], 1)
+
+    assert result.slope == pytest.approx(1.5e200)
+    assert result.slope_std == pytest.approx(1e200 / math.sqrt(2))
+    assert result.covariance == pytest.approx(-5e199)
+    np.testing.assert_allclose(result.residuals, [1 / 6, -1 / 3, 1 / 6], atol=1e-15)
+    np.testing.assert_allclose(
+        result.mean_std(np.array([0.0, 1e-200, 2e-200])),
+        [math.sqrt(5 / 6), math.sqrt(1 / 3), math.sqrt(5 / 6)],
+    )
 
 
+@pytest.mark.parametrize("scale", [1e-170, 1e-100, 1e-12, 1e12, 1e100, 1e170])
+def test_core_x_scales_avoid_premature_squares(scale):
+    # Coherently scale y and sigma too: all mandatory outputs, including
+    # covariance, remain representable although x**2 can under/overflow.
+    x = np.array([0.0, 1.0, 2.0, 3.0])
+    y = np.array([1.0, 3.1, 4.9, 7.0])
+    baseline = solve_core(x, y, np.ones(4))
+    result = solve_core(x * scale, y * scale, np.full(4, scale))
+
+    assert result.slope == pytest.approx(baseline.slope, rel=1e-14)
+    assert result.slope_std == pytest.approx(baseline.slope_std, rel=1e-14)
+    assert result.intercept == pytest.approx(
+        baseline.intercept * scale, rel=1e-14, abs=0
+    )
+    assert result.intercept_std == pytest.approx(
+        baseline.intercept_std * scale, rel=1e-14, abs=0
+    )
+    assert result.covariance == pytest.approx(
+        baseline.covariance * scale, rel=1e-14, abs=0
+    )
+    assert result.chi2 == pytest.approx(baseline.chi2, rel=1e-12)
+    np.testing.assert_allclose(result.residuals / scale, baseline.residuals, atol=3e-15)
 
 
+@pytest.mark.parametrize("weighted", [False, True])
+def test_core_opposite_extreme_coordinates_do_not_overflow_differences(weighted):
+    result = solve_core(
+        [-1e308, 0, 1e308], [-1e308, 0, 1e308], 1e154 if weighted else None
+    )
+
+    assert result.slope == 1
+    assert result.intercept == 0
+    np.testing.assert_array_equal(result.residuals, np.zeros(3))
+    np.testing.assert_array_equal(
+        result.predict(np.array([-1e308, 0.0, 1e308])), [-1e308, 0, 1e308]
+    )
+    assert result.covariance == 0
 
 
 @pytest.mark.parametrize("weighted", [False, True])
@@ -1108,6 +1228,16 @@ def test_core_two_point_absolute_wls():
     assert result.residual_std is result.reduced_chi2 is result.p_value is None
 
 
+@pytest.mark.parametrize("sigma_y", [None, 1e307])
+def test_core_intercept_survives_overflowing_slope_times_origin(sigma_y):
+    x = np.array([9e307, 7e307, 8e307])
+    y = np.array([1.6e308, 1.2e308, 1.4e308])
+    result = solve_core(x, y, sigma_y)
+
+    assert result.slope == pytest.approx(2, rel=1e-14)
+    assert result.intercept == pytest.approx(-2e307, rel=1e-14)
+    np.testing.assert_allclose(result.predict(x), y, rtol=1e-14)
+    assert np.all(np.isfinite(result.mean_std(x)))
 
 
 @pytest.mark.parametrize("slope, intercept", [(0, 2), (-2, 0)])
