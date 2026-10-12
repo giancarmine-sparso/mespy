@@ -11,7 +11,7 @@ from numpy.typing import ArrayLike, NDArray
 from scipy.stats import chi2 as chi2_distribution
 
 from ._toml import _mespy_header, _write_toml_document
-from .plot_utils import _resolve_style, _style_context
+from .plot_utils import _style_context
 
 if TYPE_CHECKING:
     from matplotlib.figure import Figure
@@ -607,73 +607,93 @@ def _plot_linear_fit(
     style: str | None,
     normalize_residuals: bool,
 ) -> Figure:
-    """Present the new numerical model using the existing two-panel layout.
+    """Draw data, fitted mean ± one standard uncertainty and physical/normalized residuals.
 
-    Removing the remaining hardcoded artist/style overrides is phase 4.
+    Artist dimensions, typography, grid, layout and savefig settings belong
+    to the temporary style. Only the two-panel composition, cycle colors,
+    band opacity and dashed zero reference are part of the fit presentation.
     """
-    with _style_context(_resolve_style(style)):
-        import matplotlib as mpl
-        import matplotlib.pyplot as plt
-
-        colors = mpl.rcParams["axes.prop_cycle"].by_key().get("color", [])
-        point_color = colors[0] if colors else "C0"
-        fit_color = colors[1] if len(colors) > 1 else point_color
-        figure, (ax_fit, ax_res) = plt.subplots(
-            2,
-            1,
-            sharex=True,
-            gridspec_kw={"height_ratios": [3, 1]},
-            constrained_layout=True,
+    low, high = float(data.x.min()), float(data.x.max())
+    if math.isfinite(high - low):
+        x_fit = np.linspace(low, high, 200)
+    else:
+        # Convex interpolation avoids overflowing a full-range difference.
+        fraction = np.linspace(0.0, 1.0, 200)
+        x_fit = (1 - fraction) * low + fraction * high
+    y_fit = core.predict(x_fit)
+    mean_std = core.mean_std(x_fit)
+    residuals = core.residuals
+    residual_error = data.sigma_y
+    residuals_label = "Residuals"
+    if normalize_residuals:
+        denominator = data.sigma_y if data.sigma_y is not None else core.residual_std
+        residuals = core.residuals / denominator
+        residual_error = (
+            np.ones_like(data.sigma_y) if data.sigma_y is not None else None
         )
-        try:
-            errorbar_kwargs = {
-                "fmt": "o",
-                "markersize": 4,
-                "elinewidth": 1,
-                "capsize": 3,
-                "color": point_color,
-                "ecolor": point_color,
-            }
-            ax_fit.errorbar(data.x, data.y, yerr=data.sigma_y, **errorbar_kwargs)
-            x_fit = np.linspace(data.x.min(), data.x.max(), 200)
-            y_fit = core.predict(x_fit)
-            mean_std = core.mean_std(x_fit)
-            ax_fit.plot(x_fit, y_fit, color=fit_color, linewidth=1.5, label="Fit")
-            ax_fit.fill_between(
-                x_fit,
-                y_fit - mean_std,
-                y_fit + mean_std,
-                color=fit_color,
-                alpha=0.20,
-                label=r"$\pm 1 \sigma$ retta",
-            )
-            ax_fit.set_ylabel(ylabel)
-            if title is not None:
-                ax_fit.set_title(title)
-            ax_fit.legend()
-            residuals = core.residuals
-            residual_error = data.sigma_y
-            residuals_label = "Residuals"
-            if normalize_residuals:
-                denominator = (
-                    data.sigma_y if data.sigma_y is not None else core.residual_std
+        residuals_label = (
+            r"Residuals / $\sigma_y$" if data.sigma_y is not None else "Residuals / s"
+        )
+
+    figure = None
+    try:
+        with _style_context(style):
+            import matplotlib as mpl
+            import matplotlib.pyplot as plt
+
+            colors = mpl.rcParams["axes.prop_cycle"].by_key().get("color", [])
+            point_color = colors[0] if colors else "C0"
+            fit_color = colors[1] if len(colors) > 1 else point_color
+            existing_figures = set(plt.get_fignums())
+            try:
+                figure, (ax_fit, ax_res) = plt.subplots(
+                    2, 1, sharex=True, gridspec_kw={"height_ratios": [3, 1]}
                 )
-                residuals = core.residuals / denominator
-                residual_error = (
-                    np.ones_like(data.sigma_y) if data.sigma_y is not None else None
+                if data.sigma_y is None:
+                    ax_fit.plot(data.x, data.y, "o", color=point_color)
+                else:
+                    ax_fit.errorbar(
+                        data.x, data.y, yerr=data.sigma_y, fmt="o", color=point_color
+                    )
+                ax_fit.plot(x_fit, y_fit, color=fit_color, label="Fit")
+                ax_fit.fill_between(
+                    x_fit,
+                    y_fit - mean_std,
+                    y_fit + mean_std,
+                    color=fit_color,
+                    alpha=0.20,
+                    label=r"$\pm 1 \sigma$ media prevista",
                 )
-                residuals_label = (
-                    r"Residuals / $\sigma_y$"
-                    if data.sigma_y is not None
-                    else "Residuals / s"
-                )
-            ax_res.errorbar(data.x, residuals, yerr=residual_error, **errorbar_kwargs)
-            ax_res.axhline(0, color=fit_color, linewidth=1, linestyle="--")
-            ax_res.set_xlabel(xlabel)
-            ax_res.set_ylabel(residuals_label)
-        except BaseException:
+                ax_fit.set_ylabel(ylabel)
+                if title is not None:
+                    ax_fit.set_title(title)
+                ax_fit.legend()
+                if residual_error is None:
+                    ax_res.plot(data.x, residuals, "o", color=point_color)
+                else:
+                    ax_res.errorbar(
+                        data.x,
+                        residuals,
+                        yerr=residual_error,
+                        fmt="o",
+                        color=point_color,
+                    )
+                ax_res.axhline(0, color=fit_color, linestyle="--")
+                ax_res.set_xlabel(xlabel)
+                ax_res.set_ylabel(residuals_label)
+            except BaseException:
+                if figure is None:
+                    # subplots itself can fail after creating a partial figure.
+                    for number in set(plt.get_fignums()) - existing_figures:
+                        plt.close(number)
+                else:
+                    plt.close(figure)
+                raise
+    except BaseException:
+        # The notebook display performed on context exit can also fail.
+        if figure is not None:
             plt.close(figure)
-            raise
+        raise
     return figure
 
 
@@ -710,7 +730,13 @@ def lin_fit(
     normalize_residuals affects only the lower plot panel, using sigma_y
     in WLS and estimated_sigma in OLS. An exact OLS line cannot be plotted
     with normalized residuals. xlabel, ylabel and title label the figure;
-    style selects a temporary Matplotlib style (default "report").
+    style selects a temporary Matplotlib style (default "report"), including
+    registered styles, Matplotlib styles and .mplstyle files. None retains
+    the active style. The style controls figure size, DPI, fonts, grid,
+    line widths, marker sizes, cap sizes and layout. The band shows ± one
+    standard uncertainty of the predicted mean, not a prediction interval
+    for new observations. OLS points have no error bars; normalized WLS
+    residuals have unit error bars referencing the observation uncertainties.
 
     output reserves the extension-free str/Path base for automatic export
     in phase 5; until then any non-None value raises NotImplementedError.

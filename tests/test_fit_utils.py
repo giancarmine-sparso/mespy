@@ -8,6 +8,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
+from matplotlib.collections import PolyCollection
+from matplotlib.container import ErrorbarContainer
 from scipy import stats
 
 from mespy import lin_fit
@@ -683,7 +685,7 @@ def test_lin_fit_no_plot_ignores_style_and_normalization(monkeypatch):
 
     monkeypatch.setattr("mespy.fit_utils._plot_linear_fit", forbidden)
     monkeypatch.setattr("mespy.fit_utils._style_context", forbidden)
-    monkeypatch.setattr("mespy.fit_utils._resolve_style", forbidden)
+    monkeypatch.setattr("mespy.plot_utils._resolve_style", forbidden)
     monkeypatch.setattr(plt, "subplots", forbidden)
     with pytest.warns(UserWarning, match="sigma_y"):
         result = lin_fit(
@@ -752,6 +754,178 @@ def test_to_toml_serializes_new_method_and_defined_fields(tmp_path, weighted):
     else:
         assert "correlation" not in document["fit"]
         assert not {"chi2", "reduced_chi2", "p_value"} & document["diagnostics"].keys()
+
+
+# Presentazione grafica e isolamento dello stato di Matplotlib (fase 4).
+@pytest.fixture
+def recognizable_fit_style(tmp_path):
+    path = tmp_path / "recognizable.mplstyle"
+    path.write_text(
+        "figure.figsize: 9.3, 6.1\n"
+        "figure.dpi: 73\n"
+        "figure.constrained_layout.use: False\n"
+        "figure.autolayout: False\n"
+        "font.family: monospace\n"
+        "font.size: 17\n"
+        "axes.titlesize: 23\n"
+        "axes.titlepad: 9.7\n"
+        "axes.labelsize: 19\n"
+        "axes.labelpad: 7.3\n"
+        "axes.linewidth: 1.9\n"
+        "axes.facecolor: lavender\n"
+        "axes.grid: True\n"
+        "axes.grid.axis: both\n"
+        "axes.prop_cycle: cycler('color', ['teal', 'purple'])\n"
+        "grid.alpha: 0.37\n"
+        "grid.linewidth: 0.81\n"
+        "grid.linestyle: :\n"
+        "grid.color: orange\n"
+        "lines.linewidth: 2.7\n"
+        "lines.markersize: 9.1\n"
+        "lines.markeredgewidth: 1.4\n"
+        "errorbar.capsize: 6.5\n"
+        "legend.fontsize: 13\n"
+        "legend.loc: lower left\n"
+        "savefig.dpi: 91\n"
+        "savefig.bbox: standard\n"
+        "savefig.pad_inches: 0.21\n",
+        encoding="utf-8",
+    )
+    return str(path)
+
+
+def test_lin_fit_style_controls_actual_artists(recognizable_fit_style):
+    before = matplotlib.rcParams.copy()
+    result = lin_fit(
+        [0, 1, 2],
+        [0, 1, 3],
+        [1, 2, 1],
+        title="Titolo",
+        xlabel="Ascissa",
+        ylabel="Ordinata",
+        style=recognizable_fit_style,
+    )
+    figure = result.figure
+    figure.canvas.draw()
+    ax_fit, ax_res = figure.axes
+    np.testing.assert_allclose(figure.get_size_inches(), [9.3, 6.1])
+    assert figure.dpi == 73
+    assert figure.get_layout_engine() is None
+    assert ax_fit.get_shared_x_axes().joined(ax_fit, ax_res)
+    assert ax_fit.title.get_fontsize() == 23
+    assert ax_fit.title.get_fontfamily() == ["monospace"]
+    assert ax_fit.titleOffsetTrans.transform((0, 0))[1] == pytest.approx(9.7 * 73 / 72)
+    assert ax_fit.yaxis.label.get_fontsize() == 19
+    assert ax_fit.yaxis.labelpad == 7.3
+    assert ax_fit.spines["left"].get_linewidth() == 1.9
+    assert ax_fit.get_ylabel() == "Ordinata"
+    assert ax_res.get_xlabel() == "Ascissa"
+    for ax in (ax_fit, ax_res):
+        points, caps, bars = next(
+            c for c in ax.containers if isinstance(c, ErrorbarContainer)
+        ).lines
+        assert points.get_markersize() == 9.1
+        assert points.get_color() == "teal"
+        assert points.get_markeredgewidth() == 1.4
+        assert len(caps) == 2
+        assert all(cap.get_markersize() == 13 for cap in caps)
+        assert all(cap.get_markeredgewidth() == 1.4 for cap in caps)
+        np.testing.assert_array_equal(bars[0].get_linewidths(), [2.7])
+        for line in ax.get_xgridlines() + ax.get_ygridlines():
+            assert line.get_visible()
+            assert line.get_alpha() == 0.37
+            assert line.get_linewidth() == 0.81
+            assert line.get_linestyle() == ":"
+            assert line.get_color() == "orange"
+        assert ax.get_facecolor() == matplotlib.colors.to_rgba("lavender")
+    fit_line = next(line for line in ax_fit.lines if line.get_label() == "Fit")
+    assert fit_line.get_linewidth() == 2.7
+    assert fit_line.get_color() == "purple"
+    zero = ax_res.lines[-1]
+    assert zero.get_linewidth() == 2.7
+    assert zero.get_color() == "purple"
+    assert zero.get_linestyle() == "--"
+    legend = ax_fit.get_legend()
+    assert all(text.get_fontsize() == 13 for text in legend.get_texts())
+    assert (
+        legend.get_window_extent().y1
+        < ax_fit.get_window_extent().y0 + ax_fit.get_window_extent().height / 2
+    )
+    band = next(c for c in ax_fit.collections if isinstance(c, PolyCollection))
+    assert band.get_alpha() == 0.20
+    np.testing.assert_allclose(
+        band.get_facecolor()[0], matplotlib.colors.to_rgba("purple", alpha=0.20)
+    )
+    assert matplotlib.rcParams == before
+
+
+@pytest.mark.parametrize("style", ["report", "mespy", "ggplot", None])
+def test_lin_fit_supports_registered_and_matplotlib_styles_without_resolver(
+    monkeypatch, style
+):
+    def forbidden(*args, **kwargs):
+        raise AssertionError("lin_fit deve usare direttamente lo stile registrato")
+
+    monkeypatch.setattr("mespy.plot_utils._resolve_style", forbidden)
+    before = matplotlib.rcParams.copy()
+    result = lin_fit([0, 1, 2], [0, 1, 3], 1, style=style)
+    assert len(result.figure.axes) == 2
+    assert matplotlib.rcParams == before
+
+
+@pytest.mark.parametrize("layout", ["none", "tight", "constrained"])
+def test_lin_fit_honors_active_layout_and_grid_when_style_is_none(layout):
+    with plt.rc_context(
+        {
+            "figure.autolayout": layout == "tight",
+            "figure.constrained_layout.use": layout == "constrained",
+            "axes.grid": False,
+            "lines.linewidth": 3.6,
+            "lines.markersize": 10.2,
+            "errorbar.capsize": 0,
+        }
+    ):
+        result = lin_fit([0, 1, 2], [0, 1, 3], 1, style=None)
+    figure = result.figure
+    assert bool(figure.get_tight_layout()) == (layout == "tight")
+    assert bool(figure.get_constrained_layout()) == (layout == "constrained")
+    fit_line = next(line for line in figure.axes[0].lines if line.get_label() == "Fit")
+    assert fit_line.get_linewidth() == 3.6
+    for ax in figure.axes:
+        points, caps, bars = next(
+            c for c in ax.containers if isinstance(c, ErrorbarContainer)
+        ).lines
+        assert points.get_markersize() == 10.2
+        np.testing.assert_array_equal(bars[0].get_linewidths(), [3.6])
+        assert not caps
+        assert not any(
+            line.get_visible() for line in ax.get_xgridlines() + ax.get_ygridlines()
+        )
+
+
+def test_lin_fit_reuses_single_cycle_color_for_line_band_and_zero():
+    with plt.rc_context({"axes.prop_cycle": matplotlib.cycler(color=["darkorange"])}):
+        result = lin_fit([0, 1, 2], [0, 1, 3], 1, style=None)
+    for ax in result.figure.axes:
+        assert all(line.get_color() == "darkorange" for line in ax.lines)
+    band = next(
+        c for c in result.figure.axes[0].collections if isinstance(c, PolyCollection)
+    )
+    np.testing.assert_allclose(
+        band.get_facecolor()[0], matplotlib.colors.to_rgba("darkorange", alpha=0.20)
+    )
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Contratto numerico privato OLS/WLS delle fasi 1–2.
