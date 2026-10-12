@@ -1,16 +1,20 @@
 from __future__ import annotations
 
 import math
+import os
+import tempfile
 import warnings
-from dataclasses import dataclass, field
+from collections.abc import Callable, Mapping
+from dataclasses import dataclass, field, replace
 from pathlib import Path
+from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Literal
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 from scipy.stats import chi2 as chi2_distribution
 
-from ._toml import _mespy_header, _write_toml_document
+from ._toml import _mespy_header, _normalize_toml_path, _write_toml_document
 from .plot_utils import _style_context
 
 if TYPE_CHECKING:
@@ -19,7 +23,7 @@ if TYPE_CHECKING:
 FloatVector = NDArray[np.float64]
 FitMethod = Literal["ols", "wls"]
 
-_LINEAR_FIT_SCHEMA_VERSION = 1
+_LINEAR_FIT_SCHEMA_VERSION = 2
 
 
 @dataclass(frozen=True, slots=True)
@@ -486,11 +490,18 @@ class LinearFitResult:
     _core: _LinearFitCore | None = field(
         default=None, repr=False, compare=False, kw_only=True
     )
+    _plot_metadata: Mapping[str, Any] | None = field(
+        default=None, repr=False, compare=False, kw_only=True
+    )
 
     def __post_init__(self) -> None:
         residuals = np.array(self.residuals, dtype=np.float64, copy=True)
         residuals.setflags(write=False)
         object.__setattr__(self, "residuals", residuals)
+        if self._plot_metadata is not None:
+            object.__setattr__(
+                self, "_plot_metadata", MappingProxyType(dict(self._plot_metadata))
+            )
 
     @property
     def estimated_sigma(self) -> float | None:
@@ -531,18 +542,27 @@ class LinearFitResult:
         return float(predicted[0]) if scalar else predicted
 
     def to_toml(self, path: str | Path) -> Path:
-        """Save numerical fields and physical residuals atomically as TOML.
+        """Save the fit as schema-2 TOML, overwriting the destination atomically.
 
-        Undefined diagnostics are omitted. Figure and private numerical
-        state are not serialized. A missing suffix becomes .toml; an
-        existing file is overwritten. The destination directory must exist.
-        The full data/plot export and schema 2 are introduced in phase 5.
+        Results from lin_fit retain x, y, effective sigma_y and the original
+        plot options, so the numerical fit can be rerun. Manually constructed
+        results export the supplied numerical fields without inventing inputs.
+        Undefined fields are omitted; floats are not rounded for presentation.
+        Figure edits and the full Matplotlib state are not serialized.
+        A missing suffix becomes .toml. The destination directory must exist.
         """
-        return _write_toml_document(_linear_fit_document(self), path)
+        try:
+            return _write_toml_document(_linear_fit_document(self), path)
+        except OSError as exc:
+            raise _fit_export_error(exc, _normalize_toml_path(path)) from exc
 
 
 def _make_linear_fit_result(
-    data: _LinearFitData, core: _LinearFitCore, figure: Figure | None = None
+    data: _LinearFitData,
+    core: _LinearFitCore,
+    figure: Figure | None = None,
+    *,
+    plot_metadata: Mapping[str, Any] | None = None,
 ) -> LinearFitResult:
     """Construct the public result independently of calculation/presentation."""
     arrays = [data.x, data.y, core.residuals]
@@ -569,12 +589,13 @@ def _make_linear_fit_result(
         p_value=core.p_value,
         _data=data,
         _core=core,
+        _plot_metadata=plot_metadata,
     )
 
 
 def _linear_fit_document(result: LinearFitResult) -> dict[str, Any]:
-    """Serialize the existing numerical tables with the new optional fields."""
-    fit = {
+    """Serialize schema 2 using original data/options and unrounded numerics."""
+    fit: dict[str, Any] = {
         "fit_method": str(result.fit_method),
         "slope": float(result.slope),
         "slope_std": float(result.slope_std),
@@ -584,17 +605,103 @@ def _linear_fit_document(result: LinearFitResult) -> dict[str, Any]:
     }
     if result.correlation is not None:
         fit["correlation"] = float(result.correlation)
-    diagnostics = {"dof": int(result.dof)}
-    for name in ("chi2", "reduced_chi2", "p_value", "residual_std"):
+    diagnostics: dict[str, Any] = {"dof": int(result.dof)}
+    for name in ("chi2", "reduced_chi2", "p_value", "residual_std", "estimated_sigma"):
         value = getattr(result, name)
         if value is not None:
             diagnostics[name] = float(value)
-    return {
+    document: dict[str, Any] = {
         "mespy": _mespy_header("linear_fit", _LINEAR_FIT_SCHEMA_VERSION),
-        "fit": fit,
-        "diagnostics": diagnostics,
-        "residuals": {"values": result.residuals.tolist()},
     }
+    if result._data is not None:
+        document["data"] = {"x": result._data.x.tolist(), "y": result._data.y.tolist()}
+        if result._data.sigma_y is not None:
+            document["data"]["sigma_y"] = result._data.sigma_y.tolist()
+    document.update(
+        {
+            "fit": fit,
+            "diagnostics": diagnostics,
+            "residuals": {"values": result.residuals.tolist()},
+        }
+    )
+    if result._plot_metadata is not None:
+        document["plot"] = dict(result._plot_metadata)
+    return document
+
+
+def _validate_fit_output(output: str | Path) -> Path:
+    """Require a file base without an extension; never reinterpret legacy save_path."""
+    if not isinstance(output, (str, Path)):
+        raise TypeError("output: serve un percorso base str o Path senza estensione")
+    if isinstance(output, str) and (not output or output.endswith(os.sep)):
+        raise ValueError("output: serve un percorso base di file, non una directory")
+    path = Path(output)
+    if path.name in ("", ".", "..") or "\x00" in str(path) or path.is_dir():
+        raise ValueError(
+            "output: serve un percorso base di file valido, non una directory"
+        )
+    if path.suffix or path.name.endswith("."):
+        raise ValueError(
+            "output: usa un percorso base senza estensione, ad esempio 'risultati/molla' invece di 'risultati/molla.pdf'"
+        )
+    return path
+
+
+def _fit_export_error(error: OSError, target: Path) -> OSError:
+    """Preserve errno/subclass while identifying the requested destination."""
+    return OSError(
+        error.errno,
+        f"MesPy: esportazione fallita: {error.strerror or error}",
+        str(target),
+    )
+
+
+def _replace_fit_export(source: Path, target: Path) -> None:
+    """Replace one completely prepared artifact atomically."""
+    try:
+        os.replace(source, target)
+    except OSError as exc:
+        raise _fit_export_error(exc, target) from exc
+
+
+def _export_linear_fit(
+    result: LinearFitResult,
+    base: Path,
+    draw: Callable[[Callable[[Figure], None]], Figure] | None,
+) -> Figure | None:
+    """Stage every requested file before replacement, on the target filesystem.
+
+    The PDF is rendered and both files committed within the plotting style
+    context, before notebook display. Each replacement is atomic; the pair
+    is not a filesystem transaction and may be partially replaced on error.
+    """
+    toml_target = base.with_suffix(".toml")
+    pdf_target = base.with_suffix(".pdf")
+    try:
+        base.parent.mkdir(parents=True, exist_ok=True)
+        staging = tempfile.TemporaryDirectory(prefix=f".{base.name}.", dir=base.parent)
+    except OSError as exc:
+        raise _fit_export_error(exc, toml_target) from exc
+    with staging as folder:
+        toml_temp = Path(folder) / toml_target.name
+        try:
+            _write_toml_document(_linear_fit_document(result), toml_temp)
+        except OSError as exc:
+            raise _fit_export_error(exc, toml_target) from exc
+        if draw is None:
+            _replace_fit_export(toml_temp, toml_target)
+            return None
+
+        def export_figure(figure: Figure) -> None:
+            pdf_temp = Path(folder) / pdf_target.name
+            try:
+                figure.savefig(pdf_temp, format="pdf")
+            except OSError as exc:
+                raise _fit_export_error(exc, pdf_target) from exc
+            _replace_fit_export(pdf_temp, pdf_target)
+            _replace_fit_export(toml_temp, toml_target)
+
+        return draw(export_figure)
 
 
 def _plot_linear_fit(
@@ -606,6 +713,7 @@ def _plot_linear_fit(
     title: str | None,
     style: str | None,
     normalize_residuals: bool,
+    on_ready: Callable[[Figure], None] | None = None,
 ) -> Figure:
     """Draw data, fitted mean ± one standard uncertainty and physical/normalized residuals.
 
@@ -681,6 +789,8 @@ def _plot_linear_fit(
                 ax_res.axhline(0, color=fit_color, linestyle="--")
                 ax_res.set_xlabel(xlabel)
                 ax_res.set_ylabel(residuals_label)
+                if on_ready is not None:
+                    on_ready(figure)
             except BaseException:
                 if figure is None:
                     # subplots itself can fail after creating a partial figure.
@@ -738,13 +848,17 @@ def lin_fit(
     for new observations. OLS points have no error bars; normalized WLS
     residuals have unit error bars referencing the observation uncertainties.
 
-    output reserves the extension-free str/Path base for automatic export
-    in phase 5; until then any non-None value raises NotImplementedError.
-    to_toml(path) remains available on the result for numerical export.
+    output is an extension-free str/Path base, for example "risultati/molla".
+    If supplied, missing directories are created and molla.toml is exported,
+    plus molla.pdf when plot=True. Existing files are replaced atomically
+    one at a time, after both requested artifacts are prepared; the pair
+    is not an atomic transaction. PDF rendering honors savefig.* within
+    the selected style. With output=None no file is written. to_toml(path)
+    exports the same schema-2 document without creating missing directories.
 
     Breaking changes: fit_method, sigma_x, tol, max_iter and aesthetic
     overrides have been removed. Use plot in place of show_plot; save_path
-    is removed in favor of the forthcoming output workflow. No legacy
+    is removed in favor of the output workflow. No legacy
     keywords are accepted.
 
     Invalid data raise ValueError; incompatible types raise TypeError.
@@ -752,10 +866,7 @@ def lin_fit(
     contain at least two distinct values, without an absolute tolerance.
     """
     data = _validate_linear_fit_data(x, y, sigma_y)
-    if output is not None:
-        raise NotImplementedError(
-            "output: l'esportazione automatica è prevista nella fase 5 di plan.md; usa result.to_toml(path)"
-        )
+    base = _validate_fit_output(output) if output is not None else None
     core = _solve_linear_fit(data)
     if (
         plot
@@ -772,9 +883,20 @@ def lin_fit(
             UserWarning,
             stacklevel=2,
         )
-    figure = None
-    if plot:
-        figure = _plot_linear_fit(
+    plot_metadata: dict[str, Any] = {
+        "enabled": bool(plot),
+        "normalize_residuals": bool(normalize_residuals),
+        "xlabel": xlabel,
+        "ylabel": ylabel,
+    }
+    if style is not None:
+        plot_metadata["style"] = str(style)
+    if title is not None:
+        plot_metadata["title"] = title
+    result = _make_linear_fit_result(data, core, plot_metadata=plot_metadata)
+
+    def draw(on_ready: Callable[[Figure], None] | None = None) -> Figure:
+        return _plot_linear_fit(
             data,
             core,
             xlabel=xlabel,
@@ -782,5 +904,11 @@ def lin_fit(
             title=title,
             style=style,
             normalize_residuals=normalize_residuals,
+            on_ready=on_ready,
         )
-    return _make_linear_fit_result(data, core, figure)
+
+    if base is not None:
+        figure = _export_linear_fit(result, base, draw if plot else None)
+    else:
+        figure = draw() if plot else None
+    return replace(result, figure=figure) if figure is not None else result

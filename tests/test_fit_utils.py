@@ -1,8 +1,15 @@
+import errno
 import math
+import os
+import re
+import subprocess
+import sys
 import tomllib
 import warnings
+from contextlib import contextmanager
 from dataclasses import FrozenInstanceError
 from pathlib import Path
+from types import SimpleNamespace
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -300,8 +307,8 @@ def test_to_toml_document_structure(tmp_path):
 
     document = _read_toml(result.to_toml(tmp_path / "fit.toml"))
 
-    assert set(document) == {"mespy", "fit", "diagnostics", "residuals"}
-    assert document["mespy"]["schema_version"] == 1
+    assert set(document) == {"mespy", "data", "fit", "diagnostics", "residuals", "plot"}
+    assert document["mespy"]["schema_version"] == 2
     assert document["mespy"]["result_type"] == "linear_fit"
     assert isinstance(document["mespy"]["mespy_version"], str)
     assert document["mespy"]["mespy_version"]
@@ -356,9 +363,13 @@ def test_to_toml_excludes_figure_and_matches_result_without_plot(tmp_path):
     assert without_plot.figure is None
     assert "figure" not in _collect_keys(_read_toml(plot_path))
     no_plot_path = without_plot.to_toml(tmp_path / "no_plot.toml")
-    assert plot_path.read_text(encoding="utf-8") == no_plot_path.read_text(
-        encoding="utf-8"
-    )
+    plot_document = _read_toml(plot_path)
+    no_plot_document = _read_toml(no_plot_path)
+    assert plot_document["plot"]["enabled"] is True
+    assert no_plot_document["plot"]["enabled"] is False
+    plot_document.pop("plot")
+    no_plot_document.pop("plot")
+    assert plot_document == no_plot_document
 
 
 @pytest.mark.parametrize("as_str", [True, False])
@@ -722,21 +733,32 @@ def test_lin_fit_figure_can_be_modified_and_saved(tmp_path):
 
 @pytest.mark.parametrize("plot", [False, True])
 @pytest.mark.parametrize("as_path", [False, True])
-def test_lin_fit_output_reports_pending_phase5_without_side_effects(
-    tmp_path, plot, as_path
+@pytest.mark.parametrize("with_output", [False, True])
+def test_lin_fit_output_creates_exactly_requested_artifacts(
+    tmp_path, plot, as_path, with_output
 ):
-    target = tmp_path / "fit"
-    before = set(plt.get_fignums())
-    with pytest.raises(NotImplementedError, match="output.*fase 5"):
-        lin_fit(
-            [0, 1, 2],
-            [0, 1, 3],
-            1,
-            plot=plot,
-            output=target if as_path else str(target),
-        )
-    assert not list(tmp_path.iterdir())
-    assert set(plt.get_fignums()) == before
+    target = tmp_path / "results" / "fit"
+    result = lin_fit(
+        [0, 1, 2],
+        [0, 1, 3],
+        1,
+        plot=plot,
+        output=(target if as_path else str(target)) if with_output else None,
+    )
+    assert (result.figure is not None) == plot
+    if not with_output:
+        assert not list(tmp_path.iterdir())
+        return
+    assert sorted(path.name for path in target.parent.iterdir()) == (
+        ["fit.pdf", "fit.toml"] if plot else ["fit.toml"]
+    )
+    document = _read_toml(target.with_suffix(".toml"))
+    assert document["fit"]["slope"] == result.slope
+    assert document["plot"]["enabled"] == plot
+    if plot:
+        data = target.with_suffix(".pdf").read_bytes()
+        assert data.startswith(b"%PDF-")
+        assert data.rstrip().endswith(b"%%EOF")
 
 
 @pytest.mark.parametrize("weighted", [False, True])
@@ -754,6 +776,452 @@ def test_to_toml_serializes_new_method_and_defined_fields(tmp_path, weighted):
     else:
         assert "correlation" not in document["fit"]
         assert not {"chi2", "reduced_chi2", "p_value"} & document["diagnostics"].keys()
+
+
+@pytest.mark.parametrize("plot", [False, True])
+def test_lin_fit_output_overwrites_existing_artifacts_without_removing_unrequested_pdf(
+    tmp_path, plot
+):
+    base = tmp_path / "fit"
+    toml = base.with_suffix(".toml")
+    pdf = base.with_suffix(".pdf")
+    toml.write_text("old TOML", encoding="utf-8")
+    pdf.write_bytes(b"old PDF")
+    result = lin_fit([0, 1, 2], [0, 1, 3], 1, output=base, plot=plot)
+    assert _read_toml(toml)["fit"]["slope"] == result.slope
+    assert (
+        pdf.read_bytes().startswith(b"%PDF-")
+        if plot
+        else pdf.read_bytes() == b"old PDF"
+    )
+    assert sorted(path.name for path in tmp_path.iterdir()) == ["fit.pdf", "fit.toml"]
+
+
+@pytest.mark.parametrize(
+    "value",
+    [
+        "",
+        ".",
+        "..",
+        "/",
+        "folder/",
+        "fit.",
+        "fit.pdf",
+        "fit.toml",
+        "fit.tar.gz",
+        "bad\x00name",
+    ],
+)
+def test_lin_fit_output_rejects_invalid_file_bases_without_artifacts(tmp_path, value):
+    before = set(plt.get_fignums())
+    with pytest.raises(ValueError, match="output"):
+        lin_fit([0, 1, 2], [0, 1, 3], 1, output=value)
+    assert set(plt.get_fignums()) == before
+    assert not list(tmp_path.iterdir())
+
+
+@pytest.mark.parametrize("value", [1, b"fit", object()])
+def test_lin_fit_output_rejects_incompatible_types(value):
+    with pytest.raises(TypeError, match="output"):
+        lin_fit([0, 1, 2], [0, 1, 3], 1, output=value, plot=False)
+
+
+def test_lin_fit_output_rejects_existing_directory(tmp_path):
+    with pytest.raises(ValueError, match="output.*directory"):
+        lin_fit([0, 1, 2], [0, 1, 3], 1, output=tmp_path)
+    assert not list(tmp_path.iterdir())
+
+
+@pytest.mark.parametrize(
+    "sigma, method", [(None, "ols"), (2.0, "wls"), ([1.0, 2.0, 1.0], "wls")]
+)
+@pytest.mark.parametrize("plot", [False, True])
+def test_schema2_keeps_reproducible_data_full_precision_and_original_plot_options(
+    tmp_path, sigma, method, plot
+):
+    x = np.array([0.0, 1.0, 2.0])
+    y = np.array([0.0, 1.0, 3.0])
+    base = tmp_path / "fit"
+    with warnings.catch_warnings(record=True):
+        result = lin_fit(
+            x,
+            y,
+            sigma,
+            plot=plot,
+            output=base,
+            normalize_residuals=True,
+            style=None,
+            xlabel="Tempo [s]",
+            ylabel="Posizione [m]",
+            title='Misure "A" — prova',
+        )
+    if result.figure is not None:
+        result.figure.axes[0].set_title("Modifica successiva")
+        result.figure.axes[1].set_xlabel("Altra etichetta")
+    x[:] = 99
+    y[:] = 99
+    manual_path = result.to_toml(tmp_path / "manual.toml")
+    document = _read_toml(base.with_suffix(".toml"))
+    assert document == _read_toml(manual_path)
+    assert set(document) == {"mespy", "data", "fit", "diagnostics", "residuals", "plot"}
+    assert document["mespy"]["schema_version"] == 2
+    assert document["data"]["x"] == [0.0, 1.0, 2.0]
+    assert document["data"]["y"] == [0.0, 1.0, 3.0]
+    expected_plot = {
+        "enabled": plot,
+        "normalize_residuals": True,
+        "xlabel": "Tempo [s]",
+        "ylabel": "Posizione [m]",
+        "title": 'Misure "A" — prova',
+    }
+    assert document["plot"] == expected_plot
+    assert document["fit"]["fit_method"] == method
+    for name in (
+        "slope",
+        "intercept",
+        "slope_std",
+        "intercept_std",
+        "covariance",
+        "correlation",
+    ):
+        assert document["fit"][name] == getattr(result, name)
+    for name in ("chi2", "reduced_chi2", "p_value", "residual_std", "estimated_sigma"):
+        value = getattr(result, name)
+        if value is None:
+            assert name not in document["diagnostics"]
+        else:
+            assert document["diagnostics"][name] == value
+    assert document["residuals"]["values"] == result.residuals.tolist()
+    if sigma is None:
+        assert "sigma_y" not in document["data"]
+        assert not {"chi2", "reduced_chi2", "p_value"} & document["diagnostics"].keys()
+    else:
+        assert document["data"]["sigma_y"] == (
+            np.full(3, sigma).tolist() if np.ndim(sigma) == 0 else sigma
+        )
+    data = document["data"]
+    with warnings.catch_warnings(record=True):
+        repeated = lin_fit(data["x"], data["y"], data.get("sigma_y"), plot=False)
+    for name in (
+        "slope",
+        "intercept",
+        "slope_std",
+        "intercept_std",
+        "covariance",
+        "correlation",
+        "chi2",
+        "p_value",
+    ):
+        assert getattr(repeated, name) == getattr(result, name)
+    np.testing.assert_array_equal(repeated.residuals, result.residuals)
+
+
+def test_schema2_omits_undefined_two_point_diagnostics_and_absent_title(tmp_path):
+    result = lin_fit([0, 2], [1, 5], [1, 2], plot=False)
+    document = _read_toml(result.to_toml(tmp_path / "fit.toml"))
+    assert document["diagnostics"] == {"dof": 0, "chi2": 0}
+    assert document["plot"] == {
+        "enabled": False,
+        "normalize_residuals": False,
+        "xlabel": "x",
+        "ylabel": "y",
+        "style": "report",
+    }
+
+
+def test_lin_fit_output_without_plot_stays_lazy_and_ignores_style(tmp_path):
+    env = os.environ.copy()
+    env["MPLCONFIGDIR"] = str(tmp_path / "mplconfig")
+    base = tmp_path / "exports" / "fit"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys, mespy; fit = mespy.lin_fit([0, 1, 2], [0, 1, 3], 1, plot=False, "
+                "normalize_residuals=True, style='inesistente', output=sys.argv[1]); "
+                "print(fit.figure); print('matplotlib.pyplot' in sys.modules)"
+            ),
+            str(base),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    assert completed.stdout.strip().splitlines() == ["None", "False"]
+    assert sorted(path.name for path in base.parent.iterdir()) == ["fit.toml"]
+    document = _read_toml(base.with_suffix(".toml"))
+    assert document["plot"]["style"] == "inesistente"
+    assert document["plot"]["normalize_residuals"] is True
+
+
+def test_lin_fit_pdf_honors_savefig_settings_inside_style_and_is_one_valid_page(
+    tmp_path, monkeypatch, recognizable_fit_style
+):
+    original_save = matplotlib.figure.Figure.savefig
+    settings = []
+
+    def save(figure, filename, **kwargs):
+        settings.append(
+            (
+                matplotlib.rcParams["savefig.dpi"],
+                matplotlib.rcParams["savefig.bbox"],
+                matplotlib.rcParams["savefig.pad_inches"],
+                kwargs,
+            )
+        )
+        return original_save(figure, filename, **kwargs)
+
+    monkeypatch.setattr(matplotlib.figure.Figure, "savefig", save)
+    before = matplotlib.rcParams.copy()
+    base = tmp_path / "fit"
+    result = lin_fit([0, 1, 2], [0, 1, 3], 1, output=base, style=recognizable_fit_style)
+    assert settings == [(91, None, 0.21, {"format": "pdf"})]
+    data = base.with_suffix(".pdf").read_bytes()
+    assert data.startswith(b"%PDF-") and data.rstrip().endswith(b"%%EOF")
+    assert len(re.findall(rb"/Type /Page\b", data)) == 1
+    media_box = re.search(rb"/MediaBox\s*\[([^\]]+)\]", data)
+    assert media_box is not None
+    np.testing.assert_allclose(
+        [float(v) for v in media_box.group(1).split()], [0, 0, 9.3 * 72, 6.1 * 72]
+    )
+    assert matplotlib.rcParams == before
+    assert result.figure is not None
+    assert (
+        _read_toml(base.with_suffix(".toml"))["plot"]["style"] == recognizable_fit_style
+    )
+
+
+@pytest.mark.parametrize("plot", [False, True])
+def test_lin_fit_serialization_error_preserves_existing_files_and_leaves_no_temporaries(
+    tmp_path, monkeypatch, plot
+):
+    import tomli_w
+
+    base = tmp_path / "fit"
+    base.with_suffix(".toml").write_bytes(b"old TOML")
+    base.with_suffix(".pdf").write_bytes(b"old PDF")
+
+    def fail(*args, **kwargs):
+        raise TypeError("serialization failure")
+
+    monkeypatch.setattr(tomli_w, "dumps", fail)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError(
+            "Non deve essere creata una figura se la serializzazione fallisce"
+        )
+
+    monkeypatch.setattr(plt, "subplots", forbidden)
+    with pytest.raises(TypeError, match="serialization failure"):
+        lin_fit([0, 1, 2], [0, 1, 3], 1, output=base, plot=plot)
+    assert base.with_suffix(".toml").read_bytes() == b"old TOML"
+    assert base.with_suffix(".pdf").read_bytes() == b"old PDF"
+    assert sorted(path.name for path in tmp_path.iterdir()) == ["fit.pdf", "fit.toml"]
+
+
+@pytest.mark.parametrize("operation", ["open", "write"])
+@pytest.mark.parametrize("automatic", [False, True])
+def test_fit_toml_io_errors_preserve_original_file_and_identify_destination(
+    tmp_path, monkeypatch, operation, automatic
+):
+    base = tmp_path / "fit"
+    target = base.with_suffix(".toml")
+    target.write_bytes(b"old TOML")
+    result = lin_fit([0, 1, 2], [0, 1, 3], 1, plot=False)
+    if operation == "open":
+        original_open = os.open
+
+        def fail(path, *args, **kwargs):
+            if str(path).endswith(".tmp"):
+                raise PermissionError(errno.EACCES, "open failure")
+            return original_open(path, *args, **kwargs)
+
+        monkeypatch.setattr("mespy._toml.os.open", fail)
+    else:
+        original_fdopen = os.fdopen
+
+        @contextmanager
+        def fail(fd, mode):
+            with original_fdopen(fd, mode) as stream:
+
+                def write(data):
+                    stream.write(data[:8])
+                    raise OSError(errno.EIO, "write failure")
+
+                yield SimpleNamespace(write=write)
+
+        monkeypatch.setattr("mespy._toml.os.fdopen", fail)
+    with pytest.raises(OSError) as caught:
+        if automatic:
+            lin_fit([0, 1, 2], [0, 1, 3], 1, output=base, plot=False)
+        else:
+            result.to_toml(base)
+    assert caught.value.filename == str(target)
+    assert str(target) in str(caught.value)
+    assert target.read_bytes() == b"old TOML"
+    assert sorted(path.name for path in tmp_path.iterdir()) == ["fit.toml"]
+
+
+@pytest.mark.parametrize("failure", ["artist", "render", "pdf_io"])
+def test_fit_pdf_errors_preserve_existing_files_figures_and_style(
+    tmp_path, monkeypatch, recognizable_fit_style, failure
+):
+    base = tmp_path / "fit"
+    base.with_suffix(".toml").write_bytes(b"old TOML")
+    base.with_suffix(".pdf").write_bytes(b"old PDF")
+    before_files = set(tmp_path.iterdir())
+    existing = plt.figure()
+    before_figures = set(plt.get_fignums())
+    before_params = matplotlib.rcParams.copy()
+
+    def fail(*args, **kwargs):
+        if failure != "artist":
+            Path(args[1]).write_bytes(b"partial PDF")
+        if failure == "pdf_io":
+            raise OSError(errno.EIO, "PDF failure")
+        raise RuntimeError("render failure")
+
+    monkeypatch.setattr(
+        matplotlib.axes.Axes if failure == "artist" else matplotlib.figure.Figure,
+        "fill_between" if failure == "artist" else "savefig",
+        fail,
+    )
+    with pytest.raises(OSError if failure == "pdf_io" else RuntimeError) as caught:
+        lin_fit([0, 1, 2], [0, 1, 3], 1, output=base, style=recognizable_fit_style)
+    if failure == "pdf_io":
+        assert caught.value.filename == str(base.with_suffix(".pdf"))
+    assert base.with_suffix(".toml").read_bytes() == b"old TOML"
+    assert base.with_suffix(".pdf").read_bytes() == b"old PDF"
+    assert set(tmp_path.iterdir()) == before_files
+    assert set(plt.get_fignums()) == before_figures
+    assert plt.fignum_exists(existing.number)
+    assert matplotlib.rcParams == before_params
+
+
+@pytest.mark.parametrize(
+    "plot, failure", [(False, "toml"), (True, "pdf"), (True, "toml")]
+)
+def test_fit_replacement_errors_are_atomic_per_file_and_cleanup_staging(
+    tmp_path, monkeypatch, plot, failure
+):
+    base = tmp_path / "fit"
+    toml = base.with_suffix(".toml")
+    pdf = base.with_suffix(".pdf")
+    toml.write_bytes(b"old TOML")
+    pdf.write_bytes(b"old PDF")
+    failing_path = base.with_suffix("." + failure)
+    original_replace = os.replace
+
+    def replace(source, target):
+        if Path(target) == failing_path:
+            raise PermissionError(errno.EACCES, "replacement failure")
+        return original_replace(source, target)
+
+    monkeypatch.setattr("mespy.fit_utils.os.replace", replace)
+    before = set(plt.get_fignums())
+    with pytest.raises(PermissionError) as caught:
+        lin_fit([0, 1, 2], [0, 1, 3], 1, output=base, plot=plot)
+    assert caught.value.filename == str(failing_path)
+    assert toml.read_bytes() == b"old TOML"
+    if plot and failure == "toml":
+        # PDF was committed first; no atomic transaction is promised for the pair.
+        assert pdf.read_bytes().startswith(b"%PDF-")
+    else:
+        assert pdf.read_bytes() == b"old PDF"
+    assert sorted(path.name for path in tmp_path.iterdir()) == ["fit.pdf", "fit.toml"]
+    assert set(plt.get_fignums()) == before
+
+
+def test_fit_output_directory_errors_identify_destination_before_plotting(
+    tmp_path, monkeypatch
+):
+    blocked = tmp_path / "blocked"
+    blocked.write_bytes(b"file")
+    base = blocked / "fit"
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError(
+            "Non deve essere creata una figura quando la directory non è scrivibile"
+        )
+
+    monkeypatch.setattr(plt, "subplots", forbidden)
+    with pytest.raises(FileExistsError) as caught:
+        lin_fit([0, 1, 2], [0, 1, 3], 1, output=base)
+    assert caught.value.filename == str(base.with_suffix(".toml"))
+    assert blocked.read_bytes() == b"file"
+
+
+def test_fit_output_staging_directory_error_has_final_destination(
+    tmp_path, monkeypatch
+):
+    base = tmp_path / "fit"
+
+    def fail(*args, **kwargs):
+        raise PermissionError(errno.EACCES, "staging failure")
+
+    monkeypatch.setattr("mespy.fit_utils.tempfile.TemporaryDirectory", fail)
+    with pytest.raises(PermissionError) as caught:
+        lin_fit([0, 1, 2], [0, 1, 3], 1, output=base, plot=False)
+    assert caught.value.filename == str(base.with_suffix(".toml"))
+    assert not list(tmp_path.iterdir())
+
+
+def test_fit_invalid_numerical_or_normalization_input_does_not_create_output_directory(
+    tmp_path,
+):
+    base = tmp_path / "nested" / "fit"
+    with pytest.raises(ValueError, match="x"):
+        lin_fit([0, 0, 0], [0, 1, 3], 1, output=base)
+    with pytest.raises(ValueError, match="normalize_residuals"):
+        lin_fit([0, 1, 2], [1, 3, 5], output=base, normalize_residuals=True)
+    assert not list(tmp_path.iterdir())
+
+
+def test_fit_exports_are_prepared_before_any_final_replacement(tmp_path, monkeypatch):
+    base = tmp_path / "fit"
+    original_replace = os.replace
+    committed = []
+
+    def replace(source, target):
+        source, target = Path(source), Path(target)
+        if target.parent == tmp_path:
+            assert (source.parent / "fit.toml").is_file()
+            if target.suffix == ".pdf":
+                assert (source.parent / "fit.pdf").read_bytes().startswith(b"%PDF-")
+                assert (
+                    _read_toml(source.parent / "fit.toml")["mespy"]["schema_version"]
+                    == 2
+                )
+            committed.append(target.name)
+        return original_replace(source, target)
+
+    monkeypatch.setattr("mespy.fit_utils.os.replace", replace)
+    lin_fit([0, 1, 2], [0, 1, 3], 1, output=base)
+    assert committed == ["fit.pdf", "fit.toml"]
+    assert sorted(path.name for path in tmp_path.iterdir()) == committed
+
+
+def test_fit_notebook_export_failure_does_not_display_partial_figure(
+    tmp_path, monkeypatch
+):
+    import IPython.display
+
+    existing = plt.figure()
+    displayed = []
+    monkeypatch.setattr("mespy.plot_utils._in_ipython", lambda: True)
+    monkeypatch.setattr(IPython.display, "display", displayed.append)
+
+    def fail(*args, **kwargs):
+        raise RuntimeError("PDF render failure")
+
+    monkeypatch.setattr(matplotlib.figure.Figure, "savefig", fail)
+    with pytest.raises(RuntimeError, match="PDF render failure"):
+        lin_fit([0, 1, 2], [0, 1, 3], 1, output=tmp_path / "fit")
+    assert not displayed
+    assert set(plt.get_fignums()) == {existing.number}
+    assert not list(tmp_path.iterdir())
 
 
 # Presentazione grafica e isolamento dello stato di Matplotlib (fase 4).
