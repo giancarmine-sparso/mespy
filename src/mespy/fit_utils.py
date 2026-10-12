@@ -32,6 +32,72 @@ _LINEAR_FIT_SCHEMA_VERSION = 1
 
 
 @dataclass(frozen=True, slots=True)
+class _LinearFitData:
+    """Independent float64 copies, validated for the future OLS/WLS API."""
+
+    x: FloatVector
+    y: FloatVector
+    sigma_y: FloatVector | None
+
+
+
+def _real_fit_array(name: str, values: ArrayLike) -> FloatVector:
+    """Convert real numeric input once, without discarding masks or imaginary parts."""
+    if np.ma.isMaskedArray(values):
+        raise TypeError(f"{name}: i masked array non sono supportati")
+    try:
+        raw = np.asarray(values)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"{name}: serve un array numerico regolare") from exc
+    if raw.dtype.kind not in "biuf":
+        raise TypeError(f"{name}: servono numeri reali, non complessi o altri tipi")
+    try:
+        with np.errstate(over="ignore", invalid="ignore"):
+            result = np.array(raw, dtype=np.float64, copy=True)
+    except (TypeError, ValueError, OverflowError) as exc:
+        raise ValueError(f"{name}: valori non convertibili in float64") from exc
+    if not np.all(np.isfinite(result)):
+        raise ValueError(f"{name}: tutti i valori devono essere finiti in float64")
+    return result
+
+
+
+def _validate_linear_fit_data(
+    x: ArrayLike, y: ArrayLike, sigma_y: ArrayLike | None = None
+) -> _LinearFitData:
+    """Validate shape, sample size and absolute vertical uncertainties."""
+    x_values = _real_fit_array("x", x)
+    y_values = _real_fit_array("y", y)
+    for name, values in (("x", x_values), ("y", y_values)):
+        if values.ndim != 1 or values.size == 0:
+            raise ValueError(f"{name}: serve un vettore monodimensionale non vuoto")
+    if x_values.shape != y_values.shape:
+        raise ValueError("y: deve avere la stessa lunghezza di x")
+
+    sigma_values = None
+    if sigma_y is not None:
+        sigma_values = _real_fit_array("sigma_y", sigma_y)
+        if sigma_values.ndim == 0:
+            sigma_values = np.full(x_values.shape, float(sigma_values))
+        elif sigma_values.ndim != 1 or sigma_values.shape != x_values.shape:
+            raise ValueError(
+                "sigma_y: serve uno scalare o un vettore della lunghezza di x"
+            )
+        if np.any(sigma_values <= 0):
+            raise ValueError(
+                "sigma_y: le incertezze devono essere strettamente positive"
+            )
+
+    minimum = 3 if sigma_values is None else 2
+    if x_values.size < minimum:
+        raise ValueError(f"x, y: servono almeno {minimum} punti per questo fit")
+    if np.all(x_values == x_values[0]):
+        raise ValueError("x: servono almeno due valori distinti")
+    return _LinearFitData(x_values, y_values, sigma_values)
+
+
+
+@dataclass(frozen=True, slots=True)
 class LinearFitResult:
     """Immutable result of a linear fit."""
 

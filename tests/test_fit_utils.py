@@ -10,12 +10,17 @@ import pytest
 from scipy import stats
 
 from mespy import lin_fit
-from mespy.fit_utils import LinearFitResult
-
+from mespy.fit_utils import (
+    LinearFitResult,
+    _validate_linear_fit_data,
+)
 
 matplotlib.use("Agg")
 
 
+# Regressioni dell'API attuale. I test con fit_method='residual', sigma_x,
+# controlli estetici e schema TOML 1 descrivono il contratto legacy: saranno
+# sostituiti nelle fasi 3–6, insieme al codice pubblico corrispondente.
 def make_placebo_data():
     rng = np.random.default_rng(42)
     x = np.arange(1, 11, dtype=float)
@@ -1013,3 +1018,88 @@ def test_to_toml_missing_directory_raises(tmp_path):
         _make_manual_result().to_toml(tmp_path / "missing" / "fit.toml")
 
     assert list(tmp_path.iterdir()) == []
+
+
+# Contratto numerico OLS/WLS delle fasi 1–2. Questi test restano validi quando
+# la fase 3 collega il core alla nuova funzione pubblica.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@pytest.mark.parametrize(
+    "name, value, exception",
+    [
+        ("x", [], ValueError),
+        ("y", [], ValueError),
+        ("x", 1, ValueError),
+        ("y", 1, ValueError),
+        ("x", [[0, 1, 2]], ValueError),
+        ("y", [[0, 1, 2]], ValueError),
+        ("x", [0, 1, np.inf], ValueError),
+        ("y", [0, 1, np.nan], ValueError),
+        ("sigma_y", [1, 1], ValueError),
+        ("sigma_y", [1], ValueError),
+        ("sigma_y", [[1, 1, 1]], ValueError),
+        ("sigma_y", [1, 0, 1], ValueError),
+        ("sigma_y", -1, ValueError),
+        ("sigma_y", np.inf, ValueError),
+        ("sigma_y", [1, -1, 1], ValueError),
+        ("x", [0, 1, 2j], TypeError),
+        ("y", [0j, 1, 2], TypeError),
+        ("sigma_y", 1 + 0j, TypeError),
+        ("x", ["a", "b", "c"], TypeError),
+        ("y", None, TypeError),
+        ("sigma_y", "1", TypeError),
+        ("x", np.ma.array([0, 1, 2], mask=False), TypeError),
+        ("y", np.ma.array([0, 1, 2], mask=[0, 1, 0]), TypeError),
+        ("sigma_y", np.ma.array(1.0, mask=False), TypeError),
+    ],
+)
+def test_core_validation_names_invalid_parameter(name, value, exception):
+    arguments = {"x": [0, 1, 2], "y": [0, 1, 3], "sigma_y": 1}
+    arguments[name] = value
+    with pytest.raises(exception, match=name):
+        _validate_linear_fit_data(**arguments)
+
+
+def test_core_validation_rejects_length_rank_and_sample_size():
+    with pytest.raises(ValueError, match="y"):
+        _validate_linear_fit_data([0, 1, 2], [1, 2])
+    with pytest.raises(ValueError, match="x.*distinti"):
+        _validate_linear_fit_data([1, 1, 1], [1, 2, 3], 1)
+    with pytest.raises(ValueError, match="x, y.*3"):
+        _validate_linear_fit_data([0, 1], [1, 2])
+    with pytest.raises(ValueError, match="x, y.*2"):
+        _validate_linear_fit_data([0], [1], 1)
+
+
