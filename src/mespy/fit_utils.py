@@ -941,7 +941,7 @@ def _plot_linear_fit(
                     y_fit + mean_std,
                     color=fit_color,
                     alpha=0.20,
-                    label=r"$\pm 1 \sigma$ media prevista",
+                    label=r"$\pm 1 \sigma$ predicted mean",
                 )
                 ax_fit.set_ylabel(ylabel)
                 if title is not None:
