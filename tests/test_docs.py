@@ -55,3 +55,39 @@ def test_english_catalogs_cover_every_document_and_are_complete():
                 incomplete.append(f"{path.relative_to(ROOT)}: {message.id!r}")
 
     assert not incomplete, "Cataloghi inglesi incompleti:\n" + "\n".join(incomplete)
+
+
+def test_homepage_initial_example_runs_with_public_lin_fit():
+    import json
+    import mespy
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    source = (DOCS_SOURCE / "_static/homepage-example.py").read_text()
+    adapter = runpy.run_path(str(DOCS_SOURCE / "_static/homepage-fit.py"))
+    response = json.loads(adapter["execute_fit"](source))
+    assert response["ok"], response
+    document = tomllib.loads(response["toml"])
+    expected = mespy.lin_fit(document["data"]["x"], document["data"]["y"], sigma_y=document["data"]["sigma_y"], plot=False)
+    assert document["mespy"]["schema_version"] == 2
+    assert document["fit"]["slope"] == expected.slope
+    assert document["fit"]["slope_std"] == expected.slope_std
+    assert document["diagnostics"]["chi2"] == expected.chi2
+    np.testing.assert_allclose(document["residuals"]["values"], expected.residuals)
+    assert document["plot"]["style"] == "report"
+    assert '<svg' in response["svg"] and 'Residuals' in response["svg"]
+    assert not plt.get_fignums()
+
+
+def test_homepage_build_bundles_exact_local_mespy_and_styles(tmp_path):
+    from types import SimpleNamespace
+    from zipfile import ZipFile
+
+    config = runpy.run_path(str(DOCS_SOURCE / "conf.py"))
+    app = SimpleNamespace(outdir=tmp_path, builder=SimpleNamespace(format="html"))
+    config["bundle_homepage_runtime"](app, None)
+    with ZipFile(tmp_path / "_static/mespy-runtime.zip") as bundle:
+        assert bundle.read("mespy/fit_utils.py") == (ROOT / "src/mespy/fit_utils.py").read_bytes()
+        assert bundle.read("mespy/stylelib/report.mplstyle") == (ROOT / "src/mespy/stylelib/report.mplstyle").read_bytes()
+        assert f"Version: {config["release"]}" in bundle.read(f"mespy-{config["release"]}.dist-info/METADATA").decode()
+        assert bundle.read("homepage_fit.py") == (DOCS_SOURCE / "_static/homepage-fit.py").read_bytes()
