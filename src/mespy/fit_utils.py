@@ -742,8 +742,26 @@ def _validate_fit_flag(name: str, value: object) -> bool:
     return bool(value)
 
 
+# Final suffixes that denote a file rather than part of a base name. Other
+# dots (molla_k0.5, run.v2) are kept: .pdf/.toml are appended, not substituted.
+_FIT_OUTPUT_EXTENSIONS = frozenset(
+    {
+        ".pdf", ".toml",
+        ".png", ".svg", ".svgz", ".eps", ".ps", ".pgf",
+        ".jpg", ".jpeg", ".tif", ".tiff", ".webp", ".raw", ".rgba",
+        ".csv", ".tsv", ".txt", ".dat", ".json", ".xlsx", ".ods",
+        ".gz", ".bz2", ".xz", ".zip", ".tar",
+    }
+)  # fmt: skip
+
+
+def _fit_output_target(base: Path, suffix: str) -> Path:
+    """Append an artifact suffix to the base name, never replacing its dots."""
+    return base.with_name(base.name + suffix)
+
+
 def _validate_fit_output(output: str | Path) -> Path:
-    """Require a file base without an extension; never reinterpret legacy save_path."""
+    """Require a file base without a file extension; never reinterpret save_path."""
     if not isinstance(output, (str, Path)):
         raise TypeError("output: serve un percorso base str o Path senza estensione")
     if isinstance(output, str) and (not output or output.endswith(os.sep)):
@@ -753,9 +771,11 @@ def _validate_fit_output(output: str | Path) -> Path:
         raise ValueError(
             "output: serve un percorso base di file valido, non una directory"
         )
-    if path.suffix or path.name.endswith("."):
+    if path.name.endswith("."):
+        raise ValueError("output: il percorso base non può terminare con un punto")
+    if path.suffix.lower() in _FIT_OUTPUT_EXTENSIONS:
         raise ValueError(
-            "output: usa un percorso base senza estensione, ad esempio 'risultati/molla' invece di 'risultati/molla.pdf'"
+            f"output: usa un percorso base senza l'estensione '{path.suffix}', ad esempio 'risultati/molla' invece di 'risultati/molla.pdf'; .pdf e .toml vengono aggiunti automaticamente"
         )
     return path
 
@@ -788,8 +808,8 @@ def _export_linear_fit(
     context, before notebook display. Each replacement is atomic; the pair
     is not a filesystem transaction and may be partially replaced on error.
     """
-    toml_target = base.with_suffix(".toml")
-    pdf_target = base.with_suffix(".pdf")
+    toml_target = _fit_output_target(base, ".toml")
+    pdf_target = _fit_output_target(base, ".pdf")
     try:
         base.parent.mkdir(parents=True, exist_ok=True)
         staging = tempfile.TemporaryDirectory(prefix=f".{base.name}.", dir=base.parent)
