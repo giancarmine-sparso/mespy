@@ -43,7 +43,18 @@ def _real_fit_array(name: str, values: ArrayLike) -> FloatVector:
         raw = np.asarray(values)
     except (TypeError, ValueError) as exc:
         raise ValueError(f"{name}: serve un array numerico regolare") from exc
-    if raw.dtype.kind not in "biuf":
+    # NumPy silently promotes booleans mixed with numbers in lists/tuples.
+    if raw.dtype.kind == "b" or (
+        isinstance(values, (list, tuple))
+        and any(
+            isinstance(v, (bool, np.bool_))
+            for v in np.asarray(values, dtype=object).flat
+        )
+    ):
+        raise TypeError(
+            f"{name}: i valori booleani non sono ammessi; servono numeri interi o floating-point"
+        )
+    if raw.dtype.kind not in "iuf":
         raise TypeError(f"{name}: servono numeri reali, non complessi o altri tipi")
     try:
         with np.errstate(over="ignore", invalid="ignore"):

@@ -2214,3 +2214,54 @@ def test_core_validation_accepts_scalar_and_vector_sigma_without_mutation(sigma)
     np.testing.assert_allclose(
         result.predict(data.x), np.array([0, 1, 3]) - result.residuals
     )
+
+
+@pytest.mark.parametrize(
+    "name, value",
+    [
+        ("x", [True, False, True]),
+        ("x", np.array([1, 0, 1], dtype=bool)),
+        ("x", (False, True, True)),
+        ("x", [0, True, 2]),
+        ("x", [0.0, 1.0, np.True_]),
+        ("y", [True, False, True]),
+        ("y", np.array([True, True, False])),
+        ("sigma_y", True),
+        ("sigma_y", np.True_),
+        ("sigma_y", np.array(True)),
+        ("sigma_y", [True, True, True]),
+        ("sigma_y", [1.0, True, 1.0]),
+    ],
+)
+def test_core_validation_rejects_boolean_numeric_inputs(name, value):
+    arguments = {"x": [0, 1, 2], "y": [0, 1, 3], "sigma_y": 1}
+    arguments[name] = value
+    with pytest.raises(TypeError, match=rf"{name}: .*booleani"):
+        _validate_linear_fit_data(**arguments)
+
+
+@pytest.mark.parametrize(
+    "x, y, sigma_y",
+    [
+        ([0, 1, 2], [0, 1, 3], 1),
+        ((0, 1, 2), (0.0, 1.0, 3.0), (1, 2, 1)),
+        (
+            np.array([0, 1, 2], dtype=np.int8),
+            np.array([0, 1, 3], dtype=np.uint16),
+            np.float32(1),
+        ),
+        (np.array([0.0, 1.0, 2.0]), [0, 1, 3], np.array([1.0, 2.0, 1.0])),
+    ],
+)
+def test_core_validation_keeps_integer_and_float_sequences(x, y, sigma_y):
+    data = _validate_linear_fit_data(x, y, sigma_y)
+    assert data.x.dtype == data.y.dtype == data.sigma_y.dtype == np.float64
+    np.testing.assert_array_equal(data.x, [0, 1, 2])
+    np.testing.assert_array_equal(data.y, [0, 1, 3])
+
+
+def test_predict_rejects_boolean_coordinates():
+    result = lin_fit([0, 1, 2], [0, 1, 3], 1, plot=False)
+    for value in (True, np.True_, [False, True]):
+        with pytest.raises(TypeError, match="x_new: .*booleani"):
+            result.predict(value)
