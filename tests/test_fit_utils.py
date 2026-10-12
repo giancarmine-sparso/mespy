@@ -2265,3 +2265,29 @@ def test_predict_rejects_boolean_coordinates():
     for value in (True, np.True_, [False, True]):
         with pytest.raises(TypeError, match="x_new: .*booleani"):
             result.predict(value)
+
+
+@pytest.mark.parametrize("name", ["plot", "normalize_residuals"])
+@pytest.mark.parametrize("value", ["False", "True", 0, 1, 1.0, None, [True]])
+def test_lin_fit_flags_require_real_booleans(name, value):
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        with pytest.raises(TypeError, match=rf"{name}: serve un booleano"):
+            lin_fit([0, 1, 2], [0, 1, 3], 1, **{name: value})
+    assert plt.get_fignums() == []
+
+
+@pytest.mark.parametrize("name", ["plot", "normalize_residuals"])
+@pytest.mark.parametrize("value", [False, np.False_])
+def test_lin_fit_flags_accept_python_and_numpy_booleans(name, value):
+    arguments = {"plot": False, name: value}
+    result = lin_fit([0, 1, 2], [0, 1, 3], 1, **arguments)
+    key = "enabled" if name == "plot" else name
+    assert result.figure is None
+    assert result._plot_metadata[key] is False
+
+
+def test_lin_fit_accepts_numpy_true_for_plot():
+    result = lin_fit([0, 1, 2], [0, 1, 3], 1, plot=np.True_)
+    assert result.figure is not None
+    assert result._plot_metadata["enabled"] is True
