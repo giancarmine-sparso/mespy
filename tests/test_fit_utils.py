@@ -449,8 +449,37 @@ def test_lin_fit_scalar_and_zero_dimensional_sigma_equal_constant_vector(sigma):
         np.testing.assert_array_equal(after.residuals, before.residuals)
 
 
+@pytest.mark.parametrize(
+    "x",
+    [
+        np.arange(6.0),
+        np.arange(11.0),
+        np.arange(31.0),
+        np.array([0.0, 1.0, 4.0, 7.0, 8.0, 9.0]),
+    ],
+)
+def test_lin_fit_exact_binary_lines_have_zero_dispersion_for_nonminimal_samples(x):
+    y = 0.75 * x - 1.125
+    result = fit_numerical(x, y)
+    assert result.slope == 0.75
+    assert result.intercept == -1.125
+    assert result.estimated_sigma == result.residual_std == 0
+    assert result.slope_std == result.intercept_std == result.covariance == 0
+    assert result.correlation is None
+    np.testing.assert_array_equal(result.residuals, np.zeros(x.size))
+    np.testing.assert_array_equal(result.predict(x), y)
+    with pytest.raises(ValueError, match="normalize_residuals.*dispersione OLS nulla"):
+        lin_fit(x, y, normalize_residuals=True)
 
 
+def test_lin_fit_exact_line_detection_does_not_discard_a_representable_y_perturbation():
+    x = np.arange(6.0)
+    y = 0.75 * x - 1.125
+    y[2] = np.nextafter(y[2], np.inf)
+    result = fit_numerical(x, y)
+    assert result.residual_std > 0
+    assert result.estimated_sigma > 0
+    assert result.correlation is not None
 
 
 def _read_toml(path):

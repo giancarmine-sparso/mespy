@@ -158,6 +158,18 @@ def _fit_restore(name: str, values: FloatVector, exponent: int) -> FloatVector:
     return restored
 
 
+def _fit_origin_values(
+    origin: float, offsets: FloatVector, exponent: int
+) -> FloatVector:
+    """Restore ordinates from local offsets, cancelling before restoring units."""
+    return np.array(
+        [
+            _fit_scaled_sum("previsione", (origin, 0), (float(value), exponent))
+            for value in offsets
+        ]
+    )
+
+
 @dataclass(frozen=True, slots=True)
 class _FitLocalAxis:
     """Coordinate offsets in units of 2**exponent; the original origin is retained."""
@@ -169,7 +181,8 @@ class _FitLocalAxis:
     correction: float
     centered: FloatVector
 
-    def deviations(self, values: FloatVector) -> FloatVector:
+    def local_offsets(self, values: FloatVector) -> FloatVector:
+        """Express new x values relative to the retained origin and binary scale."""
         # Prefer direct subtraction to preserve small representable differences
         # near a large origin. Only opposing extreme signs need prescaling.
         with np.errstate(over="ignore", under="ignore", invalid="ignore"):
@@ -183,7 +196,11 @@ class _FitLocalAxis:
             raise FloatingPointError(
                 "lin_fit: x della previsione fuori dalla scala locale"
             )
-        return (local - self.mean) - self.correction
+        return local
+
+    def deviations(self, values: FloatVector) -> FloatVector:
+        """Center new x values without reconstructing a large global mean."""
+        return (self.local_offsets(values) - self.mean) - self.correction
 
 
 def _fit_local_axis(
@@ -243,16 +260,19 @@ class _LinearFitCore:
     y_axis: _FitLocalAxis
     local_slope: float
     center_std: float
+    exact_line: bool
 
     def predict(self, x: FloatVector) -> FloatVector:
         try:
-            deviations = self.x_axis.deviations(x)
             with np.errstate(over="ignore", invalid="ignore"):
-                offsets = (
-                    self.y_axis.mean
-                    + self.y_axis.correction
-                    + self.local_slope * deviations
-                )
+                if self.exact_line:
+                    offsets = self.local_slope * self.x_axis.local_offsets(x)
+                else:
+                    offsets = (
+                        self.y_axis.mean
+                        + self.y_axis.correction
+                        + self.local_slope * self.x_axis.deviations(x)
+                    )
             if not np.all(np.isfinite(offsets)):
                 raise FloatingPointError("previsione fuori dalla scala locale")
         except FloatingPointError:
@@ -269,8 +289,14 @@ class _LinearFitCore:
                     _fit_scaled_sum(
                         "previsione",
                         (self.y_axis.origin, 0),
-                        (self.y_axis.mean, self.y_axis.exponent),
-                        (self.y_axis.correction, self.y_axis.exponent),
+                        (
+                            0.0 if self.exact_line else self.y_axis.mean,
+                            self.y_axis.exponent,
+                        ),
+                        (
+                            0.0 if self.exact_line else self.y_axis.correction,
+                            self.y_axis.exponent,
+                        ),
                         (
                             slope_part * delta_part,
                             slope_power
@@ -279,24 +305,26 @@ class _LinearFitCore:
                             + self.y_axis.exponent
                             - self.x_axis.exponent,
                         ),
-                        (-self.local_slope * self.x_axis.mean, self.y_axis.exponent),
                         (
-                            -self.local_slope * self.x_axis.correction,
+                            (
+                                0.0
+                                if self.exact_line
+                                else -self.local_slope * self.x_axis.mean
+                            ),
+                            self.y_axis.exponent,
+                        ),
+                        (
+                            (
+                                0.0
+                                if self.exact_line
+                                else -self.local_slope * self.x_axis.correction
+                            ),
                             self.y_axis.exponent,
                         ),
                     )
                 )
             return np.array(predictions)
-        return np.array(
-            [
-                _fit_scaled_sum(
-                    "previsione",
-                    (self.y_axis.origin, 0),
-                    (float(v), self.y_axis.exponent),
-                )
-                for v in offsets
-            ]
-        )
+        return _fit_origin_values(self.y_axis.origin, offsets, self.y_axis.exponent)
 
     def mean_std(self, x: FloatVector) -> FloatVector:
         """One standard uncertainty of the predicted mean, evaluated locally."""
@@ -319,6 +347,8 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
 
     No generic solver, matrix inverse or public statistics helper participates.
     Sigma normalization retains its absolute scale for uncertainties and chi2.
+    Exact local lines are checked against every original observation before
+    assigning zero residual dispersion; no numerical tolerance is applied.
     Quantities that cannot be represented raise a contextual FloatingPointError.
     """
     if data.sigma_y is None:
@@ -346,8 +376,25 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
     moment_xx = math.fsum(float(v * v) for v in scaled_x)
     norm_x = _fit_scaled_value("momento centrato x", largest_x, math.sqrt(moment_xx))
 
+    # Exact equality in the original local offsets avoids creating artificial
+    # OLS dispersion through rounded moment products. No tolerance is applied.
+    pivot = int(np.argmax(np.abs(x_axis.offsets)))
+    candidate = float(y_axis.offsets[pivot] / x_axis.offsets[pivot])
+    exact_line = np.array_equal(y_axis.offsets, candidate * x_axis.offsets)
+    if exact_line:
+        # Subtraction at the y origin can hide a perturbation of an input.
+        # Only accept the exact branch if prediction reproduces every y.
+        try:
+            reconstructed = _fit_origin_values(
+                y_axis.origin, candidate * x_axis.offsets, y_axis.exponent
+            )
+            exact_line = np.array_equal(reconstructed, data.y)
+        except FloatingPointError:
+            exact_line = False
     largest_y = float(np.max(np.abs(weighted_y)))
-    if largest_y == 0:
+    if exact_line:
+        local_slope = candidate
+    elif largest_y == 0:
         local_slope = 0.0
     else:
         moment_xy = math.fsum(
@@ -369,16 +416,25 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
     # overflow a representable intercept after cancellation with y0.
     slope_mantissa, slope_power = math.frexp(slope)
     origin_mantissa, origin_power = math.frexp(x_axis.origin)
-    intercept = _fit_scaled_sum(
-        "intercept",
+    intercept_terms = [
         (y_axis.origin, 0),
         (-slope_mantissa * origin_mantissa, slope_power + origin_power),
-        (y_axis.mean, y_axis.exponent),
-        (y_axis.correction, y_axis.exponent),
-        (-local_slope * x_axis.mean, y_axis.exponent),
-        (-local_slope * x_axis.correction, y_axis.exponent),
+    ]
+    if not exact_line:
+        intercept_terms.extend(
+            [
+                (y_axis.mean, y_axis.exponent),
+                (y_axis.correction, y_axis.exponent),
+                (-local_slope * x_axis.mean, y_axis.exponent),
+                (-local_slope * x_axis.correction, y_axis.exponent),
+            ]
+        )
+    intercept = _fit_scaled_sum("intercept", *intercept_terms)
+    local_residuals = (
+        np.zeros_like(data.y)
+        if exact_line
+        else y_axis.centered - local_slope * x_axis.centered
     )
-    local_residuals = y_axis.centered - local_slope * x_axis.centered
     residuals = _fit_restore("residui", local_residuals, y_axis.exponent)
     dof = data.x.size - 2
     residual_norm = _fit_norm(local_residuals)
@@ -436,23 +492,24 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
             p_value = float(chi2_distribution.sf(chi2, dof))
 
     return _LinearFitCore(
-        slope,
-        intercept,
-        slope_std,
-        intercept_std,
-        covariance,
-        correlation,
-        residuals,
-        residual_std,
-        chi2,
-        reduced_chi2,
-        p_value,
-        dof,
-        "ols" if data.sigma_y is None else "wls",
-        x_axis,
-        y_axis,
-        local_slope,
-        center_std,
+        slope=slope,
+        intercept=intercept,
+        slope_std=slope_std,
+        intercept_std=intercept_std,
+        covariance=covariance,
+        correlation=correlation,
+        residuals=residuals,
+        residual_std=residual_std,
+        chi2=chi2,
+        reduced_chi2=reduced_chi2,
+        p_value=p_value,
+        dof=dof,
+        fit_method="ols" if data.sigma_y is None else "wls",
+        x_axis=x_axis,
+        y_axis=y_axis,
+        local_slope=local_slope,
+        center_std=center_std,
+        exact_line=exact_line,
     )
 
 
@@ -560,7 +617,6 @@ class LinearFitResult:
 def _make_linear_fit_result(
     data: _LinearFitData,
     core: _LinearFitCore,
-    figure: Figure | None = None,
     *,
     plot_metadata: Mapping[str, Any] | None = None,
 ) -> LinearFitResult:
@@ -584,7 +640,7 @@ def _make_linear_fit_result(
         chi2=core.chi2,
         reduced_chi2=core.reduced_chi2,
         dof=core.dof,
-        figure=figure,
+        figure=None,
         fit_method=core.fit_method,
         p_value=core.p_value,
         _data=data,
@@ -858,8 +914,9 @@ def lin_fit(
 
     Breaking changes: fit_method, sigma_x, tol, max_iter and aesthetic
     overrides have been removed. Use plot in place of show_plot; save_path
-    is removed in favor of the output workflow. No legacy
-    keywords are accepted.
+    is removed in favor of the output workflow. iterations, converged and
+    scale_factor are no longer result fields. TOML uses schema version 2.
+    No legacy keywords are accepted.
 
     Invalid data raise ValueError; incompatible types raise TypeError.
     Unrepresentable numerical results raise FloatingPointError. x must
