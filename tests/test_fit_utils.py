@@ -1249,14 +1249,108 @@ def test_core_zero_negative_slope_and_zero_intercept(slope, intercept):
     np.testing.assert_array_equal(result.residuals, np.zeros(3))
 
 
+def test_core_is_independent_of_legacy_statistics_and_presentation(monkeypatch):
+    def forbidden(*args, **kwargs):
+        raise AssertionError(
+            "Il core deve essere indipendente da plotting e statistiche pubbliche"
+        )
+
+    for name in (
+        "weighted_mean",
+        "weighted_variance",
+        "weighted_covariance",
+        "_style_context",
+    ):
+        monkeypatch.setattr("mespy.fit_utils." + name, forbidden)
+    monkeypatch.setattr(np, "polyfit", forbidden)
+    monkeypatch.setattr(np.linalg, "lstsq", forbidden)
+    monkeypatch.setattr(np.linalg, "inv", forbidden)
+    monkeypatch.setattr(plt, "subplots", forbidden)
+
+    assert solve_core([0, 1, 2], [0, 1, 3]).slope == pytest.approx(1.5)
+    assert solve_core([0, 1, 2], [0, 1, 3], [1, 2, 1]).slope == pytest.approx(1.5)
 
 
+@pytest.mark.parametrize("x", [[1, 1, 2, 2], [1, 1 + 1e-15, 1 + 2e-15, 1 + 3e-15]])
+def test_core_partial_duplicates_and_nearly_degenerate_x(x):
+    result = solve_core(x, [1.0, 1.1, 3.0, 3.1], 0.1)
+    centered = np.array(x) - x[0]
+    scale = max(centered)
+    design = np.column_stack((centered / scale, np.ones(4)))
+    parameters = np.linalg.lstsq(design, [1.0, 1.1, 3.0, 3.1], rcond=None)[0]
+    assert result.slope == pytest.approx(parameters[0] / scale, rel=1e-14)
+    np.testing.assert_allclose(
+        result.residuals,
+        np.array([1.0, 1.1, 3.0, 3.1]) - design @ parameters,
+        atol=1e-14,
+    )
 
 
+@pytest.mark.parametrize("weighted", [False, True])
+def test_core_matches_independent_centered_scaled_lstsq(weighted):
+    rng = np.random.default_rng(264)
+    x = 1e15 + np.arange(20.0)
+    y = rng.normal(size=20)
+    sigma = np.geomspace(0.02, 20, 20) if weighted else np.ones(20)
+    offsets = (x - x[0]) / 16
+    center = np.sum(offsets / sigma**2) / np.sum(1 / sigma**2)
+    design = np.column_stack((offsets - center, np.ones(20)))
+    parameters = np.linalg.lstsq(design / sigma[:, None], y / sigma, rcond=None)[0]
+    expected_residuals = y - design @ parameters
+    # Independent reference covariance from QR triangular solves, with no
+    # dependence on the core's analytical centered-moment implementation.
+    r = np.linalg.qr(design / sigma[:, None], mode="reduced")[1]
+    inverse_r = np.linalg.solve(r, np.eye(2))
+    local_covariance = inverse_r @ inverse_r.T
+    residual_std = np.linalg.norm(expected_residuals) / math.sqrt(18)
+    if not weighted:
+        local_covariance *= residual_std**2
+
+    result = solve_core(x, y, sigma if weighted else None)
+
+    assert result.slope == pytest.approx(parameters[0] / 16, rel=1e-12)
+    assert result.slope_std == pytest.approx(
+        math.sqrt(local_covariance[0, 0]) / 16, rel=1e-12
+    )
+    np.testing.assert_allclose(
+        result.residuals, expected_residuals, rtol=1e-12, atol=1e-14
+    )
+    assert result.residual_std == pytest.approx(residual_std, rel=1e-13)
+    expected_band = np.sqrt(np.einsum("ij,jk,ik->i", design, local_covariance, design))
+    np.testing.assert_allclose(result.mean_std(x), expected_band, rtol=1e-12)
+    if weighted:
+        expected_chi2 = float(np.sum((expected_residuals / sigma) ** 2))
+        assert result.chi2 == pytest.approx(expected_chi2, rel=1e-12)
+        assert result.p_value == pytest.approx(
+            stats.chi2.sf(expected_chi2, 18), rel=1e-12
+        )
 
 
+def test_core_very_different_representable_weights():
+    # One very weakly weighted point still determines the slope. Squaring
+    # its centered weighted coordinate before scaling would lose rank.
+    result = solve_core([0, 1, 2], [1, 3, 5], [1, 1e150, 1e150])
+
+    assert result.slope == 2
+    assert result.slope_std == pytest.approx(1e150 / math.sqrt(5), rel=1e-14)
+    assert result.intercept_std == pytest.approx(1)
+    assert result.covariance == pytest.approx(-3 / 5)
 
 
+@pytest.mark.parametrize(
+    "x, y, sigma_y, message",
+    [
+        ([0, 1, 2], [0, 1, 3], [1e-200, 1e200, 1], "sigma_y.*pesi"),
+        ([0, 1e-320, 2e-320], [0, 1, 3], 1, "slope"),
+        ([0, 1, 2], [0, 1, 3], 1e-200, "chi2|covariance"),
+        (1e155 + 1e140 * np.arange(6.0), np.arange(6.0), 1e-154, "covariance"),
+    ],
+)
+def test_core_nonrepresentable_quantities_raise_contextual_errors(
+    x, y, sigma_y, message
+):
+    with pytest.raises(FloatingPointError, match=message):
+        solve_core(x, y, sigma_y)
 
 
 @pytest.mark.parametrize(
