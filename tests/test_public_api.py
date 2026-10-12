@@ -3,8 +3,10 @@ import os
 import subprocess
 import sys
 from importlib import resources
+from typing import get_type_hints
 
 import mespy as mlt
+from mespy.fit_utils import LinearFitResult
 
 
 def test_public_api_exports_documented_symbols():
@@ -19,7 +21,7 @@ def test_public_api_exports_documented_symbols():
         "lin_fit",
     }
 
-    assert expected_exports.issubset(set(mlt.__all__))
+    assert expected_exports == set(mlt.__all__)
 
 
 def test_public_api_freezes_key_signatures():
@@ -53,6 +55,7 @@ def test_lin_fit_target_signature():
             else inspect.Parameter.KEYWORD_ONLY
         )
         assert parameter.kind == kind, name
+    assert get_type_hints(mlt.lin_fit)["return"] is LinearFitResult
 
 
 def test_package_includes_py_typed_marker():

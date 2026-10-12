@@ -155,8 +155,7 @@ def make_unit_change_data():
     x = np.arange(1.0, 7.0)
     y = 0.8 * x + 0.3 + np.array([0.05, -0.04, 0.02, -0.03, 0.01, 0.0])
     sigma_y = np.array([0.05, 0.04, 0.06, 0.05, 0.03, 0.05])
-    sigma_x = np.full_like(x, 0.02)
-    return x, y, sigma_y, sigma_x
+    return x, y, sigma_y
 
 
 def test_lin_fit_accepts_small_scale_x():
@@ -182,7 +181,7 @@ def test_lin_fit_accepts_very_small_scale_x(scale):
 
 @pytest.mark.parametrize("scale", [1e-12, 1e-6, 1e6, 1e12])
 def test_lin_fit_is_invariant_under_unit_change_of_x(scale):
-    x, y, sigma_y, _ = make_unit_change_data()
+    x, y, sigma_y = make_unit_change_data()
     reference = lin_fit(x, y, sigma_y, plot=False)
 
     result = lin_fit(x * scale, y, sigma_y, plot=False)
@@ -200,6 +199,7 @@ def test_lin_fit_is_invariant_under_unit_change_of_x(scale):
         "chi2",
         "reduced_chi2",
         "residual_std",
+        "p_value",
     ):
         assert getattr(result, name) == pytest.approx(
             getattr(reference, name), rel=1e-10
@@ -228,7 +228,7 @@ def test_lin_fit_accepts_partial_duplicates():
 
 
 def test_lin_fit_accepts_large_offset_x():
-    x, y, sigma_y, _ = make_unit_change_data()
+    x, y, sigma_y = make_unit_change_data()
     reference = lin_fit(x, y, sigma_y, plot=False)
 
     result = lin_fit(1e9 + x, y, sigma_y, plot=False)
@@ -247,12 +247,210 @@ def test_lin_fit_rejects_constant_large_x_with_uneven_weights():
 
 
 def test_lin_fit_large_offset_precision():
-    x, y, sigma_y, _ = make_unit_change_data()
+    x, y, sigma_y = make_unit_change_data()
     reference = lin_fit(x, y, sigma_y, plot=False)
 
     result = lin_fit(1e15 + x, y, sigma_y, plot=False)
 
     assert result.slope == pytest.approx(reference.slope, rel=1e-9)
+
+
+def fit_numerical(x, y, sigma=None):
+    with (
+        warnings.catch_warnings(record=True),
+        np.errstate(over="raise", divide="raise", invalid="raise"),
+    ):
+        warnings.simplefilter("error", RuntimeWarning)
+        return lin_fit(x, y, sigma, plot=False)
+
+
+def make_invariant_data():
+    rng = np.random.default_rng(6021)
+    x = np.linspace(-3.0, 7.0, 53)
+    sigma = np.geomspace(0.2, 1.3, x.size)
+    y = 0.75 * x - 1.125 + rng.normal(size=x.size) * sigma * 0.4
+    return x, y, sigma
+
+
+@pytest.mark.parametrize("weighted", [False, True])
+@pytest.mark.parametrize("shift", [-8.0, 2.0**40])
+def test_lin_fit_translation_of_y_changes_only_intercept_and_predictions(
+    weighted, shift
+):
+    # Binary fractions keep every translated input exactly representable.
+    x = np.arange(6.0)
+    y = 0.75 * x - 1.125 + np.array([1, -2, 3, -1, 2, 0]) / 64
+    sigma = np.array([0.125, 0.25, 0.5, 0.125, 0.25, 0.5]) if weighted else None
+    before = fit_numerical(x, y, sigma)
+    after = fit_numerical(x, y + shift, sigma)
+    assert after.intercept == pytest.approx(
+        before.intercept + shift, rel=0, abs=max(abs(np.spacing(shift)), 1e-14)
+    )
+    for name in (
+        "slope",
+        "slope_std",
+        "intercept_std",
+        "covariance",
+        "correlation",
+        "residual_std",
+        "estimated_sigma",
+        "chi2",
+        "reduced_chi2",
+        "p_value",
+    ):
+        value = getattr(before, name)
+        if value is None:
+            assert getattr(after, name) is None
+        else:
+            assert getattr(after, name) == pytest.approx(value, rel=1e-13)
+    np.testing.assert_allclose(after.residuals, before.residuals, atol=1e-15)
+    np.testing.assert_allclose(
+        after.predict(x),
+        before.predict(x) + shift,
+        rtol=0,
+        atol=max(abs(np.spacing(shift)), 1e-14),
+    )
+
+
+@pytest.mark.parametrize("weighted", [False, True])
+@pytest.mark.parametrize("scale", [1e-150, -1e-12, 1e12, 1e150])
+def test_lin_fit_public_invariants_under_x_unit_change(weighted, scale):
+    x, y, sigma = make_invariant_data()
+    sigma = sigma if weighted else None
+    before = fit_numerical(x, y, sigma)
+    after = fit_numerical(x * scale, y, sigma)
+    assert after.slope * scale == pytest.approx(before.slope, rel=1e-12)
+    assert after.slope_std * abs(scale) == pytest.approx(before.slope_std, rel=1e-12)
+    assert after.covariance * scale == pytest.approx(before.covariance, rel=1e-12)
+    assert after.correlation * np.sign(scale) == pytest.approx(
+        before.correlation, rel=1e-12
+    )
+    for name in (
+        "intercept",
+        "intercept_std",
+        "residual_std",
+        "chi2",
+        "reduced_chi2",
+        "p_value",
+    ):
+        value = getattr(before, name)
+        assert getattr(after, name) == (
+            None if value is None else pytest.approx(value, rel=1e-12)
+        )
+    np.testing.assert_allclose(after.residuals, before.residuals, atol=2e-15)
+    np.testing.assert_allclose(after.predict(x * scale), before.predict(x), atol=2e-15)
+
+
+@pytest.mark.parametrize("weighted", [False, True])
+@pytest.mark.parametrize("scale", [1e-150, -1e-12, 1e12, 1e150])
+def test_lin_fit_coherent_y_and_sigma_unit_change(weighted, scale):
+    x, y, sigma = make_invariant_data()
+    before = fit_numerical(x, y, sigma if weighted else None)
+    after = fit_numerical(x, y * scale, sigma * abs(scale) if weighted else None)
+    for name in ("slope", "intercept"):
+        assert getattr(after, name) / scale == pytest.approx(
+            getattr(before, name), rel=1e-12
+        )
+    for name in ("slope_std", "intercept_std", "residual_std"):
+        assert getattr(after, name) / abs(scale) == pytest.approx(
+            getattr(before, name), rel=1e-12
+        )
+    assert after.covariance / abs(scale) / abs(scale) == pytest.approx(
+        before.covariance, rel=1e-12
+    )
+    assert after.correlation == pytest.approx(before.correlation, rel=1e-12)
+    np.testing.assert_allclose(after.residuals / scale, before.residuals, atol=2e-15)
+    np.testing.assert_allclose(after.predict(x) / scale, before.predict(x), atol=2e-15)
+    if weighted:
+        for name in ("chi2", "reduced_chi2", "p_value"):
+            assert getattr(after, name) == pytest.approx(
+                getattr(before, name), rel=1e-12
+            )
+        assert after.estimated_sigma is None
+    else:
+        assert after.estimated_sigma / abs(scale) == pytest.approx(
+            before.estimated_sigma, rel=1e-12
+        )
+        assert after.chi2 is after.reduced_chi2 is after.p_value is None
+
+
+@pytest.mark.parametrize("scale", [1e-150, 0.5, 2.0, 1e150])
+def test_lin_fit_absolute_sigma_scaling_changes_uncertainties_and_chi2_only(scale):
+    x, y, sigma = make_invariant_data()
+    before = fit_numerical(x, y, sigma)
+    after = fit_numerical(x, y, sigma * scale)
+    for name in ("slope", "intercept", "correlation", "residual_std"):
+        assert getattr(after, name) == pytest.approx(getattr(before, name), rel=1e-12)
+    assert after.slope_std / scale == pytest.approx(before.slope_std, rel=1e-12)
+    assert after.intercept_std / scale == pytest.approx(before.intercept_std, rel=1e-12)
+    assert after.covariance / scale / scale == pytest.approx(
+        before.covariance, rel=1e-12
+    )
+    assert after.chi2 * scale * scale == pytest.approx(before.chi2, rel=1e-12)
+    assert after.reduced_chi2 * scale * scale == pytest.approx(
+        before.reduced_chi2, rel=1e-12
+    )
+    assert after.p_value == pytest.approx(stats.chi2.sf(after.chi2, after.dof))
+    assert after.estimated_sigma is None
+    np.testing.assert_allclose(after.residuals, before.residuals, atol=2e-15)
+
+
+@pytest.mark.parametrize("weighted", [False, True])
+@pytest.mark.parametrize("offset", [0.0, 1e15])
+def test_lin_fit_point_permutations_preserve_fit_and_reorder_residuals(
+    weighted, offset
+):
+    x = np.arange(1.0, 7.0) + offset
+    y = np.array([1.0, 1.875, 2.5, 3.375, 4.0, 4.875])
+    sigma = np.array([0.125, 0.25, 0.5, 0.125, 0.25, 0.5]) if weighted else None
+    before = fit_numerical(x, y, sigma)
+    rng = np.random.default_rng(6022)
+    for order in (np.arange(6)[::-1], *(rng.permutation(6) for _ in range(3))):
+        after = fit_numerical(x[order], y[order], sigma[order] if weighted else None)
+        for name in (
+            "slope",
+            "intercept",
+            "slope_std",
+            "intercept_std",
+            "covariance",
+            "correlation",
+            "residual_std",
+            "chi2",
+            "reduced_chi2",
+            "p_value",
+        ):
+            value = getattr(before, name)
+            assert getattr(after, name) == (
+                None if value is None else pytest.approx(value, rel=1e-12)
+            )
+        np.testing.assert_allclose(after.residuals, before.residuals[order], atol=2e-15)
+        np.testing.assert_allclose(after.predict(x), before.predict(x), atol=2e-15)
+
+
+@pytest.mark.parametrize("sigma", [1e-150, 1.0, 1e150])
+def test_lin_fit_scalar_and_zero_dimensional_sigma_equal_constant_vector(sigma):
+    x, y, _ = make_invariant_data()
+    before = fit_numerical(x, y, np.full(x.size, sigma))
+    for value in (sigma, np.array(sigma)):
+        after = fit_numerical(x, y, value)
+        for name in (
+            "slope",
+            "intercept",
+            "slope_std",
+            "intercept_std",
+            "covariance",
+            "correlation",
+            "residual_std",
+            "chi2",
+            "reduced_chi2",
+            "p_value",
+        ):
+            assert getattr(after, name) == getattr(before, name)
+        np.testing.assert_array_equal(after.residuals, before.residuals)
+
+
+
+
 
 
 def _read_toml(path):
@@ -571,7 +769,7 @@ def test_lin_fit_retains_independent_read_only_arrays(sigma):
 
 @pytest.mark.parametrize("weighted", [False, True])
 def test_lin_fit_predict_preserves_large_offset_accuracy(weighted):
-    x, y, sigma, _ = make_unit_change_data()
+    x, y, sigma = make_unit_change_data()
     oracle_sigma = sigma if weighted else np.ones(6)
     design = np.column_stack((x, np.ones(6)))
     parameters = np.linalg.lstsq(
@@ -1557,7 +1755,7 @@ def test_lin_fit_notebook_displays_once_and_preserves_figure_object(
 
 
 def test_lin_fit_plot_keeps_line_and_band_stable_at_large_x_offset():
-    x, y, sigma, _ = make_unit_change_data()
+    x, y, sigma = make_unit_change_data()
     design = np.column_stack((x, np.ones(6)))
     parameters = np.linalg.lstsq(design / sigma[:, None], y / sigma, rcond=None)[0]
     r = np.linalg.qr(design / sigma[:, None], mode="reduced")[1]
