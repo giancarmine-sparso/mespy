@@ -696,6 +696,15 @@ def _linear_fit_document(result: LinearFitResult) -> dict[str, Any]:
     return document
 
 
+def _validate_fit_flag(name: str, value: object) -> bool:
+    """Accept only Python or NumPy booleans, never truthy strings or numbers."""
+    if not isinstance(value, (bool, np.bool_)):
+        raise TypeError(
+            f"{name}: serve un booleano (True o False), non {type(value).__name__}"
+        )
+    return bool(value)
+
+
 def _validate_fit_output(output: str | Path) -> Path:
     """Require a file base without an extension; never reinterpret legacy save_path."""
     if not isinstance(output, (str, Path)):
@@ -934,6 +943,8 @@ def lin_fit(
     contain at least two distinct values, without an absolute tolerance.
     """
     data = _validate_linear_fit_data(x, y, sigma_y)
+    plot = _validate_fit_flag("plot", plot)
+    normalize_residuals = _validate_fit_flag("normalize_residuals", normalize_residuals)
     base = _validate_fit_output(output) if output is not None else None
     core = _solve_linear_fit(data)
     if (
