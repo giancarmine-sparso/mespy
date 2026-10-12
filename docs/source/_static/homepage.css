@@ -39,9 +39,12 @@ body.mespy-home #pst-back-to-top { left: auto; top: auto; transform: none; width
 .mespy-home .mh-brand { flex: 0 0 auto; display: inline-flex; align-items: center; }
 .mespy-home .mh-brand img { object-fit: contain; max-width: 100%; }
 .mespy-home .mh-nav-links { display: flex; align-items: center; justify-content: flex-end; gap: 28px; flex: 1; font-size: .875rem; }
+.mespy-home .mh-nav-disabled { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; padding-block: 12px; color: var(--mh-muted); cursor: default; }
+.mespy-home .mh-nav-soon { font: .6rem/1.5 var(--mh-mono); color: var(--mh-amber); border: 1px solid #7d6442; border-radius: 2px; padding: 2px 4px; }
 .mespy-home .mh-nav-links a { white-space: nowrap; padding-block: 12px; }
 .mespy-home .mh-github { border-left: 1px solid var(--mh-line); padding-left: 28px; }
 .mespy-home .mh-language { flex: 0 0 auto; }
+.mespy-home .mh-language .version-switcher__container { display: flex; align-items: center; }
 .mespy-home .mh-language .version-switcher__button { background: transparent; border: 1px solid var(--mh-line); border-radius: 3px; color: var(--mh-ink); font-size: .8rem; min-width: 0; padding: 9px 12px; }
 .mespy-home .version-switcher__button:hover { border-color: var(--mh-amber); }
 .mespy-home .version-switcher__menu { background: var(--mh-panel); border: 1px solid var(--mh-line); border-radius: 3px; min-width: 135px; }
@@ -236,15 +239,20 @@ body.mespy-home #pst-back-to-top:hover { background: var(--mh-amber); color: var
   .mespy-home .mh-feature-copy { padding-inline: 26px; }
   .mespy-home .mh-footer-main { flex-wrap: wrap; gap: 24px; }
 }
-@media (max-width: 900px) {
-  .mespy-home .mh-nav { flex-wrap: wrap; gap: 18px; padding-block: 20px; min-height: 80px; }
-  .mespy-home .mh-brand img { width: 120px; height: 32px; }
+@media (max-width: 1050px) {
+  .mespy-home .mh-nav { flex-wrap: wrap; gap: 18px; }
   .mespy-home .mh-language { margin-left: auto; }
-  .mespy-home .mh-nav-links { order: 4; flex-basis: 100%; justify-content: space-between; flex-wrap: wrap; }
+  .mespy-home .mh-nav-links { order: 4; flex-basis: 100%; flex-direction: column; align-items: stretch; gap: 0; font-size: .875rem; }
+  .mespy-home .mh-nav-links > a, .mespy-home .mh-nav-disabled { min-height: 44px; padding-block: 10px; }
   .mespy-home .mh-menu-toggle:not([hidden]) { display: inline-flex; align-items: center; gap: 10px; margin-left: auto; }
   .mespy-home.mh-menu-ready .mh-language { margin-left: 0; }
   .mespy-home.mh-menu-ready .mh-nav-links { display: none; }
-  .mespy-home.mh-menu-open .mh-nav-links { display: flex; padding-top: 12px; border-top: 1px solid var(--mh-line); }
+  .mespy-home.mh-menu-open .mh-nav-links { display: flex; padding-block: 12px; border-top: 1px solid var(--mh-line); }
+  .mespy-home .mh-nav-links .mh-github { width: max-content; padding-left: 16px; }
+}
+@media (max-width: 900px) {
+  .mespy-home .mh-nav { padding-block: 20px; min-height: 80px; }
+  .mespy-home .mh-brand img { width: 120px; height: 32px; }
   .mespy-home .mh-hero { grid-template-columns: 1fr; gap: 48px; padding-block: 56px 48px; }
   .mespy-home .mh-hero h1 { font-size: clamp(2.5rem, 5.5vw, 3.5rem); max-width: 620px; }
   .mespy-home .mh-hero-copy { max-width: 660px; }
@@ -271,10 +279,8 @@ body.mespy-home #pst-back-to-top:hover { background: var(--mh-amber); color: var
   .mespy-home .mh-shell { width: calc(100% - 40px); }
   .mespy-home .mh-nav { gap: 10px; }
   .mespy-home .mh-brand img { width: 100px; height: 27px; }
-  .mespy-home .version-switcher__button { font-size: .7rem; padding: 8px; }
-  .mespy-home .mh-menu-toggle { font-size: .7rem; padding: 8px; }
-  .mespy-home .mh-nav-links { gap: 2px 24px; justify-content: start; }
-  .mespy-home .mh-github { border: none; padding-left: 0; }
+  .mespy-home .mh-language .version-switcher__button { font-size: .7rem; padding: 8px; }
+  .mespy-home .mh-menu-toggle { font-size: .7rem; padding: 8px; gap: 6px; }
   .mespy-home .mh-hero { padding-block: 44px 38px; gap: 40px; }
   .mespy-home .mh-hero h1 { font-size: clamp(2.15rem, 8.6vw, 3rem); }
   .mespy-home .mh-eyebrow { font-size: .61rem; margin-bottom: 24px; }

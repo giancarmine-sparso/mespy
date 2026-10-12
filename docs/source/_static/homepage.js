@@ -7,9 +7,11 @@
 
     const menu = page.querySelector('.mh-menu-toggle');
     const navigation = page.querySelector('#mh-navigation');
-    const closeMenu = () => {
+    const compactNavigation = window.matchMedia('(max-width: 1050px)');
+    const closeMenu = (restoreFocus = false) => {
       page.classList.remove('mh-menu-open');
       menu.setAttribute('aria-expanded', 'false');
+      if (restoreFocus) menu.focus();
     };
     menu.hidden = false;
     page.classList.add('mh-menu-ready');
@@ -19,13 +21,18 @@
       page.classList.toggle('mh-menu-open', expanded);
     });
     navigation.addEventListener('click', (event) => {
-      if (event.target.closest('a')) closeMenu();
+      if (compactNavigation.matches && event.target.closest('a')) {
+        closeMenu(navigation.contains(document.activeElement));
+      }
     });
     page.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && page.classList.contains('mh-menu-open')) {
-        closeMenu();
-        menu.focus();
+        closeMenu(true);
       }
+    });
+
+    compactNavigation.addEventListener('change', () => {
+      closeMenu(compactNavigation.matches && navigation.contains(document.activeElement));
     });
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');

@@ -423,3 +423,18 @@ msgstr "Open the generated figure (new tab)"
 
 msgid "Grafico scorrevole: su schermi piccoli puoi scorrere orizzontalmente."
 msgstr "Scrollable plot: on small screens you can scroll horizontally."
+
+msgid "Riferimento API"
+msgstr "API Reference"
+
+msgid "Per agenti AI"
+msgstr "For AI Agents"
+
+msgid "Come funziona"
+msgstr "How it works"
+
+msgid "GitHub"
+msgstr "GitHub"
+
+msgid "GitHub (nuova scheda)"
+msgstr "GitHub (new tab)"

@@ -32,10 +32,11 @@
     </button>
     <nav class="mh-nav-links" id="mh-navigation" aria-label="{{ home('Navigazione principale') }}">
       <a href="{{ pathto('installazione') }}">{{ home('Inizia qui') }}</a>
-      <a href="{{ pathto('moduli/plot_utils/histogram') }}">{{ home('Istogramma') }}</a>
-      <a href="{{ pathto('moduli/fit_utils/lin-fit') }}">{{ home('Fit lineare') }}</a>
-      <a href="#behind-the-scenes">{{ home('Dietro le quinte') }}</a>
-      <a class="mh-github" href="{{ theme_github_url }}">GitHub <span aria-hidden="true">↗</span></a>
+      <a href="{{ pathto('examples/index') }}">{{ home('Esempi') }}</a>
+      <a href="{{ pathto('moduli/index') }}">{{ home('Riferimento API') }}</a>
+      <span class="mh-nav-disabled" role="link" aria-disabled="true" tabindex="0" aria-label="{{ home('Per agenti AI') }}" aria-describedby="mh-agents-status">{{ home('Per agenti AI') }} <span class="mh-nav-soon" id="mh-agents-status">{{ home('In arrivo') }}</span></span>
+      <a href="#behind-the-scenes">{{ home('Come funziona') }}</a>
+      <a class="mh-github" href="{{ theme_github_url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ home('GitHub (nuova scheda)') }}">{{ home('GitHub') }} <span aria-hidden="true">↗</span></a>
     </nav>
     <div class="mh-language">{% include "components/language-switcher.html" %}</div>
   </div>
