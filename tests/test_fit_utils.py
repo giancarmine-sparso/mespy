@@ -916,16 +916,132 @@ def test_lin_fit_reuses_single_cycle_color_for_line_band_and_zero():
     )
 
 
+@pytest.mark.parametrize("weighted", [False, True])
+@pytest.mark.parametrize("normalize", [False, True])
+def test_lin_fit_draws_physical_or_normalized_residuals_and_observation_errors(
+    weighted, normalize
+):
+    sigma = np.array([1.0, 2.0, 1.0]) if weighted else None
+    with warnings.catch_warnings(record=True):
+        result = lin_fit([0, 1, 2], [0, 1, 3], sigma, normalize_residuals=normalize)
+    ax_fit, ax_res = result.figure.axes
+    denominator = sigma if weighted else result.estimated_sigma
+    expected = result.residuals / denominator if normalize else result.residuals
+    np.testing.assert_allclose(get_residual_marker_ydata(result), expected)
+    assert not result.residuals.flags.writeable
+    assert "student" not in ax_res.get_ylabel().lower()
+    if weighted:
+        top_bars = next(
+            c for c in ax_fit.containers if isinstance(c, ErrorbarContainer)
+        ).lines[2][0]
+        heights = [
+            abs(segment[1, 1] - segment[0, 1]) / 2
+            for segment in top_bars.get_segments()
+        ]
+        np.testing.assert_allclose(heights, sigma)
+        np.testing.assert_allclose(
+            get_residual_vertical_errorbar_half_lengths(result),
+            np.ones(3) if normalize else sigma,
+        )
+    else:
+        for ax in (ax_fit, ax_res):
+            assert not any(isinstance(c, ErrorbarContainer) for c in ax.containers)
+        assert not ax_res.collections
+    assert ax_res.get_ylabel() == (
+        (r"Residuals / $\sigma_y$" if weighted else "Residuals / s")
+        if normalize
+        else "Residuals"
+    )
+
+
+@pytest.mark.parametrize("weighted", [False, True])
+def test_lin_fit_band_is_one_uncertainty_of_predicted_mean(weighted):
+    with warnings.catch_warnings(record=True):
+        result = lin_fit([0, 1, 2], [0, 1, 3], [1, 2, 1] if weighted else None)
+    ax = result.figure.axes[0]
+    line = next(line for line in ax.lines if line.get_label() == "Fit")
+    x, predicted = line.get_data()
+    # Independent analytical covariance from plan.md; no core band helper.
+    var_m, var_q, cov = (
+        (1 / 2, 17 / 18, -1 / 2) if weighted else (1 / 12, 5 / 36, -1 / 12)
+    )
+    expected_std = np.sqrt(var_m * x**2 + 2 * cov * x + var_q)
+    band = next(c for c in ax.collections if isinstance(c, PolyCollection))
+    vertices = np.concatenate([path.vertices for path in band.get_paths()])
+    lower = np.array([vertices[vertices[:, 0] == value, 1].min() for value in x])
+    upper = np.array([vertices[vertices[:, 0] == value, 1].max() for value in x])
+    np.testing.assert_allclose(lower, predicted - expected_std, atol=1e-15)
+    np.testing.assert_allclose(upper, predicted + expected_std, atol=1e-15)
+    assert band.get_alpha() == 0.20
+    assert "media prevista" in band.get_label()
+
+
+@pytest.mark.parametrize("weighted", [False, True])
+@pytest.mark.parametrize("style", ["report", "mespy", "ggplot", None])
+def test_lin_fit_numerical_result_is_identical_with_or_without_plot_and_style(
+    weighted, style
+):
+    with warnings.catch_warnings(record=True):
+        reference = lin_fit(
+            [0, 1, 2], [0, 1, 3], [1, 2, 1] if weighted else None, plot=False
+        )
+        plotted = lin_fit(
+            [0, 1, 2],
+            [0, 1, 3],
+            [1, 2, 1] if weighted else None,
+            style=style,
+            normalize_residuals=True,
+        )
+    for name in (
+        "slope",
+        "intercept",
+        "slope_std",
+        "intercept_std",
+        "covariance",
+        "correlation",
+        "residual_std",
+        "estimated_sigma",
+        "chi2",
+        "reduced_chi2",
+        "p_value",
+        "dof",
+        "fit_method",
+    ):
+        assert getattr(plotted, name) == getattr(reference, name), name
+    np.testing.assert_array_equal(plotted.residuals, reference.residuals)
+    np.testing.assert_array_equal(
+        plotted.predict([0, 1, 2]), reference.predict([0, 1, 2])
+    )
 
 
 
 
 
 
-
-
-
-
+def test_lin_fit_plot_keeps_line_and_band_stable_at_large_x_offset():
+    x, y, sigma, _ = make_unit_change_data()
+    design = np.column_stack((x, np.ones(6)))
+    parameters = np.linalg.lstsq(design / sigma[:, None], y / sigma, rcond=None)[0]
+    r = np.linalg.qr(design / sigma[:, None], mode="reduced")[1]
+    inverse_r = np.linalg.solve(r, np.eye(2))
+    covariance = inverse_r @ inverse_r.T
+    result = lin_fit(1e15 + x, y, sigma)
+    ax = result.figure.axes[0]
+    grid, predicted = next(
+        line for line in ax.lines if line.get_label() == "Fit"
+    ).get_data()
+    assert np.all(np.diff(grid) >= 0)
+    local_design = np.column_stack((grid - 1e15, np.ones_like(grid)))
+    expected_std = np.sqrt(
+        np.einsum("ij,jk,ik->i", local_design, covariance, local_design)
+    )
+    np.testing.assert_allclose(predicted, local_design @ parameters, atol=3e-15)
+    band = next(c for c in ax.collections if isinstance(c, PolyCollection))
+    vertices = np.concatenate([path.vertices for path in band.get_paths()])
+    lower = np.array([vertices[vertices[:, 0] == value, 1].min() for value in grid])
+    upper = np.array([vertices[vertices[:, 0] == value, 1].max() for value in grid])
+    np.testing.assert_allclose(lower, predicted - expected_std, atol=3e-15)
+    np.testing.assert_allclose(upper, predicted + expected_std, atol=3e-15)
 
 
 # Contratto numerico privato OLS/WLS delle fasi 1–2.
