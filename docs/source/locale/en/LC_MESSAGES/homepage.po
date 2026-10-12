@@ -1,0 +1,425 @@
+# English translations for MesPy homepage.
+# Copyright (C) 2026 Giancarmine Sparso
+# This file is distributed under the same license as the MesPy homepage project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: MesPy homepage 2.0.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-10-12 19:01+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: _templates/homepage.html:8 _templates/homepage.html:48
+msgid "I tuoi dati sperimentali, più semplici."
+msgstr "Your experimental data, made easier."
+
+#: _templates/homepage.html:12
+msgid ""
+"Dalle misure ai risultati. Strumenti Python per la fisica sperimentale, pensati per il tuo "
+"primo laboratorio."
+msgstr "From measurements to results. Python tools for experimental physics, made for your first lab."
+
+#: _templates/homepage.html:17
+msgid "Vai al contenuto"
+msgstr "Skip to content"
+
+#: _templates/homepage.html:24
+msgid "Torna su"
+msgstr "Back to top"
+
+#: _templates/homepage.html:31
+msgid "Menu"
+msgstr "Menu"
+
+#: _templates/homepage.html:33
+msgid "Navigazione principale"
+msgstr "Main navigation"
+
+#: _templates/homepage.html:34 _templates/homepage.html:52
+msgid "Inizia qui"
+msgstr "Get started"
+
+#: _templates/components/homepage-plots.html:23 _templates/homepage.html:35
+#: _templates/homepage.html:84
+msgid "Istogramma"
+msgstr "Histogram"
+
+#: _templates/components/homepage-plots.html:4 _templates/homepage.html:36
+#: _templates/homepage.html:95
+msgid "Fit lineare"
+msgstr "Linear fit"
+
+#: _templates/homepage.html:37 _templates/homepage.html:108
+msgid "Dietro le quinte"
+msgstr "Behind the scenes"
+
+#: _templates/homepage.html:47
+msgid "Il tuo laboratorio, in Python"
+msgstr "Your lab, in Python"
+
+#: _templates/homepage.html:49
+msgid "Una toolbox Python per chi muove i primi passi nella fisica sperimentale."
+msgstr "A Python toolbox for students taking their first steps in experimental physics."
+
+#: _templates/homepage.html:50
+msgid ""
+"Visualizza le misure, esplora le distribuzioni e trova le relazioni tra i dati. MesPy ti "
+"aiuta a interpretare i risultati e le loro incertezze, senza riscrivere ogni volta lo stesso"
+" codice di analisi."
+msgstr ""
+"Visualize measurements, explore distributions and fit relationships. MesPy helps you "
+"interpret results and uncertainties, without rewriting the same analysis code every time."
+
+#: _templates/homepage.html:53
+msgid "Scopri le funzioni"
+msgstr "Explore features"
+
+#: _templates/homepage.html:55
+msgid "Open source"
+msgstr "Open source"
+
+#: _templates/homepage.html:55
+msgid "Fatto per imparare"
+msgstr "Made for learning"
+
+#: _templates/homepage.html:58
+msgid "Esperimento 001"
+msgstr "Experiment 001"
+
+#: _templates/homepage.html:59
+msgid "Un po’ di ordine."
+msgstr "A little order."
+
+#: _templates/homepage.html:61
+msgid "Misure"
+msgstr "Measurements"
+
+#: _templates/homepage.html:61
+msgid "Una relazione da scoprire"
+msgstr "A relationship to discover"
+
+#: _templates/homepage.html:62
+msgid "Misura. Esplora. Comprendi."
+msgstr "Measure. Explore. Understand."
+
+#: _templates/homepage.html:68
+msgid "Pensato per chi inizia"
+msgstr "Built for beginners"
+
+#: _templates/homepage.html:69
+msgid "Con NumPy e Matplotlib"
+msgstr "With NumPy & Matplotlib"
+
+#: _templates/homepage.html:70
+msgid "La fisica resta al centro"
+msgstr "Keep the focus on physics"
+
+#: _templates/homepage.html:76
+msgid "Piccole funzioni. Grandi scoperte."
+msgstr "Small functions. Big discoveries."
+
+#: _templates/homepage.html:76
+msgid "I tuoi compagni di laboratorio."
+msgstr "Meet your lab partners."
+
+#: _templates/homepage.html:77
+msgid "Meno tempo a impostare grafici. Più tempo a capire cosa raccontano i dati."
+msgstr "Less time setting up plots. More time understanding what your data is telling you."
+
+#: _templates/homepage.html:81
+msgid "Distribuzioni"
+msgstr "Distributions"
+
+#: _templates/homepage.html:82
+msgid "Una distribuzione, la sua media e la banda ±σ. Esempio illustrativo."
+msgstr "A distribution, its mean and the ±σ band. Illustrative example."
+
+#: _templates/homepage.html:85
+msgid "Ogni misura ha una storia."
+msgstr "Every measurement tells a story."
+
+#: _templates/homepage.html:86
+msgid ""
+"Raggruppa le misure in un istogramma. Visualizza la media e la deviazione standard per "
+"capire dove si concentrano i dati e quanto sono dispersi."
+msgstr ""
+"Group your measurements in a histogram. See the mean and standard deviation to understand "
+"where your data clusters and how much it spreads."
+
+#: _templates/homepage.html:87
+msgid "Esempio Python per un istogramma"
+msgstr "Python histogram example"
+
+#: _templates/homepage.html:88
+msgid "Esplora histogram"
+msgstr "Explore histogram"
+
+#: _templates/homepage.html:92
+msgid "Relazioni"
+msgstr "Relationships"
+
+#: _templates/homepage.html:93
+msgid "Misure con incertezze e una retta di fit. Esempio illustrativo."
+msgstr "Measurements with uncertainties and a fitted line. Illustrative example."
+
+#: _templates/homepage.html:96
+msgid "Trova il filo tra i punti."
+msgstr "Find the thread between points."
+
+#: _templates/homepage.html:97
+msgid ""
+"Trova la retta che descrive le tue misure. Ottieni pendenza, intercetta e le loro "
+"incertezze, con un grafico dei residui per esplorare il risultato."
+msgstr ""
+"Find the line that describes your measurements. Get the slope, intercept and their "
+"uncertainties, with a residual plot to explore the result."
+
+#: _templates/homepage.html:98
+msgid "Esempio Python per un fit lineare"
+msgstr "Python linear fit example"
+
+#: _templates/homepage.html:99
+msgid "Esplora lin_fit"
+msgstr "Explore lin_fit"
+
+#: _templates/homepage.html:108
+msgid "In arrivo"
+msgstr "Coming soon"
+
+#: _templates/homepage.html:109
+msgid "Il come è utile."
+msgstr "The how is useful."
+
+#: _templates/homepage.html:109
+msgid "Il perché, ancora di più."
+msgstr "The why, even more."
+
+#: _templates/homepage.html:110
+msgid ""
+"Un risultato non è solo un numero. Stiamo preparando un percorso per capire la matematica "
+"dietro le funzioni, un concetto alla volta."
+msgstr ""
+"A result is more than a number. We’re preparing a path through the mathematics behind the "
+"functions, one concept at a time."
+
+#: _templates/homepage.html:111
+msgid "Questa sezione è un’anteprima: le nuove guide arriveranno in seguito."
+msgstr "This section is a preview: new guides will follow."
+
+#: _templates/homepage.html:115
+msgid "Chi-quadro: somma dei residui al quadrato, pesati con l’inverso della varianza."
+msgstr "Chi-square: the sum of squared residuals, weighted by the inverse variance."
+
+#: _templates/homepage.html:125
+msgid "Ogni scarto, rapportato alla sua incertezza. Ogni misura conta."
+msgstr "Each residual, measured against its uncertainty. Every measurement counts."
+
+#: _templates/homepage.html:127
+msgid "Argomenti in programma"
+msgstr "Planned topics"
+
+#: _templates/homepage.html:128
+msgid "Media aritmetica e pesata"
+msgstr "Arithmetic & weighted mean"
+
+#: _templates/homepage.html:128
+msgid "Varianza e deviazione standard"
+msgstr "Variance & standard deviation"
+
+#: _templates/homepage.html:128
+msgid "Incertezza di misura"
+msgstr "Measurement uncertainty"
+
+#: _templates/homepage.html:128
+msgid "Covarianza e correlazione"
+msgstr "Covariance & correlation"
+
+#: _templates/homepage.html:128
+msgid "Propagazione delle incertezze"
+msgstr "Propagation of uncertainties"
+
+#: _templates/homepage.html:128
+msgid "Metodo dei minimi quadrati"
+msgstr "Least squares method"
+
+#: _templates/homepage.html:135
+msgid "Dal primo import al primo risultato"
+msgstr "From first import to first result"
+
+#: _templates/homepage.html:135
+msgid "Il prossimo esperimento"
+msgstr "Your next experiment"
+
+#: _templates/homepage.html:135
+msgid "inizia qui."
+msgstr "starts here."
+
+#: _templates/homepage.html:135
+msgid "Installa MesPy e porta i tuoi dati. Al resto, un passo alla volta."
+msgstr "Install MesPy and bring your data. Take the rest one step at a time."
+
+#: _templates/homepage.html:135
+msgid "Guida all’installazione"
+msgstr "Installation guide"
+
+#: _templates/homepage.html:142
+msgid "La curiosità è tua. Gli strumenti sono qui."
+msgstr "Bring your curiosity. The tools are here."
+
+#: _templates/homepage.html:142
+msgid "Link utili"
+msgstr "Useful links"
+
+#: _templates/homepage.html:142
+msgid "Installazione"
+msgstr "Installation"
+
+#: _templates/homepage.html:142
+msgid "Documentazione"
+msgstr "Documentation"
+
+#: _templates/homepage.html:142
+msgid "Esempi"
+msgstr "Examples"
+
+#: _templates/homepage.html:143
+msgid "Licenza MIT"
+msgstr "MIT license"
+
+#: _templates/homepage.html:143
+msgid "Costruito con Sphinx e PyData"
+msgstr "Built with Sphinx & PyData"
+
+#: _templates/components/homepage-plots.html:5
+msgid "Esempio illustrativo: punti sperimentali con barre di incertezza lungo una retta crescente."
+msgstr ""
+"Illustrative example: experimental points with uncertainty bars along an increasing straight"
+" line."
+
+#: _templates/components/homepage-plots.html:24
+msgid ""
+"Esempio illustrativo: barre di frequenza, una linea sulla media e una banda di una "
+"deviazione standard per lato."
+msgstr ""
+"Illustrative example: frequency bars, a mean line and a band of one standard deviation on "
+"each side."
+
+#: _templates/components/homepage-terminal.html:16 _templates/components/homepage-terminal.html:21
+#: _templates/components/homepage-terminal.html:27
+msgid "Copia"
+msgstr "Copy"
+
+#: _templates/components/homepage-demo-results.html:5
+msgid "Risultati del fit in formato TOML"
+msgstr "Fit results in TOML format"
+
+msgid "Concludi con lin_fit(x, y, sigma_y=sigma_y). Puoi anche modificare le etichette degli assi."
+msgstr "Finish with lin_fit(x, y, sigma_y=sigma_y). You can also edit the axis labels."
+
+msgid "Impossibile avviare Python. Controlla la connessione e riprova."
+msgstr "Could not start Python. Check your connection and try again."
+
+msgid "Caricamento di Python…"
+msgstr "Loading Python…"
+
+msgid "Inizia con: from mespy import lin_fit."
+msgstr "Start with: from mespy import lin_fit."
+
+msgid "Risultati della stessa esecuzione di lin_fit"
+msgstr "Results from the same lin_fit execution"
+
+msgid "Fit completato. Grafico e TOML aggiornati."
+msgstr "Fit complete. Figure and TOML updated."
+
+msgid "Figura generata da lin_fit"
+msgstr "Figure generated by lin_fit"
+
+msgid "Codice modificato. Premi Esegui per aggiornare i risultati."
+msgstr "Code edited. Press Run to update the results."
+
+msgid "Esecuzione di lin_fit…"
+msgstr "Running lin_fit…"
+
+msgid "Attiva JavaScript per eseguire questo esempio."
+msgstr "Enable JavaScript to run this example."
+
+msgid ""
+"Il primo avvio scarica Python e i pacchetti scientifici. L’analisi viene eseguita nel tuo "
+"browser."
+msgstr "The first run downloads Python and the scientific packages. Analysis runs in your browser."
+
+msgid "Le etichette devono essere stringhe di massimo 100 caratteri."
+msgstr "Labels must be strings of at most 100 characters."
+
+msgid "Gli stili disponibili nella demo sono report e mespy."
+msgstr "Available demo styles are report and mespy."
+
+msgid "Esegui"
+msgstr "Run"
+
+msgid "Modifica le misure e premi Esegui."
+msgstr "Edit the measurements and press Run."
+
+msgid "Questo esempio accetta al massimo 1000 misure."
+msgstr "This example accepts at most 1000 measurements."
+
+msgid "Esempio Python modificabile: misure e fit lineare"
+msgstr "Editable Python example: measurements and linear fit"
+
+msgid "Annulla"
+msgstr "Cancel"
+
+msgid "TOML generato da lin_fit"
+msgstr "TOML generated by lin_fit"
+
+msgid "Figura generata da MesPy: misure con incertezze, retta del fit e residui."
+msgstr "Figure generated by MesPy: measurements with uncertainties, fitted line and residuals."
+
+msgid "Esecuzione annullata."
+msgstr "Execution cancelled."
+
+msgid ""
+"Inserisci numeri direttamente negli array. Espressioni, cicli e altre funzioni non sono "
+"supportati in questo esempio."
+msgstr ""
+"Enter numbers directly in the arrays. Expressions, loops and other functions are not "
+"supported in this example."
+
+msgid "Gli array devono contenere solo numeri."
+msgstr "Arrays must contain numbers only."
+
+msgid "Copia non disponibile. Seleziona e copia il TOML."
+msgstr "Copy unavailable. Select and copy the TOML."
+
+msgid "Usa solo gli array x, y, sigma_y e una chiamata finale a lin_fit."
+msgstr "Use only the x, y, sigma_y arrays and a final lin_fit call."
+
+msgid "Caricamento di NumPy, SciPy e Matplotlib…"
+msgstr "Loading NumPy, SciPy and Matplotlib…"
+
+msgid "TOML copiato."
+msgstr "TOML copied."
+
+msgid "Tempo limite raggiunto. Riprova con meno misure o controlla la connessione."
+msgstr "Time limit reached. Try fewer measurements or check your connection."
+
+msgid "Il codice è troppo lungo per questo esempio."
+msgstr "The code is too long for this example."
+
+msgid "Apri"
+msgstr "Open"
+
+msgid "Apri la figura generata (nuova scheda)"
+msgstr "Open the generated figure (new tab)"
+
+msgid "Grafico scorrevole: su schermi piccoli puoi scorrere orizzontalmente."
+msgstr "Scrollable plot: on small screens you can scroll horizontally."

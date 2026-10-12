@@ -4,6 +4,7 @@ import tomllib
 from pathlib import Path
 
 from babel.messages.pofile import read_po
+from jinja2 import Environment, nodes
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,7 +43,8 @@ def test_english_catalogs_cover_every_document_and_are_complete():
         path.relative_to(EN_CATALOGS)
         for path in EN_CATALOGS.rglob("*.po")
     }
-    assert catalogs == documents
+    # The homepage's Jinja UI uses a separate Sphinx message catalog.
+    assert catalogs == documents | {Path("homepage.po")}
 
     incomplete: list[str] = []
     for path in sorted(EN_CATALOGS.rglob("*.po")):
@@ -55,6 +57,19 @@ def test_english_catalogs_cover_every_document_and_are_complete():
                 incomplete.append(f"{path.relative_to(ROOT)}: {message.id!r}")
 
     assert not incomplete, "Cataloghi inglesi incompleti:\n" + "\n".join(incomplete)
+
+
+def test_homepage_template_strings_have_english_translations():
+    with (EN_CATALOGS / "homepage.po").open(encoding="utf-8") as catalog_file:
+        catalog = read_po(catalog_file)
+    environment = Environment()
+    for path in (DOCS_SOURCE / "_templates").rglob("*.html"):
+        tree = environment.parse(path.read_text(encoding="utf-8"))
+        for call in tree.find_all(nodes.Call):
+            if isinstance(call.node, nodes.Name) and call.node.name == "home":
+                assert isinstance(call.args[0], nodes.Const), path
+                message = catalog.get(call.args[0].value)
+                assert message and message.string, (path, call.args[0].value)
 
 
 def test_homepage_initial_example_runs_with_public_lin_fit():

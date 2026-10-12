@@ -1,0 +1,148 @@
+{# Homepage only. Keep PyData's head, assets and scripts, replace its docs chrome.
+   home() uses locale/en/LC_MESSAGES/homepage.po, compiled by make docs.
+   Sphinx's MyST extractor does not extract Jinja strings: update that catalog
+   alongside this template. index.md supplies search/non-HTML content and TOCs. #}
+{% extends "layout.html" %}
+{% from "components/homepage-plots.html" import scatter, histogram with context %}
+
+{% block htmltitle %}<title>MesPy — {{ home('I tuoi dati sperimentali, più semplici.') }}</title>{% endblock %}
+
+{% block extrahead %}
+  {{ super() }}
+  <meta name="description" content="{{ home('Dalle misure ai risultati. Strumenti Python per la fisica sperimentale, pensati per il tuo primo laboratorio.') }}">
+{% endblock %}
+
+{% block body_tag %}
+<body class="mespy-home" data-default-mode="{{ default_mode }}">
+  <a class="mh-skip" href="#main-content">{{ home('Vai al contenuto') }}</a>
+{% endblock %}
+
+{% block content %}
+{# These hooks keep PyData's bundled search and back-to-top scripts working. #}
+<div id="pst-scroll-pixel-helper"></div>
+<dialog id="pst-search-dialog">{% include "components/search-field.html" %}</dialog>
+<button id="pst-back-to-top" class="mh-back-to-top" type="button" aria-label="{{ home('Torna su') }}"><span aria-hidden="true">↑</span></button>
+<header class="mh-header bd-header">
+  <div class="mh-shell mh-nav">
+    <a class="mh-brand" href="{{ pathto('index') }}" aria-label="MesPy home">
+      <img src="{{ pathto('_static/mespy-logo-horizontal-dark.svg', 1) }}" alt="MesPy" width="145" height="39">
+    </a>
+    <button class="mh-menu-toggle" type="button" aria-expanded="false" aria-controls="mh-navigation" hidden>
+      {{ home('Menu') }} <span aria-hidden="true">＋</span>
+    </button>
+    <nav class="mh-nav-links" id="mh-navigation" aria-label="{{ home('Navigazione principale') }}">
+      <a href="{{ pathto('installazione') }}">{{ home('Inizia qui') }}</a>
+      <a href="{{ pathto('moduli/plot_utils/histogram') }}">{{ home('Istogramma') }}</a>
+      <a href="{{ pathto('moduli/fit_utils/lin-fit') }}">{{ home('Fit lineare') }}</a>
+      <a href="#behind-the-scenes">{{ home('Dietro le quinte') }}</a>
+      <a class="mh-github" href="{{ theme_github_url }}">GitHub <span aria-hidden="true">↗</span></a>
+    </nav>
+    <div class="mh-language">{% include "components/language-switcher.html" %}</div>
+  </div>
+</header>
+
+<main id="main-content">
+  <section class="mh-hero mh-shell" aria-labelledby="hero-title">
+    <div class="mh-hero-copy" data-reveal>
+      <p class="mh-eyebrow"><span class="mh-status" aria-hidden="true"></span> {{ home('Il tuo laboratorio, in Python') }}</p>
+      <h1 id="hero-title">MesPy.<br><span class="mh-accent">{{ home('I tuoi dati sperimentali, più semplici.') }}</span></h1>
+      <p class="mh-lead">{{ home('Una toolbox Python per chi muove i primi passi nella fisica sperimentale.') }}</p>
+      <p class="mh-hero-note">{{ home('Visualizza le misure, esplora le distribuzioni e trova le relazioni tra i dati. MesPy ti aiuta a interpretare i risultati e le loro incertezze, senza riscrivere ogni volta lo stesso codice di analisi.') }}</p>
+      <div class="mh-actions">
+        <a class="mh-button mh-button-primary" href="{{ pathto('installazione') }}">{{ home('Inizia qui') }} <span aria-hidden="true">↗</span></a>
+        <a class="mh-button mh-button-secondary" href="#features">{{ home('Scopri le funzioni') }} <span aria-hidden="true">↓</span></a>
+      </div>
+      <p class="mh-hero-meta">Python ≥ 3.12 <span aria-hidden="true">/</span> {{ home('Open source') }} <span aria-hidden="true">/</span> {{ home('Fatto per imparare') }}</p>
+    </div>
+    <figure class="mh-hero-visual" data-reveal>
+      <div class="mh-plot-heading"><span>{{ home('Esperimento 001') }}</span><span>y = mx + c</span></div>
+      <div class="mh-chart-callout"><p class="mh-chart-annotation mh-chart-note">{{ home('Un po’ di ordine.') }}</p><span class="mh-pixel-one" aria-hidden="true"></span></div>
+      <div class="mh-scroll-art">{{ scatter('hero', true) }}<span class="mh-pixel mh-pixel-two" aria-hidden="true"></span></div>
+      <figcaption class="mh-plot-caption"><span><i class="mh-legend-point" aria-hidden="true"></i>{{ home('Misure') }}</span><span><i class="mh-legend-line" aria-hidden="true"></i>{{ home('Una relazione da scoprire') }}</span></figcaption>
+      <div class="mh-visual-foot"><span>{{ home('Misura. Esplora. Comprendi.') }}</span><span aria-hidden="true">[01 → 02]</span></div>
+    </figure>
+  </section>
+
+  <div class="mh-principles">
+    <div class="mh-shell mh-principles-grid">
+      <p><span aria-hidden="true">01 /</span> {{ home('Pensato per chi inizia') }}</p>
+      <p><span aria-hidden="true">02 /</span> {{ home('Con NumPy e Matplotlib') }}</p>
+      <p><span aria-hidden="true">03 /</span> {{ home('La fisica resta al centro') }}</p>
+    </div>
+  </div>
+
+  <section class="mh-section mh-shell" id="features" aria-labelledby="features-title">
+    <div class="mh-section-heading" data-reveal>
+      <div><p class="mh-eyebrow">{{ home('Piccole funzioni. Grandi scoperte.') }}</p><h2 id="features-title">{{ home('I tuoi compagni di laboratorio.') }}</h2></div>
+      <p>{{ home('Meno tempo a impostare grafici. Più tempo a capire cosa raccontano i dati.') }}</p>
+    </div>
+    <div class="mh-features">
+      <article class="mh-feature mh-histogram" data-reveal>
+        <div class="mh-feature-top"><span>01 / {{ home('Distribuzioni') }}</span><code>histogram</code></div>
+        <figure class="mh-feature-plot">{{ histogram('feature') }}<figcaption>{{ home('Una distribuzione, la sua media e la banda ±σ. Esempio illustrativo.') }}</figcaption></figure>
+        <div class="mh-feature-copy">
+          <h3>{{ home('Istogramma') }}</h3>
+          <p class="mh-feature-tagline">{{ home('Ogni misura ha una storia.') }}</p>
+          <p>{{ home('Raggruppa le misure in un istogramma. Visualizza la media e la deviazione standard per capire dove si concentrano i dati e quanto sono dispersi.') }}</p>
+          <pre aria-label="{{ home('Esempio Python per un istogramma') }}"><code><span class="mh-code-function">histogram</span>(measurements)</code></pre>
+          <a class="mh-text-link" href="{{ pathto('moduli/plot_utils/histogram') }}">{{ home('Esplora histogram') }} <span aria-hidden="true">↗</span></a>
+        </div>
+      </article>
+      <article class="mh-feature mh-fit" data-reveal>
+        <div class="mh-feature-top"><span>02 / {{ home('Relazioni') }}</span><code>lin_fit</code></div>
+        <figure class="mh-feature-plot">{{ scatter('feature') }}<figcaption>{{ home('Misure con incertezze e una retta di fit. Esempio illustrativo.') }}</figcaption></figure>
+        <div class="mh-feature-copy">
+          <h3>{{ home('Fit lineare') }}</h3>
+          <p class="mh-feature-tagline">{{ home('Trova il filo tra i punti.') }}</p>
+          <p>{{ home('Trova la retta che descrive le tue misure. Ottieni pendenza, intercetta e le loro incertezze, con un grafico dei residui per esplorare il risultato.') }}</p>
+          <pre aria-label="{{ home('Esempio Python per un fit lineare') }}"><code><span class="mh-code-function">lin_fit</span>(x, y, sigma_y)</code></pre>
+          <a class="mh-text-link" href="{{ pathto('moduli/fit_utils/lin-fit') }}">{{ home('Esplora lin_fit') }} <span aria-hidden="true">↗</span></a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="mh-section mh-shell" id="behind-the-scenes" aria-labelledby="behind-title">
+    <div class="mh-behind" data-reveal>
+      <div class="mh-behind-copy">
+        <p class="mh-eyebrow">{{ home('Dietro le quinte') }} <span class="mh-badge">{{ home('In arrivo') }}</span></p>
+        <h2 id="behind-title">{{ home('Il come è utile.') }}<br><span class="mh-accent">{{ home('Il perché, ancora di più.') }}</span></h2>
+        <p>{{ home('Un risultato non è solo un numero. Stiamo preparando un percorso per capire la matematica dietro le funzioni, un concetto alla volta.') }}</p>
+        <p class="mh-coming-note">{{ home('Questa sezione è un’anteprima: le nuove guide arriveranno in seguito.') }}</p>
+      </div>
+      <div class="mh-topics">
+        <figure class="mh-equation">
+          <math display="block" aria-label="{{ home('Chi-quadro: somma dei residui al quadrato, pesati con l’inverso della varianza.') }}">
+            <mrow>
+              <msup><mi>χ</mi><mn>2</mn></msup><mo>=</mo>
+              <munder><mo>∑</mo><mi>i</mi></munder>
+              <msup><mrow><mo stretchy="true">[</mo><mfrac>
+                <mrow class="mh-residual-term"><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>;</mo><mi>θ</mi><mo>)</mo></mrow>
+                <msub><mi>σ</mi><mi>i</mi></msub>
+              </mfrac><mo stretchy="true">]</mo></mrow><mn>2</mn></msup>
+            </mrow>
+          </math>
+          <figcaption>{{ home('Ogni scarto, rapportato alla sua incertezza. Ogni misura conta.') }}</figcaption>
+        </figure>
+        <ul aria-label="{{ home('Argomenti in programma') }}">
+          <li>{{ home('Media aritmetica e pesata') }}</li><li>{{ home('Varianza e deviazione standard') }}</li><li>{{ home('Incertezza di misura') }}</li><li>{{ home('Covarianza e correlazione') }}</li><li>{{ home('Propagazione delle incertezze') }}</li><li>{{ home('Metodo dei minimi quadrati') }}</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="mh-section mh-shell mh-start" id="get-started" aria-labelledby="start-title" data-reveal>
+    <div><p class="mh-eyebrow">{{ home('Dal primo import al primo risultato') }}</p><h2 id="start-title">{{ home('Il prossimo esperimento') }}<br>{{ home('inizia qui.') }}</h2><p>{{ home('Installa MesPy e porta i tuoi dati. Al resto, un passo alla volta.') }}</p><a class="mh-button mh-button-primary" href="{{ pathto('installazione') }}">{{ home('Guida all’installazione') }} <span aria-hidden="true">↗</span></a></div>
+    {% include "components/homepage-editor.html" %}
+    {% include "components/homepage-demo-results.html" %}
+  </section>
+</main>
+
+<footer class="mh-footer"><div class="mh-shell">
+  <div class="mh-footer-main"><a class="mh-brand" href="{{ pathto('index') }}"><img src="{{ pathto('_static/mespy-logo-horizontal-dark.svg', 1) }}" alt="MesPy" width="120" height="32"></a><p>{{ home('La curiosità è tua. Gli strumenti sono qui.') }}</p><nav aria-label="{{ home('Link utili') }}"><a href="{{ pathto('installazione') }}">{{ home('Installazione') }}</a><a href="{{ pathto('moduli/index') }}">{{ home('Documentazione') }}</a><a href="{{ pathto('examples/index') }}">{{ home('Esempi') }}</a><a href="{{ theme_github_url }}">GitHub ↗</a></nav></div>
+  <div class="mh-footer-meta"><span>© {{ copyright }} <span aria-hidden="true">/</span> {{ home('Licenza MIT') }}</span><span>{{ home('Costruito con Sphinx e PyData') }} <span class="mh-footer-pixel" aria-hidden="true">■</span></span></div>
+</div></footer>
+{{ self.scripts_end() }}
+{% endblock %}
+
+{% block footer %}{% endblock %}

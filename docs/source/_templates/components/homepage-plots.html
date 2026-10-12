@@ -1,0 +1,39 @@
+{# Inline SVGs are illustrative, not outputs calculated from a live dataset. #}
+{% macro scatter(id, hero=false) %}
+<svg class="mh-chart mh-scatter{% if hero %} mh-hero-chart{% endif %}" viewBox="0 0 520 388" role="img" aria-labelledby="scatter-{{ id }}-title scatter-{{ id }}-desc">
+  <title id="scatter-{{ id }}-title">{{ home('Fit lineare') }}</title>
+  <desc id="scatter-{{ id }}-desc">{{ home('Esempio illustrativo: punti sperimentali con barre di incertezza lungo una retta crescente.') }}</desc>
+  <defs><pattern id="grid-{{ id }}" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M44 0H0V44" fill="none" stroke="currentColor" stroke-width="0.7"/></pattern></defs>
+  <rect class="mh-grid" x="44" y="24" width="440" height="308" fill="url(#grid-{{ id }})"/>
+  <path class="mh-axis" d="M44 24V332H484"/>
+  <g class="mh-ticks"><text x="32" y="332" text-anchor="end">0</text><text x="132" y="358">1</text><text x="220" y="358">2</text><text x="308" y="358">3</text><text x="396" y="358">4</text><text x="484" y="358">5</text><text x="32" y="244" text-anchor="end">1</text><text x="32" y="156" text-anchor="end">2</text><text x="32" y="68" text-anchor="end">3</text></g>
+  <g class="mh-axis-labels"><text x="506" y="332">x</text><text x="44" y="2">y</text></g>
+  <path class="mh-fit-band" d="M64 296L470 48L470 99L64 328Z"/>
+  <path class="mh-regression" d="M64 312L470 73" pathLength="1"/>
+  <g class="mh-error-bars">
+    {% for x,y,e in [(85,294,18),(132,284,20),(176,235,17),(221,231,23),(264,187,19),(308,181,21),(353,125,18),(397,133,21),(442,82,19)] %}
+    <g class="mh-data-point" style="--i: {{ loop.index0 }}"><path d="M{{ x }} {{ y-e }}V{{ y+e }}M{{ x-5 }} {{ y-e }}H{{ x+5 }}M{{ x-5 }} {{ y+e }}H{{ x+5 }}"/><rect x="{{ x-5 }}" y="{{ y-5 }}" width="10" height="10" rx="1"/></g>
+    {% endfor %}
+  </g>
+</svg>
+{% endmacro %}
+
+{% macro histogram(id) %}
+<svg class="mh-chart mh-hist-chart" viewBox="0 0 520 388" role="img" aria-labelledby="hist-{{ id }}-title hist-{{ id }}-desc">
+  <title id="hist-{{ id }}-title">{{ home('Istogramma') }}</title>
+  <desc id="hist-{{ id }}-desc">{{ home('Esempio illustrativo: barre di frequenza, una linea sulla media e una banda di una deviazione standard per lato.') }}</desc>
+  <defs><pattern id="hist-grid-{{ id }}" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M44 0H0V44" fill="none" stroke="currentColor" stroke-width="0.7"/></pattern></defs>
+  <rect class="mh-grid" x="44" y="24" width="440" height="308" fill="url(#hist-grid-{{ id }})"/>
+  <rect class="mh-sigma-band" x="182" y="30" width="168" height="302"/>
+  <path class="mh-axis" d="M44 24V332H484"/>
+  <g class="mh-bars">
+    {% for h in [17,39,86,161,233,264,226,151,75,35,15] %}
+    <rect class="mh-bar" x="{{ 60 + loop.index0 * 38 }}" y="{{ 332-h }}" width="32" height="{{ h }}" style="--i: {{ loop.index0 }}"/>
+    {% endfor %}
+  </g>
+  <path class="mh-mean-line" d="M266 32V332"/>
+  <g class="mh-ticks"><text x="32" y="332" text-anchor="end">0</text><text x="32" y="244" text-anchor="end">5</text><text x="32" y="156" text-anchor="end">10</text><text x="32" y="68" text-anchor="end">15</text><text x="124" y="358">−2</text><text x="266" y="358">0</text><text x="408" y="358">2</text></g>
+  <g class="mh-axis-labels"><text x="506" y="332">x</text></g>
+  <g class="mh-hist-labels"><text x="277" y="46">x̄</text><text x="182" y="382">−σ</text><text x="350" y="382">+σ</text></g>
+</svg>
+{% endmacro %}
