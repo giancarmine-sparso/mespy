@@ -1,3 +1,5 @@
+import copy
+import dataclasses
 import errno
 import math
 import os
@@ -2291,3 +2293,75 @@ def test_lin_fit_accepts_numpy_true_for_plot():
     result = lin_fit([0, 1, 2], [0, 1, 3], 1, plot=np.True_)
     assert result.figure is not None
     assert result._plot_metadata["enabled"] is True
+
+
+def _replace_fit():
+    with warnings.catch_warnings(record=True):
+        return lin_fit([0, 1, 2, 3], [0, 1.1, 1.9, 3.2], 0.1, plot=False)
+
+
+@pytest.mark.parametrize(
+    "name, value",
+    [
+        ("slope", 10.0),
+        ("intercept", 5.0),
+        ("slope_std", 1.0),
+        ("intercept_std", 1.0),
+        ("covariance", 0.0),
+        ("correlation", None),
+        ("residuals", np.zeros(4)),
+        ("residual_std", 1.0),
+        ("chi2", 1.0),
+        ("reduced_chi2", 1.0),
+        ("p_value", 0.5),
+        ("dof", 3),
+        ("fit_method", "ols"),
+    ],
+)
+def test_lin_fit_result_rejects_replacing_fitted_fields(name, value):
+    fit = _replace_fit()
+    with pytest.raises(ValueError, match=rf"{name}.*incoerent"):
+        dataclasses.replace(fit, **{name: value})
+
+
+@pytest.mark.parametrize("name", ["_core", "_data"])
+def test_lin_fit_result_requires_core_and_data_together(name):
+    with pytest.raises(ValueError, match="_data e _core"):
+        dataclasses.replace(_replace_fit(), **{name: None})
+
+
+@pytest.mark.skipif(not hasattr(copy, "replace"), reason="copy.replace needs 3.13")
+def test_lin_fit_result_copy_replace_is_guarded_too():
+    with pytest.raises(ValueError, match="slope.*incoerent"):
+        copy.replace(_replace_fit(), slope=10.0)
+
+
+def test_lin_fit_result_presentation_replacement_keeps_one_consistent_fit(tmp_path):
+    fit = _replace_fit()
+    figure = plt.figure()
+    same = dataclasses.replace(fit, figure=figure)
+    assert same.figure is figure
+    for result in (fit, same, dataclasses.replace(fit)):
+        assert result.predict(0.0) == pytest.approx(result.intercept, abs=1e-15)
+        assert result.predict(1.0) - result.predict(0.0) == pytest.approx(
+            result.slope, rel=1e-14
+        )
+        document = _read_toml(result.to_toml(tmp_path / "fit"))
+        assert document["fit"]["slope"] == result.slope
+        assert document["fit"]["intercept"] == result.intercept
+        np.testing.assert_array_equal(document["residuals"]["values"], result.residuals)
+        with warnings.catch_warnings(record=True):
+            rerun = lin_fit(
+                document["data"]["x"],
+                document["data"]["y"],
+                document["data"]["sigma_y"],
+                plot=False,
+            )
+        assert rerun.slope == result.slope
+        assert rerun.intercept == result.intercept
+
+
+def test_manual_result_replacement_remains_its_own_source():
+    manual = _make_manual_result(slope=2.0, intercept=1.0)
+    changed = dataclasses.replace(manual, slope=3.0)
+    assert changed.predict(2.0) == 7.0

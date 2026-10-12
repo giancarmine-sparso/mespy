@@ -524,6 +524,22 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
     )
 
 
+_CORE_RESULT_FIELDS = (
+    "slope",
+    "intercept",
+    "slope_std",
+    "intercept_std",
+    "covariance",
+    "correlation",
+    "residual_std",
+    "chi2",
+    "reduced_chi2",
+    "p_value",
+    "dof",
+    "fit_method",
+)
+
+
 @dataclass(frozen=True, slots=True)
 class LinearFitResult:
     """Frozen numerical result of OLS or absolute WLS.
@@ -536,6 +552,9 @@ class LinearFitResult:
 
     The Figure object can still be edited or saved after fitting. Its
     reference, like every other dataclass field, cannot be reassigned.
+    For results returned by lin_fit, the retained fit is the only source of
+    the numerical fields: dataclasses.replace() may change the figure, but
+    altering a fitted field raises ValueError instead of mixing two fits.
     """
 
     slope: float
@@ -566,6 +585,24 @@ class LinearFitResult:
         residuals = np.array(self.residuals, dtype=np.float64, copy=True)
         residuals.setflags(write=False)
         object.__setattr__(self, "residuals", residuals)
+        if (self._data is None) != (self._core is None):
+            raise ValueError(
+                "LinearFitResult: _data e _core devono essere forniti insieme"
+            )
+        if self._core is not None:
+            # predict() and TOML data follow _core; public copies must agree.
+            mismatched = [
+                name
+                for name in _CORE_RESULT_FIELDS
+                if getattr(self, name) != getattr(self._core, name)
+            ]
+            if not np.array_equal(residuals, self._core.residuals):
+                mismatched.append("residuals")
+            if mismatched:
+                raise ValueError(
+                    f"LinearFitResult: {', '.join(mismatched)} incoerenti con il fit "
+                    "calcolato; per parametri diversi esegui un nuovo lin_fit"
+                )
         if self._plot_metadata is not None:
             object.__setattr__(
                 self, "_plot_metadata", MappingProxyType(dict(self._plot_metadata))
