@@ -1670,7 +1670,7 @@ def test_lin_fit_band_is_one_uncertainty_of_predicted_mean(weighted):
     np.testing.assert_allclose(lower, predicted - expected_std, atol=1e-15)
     np.testing.assert_allclose(upper, predicted + expected_std, atol=1e-15)
     assert band.get_alpha() == 0.20
-    assert "media prevista" in band.get_label()
+    assert band.get_label() == r"$\pm 1 \sigma$ predicted mean"
 
 
 @pytest.mark.parametrize("weighted", [False, True])
@@ -2513,3 +2513,39 @@ def test_fit_output_cleanup_keeps_directories_that_received_other_files(
     with pytest.raises(RuntimeError, match="rendering failure"):
         lin_fit([0, 1, 2], [0, 1, 3], 1, output=base)
     assert sorted(path.name for path in base.parent.iterdir()) == ["note.txt"]
+
+
+@pytest.mark.parametrize("weighted", [False, True])
+@pytest.mark.parametrize("normalize", [False, True])
+def test_lin_fit_generated_labels_are_english_and_user_labels_unchanged(
+    weighted, normalize
+):
+    with warnings.catch_warnings(record=True):
+        result = lin_fit(
+            [0, 1, 2, 3],
+            [0, 1.1, 1.9, 3.2],
+            [0.1, 0.2, 0.1, 0.2] if weighted else None,
+            xlabel="Tempo [s]",
+            ylabel="Posizione [m]",
+            title="Moto rettilineo",
+            normalize_residuals=normalize,
+        )
+    ax_fit, ax_res = result.figure.axes
+    # User-supplied text is passed through verbatim.
+    assert ax_fit.get_title() == "Moto rettilineo"
+    assert ax_fit.get_ylabel() == "Posizione [m]"
+    assert ax_res.get_xlabel() == "Tempo [s]"
+    residual_label = "Residuals"
+    if normalize:
+        residual_label = r"Residuals / $\sigma_y$" if weighted else "Residuals / s"
+    generated = [text.get_text() for text in ax_fit.get_legend().get_texts()]
+    generated += [ax_res.get_ylabel(), ax_fit.get_xlabel(), ax_res.get_title()]
+    assert generated == [
+        "Fit",
+        r"$\pm 1 \sigma$ predicted mean",
+        residual_label,
+        "",
+        "",
+    ]
+    italian = re.compile(r"\b(media|prevista|residui|dati|retta|banda)\b", re.I)
+    assert not any(italian.search(text) for text in generated)
