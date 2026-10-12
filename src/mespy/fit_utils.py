@@ -40,7 +40,6 @@ class _LinearFitData:
     sigma_y: FloatVector | None
 
 
-
 def _real_fit_array(name: str, values: ArrayLike) -> FloatVector:
     """Convert real numeric input once, without discarding masks or imaginary parts."""
     if np.ma.isMaskedArray(values):
@@ -59,7 +58,6 @@ def _real_fit_array(name: str, values: ArrayLike) -> FloatVector:
     if not np.all(np.isfinite(result)):
         raise ValueError(f"{name}: tutti i valori devono essere finiti in float64")
     return result
-
 
 
 def _validate_linear_fit_data(
@@ -95,6 +93,334 @@ def _validate_linear_fit_data(
         raise ValueError("x: servono almeno due valori distinti")
     return _LinearFitData(x_values, y_values, sigma_values)
 
+
+def _fit_scaled_value(
+    name: str,
+    *factors: float,
+    divisors: tuple[float, ...] = (),
+    exponent: int = 0,
+) -> float:
+    """Multiply/divide via binary exponents, checking only the final quantity."""
+    mantissa = 1.0
+    for factor in factors:
+        part, power = math.frexp(factor)
+        mantissa *= part
+        exponent += power
+    for divisor in divisors:
+        part, power = math.frexp(divisor)
+        if part == 0:
+            raise FloatingPointError(f"lin_fit: {name}, perdita di rango numerico")
+        mantissa /= part
+        exponent -= power
+    try:
+        result = math.ldexp(mantissa, exponent)
+    except OverflowError as exc:
+        raise FloatingPointError(
+            f"lin_fit: {name} non rappresentabile in float64"
+        ) from exc
+    if not math.isfinite(result) or (result == 0 and mantissa != 0):
+        raise FloatingPointError(f"lin_fit: {name} non rappresentabile in float64")
+    return result
+
+
+def _fit_sum_parts(*terms: tuple[float, int]) -> tuple[float, int]:
+    """Sum in a common binary scale, retaining quantities below float64 range."""
+    parts = []
+    for value, exponent in terms:
+        if value != 0:
+            mantissa, power = math.frexp(value)
+            parts.append((mantissa, power + exponent))
+    while parts:
+        common = max(power for _, power in parts)
+        scaled = []
+        deferred = []
+        for mantissa, power in parts:
+            value = math.ldexp(mantissa, power - common)
+            if value == 0:
+                deferred.append((mantissa, power))
+            else:
+                scaled.append(value)
+        total = math.fsum(scaled)
+        if total != 0:
+            return total, common
+        # Exact cancellation of large terms may expose much smaller ones.
+        parts = deferred
+    return 0.0, 0
+
+
+def _fit_scaled_sum(name: str, *terms: tuple[float, int]) -> float:
+    """Restore a scaled sum only after cancellation has taken place."""
+    total, common = _fit_sum_parts(*terms)
+    return _fit_scaled_value(name, total, exponent=common)
+
+
+def _fit_restore(name: str, values: FloatVector, exponent: int) -> FloatVector:
+    """Restore vector units without emitting NumPy overflow/underflow warnings."""
+    with np.errstate(over="ignore", under="ignore", invalid="ignore"):
+        restored = np.ldexp(values, exponent)
+    if not np.all(np.isfinite(restored)) or np.any((values != 0) & (restored == 0)):
+        raise FloatingPointError(f"lin_fit: {name} non rappresentabili in float64")
+    return restored
+
+
+@dataclass(frozen=True, slots=True)
+class _FitLocalAxis:
+    """Coordinate offsets in units of 2**exponent; the original origin is retained."""
+
+    origin: float
+    exponent: int
+    offsets: FloatVector
+    mean: float
+    correction: float
+    centered: FloatVector
+
+    def deviations(self, values: FloatVector) -> FloatVector:
+        # Prefer direct subtraction to preserve small representable differences
+        # near a large origin. Only opposing extreme signs need prescaling.
+        with np.errstate(over="ignore", under="ignore", invalid="ignore"):
+            differences = values - self.origin
+            local = np.ldexp(differences, -self.exponent)
+            if not np.all(np.isfinite(differences)):
+                local = np.ldexp(values, -self.exponent) - math.ldexp(
+                    self.origin, -self.exponent
+                )
+        if not np.all(np.isfinite(local)):
+            raise FloatingPointError(
+                "lin_fit: x della previsione fuori dalla scala locale"
+            )
+        return (local - self.mean) - self.correction
+
+
+def _fit_local_axis(
+    values: FloatVector, weights: FloatVector, sum_weights: float
+) -> _FitLocalAxis:
+    origin = float(values[0])
+    with np.errstate(over="ignore", under="ignore", invalid="ignore"):
+        differences = values - origin
+    prescale = 0
+    if not np.all(np.isfinite(differences)):
+        # Halving finite float64 inputs makes even a full-range difference safe.
+        differences = np.ldexp(values, -1) - math.ldexp(origin, -1)
+        prescale = 1
+    largest = float(np.max(np.abs(differences)))
+    exponent = math.frexp(largest)[1] if largest else 0
+    offsets = np.ldexp(differences, -exponent)
+    mean = math.fsum(float(w * v) for w, v in zip(weights, offsets)) / sum_weights
+    centered = offsets - mean
+    correction = (
+        math.fsum(float(w * v) for w, v in zip(weights, centered)) / sum_weights
+    )
+    centered -= correction
+    return _FitLocalAxis(
+        origin, exponent + prescale, offsets, mean, correction, centered
+    )
+
+
+def _fit_norm(values: FloatVector) -> float:
+    """Euclidean norm with no premature squaring in the original units."""
+    largest = float(np.max(np.abs(values)))
+    if largest == 0:
+        return 0.0
+    scaled = values / largest
+    return _fit_scaled_value(
+        "norma", largest, math.sqrt(math.fsum(float(v * v) for v in scaled))
+    )
+
+
+@dataclass(frozen=True, slots=True)
+class _LinearFitCore:
+    """Numerical state only; it does not construct public results or figures."""
+
+    slope: float
+    intercept: float
+    slope_std: float
+    intercept_std: float
+    covariance: float
+    correlation: float | None
+    residuals: FloatVector
+    residual_std: float | None
+    chi2: float | None
+    reduced_chi2: float | None
+    p_value: float | None
+    dof: int
+    fit_method: Literal["ols", "wls"]
+    x_axis: _FitLocalAxis
+    y_axis: _FitLocalAxis
+    local_slope: float
+    center_std: float
+
+    def predict(self, x: FloatVector) -> FloatVector:
+        deviations = self.x_axis.deviations(x)
+        offsets = (
+            self.y_axis.mean + self.y_axis.correction + self.local_slope * deviations
+        )
+        return np.array(
+            [
+                _fit_scaled_sum(
+                    "previsione",
+                    (self.y_axis.origin, 0),
+                    (float(v), self.y_axis.exponent),
+                )
+                for v in offsets
+            ]
+        )
+
+    def mean_std(self, x: FloatVector) -> FloatVector:
+        """One standard uncertainty of the predicted mean, evaluated locally."""
+        deviations = self.x_axis.deviations(x)
+        return np.array(
+            [
+                math.hypot(
+                    self.center_std,
+                    _fit_scaled_value(
+                        "banda", self.slope_std, float(v), exponent=self.x_axis.exponent
+                    ),
+                )
+                for v in deviations
+            ]
+        )
+
+
+def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
+    """Solve OLS or absolute WLS in O(N), using centered/scaled local coordinates.
+
+    No generic solver, matrix inverse or public statistics helper participates.
+    Sigma normalization retains its absolute scale for uncertainties and chi2.
+    Quantities that cannot be represented raise a contextual FloatingPointError.
+    """
+    if data.sigma_y is None:
+        sigma_scale = 1.0
+        weights = np.ones_like(data.x)
+    else:
+        sigma_scale = float(np.min(data.sigma_y))
+        with np.errstate(under="ignore"):
+            weights = np.square(sigma_scale / data.sigma_y)
+        if np.any(weights == 0):
+            raise FloatingPointError(
+                "lin_fit: sigma_y, pesi positivi ridotti a zero dalla normalizzazione"
+            )
+
+    sum_weights = math.fsum(float(w) for w in weights)
+    x_axis = _fit_local_axis(data.x, weights, sum_weights)
+    y_axis = _fit_local_axis(data.y, weights, sum_weights)
+    root_weights = np.sqrt(weights)
+    weighted_x = root_weights * x_axis.centered
+    weighted_y = root_weights * y_axis.centered
+    largest_x = float(np.max(np.abs(weighted_x)))
+    if largest_x == 0:
+        raise FloatingPointError("lin_fit: x, perdita di rango numerico")
+    scaled_x = weighted_x / largest_x
+    moment_xx = math.fsum(float(v * v) for v in scaled_x)
+    norm_x = _fit_scaled_value("momento centrato x", largest_x, math.sqrt(moment_xx))
+
+    largest_y = float(np.max(np.abs(weighted_y)))
+    if largest_y == 0:
+        local_slope = 0.0
+    else:
+        moment_xy = math.fsum(
+            float(a * b) for a, b in zip(scaled_x, weighted_y / largest_y)
+        )
+        local_slope = _fit_scaled_value(
+            "slope locale", moment_xy, largest_y, divisors=(largest_x, moment_xx)
+        )
+    slope = _fit_scaled_value(
+        "slope", local_slope, exponent=y_axis.exponent - x_axis.exponent
+    )
+
+    x_mean, x_mean_exponent = _fit_sum_parts(
+        (x_axis.origin, 0),
+        (x_axis.mean, x_axis.exponent),
+        (x_axis.correction, x_axis.exponent),
+    )
+    # Form the product in a common scale, so an overflowing m*x0 need not
+    # overflow a representable intercept after cancellation with y0.
+    slope_mantissa, slope_power = math.frexp(slope)
+    origin_mantissa, origin_power = math.frexp(x_axis.origin)
+    intercept = _fit_scaled_sum(
+        "intercept",
+        (y_axis.origin, 0),
+        (-slope_mantissa * origin_mantissa, slope_power + origin_power),
+        (y_axis.mean, y_axis.exponent),
+        (y_axis.correction, y_axis.exponent),
+        (-local_slope * x_axis.mean, y_axis.exponent),
+        (-local_slope * x_axis.correction, y_axis.exponent),
+    )
+    local_residuals = y_axis.centered - local_slope * x_axis.centered
+    residuals = _fit_restore("residui", local_residuals, y_axis.exponent)
+    dof = data.x.size - 2
+    residual_norm = _fit_norm(local_residuals)
+    residual_std = (
+        _fit_scaled_value(
+            "residual_std",
+            residual_norm,
+            divisors=(math.sqrt(dof),),
+            exponent=y_axis.exponent,
+        )
+        if dof > 0
+        else None
+    )
+    uncertainty_scale = residual_std if data.sigma_y is None else sigma_scale
+    assert uncertainty_scale is not None  # OLS validation guarantees dof > 0.
+    slope_std = _fit_scaled_value(
+        "slope_std", uncertainty_scale, divisors=(norm_x,), exponent=-x_axis.exponent
+    )
+    center_std = _fit_scaled_value(
+        "incertezza al baricentro",
+        uncertainty_scale,
+        divisors=(math.sqrt(sum_weights),),
+    )
+    offset_std = _fit_scaled_value(
+        "incertezza dell'intercetta", slope_std, x_mean, exponent=x_mean_exponent
+    )
+    intercept_std = math.hypot(center_std, offset_std)
+    if not math.isfinite(intercept_std):
+        raise FloatingPointError(
+            "lin_fit: intercept_std non rappresentabile in float64"
+        )
+    covariance = _fit_scaled_value(
+        "covariance", -x_mean, slope_std, slope_std, exponent=x_mean_exponent
+    )
+    correlation = (
+        -offset_std / intercept_std if slope_std > 0 and intercept_std > 0 else None
+    )
+
+    chi2 = reduced_chi2 = p_value = None
+    if data.sigma_y is not None:
+        # Weighted norm stays local; even residual/sigma need not be squared
+        # until its units have been accounted for through binary exponents.
+        weighted_residual_norm = _fit_norm(root_weights * local_residuals)
+        chi2 = _fit_scaled_value(
+            "chi2",
+            weighted_residual_norm,
+            weighted_residual_norm,
+            divisors=(sigma_scale, sigma_scale),
+            exponent=2 * y_axis.exponent,
+        )
+        if dof > 0:
+            reduced_chi2 = _fit_scaled_value(
+                "reduced_chi2", chi2, divisors=(float(dof),)
+            )
+            p_value = float(chi2_distribution.sf(chi2, dof))
+
+    return _LinearFitCore(
+        slope,
+        intercept,
+        slope_std,
+        intercept_std,
+        covariance,
+        correlation,
+        residuals,
+        residual_std,
+        chi2,
+        reduced_chi2,
+        p_value,
+        dof,
+        "ols" if data.sigma_y is None else "wls",
+        x_axis,
+        y_axis,
+        local_slope,
+        center_std,
+    )
 
 
 @dataclass(frozen=True, slots=True)

@@ -12,6 +12,7 @@ from scipy import stats
 from mespy import lin_fit
 from mespy.fit_utils import (
     LinearFitResult,
+    _solve_linear_fit,
     _validate_linear_fit_data,
 )
 
@@ -1022,6 +1023,49 @@ def test_to_toml_missing_directory_raises(tmp_path):
 
 # Contratto numerico OLS/WLS delle fasi 1–2. Questi test restano validi quando
 # la fase 3 collega il core alla nuova funzione pubblica.
+def solve_core(x, y, sigma_y=None):
+    with (
+        warnings.catch_warnings(),
+        np.errstate(over="raise", divide="raise", invalid="raise"),
+    ):
+        warnings.simplefilter("error", RuntimeWarning)
+        return _solve_linear_fit(_validate_linear_fit_data(x, y, sigma_y))
+
+
+@pytest.mark.parametrize(
+    "sigma_y, method, intercept, var_m, var_q, covariance, chi2",
+    [
+        (None, "ols", -1 / 6, 1 / 12, 5 / 36, -1 / 12, None),
+        ([1, 2, 1], "wls", -1 / 18, 1 / 2, 17 / 18, -1 / 2, 1 / 18),
+    ],
+)
+def test_core_analytical_oracles(
+    sigma_y, method, intercept, var_m, var_q, covariance, chi2
+):
+    result = solve_core([0, 1, 2], [0, 1, 3], sigma_y)
+
+    assert result.fit_method == method
+    assert result.slope == pytest.approx(3 / 2)
+    assert result.intercept == pytest.approx(intercept)
+    assert result.slope_std**2 == pytest.approx(var_m)
+    assert result.intercept_std**2 == pytest.approx(var_q)
+    assert result.covariance == pytest.approx(covariance)
+    assert result.correlation == pytest.approx(covariance / math.sqrt(var_m * var_q))
+    expected_residuals = np.array([0, -1 / 2, 0]) - intercept
+    np.testing.assert_allclose(result.residuals, expected_residuals, atol=1e-15)
+    np.testing.assert_allclose(
+        result.predict(np.array([0.0, 1.0, 2.0])),
+        [intercept, 1.5 + intercept, 3 + intercept],
+    )
+    assert result.dof == 1
+    if method == "ols":
+        assert result.residual_std**2 == pytest.approx(1 / 6)
+        assert result.chi2 is result.reduced_chi2 is result.p_value is None
+    else:
+        assert result.chi2 == pytest.approx(chi2)
+        assert result.reduced_chi2 == pytest.approx(chi2)
+        # For one degree of freedom, SF(z) = erfc(sqrt(z/2)).
+        assert result.p_value == pytest.approx(math.erfc(math.sqrt(chi2 / 2)))
 
 
 
@@ -1036,14 +1080,43 @@ def test_to_toml_missing_directory_raises(tmp_path):
 
 
 
+@pytest.mark.parametrize("weighted", [False, True])
+def test_core_exact_ols_and_wls_lines(weighted):
+    result = solve_core([0, 1, 2], [1, 3, 5], 2 if weighted else None)
+
+    assert result.slope == 2
+    assert result.intercept == 1
+    assert result.residual_std == 0
+    np.testing.assert_array_equal(result.residuals, np.zeros(3))
+    if weighted:
+        assert result.slope_std == pytest.approx(math.sqrt(2))
+        assert result.chi2 == 0
+    else:
+        assert result.slope_std == result.intercept_std == result.covariance == 0
+        assert result.correlation is None
+
+
+def test_core_two_point_absolute_wls():
+    result = solve_core([0, 2], [1, 5], [1, 2])
+
+    assert result.slope == 2
+    assert result.intercept == 1
+    assert result.slope_std**2 == pytest.approx(5 / 4)
+    assert result.intercept_std == pytest.approx(1)
+    assert result.covariance == pytest.approx(-1 / 2)
+    assert result.dof == result.chi2 == 0
+    assert result.residual_std is result.reduced_chi2 is result.p_value is None
 
 
 
 
-
-
-
-
+@pytest.mark.parametrize("slope, intercept", [(0, 2), (-2, 0)])
+def test_core_zero_negative_slope_and_zero_intercept(slope, intercept):
+    x = np.array([0.0, 1.0, 2.0])
+    result = solve_core(x, slope * x + intercept)
+    assert result.slope == slope
+    assert result.intercept == intercept
+    np.testing.assert_array_equal(result.residuals, np.zeros(3))
 
 
 
@@ -1103,3 +1176,24 @@ def test_core_validation_rejects_length_rank_and_sample_size():
         _validate_linear_fit_data([0], [1], 1)
 
 
+@pytest.mark.parametrize("sigma", [2, 2.0, np.float64(2), np.array(2.0), [2, 2, 2]])
+def test_core_validation_accepts_scalar_and_vector_sigma_without_mutation(sigma):
+    x = np.array([0, 1, 2], dtype=np.int64)
+    y = np.array([0, 1, 3], dtype=np.float32)
+    sigma_before = np.asarray(sigma).copy()
+    data = _validate_linear_fit_data(x, y, sigma)
+    result = _solve_linear_fit(data)
+
+    assert data.x.dtype == data.y.dtype == data.sigma_y.dtype == np.float64
+    assert not np.shares_memory(x, data.x)
+    assert not np.shares_memory(y, data.y)
+    assert not np.shares_memory(np.asarray(sigma), data.sigma_y)
+    np.testing.assert_array_equal(x, [0, 1, 2])
+    np.testing.assert_array_equal(y, [0, 1, 3])
+    np.testing.assert_array_equal(sigma, sigma_before)
+    x[:] = 99
+    y[:] = 99
+    np.testing.assert_array_equal(data.x, [0, 1, 2])
+    np.testing.assert_allclose(
+        result.predict(data.x), np.array([0, 1, 3]) - result.residuals
+    )
