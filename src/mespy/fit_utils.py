@@ -742,6 +742,18 @@ def _validate_fit_flag(name: str, value: object) -> bool:
     return bool(value)
 
 
+def _validate_fit_label(name: str, value: object, *, optional: bool = False) -> str | None:
+    """Accept text labels only; None is allowed (and omitted in TOML) for title."""
+    if value is None and optional:
+        return None
+    if not isinstance(value, str):
+        hint = "o None" if optional else '(usa "" per nessuna etichetta)'
+        raise TypeError(
+            f"{name}: serve una stringa {hint}, non {type(value).__name__}"
+        )
+    return str(value)
+
+
 # Final suffixes that denote a file rather than part of a base name. Other
 # dots (molla_k0.5, run.v2) are kept: .pdf/.toml are appended, not substituted.
 _FIT_OUTPUT_EXTENSIONS = frozenset(
@@ -1002,6 +1014,9 @@ def lin_fit(
     data = _validate_linear_fit_data(x, y, sigma_y)
     plot = _validate_fit_flag("plot", plot)
     normalize_residuals = _validate_fit_flag("normalize_residuals", normalize_residuals)
+    xlabel = _validate_fit_label("xlabel", xlabel)
+    ylabel = _validate_fit_label("ylabel", ylabel)
+    title = _validate_fit_label("title", title, optional=True)
     base = _validate_fit_output(output) if output is not None else None
     core = _solve_linear_fit(data)
     if (

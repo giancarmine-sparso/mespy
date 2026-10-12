@@ -2403,3 +2403,70 @@ def test_lin_fit_output_rejects_file_extensions_without_double_suffixes(
     with pytest.raises(ValueError, match=rf"output: .*{re.escape(name[3:])}"):
         lin_fit([0, 1, 2], [0, 1, 3], 1, output=tmp_path / "new" / name)
     assert not list(tmp_path.iterdir())
+
+
+@pytest.mark.parametrize("use_output", [False, True])
+@pytest.mark.parametrize(
+    "labels, expected",
+    [
+        ({}, {"xlabel": "x", "ylabel": "y"}),
+        (
+            {"xlabel": "", "ylabel": r"$\Delta y$ [cm]", "title": ""},
+            {"xlabel": "", "ylabel": r"$\Delta y$ [cm]", "title": ""},
+        ),
+        (
+            {"xlabel": np.str_("t [s]"), "ylabel": "s [m]", "title": "Molla 1.2"},
+            {"xlabel": "t [s]", "ylabel": "s [m]", "title": "Molla 1.2"},
+        ),
+        ({"title": None}, {"xlabel": "x", "ylabel": "y"}),
+    ],
+)
+def test_lin_fit_labels_serialize_as_plain_strings(
+    tmp_path, labels, expected, use_output
+):
+    base = tmp_path / "fit"
+    result = lin_fit(
+        [0, 1, 2],
+        [0, 1, 3],
+        1,
+        plot=False,
+        output=base if use_output else None,
+        **labels,
+    )
+    path = base.with_name("fit.toml") if use_output else result.to_toml(base)
+    plot = _read_toml(path)["plot"]
+    assert {key: plot[key] for key in plot if key in ("xlabel", "ylabel", "title")} == (
+        expected
+    )
+    assert all(type(plot[key]) is str for key in expected)
+
+
+@pytest.mark.parametrize("use_output", [False, True])
+@pytest.mark.parametrize(
+    "name, value",
+    [
+        ("xlabel", None),
+        ("ylabel", None),
+        ("xlabel", 5),
+        ("ylabel", b"y"),
+        ("title", 5),
+        ("title", b"T"),
+        ("title", ["T"]),
+    ],
+)
+def test_lin_fit_rejects_non_string_labels_before_any_artifact(
+    tmp_path, name, value, use_output
+):
+    target = tmp_path / "new" / "fit"
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        with pytest.raises(TypeError, match=rf"{name}: serve una stringa"):
+            lin_fit(
+                [0, 1, 2],
+                [0, 1, 3],
+                1,
+                output=target if use_output else None,
+                **{name: value},
+            )
+    assert plt.get_fignums() == []
+    assert not list(tmp_path.iterdir())
