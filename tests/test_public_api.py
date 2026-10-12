@@ -4,8 +4,6 @@ import subprocess
 import sys
 from importlib import resources
 
-import pytest
-
 import mespy as mlt
 
 
@@ -31,11 +29,6 @@ def test_public_api_freezes_key_signatures():
     assert histogram_signature.parameters["ddof"].default == 0
 
 
-@pytest.mark.xfail(
-    strict=True,
-    raises=AssertionError,
-    reason="plan.md, fase 3: il nuovo core non è ancora collegato alla API pubblica",
-)
 def test_lin_fit_target_signature():
     parameters = inspect.signature(mlt.lin_fit).parameters
     expected = {
@@ -88,3 +81,25 @@ def test_package_import_does_not_eagerly_import_matplotlib_pyplot(tmp_path):
     )
 
     assert result.stdout.strip().splitlines() == ["True", "False"]
+
+
+def test_lin_fit_numerical_call_does_not_import_matplotlib_pyplot(tmp_path):
+    env = os.environ.copy()
+    env["MPLCONFIGDIR"] = str(tmp_path / "mplconfig")
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys, warnings, mespy; "
+                "fit = mespy.lin_fit([0, 1, 2], [0, 1, 3], 1, plot=False); "
+                "print(fit.fit_method); print(fit.figure); "
+                "print('matplotlib.pyplot' in sys.modules)"
+            ),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    assert result.stdout.strip().splitlines() == ["wls", "None", "False"]

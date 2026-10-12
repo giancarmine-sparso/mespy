@@ -2,38 +2,29 @@ from __future__ import annotations
 
 import math
 import warnings
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Literal, cast
+from typing import TYPE_CHECKING, Any, Literal
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 from scipy.stats import chi2 as chi2_distribution
 
 from ._toml import _mespy_header, _write_toml_document
-from .plot_utils import (
-    _resolve_style,
-    _style_context,
-    _validate_axis_limits,
-    _validate_decimals,
-    _validate_figsize,
-)
-from .stats_utils import _as_float_vector, weighted_mean
-from .stats_utils import covariance as weighted_covariance
-from .stats_utils import variance as weighted_variance
+from .plot_utils import _resolve_style, _style_context
 
 if TYPE_CHECKING:
     from matplotlib.figure import Figure
 
 FloatVector = NDArray[np.float64]
-FitMethod = Literal["absolute", "residual"]
+FitMethod = Literal["ols", "wls"]
 
 _LINEAR_FIT_SCHEMA_VERSION = 1
 
 
 @dataclass(frozen=True, slots=True)
 class _LinearFitData:
-    """Independent float64 copies, validated for the future OLS/WLS API."""
+    """Independent float64 copies, validated for the OLS/WLS API."""
 
     x: FloatVector
     y: FloatVector
@@ -243,17 +234,55 @@ class _LinearFitCore:
     reduced_chi2: float | None
     p_value: float | None
     dof: int
-    fit_method: Literal["ols", "wls"]
+    fit_method: FitMethod
     x_axis: _FitLocalAxis
     y_axis: _FitLocalAxis
     local_slope: float
     center_std: float
 
     def predict(self, x: FloatVector) -> FloatVector:
-        deviations = self.x_axis.deviations(x)
-        offsets = (
-            self.y_axis.mean + self.y_axis.correction + self.local_slope * deviations
-        )
+        try:
+            deviations = self.x_axis.deviations(x)
+            with np.errstate(over="ignore", invalid="ignore"):
+                offsets = (
+                    self.y_axis.mean
+                    + self.y_axis.correction
+                    + self.local_slope * deviations
+                )
+            if not np.all(np.isfinite(offsets)):
+                raise FloatingPointError("previsione fuori dalla scala locale")
+        except FloatingPointError:
+            # A finite prediction may lie beyond the local coordinate range.
+            # Keep the offset and slope as binary-scaled parts in that case.
+            slope_part, slope_power = math.frexp(self.local_slope)
+            predictions = []
+            for value in x:
+                delta, delta_power = _fit_sum_parts(
+                    (float(value), 0), (-self.x_axis.origin, 0)
+                )
+                delta_part, delta_shift = math.frexp(delta)
+                predictions.append(
+                    _fit_scaled_sum(
+                        "previsione",
+                        (self.y_axis.origin, 0),
+                        (self.y_axis.mean, self.y_axis.exponent),
+                        (self.y_axis.correction, self.y_axis.exponent),
+                        (
+                            slope_part * delta_part,
+                            slope_power
+                            + delta_power
+                            + delta_shift
+                            + self.y_axis.exponent
+                            - self.x_axis.exponent,
+                        ),
+                        (-self.local_slope * self.x_axis.mean, self.y_axis.exponent),
+                        (
+                            -self.local_slope * self.x_axis.correction,
+                            self.y_axis.exponent,
+                        ),
+                    )
+                )
+            return np.array(predictions)
         return np.array(
             [
                 _fit_scaled_sum(
@@ -425,145 +454,227 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
 
 @dataclass(frozen=True, slots=True)
 class LinearFitResult:
-    """Immutable result of a linear fit."""
+    """Frozen numerical result of OLS or absolute WLS.
+
+    Residuals are in the units of y and are read-only. OLS estimates one
+    common dispersion from the residuals; its chi-squared diagnostics are
+    absent. WLS treats sigma_y as absolute standard uncertainties, without
+    rescaling the parameter covariance. With two WLS observations, only
+    chi2 and dof are defined among the residual diagnostics.
+
+    The Figure object can still be edited or saved after fitting. Its
+    reference, like every other dataclass field, cannot be reassigned.
+    """
 
     slope: float
     intercept: float
     slope_std: float
     intercept_std: float
     covariance: float
-    correlation: float
+    correlation: float | None
     residuals: FloatVector
-    residual_std: float
-    chi2: float
-    reduced_chi2: float
+    residual_std: float | None
+    chi2: float | None
+    reduced_chi2: float | None
     dof: int
-    iterations: int
-    converged: bool
     figure: Figure | None
-    fit_method: FitMethod = "absolute"
-    scale_factor: float = 1.0
-    p_value: float = math.nan
+    fit_method: FitMethod = "wls"
+    p_value: float | None = None
+    _data: _LinearFitData | None = field(
+        default=None, repr=False, compare=False, kw_only=True
+    )
+    _core: _LinearFitCore | None = field(
+        default=None, repr=False, compare=False, kw_only=True
+    )
+
+    def __post_init__(self) -> None:
+        residuals = np.array(self.residuals, dtype=np.float64, copy=True)
+        residuals.setflags(write=False)
+        object.__setattr__(self, "residuals", residuals)
+
+    @property
+    def estimated_sigma(self) -> float | None:
+        """Common vertical dispersion estimated in OLS; None for absolute WLS."""
+        return self.residual_std if self.fit_method == "ols" else None
+
+    def predict(self, x_new: ArrayLike) -> float | FloatVector:
+        """Evaluate the fitted mean at a finite real scalar or 1D vector.
+
+        Results returned by lin_fit use their retained local representation
+        to preserve accuracy near large offsets. A scalar returns a float;
+        a vector returns an independent float64 array, including empty vectors.
+        Nonrepresentable predictions raise FloatingPointError.
+        """
+        values = _real_fit_array("x_new", x_new)
+        if values.ndim > 1:
+            raise ValueError("x_new: serve uno scalare o un vettore monodimensionale")
+        scalar = values.ndim == 0
+        vector = values.reshape(-1)
+        if self._core is not None:
+            predicted = self._core.predict(vector)
+        else:
+            # Manually constructed results have only the supplied parameters.
+            slope_part, slope_power = math.frexp(self.slope)
+            predicted = np.array(
+                [
+                    _fit_scaled_sum(
+                        "previsione",
+                        (
+                            slope_part * math.frexp(float(value))[0],
+                            slope_power + math.frexp(float(value))[1],
+                        ),
+                        (self.intercept, 0),
+                    )
+                    for value in vector
+                ]
+            )
+        return float(predicted[0]) if scalar else predicted
 
     def to_toml(self, path: str | Path) -> Path:
-        """
-        Save the numerical result of the fit to a TOML file.
+        """Save numerical fields and physical residuals atomically as TOML.
 
-        The file contains parameters, uncertainties, diagnostics and
-        residuals, plus a ``[mespy]`` table with ``schema_version``,
-        ``mespy_version`` and ``result_type``. The ``figure`` field is
-        never saved.
-
-        Parameters
-        ----------
-        path : str or Path
-            Destination path. If it has no extension, ``.toml`` is
-            appended. An existing file is overwritten atomically.
-
-        Returns
-        -------
-        Path
-            Path of the written file.
+        Undefined diagnostics are omitted. Figure and private numerical
+        state are not serialized. A missing suffix becomes .toml; an
+        existing file is overwritten. The destination directory must exist.
+        The full data/plot export and schema 2 are introduced in phase 5.
         """
         return _write_toml_document(_linear_fit_document(self), path)
 
 
+def _make_linear_fit_result(
+    data: _LinearFitData, core: _LinearFitCore, figure: Figure | None = None
+) -> LinearFitResult:
+    """Construct the public result independently of calculation/presentation."""
+    arrays = [data.x, data.y, core.residuals]
+    if data.sigma_y is not None:
+        arrays.append(data.sigma_y)
+    for axis in (core.x_axis, core.y_axis):
+        arrays.extend((axis.offsets, axis.centered))
+    for array in arrays:
+        array.setflags(write=False)
+    return LinearFitResult(
+        slope=core.slope,
+        intercept=core.intercept,
+        slope_std=core.slope_std,
+        intercept_std=core.intercept_std,
+        covariance=core.covariance,
+        correlation=core.correlation,
+        residuals=core.residuals,
+        residual_std=core.residual_std,
+        chi2=core.chi2,
+        reduced_chi2=core.reduced_chi2,
+        dof=core.dof,
+        figure=figure,
+        fit_method=core.fit_method,
+        p_value=core.p_value,
+        _data=data,
+        _core=core,
+    )
+
+
 def _linear_fit_document(result: LinearFitResult) -> dict[str, Any]:
-    """Convert *result* into a TOML document made of native Python types only."""
+    """Serialize the existing numerical tables with the new optional fields."""
+    fit = {
+        "fit_method": str(result.fit_method),
+        "slope": float(result.slope),
+        "slope_std": float(result.slope_std),
+        "intercept": float(result.intercept),
+        "intercept_std": float(result.intercept_std),
+        "covariance": float(result.covariance),
+    }
+    if result.correlation is not None:
+        fit["correlation"] = float(result.correlation)
+    diagnostics = {"dof": int(result.dof)}
+    for name in ("chi2", "reduced_chi2", "p_value", "residual_std"):
+        value = getattr(result, name)
+        if value is not None:
+            diagnostics[name] = float(value)
     return {
         "mespy": _mespy_header("linear_fit", _LINEAR_FIT_SCHEMA_VERSION),
-        "fit": {
-            "fit_method": str(result.fit_method),
-            "slope": float(result.slope),
-            "slope_std": float(result.slope_std),
-            "intercept": float(result.intercept),
-            "intercept_std": float(result.intercept_std),
-            "covariance": float(result.covariance),
-            "correlation": float(result.correlation),
-            "scale_factor": float(result.scale_factor),
-        },
-        "diagnostics": {
-            "chi2": float(result.chi2),
-            "reduced_chi2": float(result.reduced_chi2),
-            "dof": int(result.dof),
-            "p_value": float(result.p_value),
-            "residual_std": float(result.residual_std),
-            "iterations": int(result.iterations),
-            "converged": bool(result.converged),
-        },
-        "residuals": {
-            "values": np.asarray(result.residuals, dtype=float).tolist(),
-        },
+        "fit": fit,
+        "diagnostics": diagnostics,
+        "residuals": {"values": result.residuals.tolist()},
     }
 
 
-def _validate_positive_vector(
-    name: str,
-    values: ArrayLike,
+def _plot_linear_fit(
+    data: _LinearFitData,
+    core: _LinearFitCore,
     *,
-    expected_shape: tuple[int, ...] | None = None,
-) -> FloatVector:
-    vector = _as_float_vector(name, values)
+    xlabel: str,
+    ylabel: str,
+    title: str | None,
+    style: str | None,
+    normalize_residuals: bool,
+) -> Figure:
+    """Present the new numerical model using the existing two-panel layout.
 
-    if expected_shape is not None and vector.shape != expected_shape:
-        raise ValueError(f"{name} deve avere la stessa lunghezza di x, y e sigma_y")
+    Removing the remaining hardcoded artist/style overrides is phase 4.
+    """
+    with _style_context(_resolve_style(style)):
+        import matplotlib as mpl
+        import matplotlib.pyplot as plt
 
-    if np.any(vector <= 0):
-        raise ValueError(f"{name} deve contenere solo valori strettamente positivi")
-
-    return vector
-
-
-def _validate_positive_scalar(name: str, value: float) -> float:
-    try:
-        is_valid = bool(np.isfinite(value)) and value > 0
-    except (TypeError, ValueError):
-        is_valid = False
-
-    if not is_valid:
-        raise ValueError(f"{name} deve essere un numero finito strettamente positivo")
-    return float(value)
-
-
-def _validate_max_iter(max_iter: int) -> int:
-    if isinstance(max_iter, bool) or not isinstance(max_iter, (int, np.integer)):
-        raise ValueError("max_iter deve essere un intero positivo")
-
-    max_iter_int = int(max_iter)
-    if max_iter_int <= 0:
-        raise ValueError("max_iter deve essere un intero positivo")
-
-    return max_iter_int
-
-
-def _validate_fit_method(fit_method: str) -> FitMethod:
-    if fit_method not in ("absolute", "residual"):
-        raise ValueError("fit_method deve essere 'absolute' oppure 'residual'")
-
-    return cast(FitMethod, fit_method)
-
-
-def _fit_coefficients(
-    x: FloatVector,
-    y: FloatVector,
-    weights: FloatVector,
-) -> tuple[float, float, float]:
-    # Condizione esatta e invariante di scala: un confronto con tolleranza
-    # assoluta sulla varianza dipenderebbe dall'unita di misura di x.
-    if np.all(x == x[0]):
-        raise ValueError("x deve contenere almeno due valori distinti")
-
-    var_x = weighted_variance(x, weights)
-    if not np.isfinite(var_x) or var_x <= 0.0:
-        raise ValueError(
-            "la varianza di x non è rappresentabile in float64 "
-            "(valori di x troppo piccoli o troppo grandi in modulo)"
+        colors = mpl.rcParams["axes.prop_cycle"].by_key().get("color", [])
+        point_color = colors[0] if colors else "C0"
+        fit_color = colors[1] if len(colors) > 1 else point_color
+        figure, (ax_fit, ax_res) = plt.subplots(
+            2,
+            1,
+            sharex=True,
+            gridspec_kw={"height_ratios": [3, 1]},
+            constrained_layout=True,
         )
-
-    cov_xy = weighted_covariance(x, y, weights)
-    slope = cov_xy / var_x
-    intercept = weighted_mean(y, weights) - slope * weighted_mean(x, weights)
-    return float(slope), float(intercept), float(var_x)
+        try:
+            errorbar_kwargs = {
+                "fmt": "o",
+                "markersize": 4,
+                "elinewidth": 1,
+                "capsize": 3,
+                "color": point_color,
+                "ecolor": point_color,
+            }
+            ax_fit.errorbar(data.x, data.y, yerr=data.sigma_y, **errorbar_kwargs)
+            x_fit = np.linspace(data.x.min(), data.x.max(), 200)
+            y_fit = core.predict(x_fit)
+            mean_std = core.mean_std(x_fit)
+            ax_fit.plot(x_fit, y_fit, color=fit_color, linewidth=1.5, label="Fit")
+            ax_fit.fill_between(
+                x_fit,
+                y_fit - mean_std,
+                y_fit + mean_std,
+                color=fit_color,
+                alpha=0.20,
+                label=r"$\pm 1 \sigma$ retta",
+            )
+            ax_fit.set_ylabel(ylabel)
+            if title is not None:
+                ax_fit.set_title(title)
+            ax_fit.legend()
+            residuals = core.residuals
+            residual_error = data.sigma_y
+            residuals_label = "Residuals"
+            if normalize_residuals:
+                denominator = (
+                    data.sigma_y if data.sigma_y is not None else core.residual_std
+                )
+                residuals = core.residuals / denominator
+                residual_error = (
+                    np.ones_like(data.sigma_y) if data.sigma_y is not None else None
+                )
+                residuals_label = (
+                    r"Residuals / $\sigma_y$"
+                    if data.sigma_y is not None
+                    else "Residuals / s"
+                )
+            ax_res.errorbar(data.x, residuals, yerr=residual_error, **errorbar_kwargs)
+            ax_res.axhline(0, color=fit_color, linewidth=1, linestyle="--")
+            ax_res.set_xlabel(xlabel)
+            ax_res.set_ylabel(residuals_label)
+        except BaseException:
+            plt.close(figure)
+            raise
+    return figure
 
 
 def lin_fit(
@@ -571,606 +682,79 @@ def lin_fit(
     y: ArrayLike,
     sigma_y: ArrayLike | None = None,
     *,
-    fit_method: FitMethod | None = None,
-    sigma_x: ArrayLike | None = None,
-    tol: float = 1e-10,
-    max_iter: int = 100,
-    style: str | None = "mespy",
-    xlabel: str = "x [xu]",
-    ylabel: str = "y [uy]",
-    residuals_label: str = "Residuals",
-    normalize_residuals: bool = False,
-    band_label: str = r"$\pm 1 \sigma$ retta",
-    fit_label: str = r"Fit",
+    xlabel: str = "x",
+    ylabel: str = "y",
     title: str | None = None,
-    decimals: int = 3,
-    show_plot: bool = True,
-    show_band: bool = True,
-    show_legend: bool = True,
-    show_fit_params: bool = False,
-    show_grid: bool = True,
-    xlim: ArrayLike | None = None,
-    ylim: ArrayLike | None = None,
-    figsize: ArrayLike | None = None,
-    dpi: int | None = None,
-    save_path: str | None = None,
-    title_fontsize: int | float | None = None,
-    title_pad: int | float | None = None,
-    legend_fontsize: int | float | None = None,
-    legend_loc: str | None = None,
-    point_color: str | None = None,  # default: "C0" dal prop_cycle attivo
-    fit_color: str | None = None,  # default: "C1" dal prop_cycle attivo
-    band_color: str
-    | None = None,  # default: "C1" dal prop_cycle attivo (o "C2", vedi sotto)
-    res_line_color: str | None = None,
-    data_alpha: float = 1.0,  # nessun rcParam equivalente
-    band_alpha: float = 0.20,  # nessun rcParam equivalente
-    grid_alpha: float | None = None,  # gestito da grid.alpha nello stile
+    style: str | None = "report",
+    output: str | Path | None = None,
+    plot: bool = True,
+    normalize_residuals: bool = False,
 ) -> LinearFitResult:
+    """Fit y = slope*x + intercept with exact x and independent y errors.
+
+    x and y are finite real 1D sequences of equal length. Without sigma_y,
+    ordinary least squares (OLS) requires at least three points, emits a
+    UserWarning and estimates the common vertical dispersion from residuals.
+    With sigma_y, absolute weighted least squares (WLS) requires two points;
+    sigma_y may be a positive scalar or a same-length positive vector.
+    WLS covariance is not rescaled by reduced chi-squared. Its p-value
+    interpretation assumes independent Gaussian errors and a correct model.
+
+    The frozen result contains parameters, their standard uncertainties,
+    covariance, optional correlation, physical residuals, residual_std,
+    optional chi2/reduced_chi2/p_value, dof, fit_method and figure. It also
+    provides estimated_sigma (OLS only) and a stable predict(x_new) method.
+    residual_std is sqrt(RSS/dof), descriptive in WLS, and None when dof=0.
+
+    plot=False returns figure=None and never loads pyplot or resolves style.
+    normalize_residuals affects only the lower plot panel, using sigma_y
+    in WLS and estimated_sigma in OLS. An exact OLS line cannot be plotted
+    with normalized residuals. xlabel, ylabel and title label the figure;
+    style selects a temporary Matplotlib style (default "report").
+
+    output reserves the extension-free str/Path base for automatic export
+    in phase 5; until then any non-None value raises NotImplementedError.
+    to_toml(path) remains available on the result for numerical export.
+
+    Breaking changes: fit_method, sigma_x, tol, max_iter and aesthetic
+    overrides have been removed. Use plot in place of show_plot; save_path
+    is removed in favor of the forthcoming output workflow. No legacy
+    keywords are accepted.
+
+    Invalid data raise ValueError; incompatible types raise TypeError.
+    Unrepresentable numerical results raise FloatingPointError. x must
+    contain at least two distinct values, without an absolute tolerance.
     """
-    Linear fit ``y = m * x + c`` with uncertainty propagation.
-
-    Estimates slope and intercept through weighted least squares. In
-    ``fit_method="absolute"`` mode, it uses absolute uncertainties on
-    ``y`` and weights ``w_i = 1 / sigma_y_i**2``. In
-    ``fit_method="residual"`` mode, it estimates the uncertainty scale
-    from the residuals: without
-    ``sigma_y`` this is the standard unweighted linear fit with one
-    common vertical uncertainty estimated after the fit; with
-    ``sigma_y`` the provided uncertainties define relative weights and
-    the final covariance is scaled by the observed reduced chi-squared.
-    If ``sigma_x`` is provided, the function iteratively updates the
-    effective variance ``sigma_eff**2 = sigma_y**2 + m**2 * sigma_x**2``
-    until the slope converges. It computes parameter uncertainties,
-    covariance, residuals, and fit diagnostics (``chi2`` and reduced
-    ``chi2``). Optionally, it generates a two-panel plot (data + fit
-    line, regular or normalized residuals).
-
-    Aesthetic parameters with an ``rcParams`` counterpart (``figsize``,
-    ``dpi``, colors, grid, title, legend) are managed by the
-    ``mespy.mplstyle`` style file when ``style="mespy"``. Passing an
-    explicit value to the corresponding function parameters overrides
-    the style for that call only.
-
-    Parameters
-    ----------
-    x : array-like
-        Values of the independent variable.
-    y : array-like
-        Values of the dependent variable; must have the same length as
-        ``x``.
-    sigma_y : array-like or None, optional
-        Positive uncertainties on ``y``; must have the same length as
-        ``x``. Required when ``fit_method="absolute"``. If omitted with
-        ``fit_method="residual"``, the fit uses equal weights and
-        estimates one common vertical uncertainty from the residuals.
-        If omitted while ``fit_method`` is left unspecified, the call
-        falls back to ``"residual"`` and emits a ``UserWarning``.
-    fit_method : {"absolute", "residual"} or None, optional
-        Uncertainty model. ``"absolute"`` treats ``sigma_y`` and
-        ``sigma_x`` as absolute input uncertainties. ``"residual"``
-        estimates one global scale factor from the residuals and
-        applies it to parameter uncertainties, plotted error bars,
-        normalized residuals, and the fit band. ``None`` means
-        ``"absolute"``, with a fallback to ``"residual"`` (and a
-        ``UserWarning``) when ``sigma_y`` is not provided
-        (default ``None``).
-    sigma_x : array-like or None, optional
-        Positive uncertainties on ``x``. If provided, enables the
-        effective variance update and iterative slope refinement
-        (default ``None``).
-    tol : float, optional
-        Relative tolerance for the slope change between successive
-        iterations; used only when ``sigma_x`` is provided
-        (default ``1e-10``).
-    max_iter : int, optional
-        Maximum number of iterations for convergence; used only when
-        ``sigma_x`` is provided (default ``100``).
-    style : str or None, optional
-        Name of the matplotlib style sheet to apply. ``None`` leaves
-        the current style unchanged (default ``"mespy"``).
-    xlabel : str, optional
-        Label for the x-axis (default ``"x [xu]"``).
-    ylabel : str, optional
-        Label for the y-axis (default ``"y [uy]"``).
-    residuals_label : str, optional
-        Label for the residuals y-axis in the lower panel
-        (default ``"Residuals"``).
-    normalize_residuals : bool, optional
-        If ``True``, the lower panel plots residuals normalized by
-        ``sigma_eff``. This affects only the plot: the
-        ``LinearFitResult.residuals`` field always contains the
-        physical residuals ``y_i - (m * x_i + c)`` (default ``False``).
-    band_label : str, optional
-        Legend label for the +/-1 sigma band around the fit line;
-        used only when ``show_band=True``
-        (default ``"$\\pm 1 \\sigma$ retta"``).
-    fit_label : str, optional
-        Legend label for the fit line when ``show_fit_params=False``.
-        If ``show_fit_params=True``, the legend label is generated
-        automatically from slope and intercept (default ``"Fit"``).
-    title : str or None, optional
-        Plot title. ``None`` generates an automatic title
-        (default ``None``).
-    decimals : int, optional
-        Number of decimal digits in the values displayed on the plot;
-        must be between 0 and 20 (default ``3``).
-    show_plot : bool, optional
-        If ``True``, generates and shows the two-panel plot
-        (default ``True``).
-    show_band : bool, optional
-        If ``True``, draws the +/-1 sigma band around the fit line
-        (default ``True``).
-    show_legend : bool, optional
-        If ``True``, shows the legend (default ``True``).
-    show_fit_params : bool, optional
-        If ``True``, adds slope and intercept to the legend
-        (default ``False``).
-    show_grid : bool, optional
-        If ``True``, shows the grid (default ``True``).
-    xlim : array-like or None, optional
-        Pair ``(min, max)`` for the x-axis limits. ``None`` uses
-        automatic limits (default ``None``).
-    ylim : array-like or None, optional
-        Pair ``(min, max)`` for the y-axis limits. ``None`` uses
-        automatic limits (default ``None``).
-    figsize : array-like or None, optional
-        Pair ``(width, height)`` in inches. ``None`` uses the value
-        from the style file (default ``None``).
-    dpi : int or None, optional
-        Figure resolution in DPI. ``None`` uses the value from the
-        style file (default ``None``).
-    save_path : str or None, optional
-        Path where the figure is automatically saved at the end.
-        ``None`` disables saving (default ``None``).
-    title_fontsize : int or float or None, optional
-        Title font size. ``None`` uses the value from the style file
-        (default ``None``).
-    title_pad : int or float or None, optional
-        Spacing in points between the title and the plot. ``None``
-        uses the value from the style file (default ``None``).
-    legend_fontsize : int or float or None, optional
-        Legend font size. ``None`` uses the value from the style file
-        (default ``None``).
-    legend_loc : str or None, optional
-        Legend position (for example ``"upper right"``). ``None`` uses
-        the value from the style file (default ``None``).
-    point_color : str or None, optional
-        Color of the data points. ``None`` uses the color from the
-        style file (default ``None``).
-    fit_color : str or None, optional
-        Color of the fit line. ``None`` uses the second color in the
-        active style color cycle (default ``None``).
-    band_color : str or None, optional
-        Color of the +/-1 sigma band around the line. ``None`` uses
-        the second color in the active style color cycle
-        (default ``None``).
-    res_line_color : str or None, optional
-        Color of the zero reference line in the residuals panel.
-        ``None`` uses the fit line color (default ``None``).
-    data_alpha : float, optional
-        Opacity of the data points, between 0 and 1 (default ``1.0``).
-    band_alpha : float, optional
-        Opacity of the +/-1 sigma band, between 0 and 1
-        (default ``0.20``).
-    grid_alpha : float or None, optional
-        Grid opacity, between 0 and 1. ``None`` uses the value from
-        the style file (default ``None``).
-
-    Returns
-    -------
-    LinearFitResult
-        Frozen dataclass with the following fields:
-
-        - ``slope`` : float - estimated slope ``m``.
-        - ``intercept`` : float - estimated intercept ``c``.
-        - ``slope_std`` : float - uncertainty on the slope.
-        - ``intercept_std`` : float - uncertainty on the intercept.
-        - ``covariance`` : float - covariance between slope and intercept.
-        - ``correlation`` : float - correlation between slope and intercept.
-        - ``residuals`` : numpy.ndarray - residuals ``y_i - (m * x_i + c)``.
-        - ``residual_std`` : float - standard deviation of the residuals.
-        - ``chi2`` : float - chi-squared of the fit.
-        - ``reduced_chi2`` : float - reduced chi-squared (``chi2 / dof``).
-        - ``dof`` : int - degrees of freedom (``n - 2``).
-        - ``iterations`` : int - number of performed iterations
-          (0 if ``sigma_x`` is ``None``).
-        - ``converged`` : bool - ``True`` if the fit converged.
-        - ``figure`` : matplotlib.figure.Figure or None - generated
-          figure, ``None`` if ``show_plot=False``.
-        - ``fit_method`` : {"absolute", "residual"} - uncertainty model used.
-        - ``scale_factor`` : float - factor applied to the input
-          uncertainties in residual-scale mode (``1`` in absolute mode).
-        - ``p_value`` : float - probability of obtaining a chi-squared
-          greater than or equal to the observed one, ``P(chi2_dof >= chi2)``.
-          ``nan`` with ``fit_method="residual"``, where ``chi2`` equals
-          ``dof`` by construction and the test is not defined.
-
-    Warns
-    -----
-    UserWarning
-        If ``fit_method`` is not specified and ``sigma_y`` is missing:
-        the call falls back to ``fit_method="residual"``.
-
-    Raises
-    ------
-    ValueError
-        If ``fit_method`` is not ``"absolute"``, ``"residual"`` or ``None``.
-    ValueError
-        If ``sigma_y`` is missing when ``fit_method="absolute"`` is given
-        explicitly.
-    ValueError
-        If ``sigma_x`` is provided without ``sigma_y``.
-    ValueError
-        If ``x``, ``y``, and ``sigma_y`` have different lengths.
-    ValueError
-        If the number of points is smaller than 3.
-    ValueError
-        If ``sigma_y`` or ``sigma_x`` contains non-positive values.
-    ValueError
-        If the shape of ``sigma_x`` does not match ``x``.
-    ValueError
-        If ``decimals`` is not an integer or is outside the range
-        ``[0, 20]``.
-    ValueError
-        If ``tol`` is not finite or is not positive.
-    ValueError
-        If ``max_iter`` is not positive.
-    ValueError
-        If ``xlim`` or ``ylim`` is not a finite two-element sequence.
-    ValueError
-        If ``save_path`` is specified but ``show_plot=False``.
-    ValueError
-        If ``x`` contains fewer than 2 distinct values.
-    ValueError
-        If the weighted variance of ``x`` underflows or overflows in
-        ``float64`` (values of ``x`` extremely small or large in magnitude).
-    RuntimeError
-        If the fit does not converge within ``max_iter`` iterations
-        (only when ``sigma_x`` is provided).
-    """
-    if fit_method is None:
-        if sigma_y is not None:
-            fit_method = "absolute"
-        elif sigma_x is not None:
-            raise ValueError("sigma_x richiede sigma_y")
-        else:
-            warnings.warn(
-                "sigma_y non fornito: lin_fit usa fit_method='residual' e stima "
-                "l'incertezza dai residui. Passa fit_method='residual' "
-                "esplicitamente per non vedere questo avviso.",
-                UserWarning,
-                stacklevel=2,
-            )
-            fit_method = "residual"
-
-    fit_method = _validate_fit_method(fit_method)
-    use_residual_scale = fit_method == "residual"
-
-    x_values = _as_float_vector("x", x)
-    y_values = _as_float_vector("y", y)
-
-    if sigma_y is None:
-        if not use_residual_scale:
-            raise ValueError("sigma_y è obbligatorio quando fit_method='absolute'")
-        if sigma_x is not None:
-            raise ValueError(
-                "sigma_x può essere usato con fit_method='residual' solo se sigma_y è presente"
-            )
-        sigma_y_values = np.ones_like(x_values)
-    else:
-        sigma_y_values = _validate_positive_vector("sigma_y", sigma_y)
-
-    if x_values.shape != y_values.shape or x_values.shape != sigma_y_values.shape:
-        raise ValueError("x, y e sigma_y devono avere la stessa lunghezza")
-
-    n = x_values.size
-    if n < 3:
-        raise ValueError("Servono almeno 3 punti per effettuare un fit lineare")
-
-    decimals = _validate_decimals(decimals)
-
-    tol_value = _validate_positive_scalar("tol", tol)
-    max_iter_value = _validate_max_iter(max_iter)
-
-    use_sigma_x = sigma_x is not None
-    sigma_x_values: FloatVector | None = None
-    if use_sigma_x:
-        sigma_x_values = _validate_positive_vector(
-            "sigma_x",
-            sigma_x,
-            expected_shape=x_values.shape,
+    data = _validate_linear_fit_data(x, y, sigma_y)
+    if output is not None:
+        raise NotImplementedError(
+            "output: l'esportazione automatica è prevista nella fase 5 di plan.md; usa result.to_toml(path)"
         )
-
-    sigma_y2 = sigma_y_values**2
-    sigma_x2 = sigma_x_values**2 if sigma_x_values is not None else None
-    weights = 1.0 / sigma_y2
-
-    slope, intercept, var_x = _fit_coefficients(x_values, y_values, weights)
-    iterations = 0
-    converged = not use_sigma_x
-
-    if use_sigma_x:
-        previous_slope = slope
-
-        for _ in range(max_iter_value):
-            sigma_eff2 = sigma_y2 + slope**2 * sigma_x2
-            weights = 1.0 / sigma_eff2
-            iterations += 1
-
-            next_slope, next_intercept, next_var_x = _fit_coefficients(
-                x_values,
-                y_values,
-                weights,
-            )
-
-            rel_change = abs(next_slope - previous_slope) / max(
-                abs(next_slope),
-                1e-300,
-            )
-            if rel_change < tol_value:
-                slope = next_slope
-                intercept = next_intercept
-                var_x = next_var_x
-                converged = True
-                break
-
-            previous_slope = next_slope
-            slope = next_slope
-            intercept = next_intercept
-            var_x = next_var_x
-        else:
-            raise RuntimeError(
-                f"Il fit lineare non converge entro max_iter={max_iter_value}"
-            )
-
-    residuals = y_values - slope * x_values - intercept
-    dof = n - 2
-    residual_std = float(np.sqrt(np.sum(residuals**2) / dof))
-
-    raw_sigma_fit2 = (
-        sigma_y2 if sigma_x2 is None else sigma_y2 + slope**2 * sigma_x2
-    )
-    raw_chi2 = float(np.sum((residuals**2) / raw_sigma_fit2))
-    raw_reduced_chi2 = float(raw_chi2 / dof)
-
-    covariance_scale = raw_reduced_chi2 if use_residual_scale else 1.0
-    scale_factor = float(np.sqrt(covariance_scale))
-
-    sum_w = float(np.sum(weights))
-    base_var_m = 1.0 / (var_x * sum_w)
-    base_var_c = weighted_mean(x_values**2, weights) / (var_x * sum_w)
-    base_cov_mc = -weighted_mean(x_values, weights) / (var_x * sum_w)
-
-    base_sigma_m = float(np.sqrt(base_var_m))
-    base_sigma_c = float(np.sqrt(base_var_c))
-    rho_mc = float(base_cov_mc / (base_sigma_m * base_sigma_c))
-
-    var_m = base_var_m * covariance_scale
-    var_c = base_var_c * covariance_scale
-    cov_mc = base_cov_mc * covariance_scale
-
-    sigma_m = float(np.sqrt(var_m))
-    sigma_c = float(np.sqrt(var_c))
-
-    sigma_fit2 = raw_sigma_fit2 * covariance_scale
-    if use_residual_scale:
-        if covariance_scale > 0:
-            chi2 = float(raw_chi2 / covariance_scale)
-            reduced_chi2 = float(chi2 / dof)
-        else:
-            chi2 = 0.0
-            reduced_chi2 = 0.0
-    else:
-        chi2 = raw_chi2
-        reduced_chi2 = raw_reduced_chi2
-
-    # Con la scala stimata dai residui il chi2 vale dof per costruzione:
-    # il test di bonta del fit non e definito.
-    p_value = (
-        math.nan if use_residual_scale else float(chi2_distribution.sf(chi2, dof))
-    )
-
-    normalized_residuals = np.divide(
-        residuals,
-        np.sqrt(sigma_fit2),
-        out=np.zeros_like(residuals),
-        where=sigma_fit2 > 0,
-    )
-    plot_sigma_y_values = sigma_y_values * scale_factor
-    plot_sigma_x_values = (
-        sigma_x_values * scale_factor if sigma_x_values is not None else None
-    )
-
-    if save_path is not None and not show_plot:
-        raise ValueError("save_path può essere usato solo se show_plot=True")
-
-    fig = None
-
-    if show_plot:
-        with _style_context(_resolve_style(style)):
-            import matplotlib as mpl
-
-            cycle_colors = mpl.rcParams["axes.prop_cycle"].by_key().get("color", [])
-            point_plot_color = (
-                point_color
-                if point_color is not None
-                else (cycle_colors[0] if len(cycle_colors) > 0 else "C0")
-            )
-            fit_plot_color = (
-                fit_color
-                if fit_color is not None
-                else (cycle_colors[1] if len(cycle_colors) > 1 else "C1")
-            )
-            band_plot_color = (
-                band_color
-                if band_color is not None
-                else (cycle_colors[1] if len(cycle_colors) > 1 else "C1")
-            )
-
-            if xlim is not None:
-                xlim = _validate_axis_limits(
-                    xlim,
-                    name="xlim",
-                    min_label="xmin",
-                    max_label="xmax",
-                )
-
-            if ylim is not None:
-                ylim = _validate_axis_limits(
-                    ylim,
-                    name="ylim",
-                    min_label="ymin",
-                    max_label="ymax",
-                )
-
-            subplots_kwargs: dict = {
-                "gridspec_kw": {"height_ratios": [3, 1]},
-                "sharex": True,
-                "constrained_layout": True,
-            }
-            if figsize is not None:
-                subplots_kwargs["figsize"] = _validate_figsize(figsize)
-            if dpi is not None:
-                subplots_kwargs["dpi"] = dpi
-
-            import matplotlib.pyplot as plt
-
-            fig, (ax_fit, ax_res) = plt.subplots(2, 1, **subplots_kwargs)
-
-            errorbar_kwargs: dict = {
-                "yerr": plot_sigma_y_values,
-                "xerr": plot_sigma_x_values if use_sigma_x else None,
-                "fmt": "o",
-                "markersize": 4,
-                "elinewidth": 1,
-                "capsize": 3,
-                "alpha": data_alpha,
-            }
-            if point_plot_color is not None:
-                errorbar_kwargs["color"] = point_plot_color
-                errorbar_kwargs["ecolor"] = point_plot_color
-
-            ax_fit.errorbar(x_values, y_values, **errorbar_kwargs)
-
-            fmt = f".{decimals}f"
-            x_fit = np.linspace(x_values.min(), x_values.max(), 200)
-            y_fit = slope * x_fit + intercept
-            fit_label = (
-                f"Fit: m={slope:{fmt}}, c={intercept:{fmt}}"
-                if show_fit_params
-                else fit_label
-            )
-            ax_fit.plot(
-                x_fit,
-                y_fit,
-                color=fit_plot_color,
-                linewidth=1.5,
-                label=fit_label,
-            )
-
-            if show_band:
-                x_bar = weighted_mean(x_values, weights)
-                sigma_y_fit = scale_factor * np.sqrt(
-                    1.0 / sum_w + (x_fit - x_bar) ** 2 / (var_x * sum_w)
-                )
-                ax_fit.fill_between(
-                    x_fit,
-                    y_fit - sigma_y_fit,
-                    y_fit + sigma_y_fit,
-                    color=band_plot_color,
-                    alpha=band_alpha,
-                    label=band_label,
-                )
-
-            ax_fit.set_ylabel(ylabel)
-
-            if title is not None:
-                title_kwargs: dict = {}
-                if title_fontsize is not None:
-                    title_kwargs["fontsize"] = title_fontsize
-                if title_pad is not None:
-                    title_kwargs["pad"] = title_pad
-                ax_fit.set_title(title, **title_kwargs)
-
-            if not show_grid:
-                ax_fit.grid(False)
-            elif grid_alpha is not None:
-                ax_fit.grid(True, axis="y", alpha=grid_alpha)
-            # altrimenti: la griglia e gestita dallo stile (axes.grid, grid.alpha, ...)
-
-            if show_legend:
-                legend_kwargs: dict = {}
-                if legend_fontsize is not None:
-                    legend_kwargs["fontsize"] = legend_fontsize
-                if legend_loc is not None:
-                    legend_kwargs["loc"] = legend_loc
-                ax_fit.legend(**legend_kwargs)
-
-            residuals_plot = (
-                normalized_residuals if normalize_residuals else residuals
-            )
-            residuals_yerr = (
-                np.ones_like(normalized_residuals)
-                if normalize_residuals
-                else plot_sigma_y_values
-            )
-            residuals_axis_label = (
-                r"Residuals / $\sigma_\mathrm{eff}$"
-                if normalize_residuals and residuals_label == "Residuals"
-                else residuals_label
-            )
-            residuals_errorbar_kwargs = {
-                **errorbar_kwargs,
-                "yerr": residuals_yerr,
-            }
-
-            ax_res.errorbar(x_values, residuals_plot, **residuals_errorbar_kwargs)
-            ax_res.axhline(
-                0,
-                color=res_line_color if res_line_color is not None else fit_plot_color,
-                linewidth=1,
-                linestyle="--",
-            )
-            ax_res.set_xlabel(xlabel)
-            ax_res.set_ylabel(residuals_axis_label)
-
-            if not show_grid:
-                ax_res.grid(False)
-            elif grid_alpha is not None:
-                ax_res.grid(True, axis="y", alpha=grid_alpha)
-
-            if xlim is not None:
-                ax_fit.set_xlim(xlim)
-                ax_res.set_xlim(xlim)
-            if ylim is not None:
-                ax_fit.set_ylim(ylim)
-
-            if save_path is not None:
-                save_path = Path(save_path)
-                if save_path.suffix == "":
-                    save_path = save_path.with_suffix(".pdf")
-                savefig_kwargs: dict = {"bbox_inches": "tight"}
-                if dpi is not None:
-                    savefig_kwargs["dpi"] = dpi
-                fig.savefig(save_path, **savefig_kwargs)
-
-    return LinearFitResult(
-        slope=float(slope),
-        intercept=float(intercept),
-        slope_std=sigma_m,
-        intercept_std=sigma_c,
-        covariance=float(cov_mc),
-        correlation=rho_mc,
-        residuals=residuals,
-        residual_std=residual_std,
-        chi2=chi2,
-        reduced_chi2=reduced_chi2,
-        dof=dof,
-        iterations=iterations,
-        converged=converged,
-        figure=fig,
-        fit_method=fit_method,
-        scale_factor=scale_factor,
-        p_value=p_value,
-    )
+    core = _solve_linear_fit(data)
+    if (
+        plot
+        and normalize_residuals
+        and core.fit_method == "ols"
+        and core.residual_std == 0
+    ):
+        raise ValueError(
+            "normalize_residuals: dispersione OLS nulla; usa residui non normalizzati (normalize_residuals=False)"
+        )
+    if core.fit_method == "ols":
+        warnings.warn(
+            "MesPy: sigma_y non fornita. Eseguo un fit non pesato e stimo la dispersione dai residui. Le diagnostiche χ² non sono disponibili.",
+            UserWarning,
+            stacklevel=2,
+        )
+    figure = None
+    if plot:
+        figure = _plot_linear_fit(
+            data,
+            core,
+            xlabel=xlabel,
+            ylabel=ylabel,
+            title=title,
+            style=style,
+            normalize_residuals=normalize_residuals,
+        )
+    return _make_linear_fit_result(data, core, figure)

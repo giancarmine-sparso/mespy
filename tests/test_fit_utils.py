@@ -1,6 +1,7 @@
 import math
 import tomllib
 import warnings
+from dataclasses import FrozenInstanceError
 from pathlib import Path
 
 import matplotlib
@@ -19,9 +20,15 @@ from mespy.fit_utils import (
 matplotlib.use("Agg")
 
 
-# Regressioni dell'API attuale. I test con fit_method='residual', sigma_x,
-# controlli estetici e schema TOML 1 descrivono il contratto legacy: saranno
-# sostituiti nelle fasi 3–6, insieme al codice pubblico corrispondente.
+@pytest.fixture(autouse=True)
+def close_test_figures():
+    existing = set(plt.get_fignums())
+    yield
+    for number in set(plt.get_fignums()) - existing:
+        plt.close(number)
+
+
+# Contratto pubblico OLS/WLS e regressioni migrate alla nuova firma.
 def make_placebo_data():
     rng = np.random.default_rng(42)
     x = np.arange(1, 11, dtype=float)
@@ -31,18 +38,6 @@ def make_placebo_data():
     rumore = rng.normal(0.0, 0.8, size=x.size)
     y = c_true + m_true * x + rumore
     return x, y, sigma_y, m_true, c_true
-
-
-def make_placebo_data_with_sigma_x():
-    rng = np.random.default_rng(123)
-    x_true = np.linspace(1.0, 10.0, 16)
-    sigma_x = np.linspace(0.08, 0.22, x_true.size)
-    sigma_y = np.full_like(x_true, 0.35)
-    m_true = 1.7
-    c_true = 0.9
-    x_obs = x_true + rng.normal(0.0, sigma_x)
-    y = c_true + m_true * x_true + rng.normal(0.0, sigma_y)
-    return x_obs, y, sigma_y, sigma_x, m_true, c_true
 
 
 def get_residual_marker_ydata(result):
@@ -68,11 +63,9 @@ def test_lin_fit_returns_typed_result_and_expected_parameters():
         x,
         y,
         sigma_y,
-        fit_method="absolute",
         xlabel="x placebo",
         ylabel="y placebo",
-        show_band=True,
-        show_plot=True,
+        plot=True,
     )
 
     assert isinstance(result, LinearFitResult)
@@ -87,305 +80,27 @@ def test_lin_fit_returns_typed_result_and_expected_parameters():
     assert result.chi2 > 0
     assert result.reduced_chi2 == pytest.approx(result.chi2 / result.dof)
     assert result.dof == len(x) - 2
-    assert result.iterations == 0
-    assert result.converged is True
-    assert result.fit_method == "absolute"
-    assert result.scale_factor == pytest.approx(1.0)
-
-
-def test_lin_fit_residual_without_sigma_y_estimates_common_uncertainty():
-    x = np.arange(0.0, 6.0)
-    y = np.array([1.1, 3.0, 5.2, 6.8, 9.3, 11.1])
-
-    result = lin_fit(x, y, fit_method="residual", show_plot=False)
-
-    expected_slope, expected_intercept = np.polyfit(x, y, deg=1)
-    expected_residuals = y - expected_slope * x - expected_intercept
-    expected_sigma = np.sqrt(np.sum(expected_residuals**2) / (x.size - 2))
-    expected_slope_std = expected_sigma / np.sqrt(np.sum((x - np.mean(x)) ** 2))
-    expected_intercept_std = expected_sigma * np.sqrt(
-        np.mean(x**2) / np.sum((x - np.mean(x)) ** 2)
-    )
-
-    assert result.fit_method == "residual"
-    assert result.slope == pytest.approx(expected_slope)
-    assert result.intercept == pytest.approx(expected_intercept)
-    assert result.scale_factor == pytest.approx(expected_sigma)
-    assert result.residual_std == pytest.approx(expected_sigma)
-    assert result.slope_std == pytest.approx(expected_slope_std)
-    assert result.intercept_std == pytest.approx(expected_intercept_std)
-    assert result.chi2 == pytest.approx(result.dof)
-    assert result.reduced_chi2 == pytest.approx(1.0)
-    assert result.figure is None
-
-
-def test_lin_fit_residual_with_sigma_y_scales_parameter_uncertainties():
-    x, y, sigma_y, _, _ = make_placebo_data()
-
-    result_absolute = lin_fit(x, y, sigma_y, fit_method="absolute", show_plot=False)
-    result_residual = lin_fit(
-        x,
-        y,
-        sigma_y,
-        fit_method="residual",
-        show_plot=False,
-    )
-
-    expected_scale = np.sqrt(result_absolute.reduced_chi2)
-
-    assert result_residual.fit_method == "residual"
-    assert result_residual.slope == pytest.approx(result_absolute.slope)
-    assert result_residual.intercept == pytest.approx(result_absolute.intercept)
-    assert result_residual.scale_factor == pytest.approx(expected_scale)
-    assert result_residual.slope_std == pytest.approx(
-        result_absolute.slope_std * expected_scale
-    )
-    assert result_residual.intercept_std == pytest.approx(
-        result_absolute.intercept_std * expected_scale
-    )
-    assert result_residual.chi2 == pytest.approx(result_residual.dof)
-    assert result_residual.reduced_chi2 == pytest.approx(1.0)
-
-
-def test_lin_fit_residual_with_sigma_x_scales_iterative_fit_uncertainties():
-    x, y, sigma_y, sigma_x, _, _ = make_placebo_data_with_sigma_x()
-
-    result_absolute = lin_fit(
-        x, y, sigma_y, fit_method="absolute", sigma_x=sigma_x, show_plot=False
-    )
-    result_residual = lin_fit(
-        x,
-        y,
-        sigma_y,
-        fit_method="residual",
-        sigma_x=sigma_x,
-        show_plot=False,
-    )
-
-    expected_scale = np.sqrt(result_absolute.reduced_chi2)
-
-    assert result_residual.slope == pytest.approx(result_absolute.slope)
-    assert result_residual.intercept == pytest.approx(result_absolute.intercept)
-    assert result_residual.iterations == result_absolute.iterations
-    assert result_residual.scale_factor == pytest.approx(expected_scale)
-    assert result_residual.slope_std == pytest.approx(
-        result_absolute.slope_std * expected_scale
-    )
-    assert result_residual.intercept_std == pytest.approx(
-        result_absolute.intercept_std * expected_scale
-    )
-    assert result_residual.reduced_chi2 == pytest.approx(1.0)
+    assert result.fit_method == "wls"
 
 
 def test_lin_fit_absolute_p_value_matches_chi2_survival_function():
     x, y, sigma_y, _, _ = make_placebo_data()
 
-    result = lin_fit(x, y, sigma_y, fit_method="absolute", show_plot=False)
+    result = lin_fit(x, y, sigma_y, plot=False)
 
     assert result.p_value == pytest.approx(stats.chi2.sf(result.chi2, result.dof))
     assert 0.0 <= result.p_value <= 1.0
-
-
-def test_lin_fit_absolute_p_value_with_sigma_x_uses_effective_variance():
-    x, y, sigma_y, sigma_x, _, _ = make_placebo_data_with_sigma_x()
-
-    result = lin_fit(
-        x, y, sigma_y, fit_method="absolute", sigma_x=sigma_x, show_plot=False
-    )
-
-    assert result.p_value == pytest.approx(stats.chi2.sf(result.chi2, result.dof))
 
 
 def test_lin_fit_p_value_extremes():
     x = np.arange(1.0, 11.0)
     y = 2.0 * x + 1.0 + np.tile([0.01, -0.01], 5)
 
-    overestimated = lin_fit(x, y, np.full_like(x, 10.0), fit_method="absolute", show_plot=False)
-    underestimated = lin_fit(x, y, np.full_like(x, 1e-4), fit_method="absolute", show_plot=False)
+    overestimated = lin_fit(x, y, np.full_like(x, 10.0), plot=False)
+    underestimated = lin_fit(x, y, np.full_like(x, 1e-4), plot=False)
 
     assert overestimated.p_value == pytest.approx(1.0)
     assert underestimated.p_value == pytest.approx(0.0, abs=1e-12)
-
-
-@pytest.mark.parametrize("with_sigma_y", [True, False])
-def test_lin_fit_residual_p_value_is_nan(with_sigma_y):
-    x, y, sigma_y, _, _ = make_placebo_data()
-
-    result = lin_fit(
-        x,
-        y,
-        sigma_y if with_sigma_y else None,
-        fit_method="residual",
-        show_plot=False,
-    )
-
-    assert math.isnan(result.p_value)
-
-
-def test_lin_fit_residual_with_sigma_x_p_value_is_nan():
-    x, y, sigma_y, sigma_x, _, _ = make_placebo_data_with_sigma_x()
-
-    result = lin_fit(
-        x, y, sigma_y, fit_method="residual", sigma_x=sigma_x, show_plot=False
-    )
-
-    assert math.isnan(result.p_value)
-
-
-def test_lin_fit_defaults_to_absolute_when_sigma_y_is_given():
-    x, y, sigma_y, _, _ = make_placebo_data()
-
-    with warnings.catch_warnings():
-        warnings.simplefilter("error")
-        result = lin_fit(x, y, sigma_y, show_plot=False)
-    explicit = lin_fit(x, y, sigma_y, fit_method="absolute", show_plot=False)
-
-    assert result.fit_method == "absolute"
-    assert math.isfinite(result.p_value)
-    assert result.slope_std == explicit.slope_std
-    assert result.chi2 == explicit.chi2
-
-
-def test_lin_fit_without_sigma_y_warns_and_falls_back_to_residual():
-    x, y, _, _, _ = make_placebo_data()
-
-    with pytest.warns(UserWarning, match="sigma_y"):
-        result = lin_fit(x, y, show_plot=False)
-    explicit = lin_fit(x, y, fit_method="residual", show_plot=False)
-
-    assert result.fit_method == "residual"
-    for name in ("slope", "intercept", "slope_std", "intercept_std", "scale_factor"):
-        assert getattr(result, name) == getattr(explicit, name), name
-
-
-def test_lin_fit_explicit_residual_without_sigma_y_does_not_warn():
-    x, y, _, _, _ = make_placebo_data()
-
-    with warnings.catch_warnings():
-        warnings.simplefilter("error")
-        result = lin_fit(x, y, fit_method="residual", show_plot=False)
-
-    assert result.fit_method == "residual"
-
-
-def test_lin_fit_default_rejects_sigma_x_without_sigma_y_without_warning():
-    with warnings.catch_warnings():
-        warnings.simplefilter("error")
-        with pytest.raises(ValueError, match="sigma_x richiede sigma_y"):
-            lin_fit(
-                [1.0, 2.0, 3.0],
-                [1.0, 2.0, 3.0],
-                sigma_x=[0.1, 0.1, 0.1],
-                show_plot=False,
-            )
-
-
-def test_lin_fit_residual_plot_uses_estimated_uncertainty():
-    x = np.arange(0.0, 6.0)
-    y = np.array([1.1, 3.0, 5.2, 6.8, 9.3, 11.1])
-
-    result = lin_fit(x, y, fit_method="residual", show_plot=True)
-
-    np.testing.assert_allclose(
-        get_residual_vertical_errorbar_half_lengths(result),
-        np.full_like(x, result.scale_factor),
-    )
-
-
-def test_lin_fit_accepts_custom_plot_styling_kwargs():
-    x, y, sigma_y, _, _ = make_placebo_data()
-
-    result = lin_fit(
-        x,
-        y,
-        sigma_y,
-        show_plot=True,
-        title="Fit placebo",
-        title_fontsize=16,
-        title_pad=12,
-        legend_fontsize=11,
-        legend_loc="upper left",
-        show_grid=False,
-        data_alpha=0.6,
-        band_alpha=0.35,
-    )
-
-    ax_fit = result.figure.axes[0]
-    legenda = ax_fit.get_legend()
-
-    assert ax_fit.get_title() == "Fit placebo"
-    assert ax_fit.title.get_fontsize() == pytest.approx(16)
-    assert legenda is not None
-    assert legenda.get_texts()[0].get_fontsize() == pytest.approx(11)
-    assert not any(line.get_visible() for line in ax_fit.get_ygridlines())
-    assert any(
-        collection.get_alpha() == pytest.approx(0.35)
-        for collection in ax_fit.collections
-        if collection.get_alpha() is not None
-    )
-
-
-def test_lin_fit_resolves_default_fit_and_band_colors_from_requested_style():
-    x, y, sigma_y, _, _ = make_placebo_data()
-
-    with plt.style.context("report"):
-        expected_fit_color = matplotlib.rcParams["axes.prop_cycle"].by_key()["color"][1]
-
-    result = lin_fit(x, y, sigma_y, style="report", show_plot=True)
-
-    ax_fit = result.figure.axes[0]
-    fit_line = next(line for line in ax_fit.lines if line.get_label() == "Fit")
-    fit_band = next(
-        collection
-        for collection in ax_fit.collections
-        if collection.get_label() == r"$\pm 1 \sigma$ retta"
-    )
-
-    assert matplotlib.colors.to_rgba(fit_line.get_color()) == pytest.approx(
-        matplotlib.colors.to_rgba(expected_fit_color)
-    )
-    assert fit_band.get_facecolor()[0] == pytest.approx(
-        matplotlib.colors.to_rgba(expected_fit_color, alpha=0.20)
-    )
-
-
-def test_lin_fit_accepts_custom_fit_and_band_labels():
-    x, y, sigma_y, _, _ = make_placebo_data()
-
-    result = lin_fit(
-        x,
-        y,
-        sigma_y,
-        show_plot=True,
-        fit_label="Retta custom",
-        band_label="Banda custom",
-    )
-
-    labels = [text.get_text() for text in result.figure.axes[0].get_legend().get_texts()]
-
-    assert "Retta custom" in labels
-    assert "Banda custom" in labels
-
-
-def test_lin_fit_with_sigma_x_uses_iterative_effective_variance():
-    x, y, sigma_y, sigma_x, m_true, c_true = make_placebo_data_with_sigma_x()
-
-    result_base = lin_fit(x, y, sigma_y, fit_method="absolute", show_plot=False)
-    result_sigma_x = lin_fit(
-        x,
-        y,
-        sigma_y,
-        fit_method="absolute",
-        sigma_x=sigma_x,
-        show_plot=False,
-    )
-
-    assert result_sigma_x.slope == pytest.approx(m_true, abs=0.05)
-    assert result_sigma_x.intercept == pytest.approx(c_true, abs=0.20)
-    assert result_sigma_x.iterations > 0
-    assert result_sigma_x.converged is True
-    assert result_sigma_x.slope_std > result_base.slope_std
-    assert result_sigma_x.intercept_std > result_base.intercept_std
 
 
 def test_lin_fit_can_plot_normalized_residuals_without_normalizing_result():
@@ -395,8 +110,7 @@ def test_lin_fit_can_plot_normalized_residuals_without_normalizing_result():
         x,
         y,
         sigma_y,
-        fit_method="absolute",
-        show_plot=True,
+        plot=True,
         normalize_residuals=True,
     )
 
@@ -412,197 +126,20 @@ def test_lin_fit_can_plot_normalized_residuals_without_normalizing_result():
         get_residual_vertical_errorbar_half_lengths(result),
         np.ones_like(sigma_y),
     )
-    assert result.figure.axes[1].get_ylabel() == r"Residuals / $\sigma_\mathrm{eff}$"
-
-
-def test_lin_fit_normalized_residuals_use_effective_sigma_with_sigma_x():
-    x, y, sigma_y, sigma_x, _, _ = make_placebo_data_with_sigma_x()
-
-    result = lin_fit(
-        x,
-        y,
-        sigma_y,
-        fit_method="absolute",
-        sigma_x=sigma_x,
-        show_plot=True,
-        normalize_residuals=True,
-        residuals_label="Pull",
-    )
-
-    sigma_eff = np.sqrt(sigma_y**2 + result.slope**2 * sigma_x**2)
-    expected_physical_residuals = y - result.slope * x - result.intercept
-    expected_normalized_residuals = result.residuals / sigma_eff
-
-    np.testing.assert_allclose(result.residuals, expected_physical_residuals)
-    np.testing.assert_allclose(
-        get_residual_marker_ydata(result),
-        expected_normalized_residuals,
-    )
-    np.testing.assert_allclose(
-        get_residual_vertical_errorbar_half_lengths(result),
-        np.ones_like(sigma_y),
-    )
-    assert result.figure.axes[1].get_ylabel() == "Pull"
+    assert result.figure.axes[1].get_ylabel() == r"Residuals / $\sigma_y$"
 
 
 def test_lin_fit_without_plot_returns_no_figure():
     x, y, sigma_y, _, _ = make_placebo_data()
 
-    result = lin_fit(x, y, sigma_y, show_plot=False)
+    result = lin_fit(x, y, sigma_y, plot=False)
 
     assert result.figure is None
 
 
-def test_lin_fit_show_band_false_does_not_draw_band():
-    x, y, sigma_y, _, _ = make_placebo_data()
-
-    result = lin_fit(
-        x,
-        y,
-        sigma_y,
-        show_plot=True,
-        show_band=False,
-        band_alpha=0.17,
-    )
-
-    ax_fit = result.figure.axes[0]
-    legenda = ax_fit.get_legend()
-    labels = [text.get_text() for text in legenda.get_texts()]
-
-    assert not any(r"\pm 1 \sigma" in label for label in labels)
-    assert not any(
-        collection.get_alpha() == pytest.approx(0.17)
-        for collection in ax_fit.collections
-        if collection.get_alpha() is not None
-    )
-
-
-def test_lin_fit_show_legend_false_hides_legend():
-    x, y, sigma_y, _, _ = make_placebo_data()
-
-    result = lin_fit(x, y, sigma_y, show_plot=True, show_legend=False)
-
-    ax_fit = result.figure.axes[0]
-    assert ax_fit.get_legend() is None
-
-
-def test_lin_fit_show_fit_params_adds_coefficients_to_legend():
-    x, y, sigma_y, _, _ = make_placebo_data()
-
-    result = lin_fit(
-        x,
-        y,
-        sigma_y,
-        show_plot=True,
-        show_fit_params=True,
-        fit_label="Retta custom",
-    )
-
-    ax_fit = result.figure.axes[0]
-    labels = [text.get_text() for text in ax_fit.get_legend().get_texts()]
-
-    assert any(label.startswith("Fit: m=") for label in labels)
-    assert "Retta custom" not in labels
-
-
-def test_lin_fit_save_path_saves_figure(tmp_path):
-    x, y, sigma_y, _, _ = make_placebo_data()
-    path = tmp_path / "fit.png"
-
-    lin_fit(x, y, sigma_y, show_plot=True, save_path=str(path))
-
-    assert path.exists()
-
-
-def test_lin_fit_save_path_requires_show_plot():
-    x, y, sigma_y, _, _ = make_placebo_data()
-
-    with pytest.raises(ValueError, match="show_plot=True"):
-        lin_fit(x, y, sigma_y, show_plot=False, save_path="fit.png")
-
-
-def test_lin_fit_raises_on_invalid_input():
-    with pytest.raises(ValueError, match="sigma_y"):
-        lin_fit(
-            [1.0, 2.0, 3.0], [1.0, 2.0, 3.0], fit_method="absolute", show_plot=False
-        )
-
-    with pytest.raises(ValueError, match="fit_method"):
-        lin_fit(
-            [1.0, 2.0, 3.0],
-            [1.0, 2.0, 3.0],
-            [0.1, 0.1, 0.1],
-            fit_method="post",
-            show_plot=False,
-        )
-
-    with pytest.raises(ValueError, match="sigma_x"):
-        lin_fit(
-            [1.0, 2.0, 3.0],
-            [1.0, 2.0, 3.0],
-            fit_method="residual",
-            sigma_x=[0.1, 0.1, 0.1],
-            show_plot=False,
-        )
-
-    with pytest.raises(ValueError, match="stessa lunghezza"):
-        lin_fit([1.0, 2.0], [1.0, 2.0, 3.0], [0.1, 0.1, 0.1], show_plot=False)
-
-    with pytest.raises(ValueError, match="almeno 3 punti"):
-        lin_fit([1.0, 2.0], [1.0, 2.0], [0.1, 0.1], show_plot=False)
-
-
-def test_lin_fit_rejects_non_finite_values():
-    with pytest.raises(ValueError, match="solo valori finiti"):
-        lin_fit(
-            [1.0, np.nan, 3.0],
-            [1.0, 2.0, 3.0],
-            [0.1, 0.1, 0.1],
-            show_plot=False,
-        )
-
-    with pytest.raises(ValueError, match="solo valori finiti"):
-        lin_fit(
-            [1.0, 2.0, 3.0],
-            [1.0, np.inf, 3.0],
-            [0.1, 0.1, 0.1],
-            show_plot=False,
-        )
-
-    with pytest.raises(ValueError, match="solo valori finiti"):
-        lin_fit(
-            [1.0, 2.0, 3.0],
-            [1.0, 2.0, 3.0],
-            [0.1, np.nan, 0.1],
-            show_plot=False,
-        )
-
-
-def test_lin_fit_rejects_non_positive_sigma():
-    with pytest.raises(ValueError, match="strettamente positivi"):
-        lin_fit([1.0, 2.0, 3.0], [1.0, 2.0, 3.0], [0.1, 0.0, 0.1], show_plot=False)
-
-    with pytest.raises(ValueError, match="strettamente positivi"):
-        lin_fit(
-            [1.0, 2.0, 3.0],
-            [1.0, 2.0, 3.0],
-            [0.1, -0.2, 0.1],
-            show_plot=False,
-        )
-
-    with pytest.raises(ValueError, match="sigma_x"):
-        lin_fit(
-            [1.0, 2.0, 3.0],
-            [1.0, 2.0, 3.0],
-            [0.1, 0.1, 0.1],
-            sigma_x=[0.1, 0.0, 0.1],
-            show_plot=False,
-        )
-
-
 def test_lin_fit_rejects_constant_x():
     with pytest.raises(ValueError, match="valori distinti"):
-        lin_fit([1.0, 1.0, 1.0], [1.0, 2.0, 3.0], [0.1, 0.1, 0.1], show_plot=False)
+        lin_fit([1.0, 1.0, 1.0], [1.0, 2.0, 3.0], [0.1, 0.1, 0.1], plot=False)
 
 
 def make_unit_change_data():
@@ -617,7 +154,7 @@ def test_lin_fit_accepts_small_scale_x():
     x = np.array([1e-6, 2e-6, 3e-6, 4e-6])
     y = np.array([1.0, 2.0, 3.0, 4.0])
 
-    result = lin_fit(x, y, [0.1, 0.1, 0.1, 0.1], show_plot=False)
+    result = lin_fit(x, y, [0.1, 0.1, 0.1, 0.1], plot=False)
 
     assert result.slope == pytest.approx(1e6, rel=1e-10)
     assert result.intercept == pytest.approx(0.0, abs=1e-10)
@@ -628,7 +165,7 @@ def test_lin_fit_accepts_very_small_scale_x(scale):
     x = scale * np.array([1.0, 2.0, 3.0, 4.0])
     y = np.array([1.1, 1.9, 3.05, 3.95])
 
-    result = lin_fit(x, y, [0.1, 0.1, 0.1, 0.1], show_plot=False)
+    result = lin_fit(x, y, [0.1, 0.1, 0.1, 0.1], plot=False)
 
     assert np.isfinite(result.slope)
     assert result.slope * scale == pytest.approx(0.97, rel=1e-10)
@@ -637,9 +174,9 @@ def test_lin_fit_accepts_very_small_scale_x(scale):
 @pytest.mark.parametrize("scale", [1e-12, 1e-6, 1e6, 1e12])
 def test_lin_fit_is_invariant_under_unit_change_of_x(scale):
     x, y, sigma_y, _ = make_unit_change_data()
-    reference = lin_fit(x, y, sigma_y, show_plot=False)
+    reference = lin_fit(x, y, sigma_y, plot=False)
 
-    result = lin_fit(x * scale, y, sigma_y, show_plot=False)
+    result = lin_fit(x * scale, y, sigma_y, plot=False)
 
     # grandezze con unita di 1/x: scalano come 1/scale
     assert result.slope * scale == pytest.approx(reference.slope, rel=1e-10)
@@ -654,72 +191,38 @@ def test_lin_fit_is_invariant_under_unit_change_of_x(scale):
         "chi2",
         "reduced_chi2",
         "residual_std",
-        "scale_factor",
     ):
         assert getattr(result, name) == pytest.approx(
             getattr(reference, name), rel=1e-10
         ), name
     assert result.dof == reference.dof
-    np.testing.assert_allclose(result.residuals, reference.residuals, rtol=0, atol=1e-12)
+    np.testing.assert_allclose(
+        result.residuals, reference.residuals, rtol=0, atol=1e-12
+    )
 
     predicted = result.slope * (x * scale) + result.intercept
     expected = reference.slope * x + reference.intercept
     np.testing.assert_allclose(predicted, expected, rtol=1e-12)
 
 
-@pytest.mark.parametrize("scale", [1e-12, 1e-6, 1e6, 1e12])
-def test_lin_fit_p_value_is_invariant_under_unit_change_of_x(scale):
-    x, y, sigma_y, sigma_x = make_unit_change_data()
-    reference = lin_fit(
-        x, y, sigma_y, fit_method="absolute", sigma_x=sigma_x, show_plot=False
-    )
-
-    result = lin_fit(
-        x * scale,
-        y,
-        sigma_y,
-        fit_method="absolute",
-        sigma_x=sigma_x * scale,
-        show_plot=False,
-    )
-
-    assert result.p_value == pytest.approx(reference.p_value, rel=1e-8)
-
-
-@pytest.mark.parametrize("scale", [1e-12, 1e-6, 1e6, 1e12])
-def test_lin_fit_with_sigma_x_is_invariant_under_unit_change_of_x(scale):
-    x, y, sigma_y, sigma_x = make_unit_change_data()
-    reference = lin_fit(x, y, sigma_y, sigma_x=sigma_x, show_plot=False)
-
-    result = lin_fit(x * scale, y, sigma_y, sigma_x=sigma_x * scale, show_plot=False)
-
-    assert result.slope * scale == pytest.approx(reference.slope, rel=1e-10)
-    assert result.intercept == pytest.approx(reference.intercept, rel=1e-10)
-    assert result.chi2 == pytest.approx(reference.chi2, rel=1e-10)
-    assert result.iterations == reference.iterations
-    assert result.converged is True
-
-
 def test_lin_fit_accepts_minimal_two_distinct_values():
-    result = lin_fit([1.0, 1.0, 2.0], [1.0, 1.2, 3.0], [0.1, 0.1, 0.1], show_plot=False)
+    result = lin_fit([1.0, 1.0, 2.0], [1.0, 1.2, 3.0], [0.1, 0.1, 0.1], plot=False)
 
     assert result.dof == 1
     assert result.slope == pytest.approx(1.9)
 
 
 def test_lin_fit_accepts_partial_duplicates():
-    result = lin_fit(
-        [1.0, 1.0, 2.0, 2.0], [1.0, 1.1, 3.0, 3.1], [0.1] * 4, show_plot=False
-    )
+    result = lin_fit([1.0, 1.0, 2.0, 2.0], [1.0, 1.1, 3.0, 3.1], [0.1] * 4, plot=False)
 
     assert result.slope == pytest.approx(2.0)
 
 
 def test_lin_fit_accepts_large_offset_x():
     x, y, sigma_y, _ = make_unit_change_data()
-    reference = lin_fit(x, y, sigma_y, show_plot=False)
+    reference = lin_fit(x, y, sigma_y, plot=False)
 
-    result = lin_fit(1e9 + x, y, sigma_y, show_plot=False)
+    result = lin_fit(1e9 + x, y, sigma_y, plot=False)
 
     assert result.slope == pytest.approx(reference.slope, rel=1e-6)
 
@@ -731,61 +234,16 @@ def test_lin_fit_rejects_constant_large_x_with_uneven_weights():
     for _ in range(50):
         sigma_y = rng.uniform(0.1, 3.0, 3)
         with pytest.raises(ValueError, match="valori distinti"):
-            lin_fit(np.full(3, 7e15), [1.0, 2.0, 3.0], sigma_y, show_plot=False)
-
-
-def test_lin_fit_rejects_unrepresentable_x_variance():
-    x = 1e-170 * np.arange(1.0, 6.0)
-
-    with pytest.raises(ValueError, match="non è rappresentabile"):
-        lin_fit(x, np.arange(5.0), [0.1] * 5, show_plot=False)
+            lin_fit(np.full(3, 7e15), [1.0, 2.0, 3.0], sigma_y, plot=False)
 
 
 def test_lin_fit_large_offset_precision():
     x, y, sigma_y, _ = make_unit_change_data()
-    reference = lin_fit(x, y, sigma_y, show_plot=False)
+    reference = lin_fit(x, y, sigma_y, plot=False)
 
-    result = lin_fit(1e15 + x, y, sigma_y, show_plot=False)
+    result = lin_fit(1e15 + x, y, sigma_y, plot=False)
 
     assert result.slope == pytest.approx(reference.slope, rel=1e-9)
-
-
-def test_lin_fit_rejects_scalar_axis_limits_when_plotting():
-    x, y, sigma_y, _, _ = make_placebo_data()
-
-    with pytest.raises(ValueError, match="xlim deve essere una sequenza di 2 elementi"):
-        lin_fit(x, y, sigma_y, show_plot=True, xlim=1)
-
-    with pytest.raises(ValueError, match="ylim deve essere una sequenza di 2 elementi"):
-        lin_fit(x, y, sigma_y, show_plot=True, ylim=1)
-
-
-def test_lin_fit_rejects_invalid_tol_and_max_iter():
-    x, y, sigma_y, _, _ = make_placebo_data()
-
-    with pytest.raises(ValueError, match="tol deve essere un numero finito strettamente positivo"):
-        lin_fit(x, y, sigma_y, show_plot=False, tol=0.0)
-
-    with pytest.raises(ValueError, match="tol deve essere un numero finito strettamente positivo"):
-        lin_fit(x, y, sigma_y, show_plot=False, tol="non-numerico")
-
-    with pytest.raises(ValueError, match="max_iter deve essere un intero positivo"):
-        lin_fit(x, y, sigma_y, show_plot=False, max_iter=0)
-
-
-def test_lin_fit_raises_when_sigma_x_fit_does_not_converge():
-    x, y, sigma_y, sigma_x, _, _ = make_placebo_data_with_sigma_x()
-
-    with pytest.raises(RuntimeError, match="non converge"):
-        lin_fit(
-            x,
-            y,
-            sigma_y,
-            sigma_x=sigma_x,
-            tol=1e-30,
-            max_iter=1,
-            show_plot=False,
-        )
 
 
 def _read_toml(path):
@@ -814,8 +272,8 @@ def _make_manual_result(**overrides):
         "chi2": 1.0,
         "reduced_chi2": 1.0,
         "dof": 1,
-        "iterations": 0,
-        "converged": True,
+        "fit_method": "wls",
+        "p_value": 0.5,
         "figure": None,
     }
     fields.update(overrides)
@@ -824,7 +282,7 @@ def _make_manual_result(**overrides):
 
 def test_to_toml_writes_file_and_returns_path(tmp_path):
     x, y, sigma_y, _, _ = make_placebo_data()
-    result = lin_fit(x, y, sigma_y, show_plot=False)
+    result = lin_fit(x, y, sigma_y, plot=False)
     target = tmp_path / "fit.toml"
 
     written = result.to_toml(target)
@@ -836,7 +294,7 @@ def test_to_toml_writes_file_and_returns_path(tmp_path):
 
 def test_to_toml_document_structure(tmp_path):
     x, y, sigma_y, _, _ = make_placebo_data()
-    result = lin_fit(x, y, sigma_y, show_plot=False)
+    result = lin_fit(x, y, sigma_y, plot=False)
 
     document = _read_toml(result.to_toml(tmp_path / "fit.toml"))
 
@@ -849,7 +307,7 @@ def test_to_toml_document_structure(tmp_path):
 
 def test_to_toml_values_round_trip_exactly(tmp_path):
     x, y, sigma_y, _, _ = make_placebo_data()
-    result = lin_fit(x, y, sigma_y, show_plot=False)
+    result = lin_fit(x, y, sigma_y, plot=False)
 
     document = _read_toml(result.to_toml(tmp_path / "fit.toml"))
     fit = document["fit"]
@@ -862,7 +320,6 @@ def test_to_toml_values_round_trip_exactly(tmp_path):
         "intercept_std",
         "covariance",
         "correlation",
-        "scale_factor",
     ):
         assert fit[name] == getattr(result, name)
     for name in ("chi2", "reduced_chi2", "residual_std"):
@@ -870,14 +327,11 @@ def test_to_toml_values_round_trip_exactly(tmp_path):
 
     assert type(diagnostics["dof"]) is int
     assert diagnostics["dof"] == result.dof
-    assert type(diagnostics["iterations"]) is int
-    assert diagnostics["iterations"] == result.iterations
-    assert diagnostics["converged"] is True
 
 
 def test_to_toml_residuals_are_numpy_converted(tmp_path):
     x, y, sigma_y, _, _ = make_placebo_data()
-    result = lin_fit(x, y, sigma_y, show_plot=False)
+    result = lin_fit(x, y, sigma_y, plot=False)
 
     values = _read_toml(result.to_toml(tmp_path / "fit.toml"))["residuals"]["values"]
 
@@ -888,8 +342,8 @@ def test_to_toml_residuals_are_numpy_converted(tmp_path):
 
 def test_to_toml_excludes_figure_and_matches_result_without_plot(tmp_path):
     x, y, sigma_y, _, _ = make_placebo_data()
-    with_plot = lin_fit(x, y, sigma_y, show_plot=True)
-    without_plot = lin_fit(x, y, sigma_y, show_plot=False)
+    with_plot = lin_fit(x, y, sigma_y, plot=True)
+    without_plot = lin_fit(x, y, sigma_y, plot=False)
 
     try:
         assert with_plot.figure is not None
@@ -899,7 +353,6 @@ def test_to_toml_excludes_figure_and_matches_result_without_plot(tmp_path):
 
     assert without_plot.figure is None
     assert "figure" not in _collect_keys(_read_toml(plot_path))
-    # confronto testuale: p_value e nan in residual mode e nan != nan
     no_plot_path = without_plot.to_toml(tmp_path / "no_plot.toml")
     assert plot_path.read_text(encoding="utf-8") == no_plot_path.read_text(
         encoding="utf-8"
@@ -936,50 +389,6 @@ def test_to_toml_overwrites_existing_file(tmp_path):
     assert sorted(path.name for path in tmp_path.iterdir()) == ["fit.toml"]
 
 
-@pytest.mark.parametrize(
-    ("fit_method", "with_sigma_y"),
-    [("absolute", True), ("residual", True), ("residual", False)],
-)
-def test_to_toml_records_fit_method(tmp_path, fit_method, with_sigma_y):
-    x, y, sigma_y, _, _ = make_placebo_data()
-    result = lin_fit(
-        x,
-        y,
-        sigma_y if with_sigma_y else None,
-        fit_method=fit_method,
-        show_plot=False,
-    )
-
-    fit = _read_toml(result.to_toml(tmp_path / "fit.toml"))["fit"]
-
-    assert fit["fit_method"] == fit_method
-    assert fit["scale_factor"] == result.scale_factor
-    if fit_method == "absolute":
-        assert fit["scale_factor"] == 1.0
-
-
-def test_to_toml_records_p_value(tmp_path):
-    x, y, sigma_y, _, _ = make_placebo_data()
-    absolute = lin_fit(x, y, sigma_y, fit_method="absolute", show_plot=False)
-    residual = lin_fit(x, y, sigma_y, fit_method="residual", show_plot=False)
-
-    absolute_doc = _read_toml(absolute.to_toml(tmp_path / "absolute.toml"))
-    residual_doc = _read_toml(residual.to_toml(tmp_path / "residual.toml"))
-
-    assert absolute_doc["diagnostics"]["p_value"] == absolute.p_value
-    assert math.isnan(residual_doc["diagnostics"]["p_value"])
-
-
-def test_to_toml_with_sigma_x_records_iterations(tmp_path):
-    x, y, sigma_y, sigma_x, _, _ = make_placebo_data_with_sigma_x()
-    result = lin_fit(x, y, sigma_y, sigma_x=sigma_x, show_plot=False)
-
-    diagnostics = _read_toml(result.to_toml(tmp_path / "fit.toml"))["diagnostics"]
-
-    assert diagnostics["iterations"] == result.iterations > 0
-    assert diagnostics["converged"] is True
-
-
 def test_to_toml_preserves_non_finite_values(tmp_path):
     result = _make_manual_result(
         chi2=math.inf,
@@ -1001,8 +410,6 @@ def test_to_toml_accepts_numpy_scalars(tmp_path):
     result = _make_manual_result(
         slope=np.float64(1.5),
         dof=np.int64(3),
-        iterations=np.int64(2),
-        converged=np.bool_(True),
     )
 
     document = _read_toml(result.to_toml(tmp_path / "fit.toml"))
@@ -1010,8 +417,6 @@ def test_to_toml_accepts_numpy_scalars(tmp_path):
     assert document["fit"]["slope"] == 1.5
     assert type(document["diagnostics"]["dof"]) is int
     assert document["diagnostics"]["dof"] == 3
-    assert document["diagnostics"]["iterations"] == 2
-    assert document["diagnostics"]["converged"] is True
 
 
 def test_to_toml_missing_directory_raises(tmp_path):
@@ -1021,8 +426,335 @@ def test_to_toml_missing_directory_raises(tmp_path):
     assert list(tmp_path.iterdir()) == []
 
 
-# Contratto numerico OLS/WLS delle fasi 1–2. Questi test restano validi quando
-# la fase 3 collega il core alla nuova funzione pubblica.
+@pytest.mark.parametrize("weighted", [False, True])
+def test_lin_fit_public_analytical_oracles_and_optional_diagnostics(weighted):
+    sigma = [1, 2, 1] if weighted else None
+    with warnings.catch_warnings(record=True) as recorded:
+        warnings.simplefilter("always")
+        filters = list(warnings.filters)
+        result = lin_fit([0, 1, 2], [0, 1, 3], sigma, plot=False)
+        assert warnings.filters == filters
+
+    assert result.slope == pytest.approx(1.5)
+    assert result.figure is None
+    assert result.dof == 1
+    if weighted:
+        assert not recorded
+        assert result.fit_method == "wls"
+        assert result.intercept == pytest.approx(-1 / 18)
+        assert result.slope_std**2 == pytest.approx(1 / 2)
+        assert result.intercept_std**2 == pytest.approx(17 / 18)
+        assert result.covariance == pytest.approx(-1 / 2)
+        assert result.chi2 == pytest.approx(1 / 18)
+        assert result.reduced_chi2 == pytest.approx(1 / 18)
+        assert result.p_value == pytest.approx(math.erfc(1 / 6))
+        assert result.estimated_sigma is None
+    else:
+        assert len(recorded) == 1
+        assert recorded[0].category is UserWarning
+        assert recorded[0].filename == __file__
+        assert str(recorded[0].message) == (
+            "MesPy: sigma_y non fornita. Eseguo un fit non pesato e stimo la dispersione "
+            "dai residui. Le diagnostiche χ² non sono disponibili."
+        )
+        assert result.fit_method == "ols"
+        assert result.intercept == pytest.approx(-1 / 6)
+        assert result.slope_std**2 == pytest.approx(1 / 12)
+        assert result.intercept_std**2 == pytest.approx(5 / 36)
+        assert result.covariance == pytest.approx(-1 / 12)
+        assert result.chi2 is result.reduced_chi2 is result.p_value is None
+        assert result.estimated_sigma == result.residual_std
+        assert result.estimated_sigma**2 == pytest.approx(1 / 6)
+    expected_residuals = np.array([0, -0.5, 0]) - result.intercept
+    np.testing.assert_allclose(result.residuals, expected_residuals, atol=1e-15)
+    assert result.residual_std == pytest.approx(np.linalg.norm(expected_residuals))
+    for name in ("iterations", "converged", "scale_factor"):
+        assert not hasattr(result, name)
+
+
+def test_lin_fit_two_points_require_absolute_uncertainties():
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        with pytest.raises(ValueError, match="x, y.*3 punti"):
+            lin_fit([0, 2], [1, 5], plot=False)
+        result = lin_fit([0, 2], [1, 5], [1, 2], plot=False)
+    assert result.fit_method == "wls"
+    assert result.slope == 2
+    assert result.intercept == 1
+    assert result.slope_std**2 == pytest.approx(5 / 4)
+    assert result.intercept_std == pytest.approx(1)
+    assert result.covariance == pytest.approx(-1 / 2)
+    assert result.dof == result.chi2 == 0
+    assert result.residual_std is result.reduced_chi2 is result.p_value is None
+    assert result.estimated_sigma is None
+
+
+@pytest.mark.parametrize("slope, intercept", [(2, 1), (-2, 0), (0, 2)])
+@pytest.mark.parametrize("weighted", [False, True])
+def test_lin_fit_exact_lines_and_zero_parameters(slope, intercept, weighted):
+    x = np.arange(3.0)
+    if weighted:
+        result = lin_fit(x, slope * x + intercept, 1.0, plot=False)
+        assert result.chi2 == 0
+        assert result.p_value == 1
+        assert result.slope_std > 0
+        assert result.estimated_sigma is None
+    else:
+        with pytest.warns(UserWarning, match="sigma_y"):
+            result = lin_fit(x, slope * x + intercept, plot=False)
+        assert result.slope_std == result.intercept_std == result.covariance == 0
+        assert result.estimated_sigma == 0
+        assert result.correlation is None
+    assert result.slope == slope
+    assert result.intercept == intercept
+    np.testing.assert_array_equal(result.residuals, np.zeros(3))
+    np.testing.assert_array_equal(result.predict(x), slope * x + intercept)
+
+
+@pytest.mark.parametrize("sigma", [None, 2.0, np.array([1.0, 2.0, 1.0])])
+def test_lin_fit_retains_independent_read_only_arrays(sigma):
+    x = np.array([0.0, 1.0, 2.0])
+    y = np.array([0.0, 1.0, 3.0])
+    originals = (x.copy(), y.copy(), None if sigma is None else np.array(sigma))
+    with warnings.catch_warnings(record=True):
+        result = lin_fit(x, y, sigma, plot=False)
+    predicted = result.predict(x)
+    residuals = result.residuals.copy()
+    np.testing.assert_array_equal(x, originals[0])
+    np.testing.assert_array_equal(y, originals[1])
+    if sigma is not None:
+        np.testing.assert_array_equal(sigma, originals[2])
+    assert result.residuals.dtype == np.float64
+    assert not result.residuals.flags.writeable
+    with pytest.raises(ValueError, match="read-only"):
+        result.residuals[0] = 1
+    with pytest.raises(FrozenInstanceError):
+        result.slope = 3
+    x[:] = 99
+    y[:] = 99
+    if isinstance(sigma, np.ndarray):
+        sigma[:] = 99
+    np.testing.assert_array_equal(result.residuals, residuals)
+    np.testing.assert_array_equal(result.predict(originals[0]), predicted)
+    np.testing.assert_array_equal(result._data.x, originals[0])
+    np.testing.assert_array_equal(result._data.y, originals[1])
+    for array in (
+        result._data.x,
+        result._data.y,
+        result._core.residuals,
+        result._core.x_axis.offsets,
+        result._core.x_axis.centered,
+        result._core.y_axis.offsets,
+        result._core.y_axis.centered,
+    ):
+        assert not array.flags.writeable
+    if result._data.sigma_y is not None:
+        assert not result._data.sigma_y.flags.writeable
+        np.testing.assert_array_equal(
+            result._data.sigma_y,
+            np.full(3, originals[2]) if originals[2].ndim == 0 else originals[2],
+        )
+
+
+@pytest.mark.parametrize("weighted", [False, True])
+def test_lin_fit_predict_preserves_large_offset_accuracy(weighted):
+    x, y, sigma, _ = make_unit_change_data()
+    oracle_sigma = sigma if weighted else np.ones(6)
+    design = np.column_stack((x, np.ones(6)))
+    parameters = np.linalg.lstsq(
+        design / oracle_sigma[:, None], y / oracle_sigma, rcond=None
+    )[0]
+    with warnings.catch_warnings(record=True):
+        result = lin_fit(1e15 + x, y, sigma if weighted else None, plot=False)
+    np.testing.assert_allclose(
+        result.predict(1e15 + x), design @ parameters, atol=3e-15
+    )
+    np.testing.assert_allclose(
+        result.predict(1e15 + x) + result.residuals, y, atol=1e-15
+    )
+    for point in (1e15 + 2.0, np.array(1e15 + 2.0)):
+        scalar = result.predict(point)
+        assert type(scalar) is float
+        assert scalar == pytest.approx(parameters[0] * 2 + parameters[1], abs=3e-15)
+    assert result.predict([]).shape == (0,)
+
+
+def test_lin_fit_predict_handles_representable_values_outside_local_scale():
+    result = lin_fit([0.0, 1e-300, 2e-300], [0.0, 1e-300, 2e-300], 1e-300, plot=False)
+    assert result.predict(1e300) == pytest.approx(1e300)
+    assert result.predict(-1e300) == pytest.approx(-1e300)
+    np.testing.assert_array_equal(result.predict([1e300, 1e-300]), [1e300, 1e-300])
+
+
+def test_lin_fit_predict_reports_nonrepresentable_output():
+    result = lin_fit([0.0, 1.0, 2.0], [0.0, 2.0, 4.0], 1.0, plot=False)
+    with pytest.raises(FloatingPointError, match="previsione.*float64"):
+        result.predict(1e308)
+
+
+@pytest.mark.parametrize(
+    "x_new, exception",
+    [
+        (np.inf, ValueError),
+        ([0, np.nan], ValueError),
+        ([[0, 1]], ValueError),
+        (1j, TypeError),
+        ([0, 1j], TypeError),
+        ("1", TypeError),
+        (np.ma.array([0, 1], mask=False), TypeError),
+        (None, TypeError),
+    ],
+)
+def test_lin_fit_predict_validates_new_coordinates(x_new, exception):
+    result = lin_fit([0, 1, 2], [0, 1, 3], 1, plot=False)
+    with pytest.raises(exception, match="x_new"):
+        result.predict(x_new)
+
+
+@pytest.mark.parametrize(
+    "arguments, exception, parameter",
+    [
+        (([0, 1], [0, 1], None), ValueError, "x, y"),
+        (([0, 1, 2], [0, 1], None), ValueError, "y"),
+        (([0, 1, np.nan], [0, 1, 3], None), ValueError, "x"),
+        (([0, 0, 0], [0, 1, 3], None), ValueError, "x"),
+        (([0, 1, 2j], [0, 1, 3], None), TypeError, "x"),
+        (([0, 1, 2], [0, 1, 3], [1]), ValueError, "sigma_y"),
+        (([0, 1, 2], [0, 1, 3], -1), ValueError, "sigma_y"),
+        (([0, 1, 2], [0, 1, 3], np.ma.array(1.0)), TypeError, "sigma_y"),
+        (([0, 1, 2], [0, 1, 3], [1e-200, 1e200, 1]), FloatingPointError, "sigma_y"),
+    ],
+)
+def test_lin_fit_invalid_calls_raise_without_ols_warning(
+    arguments, exception, parameter
+):
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        with pytest.raises(exception, match=parameter):
+            lin_fit(*arguments, plot=False)
+
+
+@pytest.mark.parametrize(
+    "name",
+    [
+        "fit_method",
+        "sigma_x",
+        "tol",
+        "max_iter",
+        "residuals_label",
+        "band_label",
+        "fit_label",
+        "decimals",
+        "show_plot",
+        "show_band",
+        "show_legend",
+        "show_fit_params",
+        "show_grid",
+        "xlim",
+        "ylim",
+        "figsize",
+        "dpi",
+        "save_path",
+        "title_fontsize",
+        "title_pad",
+        "legend_fontsize",
+        "legend_loc",
+        "point_color",
+        "fit_color",
+        "band_color",
+        "res_line_color",
+        "data_alpha",
+        "band_alpha",
+        "grid_alpha",
+    ],
+)
+def test_lin_fit_rejects_removed_keywords(name):
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        with pytest.raises(
+            TypeError, match="unexpected keyword argument '" + name + "'"
+        ):
+            lin_fit([0, 1, 2], [0, 1, 3], plot=False, **{name: None})
+
+
+def test_lin_fit_no_plot_ignores_style_and_normalization(monkeypatch):
+    def forbidden(*args, **kwargs):
+        raise AssertionError("plot=False non deve avviare il plotting")
+
+    monkeypatch.setattr("mespy.fit_utils._plot_linear_fit", forbidden)
+    monkeypatch.setattr("mespy.fit_utils._style_context", forbidden)
+    monkeypatch.setattr("mespy.fit_utils._resolve_style", forbidden)
+    monkeypatch.setattr(plt, "subplots", forbidden)
+    with pytest.warns(UserWarning, match="sigma_y"):
+        result = lin_fit(
+            [0, 1, 2],
+            [1, 3, 5],
+            plot=False,
+            style="inesistente",
+            normalize_residuals=True,
+        )
+    assert result.figure is None
+    assert result.estimated_sigma == 0
+
+
+def test_lin_fit_exact_ols_normalization_fails_before_figure_creation(monkeypatch):
+    def forbidden(*args, **kwargs):
+        raise AssertionError(
+            "Non deve essere creata una figura per un fit non normalizzabile"
+        )
+
+    monkeypatch.setattr("mespy.fit_utils._plot_linear_fit", forbidden)
+    with pytest.raises(
+        ValueError, match="normalize_residuals.*residui non normalizzati"
+    ):
+        lin_fit([0, 1, 2], [1, 3, 5], normalize_residuals=True)
+
+
+def test_lin_fit_figure_can_be_modified_and_saved(tmp_path):
+    result = lin_fit([0, 1, 2], [0, 1, 3], 1)
+    result.figure.axes[0].set_title("Titolo modificato")
+    result.figure.savefig(tmp_path / "edited.png")
+    assert result.figure.axes[0].get_title() == "Titolo modificato"
+    assert (tmp_path / "edited.png").stat().st_size > 0
+
+
+@pytest.mark.parametrize("plot", [False, True])
+@pytest.mark.parametrize("as_path", [False, True])
+def test_lin_fit_output_reports_pending_phase5_without_side_effects(
+    tmp_path, plot, as_path
+):
+    target = tmp_path / "fit"
+    before = set(plt.get_fignums())
+    with pytest.raises(NotImplementedError, match="output.*fase 5"):
+        lin_fit(
+            [0, 1, 2],
+            [0, 1, 3],
+            1,
+            plot=plot,
+            output=target if as_path else str(target),
+        )
+    assert not list(tmp_path.iterdir())
+    assert set(plt.get_fignums()) == before
+
+
+@pytest.mark.parametrize("weighted", [False, True])
+def test_to_toml_serializes_new_method_and_defined_fields(tmp_path, weighted):
+    with warnings.catch_warnings(record=True):
+        result = lin_fit([0, 1, 2], [1, 3, 5], 1 if weighted else None, plot=False)
+    document = _read_toml(result.to_toml(tmp_path / "fit.toml"))
+    assert document["fit"]["fit_method"] == ("wls" if weighted else "ols")
+    keys = _collect_keys(document)
+    assert keys.isdisjoint(
+        {"iterations", "converged", "scale_factor", "_data", "_core", "figure"}
+    )
+    if weighted:
+        assert document["diagnostics"]["p_value"] == 1
+    else:
+        assert "correlation" not in document["fit"]
+        assert not {"chi2", "reduced_chi2", "p_value"} & document["diagnostics"].keys()
+
+
+# Contratto numerico privato OLS/WLS delle fasi 1–2.
 def solve_core(x, y, sigma_y=None):
     with (
         warnings.catch_warnings(),
@@ -1261,7 +993,13 @@ def test_core_is_independent_of_legacy_statistics_and_presentation(monkeypatch):
         "weighted_covariance",
         "_style_context",
     ):
-        monkeypatch.setattr("mespy.fit_utils." + name, forbidden)
+        if name == "_style_context":
+            monkeypatch.setattr("mespy.fit_utils." + name, forbidden)
+        else:
+            public_name = (
+                name.removeprefix("weighted_") if name != "weighted_mean" else name
+            )
+            monkeypatch.setattr("mespy.stats_utils." + public_name, forbidden)
     monkeypatch.setattr(np, "polyfit", forbidden)
     monkeypatch.setattr(np.linalg, "lstsq", forbidden)
     monkeypatch.setattr(np.linalg, "inv", forbidden)
