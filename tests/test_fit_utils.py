@@ -1014,8 +1014,78 @@ def test_lin_fit_numerical_result_is_identical_with_or_without_plot_and_style(
     )
 
 
+@pytest.mark.parametrize(
+    "failure", ["plot", "fill_between", "subplots", "invalid_style"]
+)
+def test_lin_fit_plot_failure_restores_state_and_preserves_existing_figures(
+    monkeypatch, recognizable_fit_style, failure
+):
+    existing, existing_ax = plt.subplots()
+    (existing_line,) = existing_ax.plot([0, 1], [2, 3])
+    before_numbers = set(plt.get_fignums())
+    before_params = matplotlib.rcParams.copy()
+    style = recognizable_fit_style
+    if failure == "invalid_style":
+        style = "mespy-style-che-non-esiste"
+        exception = OSError
+    else:
+        exception = RuntimeError
+
+        def fail(*args, **kwargs):
+            if failure == "subplots":
+                plt.figure()  # Simulate partial creation before subplots fails.
+            raise RuntimeError("plot failure")
+
+        if failure == "subplots":
+            monkeypatch.setattr(plt, "subplots", fail)
+        else:
+            monkeypatch.setattr(matplotlib.axes.Axes, failure, fail)
+    with pytest.raises(exception):
+        lin_fit([0, 1, 2], [0, 1, 3], 1, style=style)
+    assert set(plt.get_fignums()) == before_numbers
+    assert matplotlib.rcParams == before_params
+    assert plt.fignum_exists(existing.number)
+    assert existing_ax.lines[0] is existing_line
+    np.testing.assert_array_equal(existing_line.get_ydata(), [2, 3])
 
 
+@pytest.mark.parametrize("failure", [None, "artist", "display"])
+def test_lin_fit_notebook_displays_once_and_preserves_figure_object(
+    monkeypatch, tmp_path, failure
+):
+    import IPython.display
+
+    existing = plt.figure()
+    before_numbers = set(plt.get_fignums())
+    before_params = matplotlib.rcParams.copy()
+    displayed = []
+
+    def display(figure):
+        if failure == "display":
+            raise RuntimeError("display failure")
+        displayed.append(figure)
+
+    monkeypatch.setattr("mespy.plot_utils._in_ipython", lambda: True)
+    monkeypatch.setattr(IPython.display, "display", display)
+    if failure == "artist":
+
+        def fail(*args, **kwargs):
+            raise RuntimeError("artist failure")
+
+        monkeypatch.setattr(matplotlib.axes.Axes, "fill_between", fail)
+    if failure:
+        with pytest.raises(RuntimeError, match=failure + " failure"):
+            lin_fit([0, 1, 2], [0, 1, 3], 1)
+        assert not displayed
+    else:
+        result = lin_fit([0, 1, 2], [0, 1, 3], 1)
+        assert displayed == [result.figure]
+        result.figure.axes[0].set_title("Dopo la visualizzazione")
+        result.figure.savefig(tmp_path / "after-display.png")
+        assert (tmp_path / "after-display.png").stat().st_size > 0
+    assert set(plt.get_fignums()) == before_numbers
+    assert plt.fignum_exists(existing.number)
+    assert matplotlib.rcParams == before_params
 
 
 def test_lin_fit_plot_keeps_line_and_band_stable_at_large_x_offset():
