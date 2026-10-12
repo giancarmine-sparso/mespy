@@ -809,6 +809,24 @@ def _replace_fit_export(source: Path, target: Path) -> None:
         raise _fit_export_error(exc, target) from exc
 
 
+def _missing_fit_directories(directory: Path) -> list[Path]:
+    """Ancestors that mkdir(parents=True) would create, deepest first."""
+    missing = []
+    while not directory.exists() and directory != directory.parent:
+        missing.append(directory)
+        directory = directory.parent
+    return missing
+
+
+def _remove_empty_fit_directories(directories: list[Path]) -> None:
+    """Undo directory creation after a failed export, never removing content."""
+    for directory in directories:
+        try:
+            directory.rmdir()
+        except OSError:
+            return
+
+
 def _export_linear_fit(
     result: LinearFitResult,
     base: Path,
@@ -822,31 +840,39 @@ def _export_linear_fit(
     """
     toml_target = _fit_output_target(base, ".toml")
     pdf_target = _fit_output_target(base, ".pdf")
+    created = _missing_fit_directories(base.parent)
     try:
-        base.parent.mkdir(parents=True, exist_ok=True)
-        staging = tempfile.TemporaryDirectory(prefix=f".{base.name}.", dir=base.parent)
-    except OSError as exc:
-        raise _fit_export_error(exc, toml_target) from exc
-    with staging as folder:
-        toml_temp = Path(folder) / toml_target.name
         try:
-            _write_toml_document(_linear_fit_document(result), toml_temp)
+            base.parent.mkdir(parents=True, exist_ok=True)
+            staging = tempfile.TemporaryDirectory(
+                prefix=f".{base.name}.", dir=base.parent
+            )
         except OSError as exc:
             raise _fit_export_error(exc, toml_target) from exc
-        if draw is None:
-            _replace_fit_export(toml_temp, toml_target)
-            return None
-
-        def export_figure(figure: Figure) -> None:
-            pdf_temp = Path(folder) / pdf_target.name
+        with staging as folder:
+            toml_temp = Path(folder) / toml_target.name
             try:
-                figure.savefig(pdf_temp, format="pdf")
+                _write_toml_document(_linear_fit_document(result), toml_temp)
             except OSError as exc:
-                raise _fit_export_error(exc, pdf_target) from exc
-            _replace_fit_export(pdf_temp, pdf_target)
-            _replace_fit_export(toml_temp, toml_target)
+                raise _fit_export_error(exc, toml_target) from exc
+            if draw is None:
+                _replace_fit_export(toml_temp, toml_target)
+                return None
 
-        return draw(export_figure)
+            def export_figure(figure: Figure) -> None:
+                pdf_temp = Path(folder) / pdf_target.name
+                try:
+                    figure.savefig(pdf_temp, format="pdf")
+                except OSError as exc:
+                    raise _fit_export_error(exc, pdf_target) from exc
+                _replace_fit_export(pdf_temp, pdf_target)
+                _replace_fit_export(toml_temp, toml_target)
+
+            return draw(export_figure)
+    except BaseException:
+        # Style, rendering or I/O failures must not leave new empty folders.
+        _remove_empty_fit_directories(created)
+        raise
 
 
 def _plot_linear_fit(

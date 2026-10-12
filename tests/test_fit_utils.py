@@ -2470,3 +2470,46 @@ def test_lin_fit_rejects_non_string_labels_before_any_artifact(
             )
     assert plt.get_fignums() == []
     assert not list(tmp_path.iterdir())
+
+
+@pytest.mark.parametrize("relative", ["a/b c/fit", "existing/new/fit"])
+def test_fit_invalid_style_leaves_no_new_output_directories(tmp_path, relative):
+    (tmp_path / "existing").mkdir()
+    base = tmp_path / relative
+    with pytest.raises(OSError, match="inesistente"):
+        lin_fit([0, 1, 2], [0, 1, 3], 1, style="inesistente", output=base)
+    assert sorted(path.name for path in tmp_path.iterdir()) == ["existing"]
+    assert not list((tmp_path / "existing").iterdir())
+    assert plt.get_fignums() == []
+
+    result = lin_fit([0, 1, 2], [0, 1, 3], 1, output=base)
+    assert sorted(path.name for path in base.parent.iterdir()) == [
+        "fit.pdf",
+        "fit.toml",
+    ]
+    assert _read_toml(base.with_name("fit.toml"))["fit"]["slope"] == result.slope
+
+
+def test_fit_pdf_failure_leaves_no_new_output_directories(tmp_path, monkeypatch):
+    def fail(*args, **kwargs):
+        raise RuntimeError("rendering failure")
+
+    monkeypatch.setattr(matplotlib.figure.Figure, "savefig", fail)
+    with pytest.raises(RuntimeError, match="rendering failure"):
+        lin_fit([0, 1, 2], [0, 1, 3], 1, output=tmp_path / "new" / "sub" / "fit")
+    assert not list(tmp_path.iterdir())
+
+
+def test_fit_output_cleanup_keeps_directories_that_received_other_files(
+    tmp_path, monkeypatch
+):
+    base = tmp_path / "new" / "fit"
+
+    def fail(figure, *args, **kwargs):
+        (base.parent / "note.txt").write_text("user file")
+        raise RuntimeError("rendering failure")
+
+    monkeypatch.setattr(matplotlib.figure.Figure, "savefig", fail)
+    with pytest.raises(RuntimeError, match="rendering failure"):
+        lin_fit([0, 1, 2], [0, 1, 3], 1, output=base)
+    assert sorted(path.name for path in base.parent.iterdir()) == ["note.txt"]
