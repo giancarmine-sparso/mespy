@@ -6,6 +6,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
+from scipy import stats
 
 from mespy import lin_fit
 from mespy.fit_utils import LinearFitResult
@@ -763,13 +764,17 @@ def test_to_toml_excludes_figure_and_matches_result_without_plot(tmp_path):
 
     try:
         assert with_plot.figure is not None
-        document = _read_toml(with_plot.to_toml(tmp_path / "plot.toml"))
+        plot_path = with_plot.to_toml(tmp_path / "plot.toml")
     finally:
         plt.close(with_plot.figure)
 
     assert without_plot.figure is None
-    assert "figure" not in _collect_keys(document)
-    assert document == _read_toml(without_plot.to_toml(tmp_path / "no_plot.toml"))
+    assert "figure" not in _collect_keys(_read_toml(plot_path))
+    # confronto testuale: p_value e nan in residual mode e nan != nan
+    no_plot_path = without_plot.to_toml(tmp_path / "no_plot.toml")
+    assert plot_path.read_text(encoding="utf-8") == no_plot_path.read_text(
+        encoding="utf-8"
+    )
 
 
 @pytest.mark.parametrize("as_str", [True, False])
@@ -873,3 +878,96 @@ def test_to_toml_missing_directory_raises(tmp_path):
         _make_manual_result().to_toml(tmp_path / "missing" / "fit.toml")
 
     assert list(tmp_path.iterdir()) == []
+
+
+def test_lin_fit_absolute_p_value_matches_chi2_survival_function():
+    x, y, sigma_y, _, _ = make_placebo_data()
+
+    result = lin_fit(x, y, sigma_y, fit_method="absolute", show_plot=False)
+
+    assert result.p_value == pytest.approx(stats.chi2.sf(result.chi2, result.dof))
+    assert 0.0 <= result.p_value <= 1.0
+
+
+
+def test_lin_fit_absolute_p_value_with_sigma_x_uses_effective_variance():
+    x, y, sigma_y, sigma_x, _, _ = make_placebo_data_with_sigma_x()
+
+    result = lin_fit(
+        x, y, sigma_y, fit_method="absolute", sigma_x=sigma_x, show_plot=False
+    )
+
+    assert result.p_value == pytest.approx(stats.chi2.sf(result.chi2, result.dof))
+
+
+
+def test_lin_fit_p_value_extremes():
+    x = np.arange(1.0, 11.0)
+    y = 2.0 * x + 1.0 + np.tile([0.01, -0.01], 5)
+
+    overestimated = lin_fit(x, y, np.full_like(x, 10.0), fit_method="absolute", show_plot=False)
+    underestimated = lin_fit(x, y, np.full_like(x, 1e-4), fit_method="absolute", show_plot=False)
+
+    assert overestimated.p_value == pytest.approx(1.0)
+    assert underestimated.p_value == pytest.approx(0.0, abs=1e-12)
+
+
+
+@pytest.mark.parametrize("with_sigma_y", [True, False])
+def test_lin_fit_residual_p_value_is_nan(with_sigma_y):
+    x, y, sigma_y, _, _ = make_placebo_data()
+
+    result = lin_fit(
+        x,
+        y,
+        sigma_y if with_sigma_y else None,
+        fit_method="residual",
+        show_plot=False,
+    )
+
+    assert math.isnan(result.p_value)
+
+
+
+def test_lin_fit_residual_with_sigma_x_p_value_is_nan():
+    x, y, sigma_y, sigma_x, _, _ = make_placebo_data_with_sigma_x()
+
+    result = lin_fit(
+        x, y, sigma_y, fit_method="residual", sigma_x=sigma_x, show_plot=False
+    )
+
+    assert math.isnan(result.p_value)
+
+
+
+@pytest.mark.parametrize("scale", [1e-12, 1e-6, 1e6, 1e12])
+def test_lin_fit_p_value_is_invariant_under_unit_change_of_x(scale):
+    x, y, sigma_y, sigma_x = make_unit_change_data()
+    reference = lin_fit(
+        x, y, sigma_y, fit_method="absolute", sigma_x=sigma_x, show_plot=False
+    )
+
+    result = lin_fit(
+        x * scale,
+        y,
+        sigma_y,
+        fit_method="absolute",
+        sigma_x=sigma_x * scale,
+        show_plot=False,
+    )
+
+    assert result.p_value == pytest.approx(reference.p_value, rel=1e-8)
+
+
+
+def test_to_toml_records_p_value(tmp_path):
+    x, y, sigma_y, _, _ = make_placebo_data()
+    absolute = lin_fit(x, y, sigma_y, fit_method="absolute", show_plot=False)
+    residual = lin_fit(x, y, sigma_y, fit_method="residual", show_plot=False)
+
+    absolute_doc = _read_toml(absolute.to_toml(tmp_path / "absolute.toml"))
+    residual_doc = _read_toml(residual.to_toml(tmp_path / "residual.toml"))
+
+    assert absolute_doc["diagnostics"]["p_value"] == absolute.p_value
+    assert math.isnan(residual_doc["diagnostics"]["p_value"])
+

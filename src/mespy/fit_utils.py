@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal, cast
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
+from scipy.stats import chi2 as chi2_distribution
 
 from ._toml import _mespy_header, _write_toml_document
 from .plot_utils import (
@@ -48,6 +50,7 @@ class LinearFitResult:
     figure: Figure | None
     fit_method: FitMethod = "absolute"
     scale_factor: float = 1.0
+    p_value: float = math.nan
 
     def to_toml(self, path: str | Path) -> Path:
         """
@@ -90,6 +93,7 @@ def _linear_fit_document(result: LinearFitResult) -> dict[str, Any]:
             "chi2": float(result.chi2),
             "reduced_chi2": float(result.reduced_chi2),
             "dof": int(result.dof),
+            "p_value": float(result.p_value),
             "residual_std": float(result.residual_std),
             "iterations": int(result.iterations),
             "converged": bool(result.converged),
@@ -537,6 +541,12 @@ def lin_fit(
         chi2 = raw_chi2
         reduced_chi2 = raw_reduced_chi2
 
+    # Con la scala stimata dai residui il chi2 vale dof per costruzione:
+    # il test di bonta del fit non e definito.
+    p_value = (
+        math.nan if use_residual_scale else float(chi2_distribution.sf(chi2, dof))
+    )
+
     normalized_residuals = np.divide(
         residuals,
         np.sqrt(sigma_fit2),
@@ -738,4 +748,5 @@ def lin_fit(
         figure=fig,
         fit_method=fit_method,
         scale_factor=scale_factor,
+        p_value=p_value,
     )
