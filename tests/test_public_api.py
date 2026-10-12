@@ -4,6 +4,8 @@ import subprocess
 import sys
 from importlib import resources
 
+import pytest
+
 import mespy as mlt
 
 
@@ -25,12 +27,39 @@ def test_public_api_exports_documented_symbols():
 def test_public_api_freezes_key_signatures():
     load_csv_signature = inspect.signature(mlt.load_csv)
     histogram_signature = inspect.signature(mlt.histogram)
-    lin_fit_signature = inspect.signature(mlt.lin_fit)
-
     assert load_csv_signature.parameters["missing"].default == "error"
     assert histogram_signature.parameters["ddof"].default == 0
-    assert "max_iter" in lin_fit_signature.parameters
-    assert lin_fit_signature.parameters["fit_method"].default is None
+
+
+@pytest.mark.xfail(
+    strict=True,
+    raises=AssertionError,
+    reason="plan.md, fase 3: il nuovo core non è ancora collegato alla API pubblica",
+)
+def test_lin_fit_target_signature():
+    parameters = inspect.signature(mlt.lin_fit).parameters
+    expected = {
+        "x": inspect.Parameter.empty,
+        "y": inspect.Parameter.empty,
+        "sigma_y": None,
+        "xlabel": "x",
+        "ylabel": "y",
+        "title": None,
+        "style": "report",
+        "output": None,
+        "plot": True,
+        "normalize_residuals": False,
+    }
+    assert list(parameters) == list(expected)
+    for index, (name, default) in enumerate(expected.items()):
+        parameter = parameters[name]
+        assert parameter.default == default, name
+        kind = (
+            inspect.Parameter.POSITIONAL_OR_KEYWORD
+            if index < 3
+            else inspect.Parameter.KEYWORD_ONLY
+        )
+        assert parameter.kind == kind, name
 
 
 def test_package_includes_py_typed_marker():
