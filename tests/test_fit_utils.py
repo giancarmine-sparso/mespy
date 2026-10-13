@@ -1,3 +1,5 @@
+import copy
+import dataclasses
 import errno
 import math
 import os
@@ -147,7 +149,7 @@ def test_lin_fit_without_plot_returns_no_figure():
 
 
 def test_lin_fit_rejects_constant_x():
-    with pytest.raises(ValueError, match="valori distinti"):
+    with pytest.raises(ValueError, match="distinct values"):
         lin_fit([1.0, 1.0, 1.0], [1.0, 2.0, 3.0], [0.1, 0.1, 0.1], plot=False)
 
 
@@ -242,7 +244,7 @@ def test_lin_fit_rejects_constant_large_x_with_uneven_weights():
     rng = np.random.default_rng(1)
     for _ in range(50):
         sigma_y = rng.uniform(0.1, 3.0, 3)
-        with pytest.raises(ValueError, match="valori distinti"):
+        with pytest.raises(ValueError, match="distinct values"):
             lin_fit(np.full(3, 7e15), [1.0, 2.0, 3.0], sigma_y, plot=False)
 
 
@@ -468,7 +470,7 @@ def test_lin_fit_exact_binary_lines_have_zero_dispersion_for_nonminimal_samples(
     assert result.correlation is None
     np.testing.assert_array_equal(result.residuals, np.zeros(x.size))
     np.testing.assert_array_equal(result.predict(x), y)
-    with pytest.raises(ValueError, match="normalize_residuals.*dispersione OLS nulla"):
+    with pytest.raises(ValueError, match="normalize_residuals.*zero OLS dispersion"):
         lin_fit(x, y, normalize_residuals=True)
 
 
@@ -694,8 +696,8 @@ def test_lin_fit_public_analytical_oracles_and_optional_diagnostics(weighted):
         assert recorded[0].category is UserWarning
         assert recorded[0].filename == __file__
         assert str(recorded[0].message) == (
-            "MesPy: sigma_y non fornita. Eseguo un fit non pesato e stimo la dispersione "
-            "dai residui. Le diagnostiche χ² non sono disponibili."
+            "MesPy: sigma_y not provided. Performing an unweighted fit and estimating the "
+            "dispersion from the residuals. χ² diagnostics are not available."
         )
         assert result.fit_method == "ols"
         assert result.intercept == pytest.approx(-1 / 6)
@@ -715,7 +717,7 @@ def test_lin_fit_public_analytical_oracles_and_optional_diagnostics(weighted):
 def test_lin_fit_two_points_require_absolute_uncertainties():
     with warnings.catch_warnings():
         warnings.simplefilter("error")
-        with pytest.raises(ValueError, match="x, y.*3 punti"):
+        with pytest.raises(ValueError, match="x, y.*3 points"):
             lin_fit([0, 2], [1, 5], plot=False)
         result = lin_fit([0, 2], [1, 5], [1, 2], plot=False)
     assert result.fit_method == "wls"
@@ -828,7 +830,7 @@ def test_lin_fit_predict_handles_representable_values_outside_local_scale():
 
 def test_lin_fit_predict_reports_nonrepresentable_output():
     result = lin_fit([0.0, 1.0, 2.0], [0.0, 2.0, 4.0], 1.0, plot=False)
-    with pytest.raises(FloatingPointError, match="previsione.*float64"):
+    with pytest.raises(FloatingPointError, match="prediction.*float64"):
         result.predict(1e308)
 
 
@@ -945,7 +947,7 @@ def test_lin_fit_exact_ols_normalization_fails_before_figure_creation(monkeypatc
 
     monkeypatch.setattr("mespy.fit_utils._plot_linear_fit", forbidden)
     with pytest.raises(
-        ValueError, match="normalize_residuals.*residui non normalizzati"
+        ValueError, match="normalize_residuals.*non-normalized residuals"
     ):
         lin_fit([0, 1, 2], [1, 3, 5], normalize_residuals=True)
 
@@ -1668,7 +1670,7 @@ def test_lin_fit_band_is_one_uncertainty_of_predicted_mean(weighted):
     np.testing.assert_allclose(lower, predicted - expected_std, atol=1e-15)
     np.testing.assert_allclose(upper, predicted + expected_std, atol=1e-15)
     assert band.get_alpha() == 0.20
-    assert "media prevista" in band.get_label()
+    assert band.get_label() == r"$\pm 1 \sigma$ predicted mean"
 
 
 @pytest.mark.parametrize("weighted", [False, True])
@@ -2133,7 +2135,7 @@ def test_core_very_different_representable_weights():
 @pytest.mark.parametrize(
     "x, y, sigma_y, message",
     [
-        ([0, 1, 2], [0, 1, 3], [1e-200, 1e200, 1], "sigma_y.*pesi"),
+        ([0, 1, 2], [0, 1, 3], [1e-200, 1e200, 1], "sigma_y.*weights"),
         ([0, 1e-320, 2e-320], [0, 1, 3], 1, "slope"),
         ([0, 1, 2], [0, 1, 3], 1e-200, "chi2|covariance"),
         (1e155 + 1e140 * np.arange(6.0), np.arange(6.0), 1e-154, "covariance"),
@@ -2185,7 +2187,7 @@ def test_core_validation_names_invalid_parameter(name, value, exception):
 def test_core_validation_rejects_length_rank_and_sample_size():
     with pytest.raises(ValueError, match="y"):
         _validate_linear_fit_data([0, 1, 2], [1, 2])
-    with pytest.raises(ValueError, match="x.*distinti"):
+    with pytest.raises(ValueError, match="x.*distinct"):
         _validate_linear_fit_data([1, 1, 1], [1, 2, 3], 1)
     with pytest.raises(ValueError, match="x, y.*3"):
         _validate_linear_fit_data([0, 1], [1, 2])
@@ -2214,3 +2216,336 @@ def test_core_validation_accepts_scalar_and_vector_sigma_without_mutation(sigma)
     np.testing.assert_allclose(
         result.predict(data.x), np.array([0, 1, 3]) - result.residuals
     )
+
+
+@pytest.mark.parametrize(
+    "name, value",
+    [
+        ("x", [True, False, True]),
+        ("x", np.array([1, 0, 1], dtype=bool)),
+        ("x", (False, True, True)),
+        ("x", [0, True, 2]),
+        ("x", [0.0, 1.0, np.True_]),
+        ("y", [True, False, True]),
+        ("y", np.array([True, True, False])),
+        ("sigma_y", True),
+        ("sigma_y", np.True_),
+        ("sigma_y", np.array(True)),
+        ("sigma_y", [True, True, True]),
+        ("sigma_y", [1.0, True, 1.0]),
+    ],
+)
+def test_core_validation_rejects_boolean_numeric_inputs(name, value):
+    arguments = {"x": [0, 1, 2], "y": [0, 1, 3], "sigma_y": 1}
+    arguments[name] = value
+    with pytest.raises(TypeError, match=rf"{name}: .*boolean"):
+        _validate_linear_fit_data(**arguments)
+
+
+@pytest.mark.parametrize(
+    "x, y, sigma_y",
+    [
+        ([0, 1, 2], [0, 1, 3], 1),
+        ((0, 1, 2), (0.0, 1.0, 3.0), (1, 2, 1)),
+        (
+            np.array([0, 1, 2], dtype=np.int8),
+            np.array([0, 1, 3], dtype=np.uint16),
+            np.float32(1),
+        ),
+        (np.array([0.0, 1.0, 2.0]), [0, 1, 3], np.array([1.0, 2.0, 1.0])),
+    ],
+)
+def test_core_validation_keeps_integer_and_float_sequences(x, y, sigma_y):
+    data = _validate_linear_fit_data(x, y, sigma_y)
+    assert data.x.dtype == data.y.dtype == data.sigma_y.dtype == np.float64
+    np.testing.assert_array_equal(data.x, [0, 1, 2])
+    np.testing.assert_array_equal(data.y, [0, 1, 3])
+
+
+def test_predict_rejects_boolean_coordinates():
+    result = lin_fit([0, 1, 2], [0, 1, 3], 1, plot=False)
+    for value in (True, np.True_, [False, True]):
+        with pytest.raises(TypeError, match="x_new: .*boolean"):
+            result.predict(value)
+
+
+@pytest.mark.parametrize("name", ["plot", "normalize_residuals"])
+@pytest.mark.parametrize("value", ["False", "True", 0, 1, 1.0, None, [True]])
+def test_lin_fit_flags_require_real_booleans(name, value):
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        with pytest.raises(TypeError, match=rf"{name}: expected a boolean"):
+            lin_fit([0, 1, 2], [0, 1, 3], 1, **{name: value})
+    assert plt.get_fignums() == []
+
+
+@pytest.mark.parametrize("name", ["plot", "normalize_residuals"])
+@pytest.mark.parametrize("value", [False, np.False_])
+def test_lin_fit_flags_accept_python_and_numpy_booleans(name, value):
+    arguments = {"plot": False, name: value}
+    result = lin_fit([0, 1, 2], [0, 1, 3], 1, **arguments)
+    key = "enabled" if name == "plot" else name
+    assert result.figure is None
+    assert result._plot_metadata[key] is False
+
+
+def test_lin_fit_accepts_numpy_true_for_plot():
+    result = lin_fit([0, 1, 2], [0, 1, 3], 1, plot=np.True_)
+    assert result.figure is not None
+    assert result._plot_metadata["enabled"] is True
+
+
+def _replace_fit():
+    with warnings.catch_warnings(record=True):
+        return lin_fit([0, 1, 2, 3], [0, 1.1, 1.9, 3.2], 0.1, plot=False)
+
+
+@pytest.mark.parametrize(
+    "name, value",
+    [
+        ("slope", 10.0),
+        ("intercept", 5.0),
+        ("slope_std", 1.0),
+        ("intercept_std", 1.0),
+        ("covariance", 0.0),
+        ("correlation", None),
+        ("residuals", np.zeros(4)),
+        ("residual_std", 1.0),
+        ("chi2", 1.0),
+        ("reduced_chi2", 1.0),
+        ("p_value", 0.5),
+        ("dof", 3),
+        ("fit_method", "ols"),
+    ],
+)
+def test_lin_fit_result_rejects_replacing_fitted_fields(name, value):
+    fit = _replace_fit()
+    with pytest.raises(ValueError, match=rf"{name}.*inconsistent"):
+        dataclasses.replace(fit, **{name: value})
+
+
+@pytest.mark.parametrize("name", ["_core", "_data"])
+def test_lin_fit_result_requires_core_and_data_together(name):
+    with pytest.raises(ValueError, match="_data and _core"):
+        dataclasses.replace(_replace_fit(), **{name: None})
+
+
+@pytest.mark.skipif(not hasattr(copy, "replace"), reason="copy.replace needs 3.13")
+def test_lin_fit_result_copy_replace_is_guarded_too():
+    with pytest.raises(ValueError, match="slope.*inconsistent"):
+        copy.replace(_replace_fit(), slope=10.0)
+
+
+def test_lin_fit_result_presentation_replacement_keeps_one_consistent_fit(tmp_path):
+    fit = _replace_fit()
+    figure = plt.figure()
+    same = dataclasses.replace(fit, figure=figure)
+    assert same.figure is figure
+    for result in (fit, same, dataclasses.replace(fit)):
+        assert result.predict(0.0) == pytest.approx(result.intercept, abs=1e-15)
+        assert result.predict(1.0) - result.predict(0.0) == pytest.approx(
+            result.slope, rel=1e-14
+        )
+        document = _read_toml(result.to_toml(tmp_path / "fit"))
+        assert document["fit"]["slope"] == result.slope
+        assert document["fit"]["intercept"] == result.intercept
+        np.testing.assert_array_equal(document["residuals"]["values"], result.residuals)
+        with warnings.catch_warnings(record=True):
+            rerun = lin_fit(
+                document["data"]["x"],
+                document["data"]["y"],
+                document["data"]["sigma_y"],
+                plot=False,
+            )
+        assert rerun.slope == result.slope
+        assert rerun.intercept == result.intercept
+
+
+def test_manual_result_replacement_remains_its_own_source():
+    manual = _make_manual_result(slope=2.0, intercept=1.0)
+    changed = dataclasses.replace(manual, slope=3.0)
+    assert changed.predict(2.0) == 7.0
+
+
+@pytest.mark.parametrize("plot", [False, True])
+@pytest.mark.parametrize("as_path", [False, True])
+@pytest.mark.parametrize(
+    "relative",
+    [
+        "risultati/molla_k0.5",
+        "run.v2",
+        "prova 1.2cm",
+        "sessione 2.1/sotto dir/misura.2024.10",
+    ],
+)
+def test_lin_fit_output_keeps_dotted_base_names(tmp_path, relative, as_path, plot):
+    base = tmp_path / relative
+    result = lin_fit(
+        [0, 1, 2], [0, 1, 3], 1, plot=plot, output=base if as_path else str(base)
+    )
+    expected = [base.name + ".pdf", base.name + ".toml"] if plot else [
+        base.name + ".toml"
+    ]
+    assert sorted(path.name for path in base.parent.iterdir()) == sorted(expected)
+    document = _read_toml(base.parent / (base.name + ".toml"))
+    assert document["fit"]["slope"] == result.slope
+    if plot:
+        assert (base.parent / (base.name + ".pdf")).read_bytes().startswith(b"%PDF-")
+
+
+@pytest.mark.parametrize(
+    "name",
+    ["fit.pdf", "fit.toml", "fit.PDF", "fit.Toml", "fit.png", "fit.svg", "fit.csv"],
+)
+def test_lin_fit_output_rejects_file_extensions_without_double_suffixes(
+    tmp_path, name
+):
+    with pytest.raises(ValueError, match=rf"output: .*{re.escape(name[3:])}"):
+        lin_fit([0, 1, 2], [0, 1, 3], 1, output=tmp_path / "new" / name)
+    assert not list(tmp_path.iterdir())
+
+
+@pytest.mark.parametrize("use_output", [False, True])
+@pytest.mark.parametrize(
+    "labels, expected",
+    [
+        ({}, {"xlabel": "x", "ylabel": "y"}),
+        (
+            {"xlabel": "", "ylabel": r"$\Delta y$ [cm]", "title": ""},
+            {"xlabel": "", "ylabel": r"$\Delta y$ [cm]", "title": ""},
+        ),
+        (
+            {"xlabel": np.str_("t [s]"), "ylabel": "s [m]", "title": "Molla 1.2"},
+            {"xlabel": "t [s]", "ylabel": "s [m]", "title": "Molla 1.2"},
+        ),
+        ({"title": None}, {"xlabel": "x", "ylabel": "y"}),
+    ],
+)
+def test_lin_fit_labels_serialize_as_plain_strings(
+    tmp_path, labels, expected, use_output
+):
+    base = tmp_path / "fit"
+    result = lin_fit(
+        [0, 1, 2],
+        [0, 1, 3],
+        1,
+        plot=False,
+        output=base if use_output else None,
+        **labels,
+    )
+    path = base.with_name("fit.toml") if use_output else result.to_toml(base)
+    plot = _read_toml(path)["plot"]
+    assert {key: plot[key] for key in plot if key in ("xlabel", "ylabel", "title")} == (
+        expected
+    )
+    assert all(type(plot[key]) is str for key in expected)
+
+
+@pytest.mark.parametrize("use_output", [False, True])
+@pytest.mark.parametrize(
+    "name, value",
+    [
+        ("xlabel", None),
+        ("ylabel", None),
+        ("xlabel", 5),
+        ("ylabel", b"y"),
+        ("title", 5),
+        ("title", b"T"),
+        ("title", ["T"]),
+    ],
+)
+def test_lin_fit_rejects_non_string_labels_before_any_artifact(
+    tmp_path, name, value, use_output
+):
+    target = tmp_path / "new" / "fit"
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        with pytest.raises(TypeError, match=rf"{name}: expected a string"):
+            lin_fit(
+                [0, 1, 2],
+                [0, 1, 3],
+                1,
+                output=target if use_output else None,
+                **{name: value},
+            )
+    assert plt.get_fignums() == []
+    assert not list(tmp_path.iterdir())
+
+
+@pytest.mark.parametrize("relative", ["a/b c/fit", "existing/new/fit"])
+def test_fit_invalid_style_leaves_no_new_output_directories(tmp_path, relative):
+    (tmp_path / "existing").mkdir()
+    base = tmp_path / relative
+    with pytest.raises(OSError, match="inesistente"):
+        lin_fit([0, 1, 2], [0, 1, 3], 1, style="inesistente", output=base)
+    assert sorted(path.name for path in tmp_path.iterdir()) == ["existing"]
+    assert not list((tmp_path / "existing").iterdir())
+    assert plt.get_fignums() == []
+
+    result = lin_fit([0, 1, 2], [0, 1, 3], 1, output=base)
+    assert sorted(path.name for path in base.parent.iterdir()) == [
+        "fit.pdf",
+        "fit.toml",
+    ]
+    assert _read_toml(base.with_name("fit.toml"))["fit"]["slope"] == result.slope
+
+
+def test_fit_pdf_failure_leaves_no_new_output_directories(tmp_path, monkeypatch):
+    def fail(*args, **kwargs):
+        raise RuntimeError("rendering failure")
+
+    monkeypatch.setattr(matplotlib.figure.Figure, "savefig", fail)
+    with pytest.raises(RuntimeError, match="rendering failure"):
+        lin_fit([0, 1, 2], [0, 1, 3], 1, output=tmp_path / "new" / "sub" / "fit")
+    assert not list(tmp_path.iterdir())
+
+
+def test_fit_output_cleanup_keeps_directories_that_received_other_files(
+    tmp_path, monkeypatch
+):
+    base = tmp_path / "new" / "fit"
+
+    def fail(figure, *args, **kwargs):
+        (base.parent / "note.txt").write_text("user file")
+        raise RuntimeError("rendering failure")
+
+    monkeypatch.setattr(matplotlib.figure.Figure, "savefig", fail)
+    with pytest.raises(RuntimeError, match="rendering failure"):
+        lin_fit([0, 1, 2], [0, 1, 3], 1, output=base)
+    assert sorted(path.name for path in base.parent.iterdir()) == ["note.txt"]
+
+
+@pytest.mark.parametrize("weighted", [False, True])
+@pytest.mark.parametrize("normalize", [False, True])
+def test_lin_fit_generated_labels_are_english_and_user_labels_unchanged(
+    weighted, normalize
+):
+    with warnings.catch_warnings(record=True):
+        result = lin_fit(
+            [0, 1, 2, 3],
+            [0, 1.1, 1.9, 3.2],
+            [0.1, 0.2, 0.1, 0.2] if weighted else None,
+            xlabel="Tempo [s]",
+            ylabel="Posizione [m]",
+            title="Moto rettilineo",
+            normalize_residuals=normalize,
+        )
+    ax_fit, ax_res = result.figure.axes
+    # User-supplied text is passed through verbatim.
+    assert ax_fit.get_title() == "Moto rettilineo"
+    assert ax_fit.get_ylabel() == "Posizione [m]"
+    assert ax_res.get_xlabel() == "Tempo [s]"
+    residual_label = "Residuals"
+    if normalize:
+        residual_label = r"Residuals / $\sigma_y$" if weighted else "Residuals / s"
+    generated = [text.get_text() for text in ax_fit.get_legend().get_texts()]
+    generated += [ax_res.get_ylabel(), ax_fit.get_xlabel(), ax_res.get_title()]
+    assert generated == [
+        "Fit",
+        r"$\pm 1 \sigma$ predicted mean",
+        residual_label,
+        "",
+        "",
+    ]
+    italian = re.compile(r"\b(media|prevista|residui|dati|retta|banda)\b", re.I)
+    assert not any(italian.search(text) for text in generated)

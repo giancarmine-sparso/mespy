@@ -1,6 +1,12 @@
 from pathlib import Path
 import tomllib
 
+from sphinx.locale import get_translation
+from pygments import highlight
+from pygments.formatters import HtmlFormatter
+from pygments.lexers import get_lexer_by_name
+from zipfile import ZipFile, ZIP_DEFLATED, ZipInfo
+
 
 SUPPORTED_LANGUAGES = [
     {"code": "en", "label": "English"},
@@ -38,7 +44,7 @@ html_css_files = ["custom.css"]
 html_js_files = ["language-switcher.js"]
 html_title = "MesPy"
 # html_logo = "_static/logo.svg"
-# html_favicon = "_static/favicon.svg"
+html_favicon = "../../assets/brand/mespy-favicon.svg"
 
 html_permalinks = False
 
@@ -116,4 +122,47 @@ def add_language_switcher_context(app, pagename, templatename, context, doctree)
 
 
 def setup(app):
+    # Only the landing page uses this template and UI translation catalog.
+    app.add_message_catalog("homepage", Path(__file__).parent / "locale")
     app.connect("html-page-context", add_language_switcher_context)
+    app.connect("html-page-context", add_homepage_context)
+    app.connect("build-finished", bundle_homepage_runtime)
+
+
+def add_homepage_context(app, pagename, templatename, context, doctree):
+    if pagename != "index":
+        return None
+    context["home"] = get_translation("homepage")
+    context["fit_example"] = (Path(__file__).parent / "_static/homepage-example.py").read_text().rstrip()
+    context["fit_example_html"] = highlight(
+        context["fit_example"], get_lexer_by_name("python"),
+        HtmlFormatter(nowrap=True, classprefix="mh-syntax-"),
+    )
+    app.add_css_file("homepage.css")
+    app.add_js_file("homepage.js", loading_method="defer")
+    app.add_js_file("homepage-fit.js", loading_method="defer")
+    return "homepage.html"
+
+
+def bundle_homepage_runtime(app, exception):
+    """Ship the repository's real MesPy code/styles with every HTML build.
+
+    Scientific wheels come from the pinned Pyodide distribution. MesPy itself
+    is bundled here so a local build never silently executes an older PyPI API.
+    """
+    if exception is not None or app.builder.format != "html":
+        return
+    static = Path(app.outdir) / "_static"
+    static.mkdir(parents=True, exist_ok=True)
+    package = Path(__file__).resolve().parents[2] / "src/mespy"
+    entries = [(p.relative_to(package.parent).as_posix(), p.read_bytes())
+               for p in sorted(package.rglob("*"))
+               if p.is_file() and (p.suffix in {".py", ".mplstyle"} or p.name == "py.typed")]
+    metadata = f"Metadata-Version: 2.1\nName: mespy\nVersion: {release}\n"
+    entries.append((f"mespy-{release}.dist-info/METADATA", metadata.encode()))
+    entries.append(("homepage_fit.py", (Path(__file__).parent / "_static/homepage-fit.py").read_bytes()))
+    with ZipFile(static / "mespy-runtime.zip", "w", compression=ZIP_DEFLATED) as archive:
+        for name, content in entries:
+            info = ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
+            info.compress_type = ZIP_DEFLATED
+            archive.writestr(info, content)

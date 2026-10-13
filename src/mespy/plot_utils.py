@@ -3,7 +3,7 @@ from __future__ import annotations
 from contextlib import contextmanager
 from importlib.resources import as_file, files
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 from numpy.typing import ArrayLike
@@ -40,43 +40,43 @@ def _validate_axis_limits(
 ) -> tuple[float, float]:
     if isinstance(limits, (str, bytes)):
         raise ValueError(
-            f"{name} deve essere una sequenza di 2 elementi ({min_label}, {max_label})"
+            f"{name} must be a sequence of 2 elements ({min_label}, {max_label})"
         )
 
     try:
         values = tuple(limits)
     except TypeError as exc:
         raise ValueError(
-            f"{name} deve essere una sequenza di 2 elementi ({min_label}, {max_label})"
+            f"{name} must be a sequence of 2 elements ({min_label}, {max_label})"
         ) from exc
 
     if len(values) != 2:
         raise ValueError(
-            f"{name} deve avere 2 elementi ({min_label}, {max_label}) | ricevuti {len(values)}"
+            f"{name} must have 2 elements ({min_label}, {max_label}) | got {len(values)}"
         )
 
     axis_limits = np.asarray(values, dtype=float)
     if not np.all(np.isfinite(axis_limits)):
-        raise ValueError(f"{name} deve contenere solo valori finiti")
+        raise ValueError(f"{name} must contain only finite values")
 
     return float(axis_limits[0]), float(axis_limits[1])
 
 
 def _validate_figsize(figsize: ArrayLike) -> tuple[float, float]:
     if isinstance(figsize, (str, bytes)):
-        raise ValueError("figsize deve essere una coppia di valori positivi")
+        raise ValueError("figsize must be a pair of positive values")
 
     try:
         values = tuple(figsize)
     except TypeError as exc:
-        raise ValueError("figsize deve essere una coppia di valori positivi") from exc
+        raise ValueError("figsize must be a pair of positive values") from exc
 
     if len(values) != 2:
-        raise ValueError("figsize deve essere una coppia di valori positivi")
+        raise ValueError("figsize must be a pair of positive values")
 
     figure_size = np.asarray(values, dtype=float)
     if not np.all(np.isfinite(figure_size)) or np.any(figure_size <= 0):
-        raise ValueError("figsize deve essere una coppia di valori positivi")
+        raise ValueError("figsize must be a pair of positive values")
 
     return float(figure_size[0]), float(figure_size[1])
 
@@ -84,15 +84,15 @@ def _validate_figsize(figsize: ArrayLike) -> tuple[float, float]:
 def _validate_decimals(decimals: int) -> int:
     if not isinstance(decimals, (int, np.integer)) or isinstance(decimals, bool):
         raise ValueError(
-            f"'decimals' deve essere un intero non negativo | ricevuto {decimals!r}"
+            f"'decimals' must be a non-negative integer | got {decimals!r}"
         )
     value = int(decimals)
     if value < 0:
-        raise ValueError(f"'decimals' deve essere >= 0 | ricevuto {value}")
+        raise ValueError(f"'decimals' must be >= 0 | got {value}")
     if value > 20:
         raise ValueError(
-            f"'decimals' deve essere <= 20 per evitare etichette illeggibili "
-            f"| ricevuto {value}"
+            f"'decimals' must be <= 20 to avoid unreadable labels "
+            f"| got {value}"
         )
     return value
 
@@ -181,6 +181,7 @@ def _style_context(style: str | None):
 
 def histogram(
     x: ArrayLike,
+    stat: Literal["count", "probability", "density"] = "count",
     *,
     ddof: int | float = 0,
     style: str | None = "mespy",
@@ -221,7 +222,8 @@ def histogram(
     """
     Histogram of an experimental distribution.
 
-    Draws a count histogram of the data in ``x``, optionally
+    Draws a count, relative-frequency, or frequency-density histogram
+    of the data in ``x``, optionally
     highlighting the arithmetic mean (dashed line) and the ±1σ band
     (transparent band).
 
@@ -239,6 +241,19 @@ def histogram(
     ----------
     x : array-like
         Numeric sample to plot.
+    stat : {"count", "probability", "density"}, optional
+        Bar heights: ``n_i`` for counts (default ``"count"``),
+        ``n_i / N`` for relative frequencies, or ``n_i / (N * width_i)``
+        for frequency densities. Here ``N`` is the number of observations
+        included in the bins, ``n_i`` is the count in bin i, and
+        ``width_i`` is its width, which may vary between bins.
+        Relative frequencies are dimensionless and their heights sum to
+        one; densities have inverse units of ``x`` and their areas sum
+        to one. A density bar's area gives the relative frequency of
+        observations in that interval; its height may exceed one.
+        If no observations fall in the bins, all heights remain zero.
+        The mean and standard deviation always use the full sample,
+        independently of ``stat``.
     ddof : int or float, optional
         Delta degrees of freedom used for the standard deviation
         (default ``0``).
@@ -261,8 +276,9 @@ def histogram(
     xlabel : str, optional
         x-axis label (default ``"Valore"``).
     ylabel : str or None, optional
-        y-axis label. ``None`` automatically sets ``"Conteggi"``
-        (default ``None``).
+        y-axis label. ``None`` automatically sets ``"Conteggi"``,
+        ``"Frequenza relativa"``, or ``"Densità di frequenza"`` according
+        to ``stat`` (default ``None``).
     title : str, optional
         Plot title (default ``"Istogramma"``).
     show_bin_ticks : bool, optional
@@ -348,6 +364,8 @@ def histogram(
     Raises
     ------
     ValueError
+        If ``stat`` is not ``"count"``, ``"probability"``, or ``"density"``.
+    ValueError
         If ``x`` is empty, contains non-finite values, or is not
         one-dimensional.
     ValueError
@@ -364,6 +382,12 @@ def histogram(
         If ``bins`` and ``bin_width`` are both provided.
     """
     values = _as_float_vector("x", x)
+
+    if not isinstance(stat, str) or stat not in ("count", "probability", "density"):
+        raise ValueError(
+            "'stat' must be 'count', 'probability' or 'density' "
+            f"| got {stat!r}"
+        )
 
     decimals = _validate_decimals(decimals)
 
@@ -406,37 +430,63 @@ def histogram(
             )
             xmin, xmax = hist_range_tuple
             if xmin >= xmax:
-                raise ValueError("Serve xmin < xmax in 'hist_range'")
+                raise ValueError("'hist_range' requires xmin < xmax")
         else:
             xmin = float(np.min(values))
             xmax = float(np.max(values))
 
         if bin_width is not None:
             if bin_width <= 0:
-                raise ValueError("'bin_width' deve essere > 0.")
+                raise ValueError("'bin_width' must be > 0.")
 
             if bins != "auto":
                 raise ValueError(
-                    "'bins' e 'bin_width' sono mutualmente esclusivi. Usane uno solo"
+                    "'bins' and 'bin_width' are mutually exclusive. Use only one of them"
                 )
 
             start = np.floor(xmin / bin_width) * bin_width
             stop = np.ceil(xmax / bin_width) * bin_width
             bins = np.arange(start, stop + bin_width, bin_width)
 
-        hist_kwargs: dict = {
-            "bins": bins,
-            "range": hist_range_tuple if bin_width is None else None,
-            "density": False,
-            "alpha": hist_alpha,
-            "label": label,
-        }
-        if bar_color is not None:
-            hist_kwargs["color"] = bar_color
-        if edgecolor is not None:
-            hist_kwargs["edgecolor"] = edgecolor
+        if stat == "count":
+            hist_kwargs: dict = {
+                "bins": bins,
+                "range": hist_range_tuple if bin_width is None else None,
+                "density": False,
+                "alpha": hist_alpha,
+                "label": label,
+            }
+            if bar_color is not None:
+                hist_kwargs["color"] = bar_color
+            if edgecolor is not None:
+                hist_kwargs["edgecolor"] = edgecolor
 
-        _, bin_edges, _ = ax.hist(values, **hist_kwargs)
+            _, bin_edges, _ = ax.hist(values, **hist_kwargs)
+        else:
+            counts, bin_edges = np.histogram(
+                values,
+                bins=bins,
+                range=hist_range_tuple if bin_width is None else None,
+            )
+            widths = np.diff(bin_edges)
+            heights = counts.astype(float)
+            included = counts.sum()
+            if included > 0:
+                heights /= included
+                if stat == "density":
+                    heights /= widths
+
+            bar_kwargs: dict = {"alpha": hist_alpha}
+            if bar_color is not None:
+                bar_kwargs["color"] = bar_color
+            if edgecolor is not None:
+                bar_kwargs["edgecolor"] = edgecolor
+            bars = ax.bar(
+                bin_edges[:-1], heights, width=widths, align="edge", **bar_kwargs
+            )
+            if bars:
+                # Match ax.hist's legend order by labelling the first patch.
+                bars[0].set_label(label)
 
         fmt = f".{decimals}f"
         if show_bin_ticks:
@@ -473,7 +523,12 @@ def histogram(
             )
 
         ax.set_xlabel(xlabel)
-        ax.set_ylabel(ylabel if ylabel is not None else "Conteggi")
+        default_ylabel = {
+            "count": "Conteggi",
+            "probability": "Frequenza relativa",
+            "density": "Densità di frequenza",
+        }[stat]
+        ax.set_ylabel(ylabel if ylabel is not None else default_ylabel)
 
         title_kwargs: dict = {}
         if title_fontsize is not None:

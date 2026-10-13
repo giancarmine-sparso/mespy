@@ -1,13 +1,13 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# English translations for MesPy.
+# Copyright (C) 2026 Giancarmine Sparso
+# This file is distributed under the same license as the MesPy project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-10 10:08+0200\n"
+"Project-Id-Version: MesPy 2.0.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-10-12 17:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -19,115 +19,35 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 
 #: ../../source/index.md:1
-msgid ""
-"<span class=\"visually-hidden\">MesPy</span><span class=\"mespy-home-"
-"brand\"><img src=\"_static/mespy-logo-horizontal.svg\" class=\"only-"
-"light\" alt=\"MesPy\"><img src=\"_static/mespy-logo-horizontal-dark.svg\""
-" class=\"only-dark pst-js-only\" alt=\"MesPy\"></span>"
-msgstr ""
-"<span class=\"visually-hidden\">MesPy</span><span class=\"mespy-home-"
-"brand\"><img src=\"_static/mespy-logo-horizontal.svg\" class=\"only-"
-"light\" alt=\"MesPy\"><img src=\"_static/mespy-logo-horizontal-dark.svg\""
-" class=\"only-dark pst-js-only\" alt=\"MesPy\"></span>"
-
-#: ../../source/index.md:3
-msgid "`mespy` è una toolbox Python per l'analisi di dati sperimentali."
-msgstr "`mespy` is a Python toolbox for experimental data analysis."
+msgid "MesPy"
+msgstr "MesPy"
 
 #: ../../source/index.md:5
 msgid ""
-"Questa documentazione e organizzata per modulo: ogni file principale ha "
-"una pagina panoramica e una pagina separata per ogni funzione pubblica. "
-"In parallelo c'e una sezione dedicata ai controlli interni, utile per "
-"capire come il package normalizza gli input e gestisce gli errori."
+"Con `histogram` puoi visualizzare la distribuzione delle misure, la media e la "
+"deviazione standard. Con `lin_fit` puoi trovare la retta che descrive i dati e "
+"ottenere i parametri, le loro incertezze e i residui."
 msgstr ""
-"This documentation is organized by module: each main file has an overview"
-" page and a separate page for each public function. In parallel there is "
-"a section dedicated to internal checks, useful for understanding how the "
-"package normalizes inputs and handles errors."
+"Use `histogram` to see the distribution of your measurements, their mean and standard"
+" deviation. Use `lin_fit` to find the line that describes your data and get its "
+"parameters, their uncertainties and residuals."
 
 #: ../../source/index.md:7
-msgid "Cosa trovi qui"
-msgstr "What you'll find here"
-
-#: ../../source/index.md:9
 msgid ""
-"[Installazione](installazione.md) per preparare l'ambiente locale e "
-"verificare l'import."
+"Parti dall'[installazione](installazione.md), segui la [guida rapida](getting-"
+"started.md) oppure esplora gli [esempi](examples/index.md)."
 msgstr ""
-"[Installation](installazione.md) to prepare the local environment and "
-"verify the import."
+"Start with [installation](installazione.md), follow the [quick start](getting-"
+"started.md) or explore the [examples](examples/index.md)."
 
-#: ../../source/index.md:10
+#: ../../source/index.md:3
 msgid ""
-"[Guida rapida](getting-started.md) per partire dal flusso di lavoro piu "
-"comune."
-msgstr "[Quick start](getting-started.md) to begin with the most common workflow."
-
-#: ../../source/index.md:11
-msgid "[Esempi](examples/index.md) per notebook d'uso pronti da adattare."
-msgstr "[Examples](examples/index.md) for ready-to-adapt usage notebooks."
-
-#: ../../source/index.md:12
-msgid "[io_utils](moduli/io_utils/index.md) per il caricamento dei CSV."
-msgstr "[io_utils](moduli/io_utils/index.md) for CSV loading."
-
-#: ../../source/index.md:13
-msgid ""
-"[stats_utils](moduli/stats_utils/index.md) per le statistiche descrittive"
-" e pesate."
+"MesPy è una toolbox Python per chi muove i primi passi nella fisica sperimentale. "
+"Aiuta a visualizzare le misure, esplorare le distribuzioni e trovare le relazioni tra"
+" i dati, per interpretare i risultati e le loro incertezze senza riscrivere ogni "
+"volta lo stesso codice di analisi."
 msgstr ""
-"[stats_utils](moduli/stats_utils/index.md) for descriptive and weighted "
-"statistics."
-
-#: ../../source/index.md:14
-msgid "[plot_utils](moduli/plot_utils/index.md) per la visualizzazione."
-msgstr "[plot_utils](moduli/plot_utils/index.md) for visualization."
-
-#: ../../source/index.md:15
-msgid "[fit_utils](moduli/fit_utils/index.md) per il fit lineare pesato."
-msgstr "[fit_utils](moduli/fit_utils/index.md) for weighted linear fitting."
-
-#: ../../source/index.md:16
-msgid ""
-"[Controlli e helper interni](checks/index.md) per i validatori e gli "
-"helper privati."
-msgstr ""
-"[Internal checks and helpers](checks/index.md) for validators and private"
-" helpers."
-
-#: ../../source/index.md:18
-msgid "Obiettivi del package"
-msgstr "Package goals"
-
-#: ../../source/index.md:20
-msgid "offrire API piccole e leggibili"
-msgstr "offer small, readable APIs"
-
-#: ../../source/index.md:21
-msgid "validare subito gli input problematici"
-msgstr "validate problematic inputs early"
-
-#: ../../source/index.md:22
-msgid "produrre errori chiari in notebook e script didattici"
-msgstr "produce clear errors in notebooks and teaching scripts"
-
-#: ../../source/index.md:23
-msgid "mantenere separata l'API pubblica dai dettagli interni"
-msgstr "keep the public API separate from internal details"
-
-#: ../../source/index.md:25
-msgid "Esempio rapido"
-msgstr "Quick example"
-
-#~ msgid "mespy"
-#~ msgstr "mespy"
-
-#~ msgid ""
-#~ "<span class=\"mespy-home-brand\"><img "
-#~ "src=\"_static/mespy-logo-horizontal.svg\" class"
-#~ "=\"only-light\" alt=\"MesPy\"><img src=\"_static"
-#~ "/mespy-logo-horizontal-dark.svg\" class"
-#~ "=\"only-dark pst-js-only\" "
-#~ "alt=\"MesPy\"></span>"
-#~ msgstr ""
+"MesPy is a Python toolbox for students taking their first steps in experimental "
+"physics. It helps you visualize measurements, explore distributions and fit "
+"relationships, so you can interpret results and uncertainties without rewriting the "
+"same analysis code every time."

@@ -79,107 +79,107 @@ if __name__ == "__main__":
     main()
 
 """
-Smoke test per verificare che `mespy` venga importato correttamente
-dalla wheel/installazione distribuita e non dai sorgenti locali della repo.
+Smoke test that checks that `mespy` is imported from the distributed
+wheel/installation and not from the repository's local sources.
 
-Scopo del file
---------------
-Questo script non testa nel dettaglio il comportamento numerico delle funzioni
-del pacchetto. Il suo obiettivo è invece controllare la "salute" minima della
-distribuzione installata, cioè verificare che il pacchetto pubblicato/buildato
-sia realmente importabile, esponga la public API prevista e non introduca
-effetti collaterali indesiderati già al momento dell'import.
+Purpose of this file
+--------------------
+This script does not test the numerical behavior of the package's functions
+in detail. Instead, its goal is to check the minimal "health" of the installed
+distribution, i.e. to verify that the published/built package is actually
+importable, exposes the expected public API, and does not introduce unwanted
+side effects at import time.
 
-Perché serve
-------------
-Quando si lavora con un pacchetto Python è facile, durante i test locali,
-importare accidentalmente i file sorgente della repository invece della wheel
-appena costruita e installata. In quel caso si potrebbe avere un falso positivo:
-i test sembrano passare, ma in realtà non si sta verificando la distribuzione
-che un utente installerebbe davvero.
+Why it is needed
+----------------
+When working on a Python package it is easy, during local testing, to
+accidentally import the repository's source files instead of the freshly built
+and installed wheel. In that case a false positive is possible: the tests
+appear to pass, but they are not actually exercising the distribution that a
+user would install.
 
-Questo smoke test evita proprio quel problema:
-1. rimuove da `sys.path` i percorsi che puntano alla repo locale;
-2. importa `mespy`;
-3. controlla che il modulo importato non provenga dai sorgenti del progetto;
-4. verifica che gli export pubblici attesi siano presenti;
-5. controlla che l'import del pacchetto resti leggero, senza caricare subito
-   moduli pesanti come `matplotlib.pyplot`;
-6. verifica che alcuni simboli pubblici fondamentali siano effettivamente
-   utilizzabili come funzioni.
+This smoke test avoids exactly that problem:
+1. it removes from `sys.path` the entries that point to the local repository;
+2. it imports `mespy`;
+3. it checks that the imported module does not come from the project sources;
+4. it verifies that the expected public exports are present;
+5. it checks that importing the package stays lightweight, without eagerly
+   loading heavy modules such as `matplotlib.pyplot`;
+6. it verifies that some essential public symbols are actually usable as
+   functions.
 
-Cosa controlla in pratica
--------------------------
+What it checks in practice
+--------------------------
 - `REPO_ROOT`:
-  viene letto dall'ambiente per individuare con precisione la root della repo.
+  read from the environment to locate the repository root precisely.
 
 - `_filter_repo_paths(repo_root)`:
-  filtra `sys.path` rimuovendo:
-    * la root della repo;
-    * eventuali path sotto `src/`, `tests/` e `tools/`.
-  Questo riduce il rischio che `import mespy` risolva il package dai
-  file locali anziché dalla versione installata.
+  filters `sys.path` by removing:
+    * the repository root;
+    * any paths under `src/`, `tests/` and `tools/`.
+  This reduces the risk that `import mespy` resolves the package from the
+  local files rather than from the installed version.
 
 - `import mespy as mlt`:
-  importa il pacchetto che dovrebbe provenire dalla wheel installata
-  nell'ambiente di test.
+  imports the package, which is expected to come from the wheel installed
+  in the test environment.
 
-- controllo su `mlt.__file__`:
-  il path del modulo importato viene confrontato con `repo_root`.
-  Se il modulo risulta provenire dalla repository locale, il test fallisce,
-  perché significherebbe che non stiamo testando la distribuzione reale.
+- check on `mlt.__file__`:
+  the path of the imported module is compared with `repo_root`.
+  If the module turns out to come from the local repository, the test fails,
+  because it would mean we are not testing the real distribution.
 
-- controllo sugli export pubblici:
-  il set `EXPECTED_EXPORTS` definisce i simboli che devono far parte della
-  public API del pacchetto. Il test confronta questo insieme con `mlt.__all__`
-  e fallisce se manca anche solo uno degli export attesi.
+- check on the public exports:
+  the `EXPECTED_EXPORTS` set defines the symbols that must be part of the
+  package's public API. The test compares this set with `mlt.__all__`
+  and fails if even a single expected export is missing.
 
-- controllo di import "leggero":
-  se durante il semplice import del package compare `matplotlib.pyplot` in
-  `sys.modules`, il test fallisce. Questo serve a garantire che il package non
-  carichi eager dipendenze pesanti quando non necessario, migliorando tempi di
-  startup e pulizia architetturale.
+- "lightweight" import check:
+  if `matplotlib.pyplot` appears in `sys.modules` after merely importing the
+  package, the test fails. This ensures that the package does not eagerly
+  load heavy dependencies when they are not needed, improving startup time
+  and architectural cleanliness.
 
-- controllo di callability:
-  alcuni simboli pubblici chiave (`load_csv`, `weighted_mean`, `histogram`,
-  `lin_fit`) vengono recuperati con `getattr(...)` e verificati con `callable(...)`.
-  Questo è un controllo minimo per assicurarsi che l'API esposta non contenga
-  nomi presenti ma mal definiti.
+- callability check:
+  some key public symbols (`load_csv`, `weighted_mean`, `histogram`,
+  `lin_fit`) are retrieved with `getattr(...)` and checked with `callable(...)`.
+  This is a minimal check to make sure that the exposed API does not contain
+  names that are present but incorrectly defined.
 
-Perché si chiama "smoke test"
------------------------------
-Uno smoke test è un controllo rapido e superficiale che verifica che le cose
-essenziali funzionino. Non prova tutta la logica interna del pacchetto, ma
-risponde a una domanda fondamentale:
+Why it is called a "smoke test"
+-------------------------------
+A smoke test is a quick, shallow check that verifies that the essentials
+work. It does not exercise all of the package's internal logic, but it
+answers one fundamental question:
 
-    "La distribuzione installata è almeno importabile e coerente nella sua API?"
+    "Is the installed distribution at least importable and consistent in its API?"
 
-Se questo test fallisce, in genere il problema è strutturale:
-- packaging errato;
-- export mancanti;
-- import sbagliato dalla repo locale;
-- side effects indesiderati all'import;
-- simboli pubblici non definiti correttamente.
+If this test fails, the problem is usually structural:
+- incorrect packaging;
+- missing exports;
+- wrong import from the local repository;
+- unwanted side effects at import time;
+- public symbols that are not defined correctly.
 
-Cosa NON garantisce
--------------------
-Questo script non sostituisce i test unitari o di integrazione. Non verifica:
-- la correttezza matematica delle funzioni;
-- la validità dei risultati numerici;
-- il comportamento su input edge case;
-- la qualità dei grafici generati;
-- la compatibilità completa dell'intero pacchetto.
+What it does NOT guarantee
+--------------------------
+This script does not replace unit or integration tests. It does not verify:
+- the mathematical correctness of the functions;
+- the validity of the numerical results;
+- the behavior on edge-case inputs;
+- the quality of the generated plots;
+- the full compatibility of the entire package.
 
-Garantisce però una cosa molto importante:
-la wheel installata espone almeno una versione minima e coerente della public API
-attesa, senza dipendere accidentalmente dai sorgenti locali.
+It does, however, guarantee one very important thing:
+the installed wheel exposes at least a minimal and consistent version of the
+expected public API, without accidentally depending on the local sources.
 
-Output finale
--------------
-Se tutti i controlli passano, lo script stampa un messaggio del tipo:
+Final output
+------------
+If all checks pass, the script prints a message such as:
 
-    Smoke imports ok from wheel: <path_del_modulo>
+    Smoke imports ok from wheel: <module_path>
 
-Questo conferma che il pacchetto è stato importato correttamente dalla wheel
-e che i controlli minimi di consistenza sono stati superati.
+This confirms that the package was imported correctly from the wheel
+and that the minimal consistency checks were passed.
 """
