@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-06 17:28+0200\n"
+"POT-Creation-Date: 2026-10-11 22:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -97,14 +97,24 @@ msgid "`reduced_chi2`: chi quadrato ridotto."
 msgstr "`reduced_chi2`: reduced chi-squared."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:23
+msgid ""
+"`p_value`: probabilita di ottenere un chi quadrato maggiore o uguale a "
+"quello osservato, se il modello e le incertezze sono corretti; vale `nan`"
+" con `fit_method=\"residual\"`."
+msgstr ""
+"`p_value`: probability of obtaining a chi-squared greater than or equal "
+"to the observed one, if the model and the uncertainties are correct; it "
+"is `nan` with `fit_method=\"residual\"`."
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:24
 msgid "`dof`: gradi di liberta, pari a `n - 2`."
 msgstr "`dof`: degrees of freedom, equal to `n - 2`."
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:24
+#: ../../source/moduli/fit_utils/linear-fit-result.md:25
 msgid "`iterations`: numero di aggiornamenti dei pesi effettuati."
 msgstr "`iterations`: number of weight updates performed."
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:25
+#: ../../source/moduli/fit_utils/linear-fit-result.md:26
 msgid ""
 "`converged`: indica se l'iterazione con `sigma_x` ha soddisfatto il "
 "criterio di arresto."
@@ -112,17 +122,17 @@ msgstr ""
 "`converged`: indicates whether the iteration with `sigma_x` satisfied the"
 " stopping criterion."
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:26
+#: ../../source/moduli/fit_utils/linear-fit-result.md:27
 msgid "`figure`: oggetto matplotlib oppure `None` se `show_plot=False`."
 msgstr "`figure`: matplotlib object or `None` when `show_plot=False`."
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:27
+#: ../../source/moduli/fit_utils/linear-fit-result.md:28
 msgid ""
 "`fit_method`: modello di incertezza usato, `\"absolute\"` oppure "
 "`\"residual\"`."
 msgstr "`fit_method`: uncertainty model used, `\"absolute\"` or `\"residual\"`."
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:28
+#: ../../source/moduli/fit_utils/linear-fit-result.md:29
 msgid ""
 "`scale_factor`: fattore globale applicato alle incertezze con "
 "`fit_method=\"residual\"`; vale `1.0` con `fit_method=\"absolute\"`."
@@ -130,88 +140,103 @@ msgstr ""
 "`scale_factor`: global factor applied to uncertainties with "
 "`fit_method=\"residual\"`; `1.0` with `fit_method=\"absolute\"` is valid."
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:30
+#: ../../source/moduli/fit_utils/linear-fit-result.md:31
 msgid "Quando leggerlo"
 msgstr "When to read it"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:32
+#: ../../source/moduli/fit_utils/linear-fit-result.md:33
 msgid "Usa questo oggetto quando vuoi:"
 msgstr "Use this object when you want to:"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:34
+#: ../../source/moduli/fit_utils/linear-fit-result.md:35
 msgid ""
 "recuperare i parametri del fit senza dover parsare una stringa o una "
 "legenda"
 msgstr "retrieve the fit parameters without having to parse a string or a legend"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:35
-msgid "controllare la qualita del fit tramite residui e `reduced_chi2`"
-msgstr "check fit quality through residuals and `reduced_chi2`"
-
 #: ../../source/moduli/fit_utils/linear-fit-result.md:36
+msgid "controllare la qualita del fit tramite residui, `reduced_chi2` e `p_value`"
+msgstr "check fit quality through residuals, `reduced_chi2`, and `p_value`"
+
+#: ../../source/moduli/fit_utils/linear-fit-result.md:37
 msgid "decidere se salvare o riusare la figura generata"
 msgstr "decide whether to save or reuse the generated figure"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:38
+#: ../../source/moduli/fit_utils/linear-fit-result.md:39
 msgid "Esempio"
 msgstr "Example"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:49
+#: ../../source/moduli/fit_utils/linear-fit-result.md:51
 msgid "Esportazione in TOML"
 msgstr "TOML export"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:51
+#: ../../source/moduli/fit_utils/linear-fit-result.md:53
 msgid ""
 "Il metodo `to_toml(path)` salva il risultato numerico del fit in un file "
 "TOML leggibile e versionabile:"
-msgstr "The `to_toml(path)` method saves the numerical result of the fit to a readable, version-controllable TOML file:"
+msgstr ""
+"The `to_toml(path)` method saves the numerical result of the fit to a "
+"readable, version-controllable TOML file:"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:58
+#: ../../source/moduli/fit_utils/linear-fit-result.md:60
 msgid "Il file contiene quattro tabelle:"
 msgstr "The file contains four tables:"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:60
+#: ../../source/moduli/fit_utils/linear-fit-result.md:62
 msgid ""
 "`[mespy]`: `schema_version`, `mespy_version` e `result_type = "
 "\"linear_fit\"`, per riconoscere il formato del file."
-msgstr "`[mespy]`: `schema_version`, `mespy_version`, and `result_type = \"linear_fit\"`, to identify the file format."
+msgstr ""
+"`[mespy]`: `schema_version`, `mespy_version`, and `result_type = "
+"\"linear_fit\"`, to identify the file format."
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:61
+#: ../../source/moduli/fit_utils/linear-fit-result.md:63
 msgid ""
 "`[fit]`: `fit_method`, `slope`, `slope_std`, `intercept`, "
 "`intercept_std`, `covariance`, `correlation` e `scale_factor`."
-msgstr "`[fit]`: `fit_method`, `slope`, `slope_std`, `intercept`, `intercept_std`, `covariance`, `correlation`, and `scale_factor`."
+msgstr ""
+"`[fit]`: `fit_method`, `slope`, `slope_std`, `intercept`, "
+"`intercept_std`, `covariance`, `correlation`, and `scale_factor`."
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:62
+#: ../../source/moduli/fit_utils/linear-fit-result.md:64
 msgid ""
-"`[diagnostics]`: `chi2`, `reduced_chi2`, `dof`, `residual_std`, "
-"`iterations` e `converged`."
-msgstr "`[diagnostics]`: `chi2`, `reduced_chi2`, `dof`, `residual_std`, `iterations`, and `converged`."
+"`[diagnostics]`: `chi2`, `reduced_chi2`, `dof`, `p_value`, "
+"`residual_std`, `iterations` e `converged`."
+msgstr ""
+"`[diagnostics]`: `chi2`, `reduced_chi2`, `dof`, `p_value`, "
+"`residual_std`, `iterations`, and `converged`."
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:63
+#: ../../source/moduli/fit_utils/linear-fit-result.md:65
 msgid "`[residuals]`: il vettore `values` con i residui fisici."
 msgstr "`[residuals]`: the `values` vector with the physical residuals."
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:65
+#: ../../source/moduli/fit_utils/linear-fit-result.md:67
 msgid ""
 "Il campo `figure` non viene mai salvato: per conservare il grafico usa il"
 " parametro `save_path` di [`lin_fit`](lin-fit.md)."
-msgstr "The `figure` field is never saved: to keep the plot, use the `save_path` parameter of [`lin_fit`](lin-fit.md)."
+msgstr ""
+"The `figure` field is never saved: to keep the plot, use the `save_path` "
+"parameter of [`lin_fit`](lin-fit.md)."
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:67
+#: ../../source/moduli/fit_utils/linear-fit-result.md:69
 msgid ""
 "Se `path` non ha estensione viene aggiunto `.toml`. Un file esistente "
 "viene sovrascritto in modo atomico, quindi non resta mai un file a meta. "
 "Il metodo restituisce il `Path` del file scritto. I valori vengono "
 "salvati con precisione completa: rileggendo il file con `tomllib` si "
 "ottengono esattamente gli stessi numeri."
-msgstr "If `path` has no extension, `.toml` is appended. An existing file is overwritten atomically, so a half-written file is never left behind. The method returns the `Path` of the written file. Values are saved with full precision: reading the file back with `tomllib` gives exactly the same numbers."
+msgstr ""
+"If `path` has no extension, `.toml` is appended. An existing file is "
+"overwritten atomically, so a half-written file is never left behind. The "
+"method returns the `Path` of the written file. Values are saved with full"
+" precision: reading the file back with `tomllib` gives exactly the same "
+"numbers."
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:69
+#: ../../source/moduli/fit_utils/linear-fit-result.md:71
 msgid "Note"
 msgstr "Notes"
 
-#: ../../source/moduli/fit_utils/linear-fit-result.md:71
+#: ../../source/moduli/fit_utils/linear-fit-result.md:73
 msgid ""
 "La classe non esegue calcoli da sola: e una rappresentazione dell'output "
 "prodotto da [`lin_fit`](lin-fit.md). Il parametro `normalize_residuals` "

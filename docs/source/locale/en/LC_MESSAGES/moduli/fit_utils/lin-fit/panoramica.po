@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-12 15:36+0200\n"
+"POT-Creation-Date: 2026-10-11 22:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -46,21 +46,28 @@ msgstr "`x`, `y`: experimental data."
 #: ../../source/moduli/fit_utils/lin-fit/panoramica.md:10
 msgid ""
 "`sigma_y`: incertezze su `y`, strettamente positive. Sono obbligatorie "
-"con `fit_method=\"absolute\"` e opzionali con `fit_method=\"residual\"`."
+"con `fit_method=\"absolute\"` e opzionali con `fit_method=\"residual\"`. "
+"Se le ometti senza specificare `fit_method`, la chiamata passa a "
+"`\"residual\"` con un `UserWarning`."
 msgstr ""
 "`sigma_y`: uncertainties on `y`, strictly positive. They are mandatory "
 "with `fit_method=\"absolute\"` and optional with "
-"`fit_method=\"residual\"`."
+"`fit_method=\"residual\"`. If you omit them without specifying "
+"`fit_method`, the call switches to `\"residual\"` with a `UserWarning`."
 
 #: ../../source/moduli/fit_utils/lin-fit/panoramica.md:11
 msgid ""
 "`fit_method`: `\"absolute\"` usa le incertezze assolute fornite "
 "dall'utente; `\"residual\"` stima un fattore globale di scala dai "
-"residui. Se `sigma_y` non e fornito, il fit usa pesi tutti uguali."
+"residui. Se `sigma_y` non e fornito, il fit usa pesi tutti uguali. Il "
+"default `None` equivale a `\"absolute\"`, con fallback a `\"residual\"` "
+"quando manca `sigma_y`."
 msgstr ""
 "`fit_method`: `\"absolute\"` uses the absolute uncertainties provided by "
 "the user; `\"residual\"` estimates a global scale factor from the "
-"residuals. If `sigma_y` is not provided, the fit uses all equal weights."
+"residuals. If `sigma_y` is not provided, the fit uses all equal weights. "
+"The default `None` is equivalent to `\"absolute\"`, with a fallback to "
+"`\"residual\"` when `sigma_y` is missing."
 
 #: ../../source/moduli/fit_utils/lin-fit/panoramica.md:12
 msgid "`sigma_x`: incertezze opzionali su `x`, anch'esse strettamente positive."
@@ -189,68 +196,78 @@ msgid "`ValueError` se `x`, `y` e `sigma_y` non hanno la stessa lunghezza."
 msgstr "`ValueError` if `x`, `y`, and `sigma_y` do not have the same length."
 
 #: ../../source/moduli/fit_utils/lin-fit/panoramica.md:31
-msgid "`ValueError` se `sigma_y` manca con `fit_method=\"absolute\"`."
-msgstr "`ValueError` if `sigma_y` is missing with `fit_method=\"absolute\"`."
+msgid "`ValueError` se `sigma_y` manca con `fit_method=\"absolute\"` esplicito."
+msgstr ""
+"`ValueError` if `sigma_y` is missing with an explicit "
+"`fit_method=\"absolute\"`."
 
 #: ../../source/moduli/fit_utils/lin-fit/panoramica.md:32
-msgid "`ValueError` se `fit_method` non e `\"absolute\"` o `\"residual\"`."
-msgstr "`ValueError` if `fit_method` is not and `\"absolute\"` or `\"residual\"`."
+msgid ""
+"`ValueError` se `fit_method` non e `\"absolute\"`, `\"residual\"` o "
+"`None`."
+msgstr ""
+"`ValueError` if `fit_method` is not `\"absolute\"`, `\"residual\"`, or "
+"`None`."
 
 #: ../../source/moduli/fit_utils/lin-fit/panoramica.md:33
-msgid ""
-"`ValueError` se passi `sigma_x` con `fit_method=\"residual\"` senza "
-"passare anche `sigma_y`."
-msgstr ""
-"`ValueError` if you pass `sigma_x` with `fit_method=\"residual\"` without"
-" also passing `sigma_y`."
+msgid "`ValueError` se passi `sigma_x` senza passare anche `sigma_y`."
+msgstr "`ValueError` if you pass `sigma_x` without also passing `sigma_y`."
 
 #: ../../source/moduli/fit_utils/lin-fit/panoramica.md:34
+msgid ""
+"`UserWarning` (non bloccante) se ometti sia `sigma_y` sia `fit_method`: "
+"la chiamata usa `fit_method=\"residual\"`."
+msgstr ""
+"`UserWarning` (non-blocking) if you omit both `sigma_y` and `fit_method`:"
+" the call uses `fit_method=\"residual\"`."
+
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:35
 msgid "`ValueError` se ci sono meno di 3 punti."
 msgstr "`ValueError` if there are fewer than 3 points."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:35
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:36
 msgid "`ValueError` se gli input contengono valori non finiti."
 msgstr "`ValueError` if the inputs contain non-finite values."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:36
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:37
 msgid "`ValueError` se `sigma_y` o `sigma_x` contengono valori non positivi."
 msgstr "`ValueError` if `sigma_y` or `sigma_x` contain non-positive values."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:37
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:38
 msgid "`ValueError` se `decimals` non e un intero valido tra 0 e 20."
 msgstr "`ValueError` if `decimals` is not a valid integer between 0 and 20."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:38
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:39
 msgid "`ValueError` se `tol` o `max_iter` sono invalidi."
 msgstr "`ValueError` if `tol` or `max_iter` are invalid."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:39
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:40
 msgid "`ValueError` se `x` non contiene almeno due valori distinti."
 msgstr "`ValueError` if `x` does not contain at least two distinct values."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:40
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:41
 msgid "`ValueError` se `save_path` viene usato con `show_plot=False`."
 msgstr "`ValueError` if `save_path` is used with `show_plot=False`."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:41
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:42
 msgid "`RuntimeError` se il caso con `sigma_x` non converge entro `max_iter`."
 msgstr ""
 "`RuntimeError` if the case with `sigma_x` does not converge within "
 "`max_iter`."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:43
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:44
 msgid "Esempio"
 msgstr "Example"
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:65
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:66
 msgid "Per stimare l'incertezza dai residui senza passare barre d'errore:"
 msgstr "To estimate uncertainty from residues without passing error bars:"
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:78
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:79
 msgid "Per mostrare i residui normalizzati nel pannello inferiore:"
 msgstr "To show normalized residues in the bottom panel:"
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:89
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:90
 msgid ""
 "In questo caso i punti del pannello dei residui sono `result.residuals / "
 "sigma_y` se non passi `sigma_x`; se passi anche `sigma_x`, il "
@@ -260,15 +277,15 @@ msgstr ""
 " you do not pass `sigma_x`; if you also pass `sigma_x`, the denominator "
 "becomes `sqrt(sigma_y**2 + result.slope**2 * sigma_x**2)`."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:91
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:92
 msgid "Note"
 msgstr "Notes"
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:93
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:94
 msgid "Nel caso base i pesi sono `1 / sigma_y**2`."
 msgstr "In the basic case the weights are `1 / sigma_y**2`."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:94
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:95
 msgid ""
 "Con `fit_method=\"residual\"` senza `sigma_y`, i coefficienti sono quelli"
 " del fit non pesato e `scale_factor` coincide con `residual_std`."
@@ -277,7 +294,7 @@ msgstr ""
 "those of the unweighted fit and `scale_factor` coincides with "
 "`residual_std`."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:95
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:96
 msgid ""
 "Con `fit_method=\"residual\"` e `sigma_y`, i coefficienti restano quelli "
 "del fit pesato con i pesi relativi `1 / sigma_y**2`, mentre `slope_std`, "
@@ -289,7 +306,7 @@ msgstr ""
 "while `slope_std`, `intercept_std`, covariance, band and drawn errors are"
 " multiplied by the estimated scale factor."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:96
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:97
 msgid ""
 "Se `sigma_x` e presente, i pesi vengono aggiornati con la varianza "
 "efficace `sigma_y^2 + m^2 sigma_x^2`."
@@ -297,7 +314,7 @@ msgstr ""
 "If `sigma_x` is provided, the weights are updated with the effective "
 "variance `sigma_y^2 + m^2 sigma_x^2`."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:97
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:98
 msgid ""
 "`normalize_residuals=True` usa la stessa varianza efficace del `chi2`, ma"
 " non cambia `result.residuals`, `result.residual_std`, `result.chi2` o "
@@ -307,7 +324,7 @@ msgstr ""
 "but does not change `result.residuals`, `result.residual_std`, "
 "`result.chi2`, or `result.reduced_chi2`."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:98
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:99
 msgid ""
 "Quando `normalize_residuals=True`, le barre d'errore verticali del "
 "pannello inferiore sono unitarie e l'asse dei residui diventa "
@@ -319,7 +336,7 @@ msgstr ""
 "`residuals_label` remains the default, the label is automatically "
 "adjusted."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:99
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:100
 msgid ""
 "La parte grafica riusa [`_style_context`](../../../checks/plot_utils"
 "/style-context.md), quindi il comportamento di `style` e degli override e"
@@ -329,7 +346,7 @@ msgstr ""
 "/style-context.md), so the behaviour of `style` and the overrides is "
 "consistent with [`histogram`](../../plot_utils/histogram.md)."
 
-#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:100
+#: ../../source/moduli/fit_utils/lin-fit/panoramica.md:101
 msgid ""
 "I coefficienti iniziali e gli aggiornamenti intermedi passano per "
 "[`_fit_coefficients`](../../../checks/fit_utils/fit-coefficients.md)."
@@ -339,3 +356,4 @@ msgstr ""
 
 #~ msgid "`sigma_y`: incertezze su `y`, strettamente positive."
 #~ msgstr "`sigma_y`: uncertainties on `y`, strictly positive."
+

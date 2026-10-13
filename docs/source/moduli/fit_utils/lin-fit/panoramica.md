@@ -7,8 +7,8 @@ Eseguire un fit lineare `y = m x + c` su dati sperimentali, sia con incertezze a
 ## Parametri
 
 - `x`, `y`: dati sperimentali.
-- `sigma_y`: incertezze su `y`, strettamente positive. Sono obbligatorie con `fit_method="absolute"` e opzionali con `fit_method="residual"`.
-- `fit_method`: `"absolute"` usa le incertezze assolute fornite dall'utente; `"residual"` stima un fattore globale di scala dai residui. Se `sigma_y` non e fornito, il fit usa pesi tutti uguali.
+- `sigma_y`: incertezze su `y`, strettamente positive. Sono obbligatorie con `fit_method="absolute"` e opzionali con `fit_method="residual"`. Se le ometti senza specificare `fit_method`, la chiamata passa a `"residual"` con un `UserWarning`.
+- `fit_method`: `"absolute"` usa le incertezze assolute fornite dall'utente; `"residual"` stima un fattore globale di scala dai residui. Se `sigma_y` non e fornito, il fit usa pesi tutti uguali. Il default `None` equivale a `"absolute"`, con fallback a `"residual"` quando manca `sigma_y`.
 - `sigma_x`: incertezze opzionali su `x`, anch'esse strettamente positive.
 - `decimals`: precisione testuale usata nelle etichette del fit. Deve essere un intero compreso tra 0 e 20.
 - `tol`: tolleranza relativa usata nel criterio di convergenza quando `sigma_x` e presente.
@@ -28,9 +28,10 @@ Un [`LinearFitResult`](../linear-fit-result.md) con parametri del fit, incertezz
 ## Errori ed eccezioni
 
 - `ValueError` se `x`, `y` e `sigma_y` non hanno la stessa lunghezza.
-- `ValueError` se `sigma_y` manca con `fit_method="absolute"`.
-- `ValueError` se `fit_method` non e `"absolute"` o `"residual"`.
-- `ValueError` se passi `sigma_x` con `fit_method="residual"` senza passare anche `sigma_y`.
+- `ValueError` se `sigma_y` manca con `fit_method="absolute"` esplicito.
+- `ValueError` se `fit_method` non e `"absolute"`, `"residual"` o `None`.
+- `ValueError` se passi `sigma_x` senza passare anche `sigma_y`.
+- `UserWarning` (non bloccante) se ometti sia `sigma_y` sia `fit_method`: la chiamata usa `fit_method="residual"`.
 - `ValueError` se ci sono meno di 3 punti.
 - `ValueError` se gli input contengono valori non finiti.
 - `ValueError` se `sigma_y` o `sigma_x` contengono valori non positivi.

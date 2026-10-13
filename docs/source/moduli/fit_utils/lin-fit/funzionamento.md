@@ -8,7 +8,7 @@ I frammenti seguenti sono estratti dal codice attuale di `src/mespy/fit_utils.py
 
 L'implementazione segue questa sequenza:
 
-1. Valida `fit_method`, che puo essere `"absolute"` oppure `"residual"`.
+1. Risolve e valida `fit_method`: il default `None` diventa `"absolute"` se `sigma_y` e presente, altrimenti `"residual"` con un `UserWarning`; i valori espliciti possono essere `"absolute"` oppure `"residual"`.
 2. Converte `x`, `y` e, quando presente, `sigma_y` in vettori `float64` monodimensionali e finiti.
 3. Verifica che i vettori abbiano la stessa lunghezza e che i punti siano almeno 3.
 4. Valida `decimals` come intero non negativo e leggibile.
@@ -25,6 +25,21 @@ L'implementazione segue questa sequenza:
 ## Validazione input e setup numerico
 
 ```python
+if fit_method is None:
+    if sigma_y is not None:
+        fit_method = "absolute"
+    elif sigma_x is not None:
+        raise ValueError("sigma_x richiede sigma_y")
+    else:
+        warnings.warn(
+            "sigma_y non fornito: lin_fit usa fit_method='residual' e stima "
+            "l'incertezza dai residui. Passa fit_method='residual' "
+            "esplicitamente per non vedere questo avviso.",
+            UserWarning,
+            stacklevel=2,
+        )
+        fit_method = "residual"
+
 fit_method = _validate_fit_method(fit_method)
 use_residual_scale = fit_method == "residual"
 
@@ -70,7 +85,7 @@ weights = 1.0 / sigma_y2
 
 Questo primo blocco definisce il contratto numerico del fit.
 
-- `fit_method` separa i due modelli: `"absolute"` richiede `sigma_y`, mentre `"residual"` puo stimare una scala comune dai residui.
+- `fit_method` separa i due modelli: `"absolute"` richiede `sigma_y`, mentre `"residual"` puo stimare una scala comune dai residui. Se `fit_method` resta `None`, la scelta dipende dalla presenza di `sigma_y`; il fallback a `"residual"` e segnalato con un `UserWarning` (con `stacklevel=2`, l'avviso punta alla riga del chiamante) e non interrompe la chiamata.
 - `x`, `y` e, quando presente, `sigma_y` non vengono usati direttamente: prima passano attraverso validatori che impongono array numerici, monodimensionali e finiti.
 - `sigma_y` e, se presente, `sigma_x` devono essere strettamente positivi. Questo e essenziale per poter costruire pesi fisicamente e numericamente sensati.
 - Con `fit_method="residual"` senza `sigma_y`, `sigma_y_values = np.ones_like(x_values)` serve solo a rendere il fit non pesato; la scala fisica dell'incertezza viene stimata dopo il calcolo dei residui.
@@ -249,6 +264,7 @@ sigma_c = float(np.sqrt(var_c))
 sigma_fit2 = raw_sigma_fit2 * covariance_scale
 chi2 = raw_chi2 if not use_residual_scale else raw_chi2 / covariance_scale
 reduced_chi2 = float(chi2 / dof)
+p_value = math.nan if use_residual_scale else float(chi2_distribution.sf(chi2, dof))
 
 normalized_residuals = residuals / np.sqrt(sigma_fit2)
 ```
@@ -335,6 +351,14 @@ $$
 $$
 
 Con `fit_method="residual"` la varianza usata per residui normalizzati, banda e `chi2` finale viene moltiplicata per $s^2$. Di conseguenza, quando $s > 0$, il risultato finale ha `reduced_chi2` pari a 1 per costruzione; l'informazione sulla scala stimata resta disponibile in `scale_factor`.
+
+Con `fit_method="absolute"` viene calcolato anche il p-value del test del chi quadrato, cioe la probabilita che una variabile $\chi^2$ con $\mathrm{dof}$ gradi di liberta superi il valore osservato:
+
+$$
+p = P\left(\chi^2_{\mathrm{dof}} \ge \chi^2\right).
+$$
+
+Il calcolo usa la funzione di sopravvivenza `scipy.stats.chi2.sf`, che resta accurata anche per valori di $p$ molto piccoli. Un $p$ molto vicino a 0 indica incertezze sottostimate o un modello lineare inadeguato; un $p$ molto vicino a 1 suggerisce incertezze sovrastimate. Con `fit_method="residual"` il chi quadrato vale `dof` per costruzione, quindi il test non e definito e `p_value` vale `nan`.
 
 La stessa varianza di fit viene usata anche per costruire i residui normalizzati disponibili nel ramo di plotting:
 
@@ -495,6 +519,7 @@ return LinearFitResult(
     figure=fig,
     fit_method=fit_method,
     scale_factor=scale_factor,
+    p_value=p_value,
 )
 ```
 

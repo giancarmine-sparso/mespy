@@ -18,7 +18,7 @@ Valida il modello di incertezza richiesto da `lin_fit` e restringe il tipo di ri
 
 ## Dove viene usata
 
-- in [`lin_fit`](../../moduli/fit_utils/lin-fit.md), prima di scegliere il ramo di calcolo
+- in [`lin_fit`](../../moduli/fit_utils/lin-fit.md), prima di scegliere il ramo di calcolo; il default `None` di `lin_fit` viene risolto in `"absolute"` o `"residual"` prima di questa chiamata
 
 ## Come fallisce
 

@@ -20,6 +20,7 @@ Raccogliere in un unico contenitore tipizzato i parametri del fit, le incertezze
 - `residual_std`: stima sintetica della dispersione dei residui.
 - `chi2`: chi quadrato del fit.
 - `reduced_chi2`: chi quadrato ridotto.
+- `p_value`: probabilita di ottenere un chi quadrato maggiore o uguale a quello osservato, se il modello e le incertezze sono corretti; vale `nan` con `fit_method="residual"`.
 - `dof`: gradi di liberta, pari a `n - 2`.
 - `iterations`: numero di aggiornamenti dei pesi effettuati.
 - `converged`: indica se l'iterazione con `sigma_x` ha soddisfatto il criterio di arresto.
@@ -32,7 +33,7 @@ Raccogliere in un unico contenitore tipizzato i parametri del fit, le incertezze
 Usa questo oggetto quando vuoi:
 
 - recuperare i parametri del fit senza dover parsare una stringa o una legenda
-- controllare la qualita del fit tramite residui e `reduced_chi2`
+- controllare la qualita del fit tramite residui, `reduced_chi2` e `p_value`
 - decidere se salvare o riusare la figura generata
 
 ## Esempio
@@ -43,6 +44,7 @@ result = lin_fit(x, y, sigma_y, show_plot=False)
 print(result.slope)
 print(result.intercept_std)
 print(result.reduced_chi2)
+print(result.p_value)
 print(result.fit_method)
 ```
 
@@ -59,7 +61,7 @@ Il file contiene quattro tabelle:
 
 - `[mespy]`: `schema_version`, `mespy_version` e `result_type = "linear_fit"`, per riconoscere il formato del file.
 - `[fit]`: `fit_method`, `slope`, `slope_std`, `intercept`, `intercept_std`, `covariance`, `correlation` e `scale_factor`.
-- `[diagnostics]`: `chi2`, `reduced_chi2`, `dof`, `residual_std`, `iterations` e `converged`.
+- `[diagnostics]`: `chi2`, `reduced_chi2`, `dof`, `p_value`, `residual_std`, `iterations` e `converged`.
 - `[residuals]`: il vettore `values` con i residui fisici.
 
 Il campo `figure` non viene mai salvato: per conservare il grafico usa il parametro `save_path` di [`lin_fit`](lin-fit.md).

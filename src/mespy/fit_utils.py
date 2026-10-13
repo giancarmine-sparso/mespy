@@ -871,7 +871,7 @@ def lin_fit(
     xlabel: str = "x",
     ylabel: str = "y",
     title: str | None = None,
-    style: str | None = "report",
+    style: str | None = "mespy",
     output: str | Path | None = None,
     plot: bool = True,
     normalize_residuals: bool = False,

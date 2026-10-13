@@ -1,74 +1,131 @@
-# report.mplstyle — figure per relazioni di laboratorio (A4, corpo 11pt)
-# Pensato come stile completo: plt.style.use("report")
-# Convenzione di accompagnamento: dati neri, fit C1 (rosso) dal prop_cycle.
+# report.mplstyle — figure scientifiche per relazioni A4 (corpo 11 pt)
+#
+# Convenzione colori: C0 = nero (dati), C1 = rosso (fit).
+# Uso: plt.style.use('/percorso/report.mplstyle')
+#
+# La figura è pensata per entrare nel testo a scala 1:1:
+#   - figure.figsize[0] deve coincidere con \the\textwidth (5.9 in ≈ 15 cm);
+#   - in LaTeX: \includegraphics{fig.pdf}, senza riscalare.
+# Per questo savefig.bbox è 'standard': un ritaglio 'tight' cambierebbe
+# le dimensioni e quindi la scala dei font.
 
-# --- Tipografia (coerente con preambolo LuaLaTeX, STIX Two) ---
+# --- Typography -------------------------------------------------------
+# STIX Two Text per testo e per lettere/cifre in matematica (fontset
+# 'custom'); i simboli che STIX Two Text non ha (∫, ∑, greco
+# maiuscolo, ...) vengono da STIX v1, incluso in matplotlib.
+# Richiede STIX Two Text installato (github.com/stipub/stixfonts); dopo
+# l'installazione cancellare la cache di matplotlib (~/.cache/matplotlib).
+# Senza il font: il testo ricade su STIXGeneral, la matematica su DejaVu.
+# In LaTeX il corpo corrispondente è \usepackage{stix2}.
 text.usetex: False
 font.family: serif
-font.serif: STIX Two Text, DejaVu Serif, serif
-mathtext.fontset: stix
+font.serif: STIX Two Text, STIXGeneral, DejaVu Serif, serif
+mathtext.fontset: custom
+mathtext.rm: STIX Two Text
+mathtext.it: STIX Two Text:italic
+mathtext.bf: STIX Two Text:bold
+mathtext.bfit: STIX Two Text:bold:italic
+mathtext.sf: STIX Two Text
+mathtext.tt: DejaVu Sans Mono
+mathtext.cal: STIXGeneral:italic
+mathtext.fallback: stix
 font.size: 10
-axes.titlesize: 12
+axes.titlesize: 11
+axes.titleweight: normal
 axes.titlepad: 8
-axes.labelsize: 11
+axes.labelsize: 10
+axes.labelpad: 5
 xtick.labelsize: 9
 ytick.labelsize: 9
 legend.fontsize: 9
 legend.title_fontsize: 9
 axes.formatter.use_mathtext: True
 axes.formatter.useoffset: False
+axes.formatter.limits: -3, 4
 
-# --- Figure ---
-figure.figsize: 6.0, 4.0
-figure.dpi: 100
+# --- Figure and layout ------------------------------------------------
+figure.figsize: 5.9, 3.7
+figure.dpi: 110
+figure.facecolor: white
+figure.edgecolor: white
 figure.constrained_layout.use: True
 
-# --- Save ---
+# --- Export (formato dal nome del file: .pdf, .svg, .png) -------------
 savefig.dpi: 300
-savefig.bbox: tight
-savefig.pad_inches: 0.05
+savefig.facecolor: white
+savefig.bbox: standard
+pdf.fonttype: 42
+ps.fonttype: 42
+svg.fonttype: none
 
-# --- Axes ---
+# --- Axes -------------------------------------------------------------
 axes.facecolor: white
+axes.edgecolor: 262626
 axes.linewidth: 0.8
-axes.labelpad: 4
 axes.axisbelow: True
+axes.spines.top: True
+axes.spines.right: True
+axes.xmargin: 0.04
+axes.ymargin: 0.06
 
-# --- Grid (entrambi gli assi: serve per leggere coppie (x, y) nei fit) ---
+# --- Grid: solo major, dietro i dati ----------------------------------
 axes.grid: True
 axes.grid.axis: both
-grid.alpha: 0.25
-grid.linewidth: 0.4
+axes.grid.which: major
+grid.color: 808080
+grid.alpha: 0.22
+grid.linewidth: 0.45
 grid.linestyle: -
 
-# --- Tick "da rivista" ---
+# --- Ticks ------------------------------------------------------------
 xtick.direction: in
 ytick.direction: in
 xtick.top: True
 ytick.right: True
+xtick.major.size: 4
 xtick.major.width: 0.8
+ytick.major.size: 4
 ytick.major.width: 0.8
 xtick.minor.visible: True
 ytick.minor.visible: True
+xtick.minor.size: 2
+xtick.minor.width: 0.5
+ytick.minor.size: 2
+ytick.minor.width: 0.5
+xtick.color: 262626
+ytick.color: 262626
 
-# --- Lines, marker, errorbar ---
-lines.linewidth: 1.5
-lines.markersize: 4
-lines.markeredgewidth: 1
+# --- Lines, markers, barre d'errore -----------------------------------
+# errorbar: barre = lines.linewidth, cap = lines.markeredgewidth.
+# Valori vicini per avere barre e cap di spessore simile.
+# Per una linea di fit più marcata: lw=1.6 esplicito nel plot.
+lines.linewidth: 1.2
+lines.markersize: 4.5
+lines.markeredgewidth: 1.0
 errorbar.capsize: 3
 
-# --- Patch (per istogrammi anche dentro relazioni) ---
-patch.facecolor: 4878CF
-patch.edgecolor: white
-patch.force_edgecolor: True
+# --- Patches ----------------------------------------------------------
+# hist() e bar() prendono il colore dal prop_cycle (C0 = nero), non da
+# patch.facecolor: negli istogrammi passare color=... oppure histtype='step'.
+# Nessun bordo forzato, altrimenti anche fill_between (bande di
+# confidenza) riceve un contorno. Bordo bianco solo dove serve: ec='white'.
+patch.force_edgecolor: False
 patch.linewidth: 0.6
 
-# --- Legend ---
+# --- Legend -----------------------------------------------------------
 legend.loc: best
-legend.framealpha: 0.85
-legend.edgecolor: 0.8
-legend.borderpad: 0.4
-legend.handlelength: 1.5
+legend.frameon: True
+legend.fancybox: False
+legend.framealpha: 0.94
+legend.facecolor: white
+legend.edgecolor: D0D0D0
+legend.borderpad: 0.45
+legend.labelspacing: 0.4
+legend.handlelength: 1.8
+legend.handletextpad: 0.65
 
-# --- Color cycle: rosso in C1 per la convenzione "dati C0 / fit C1" ---
-axes.prop_cycle: cycler('color', ['4878CF', 'D65F5F', 'EE854A', '6ACC64', '956CB4', '8C613C', 'DC7EC0', '797979', 'D5BB67', '82C6E2'])
+# --- Color cycle ------------------------------------------------------
+# C0 nero (dati), C1 rosso (fit), poi serie aggiuntive.
+# C1–C6 hanno luminanza simile: in stampa B/N, con più di due serie,
+# differenziare anche con linestyle o marker.
+axes.prop_cycle: cycler('color', ['171717', 'C44E52', '4878A8', '398568', '8A6BB5', 'BD7D3A', '777777'])

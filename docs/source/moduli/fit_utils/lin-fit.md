@@ -8,7 +8,7 @@ lin_fit(
     y: ArrayLike,
     sigma_y: ArrayLike | None = None,
     *,
-    fit_method: Literal["absolute", "residual"] = "residual",
+    fit_method: Literal["absolute", "residual"] | None = None,
     sigma_x: ArrayLike | None = None,
     tol: float = 1e-10,
     max_iter: int = 100,
@@ -47,9 +47,11 @@ lin_fit(
 
 `lin_fit` esegue un fit lineare `y = m x + c` su dati sperimentali, con supporto alle incertezze assolute di input e alla scala stimata dai residui.
 
-Con `fit_method="absolute"` usa le incertezze assolute passate in `sigma_y` e, se presente, `sigma_x`.
+Con `fit_method="absolute"`, che e il comportamento di default quando passi `sigma_y`, usa le incertezze assolute passate in `sigma_y` e, se presente, `sigma_x`. In questa modalita `chi2`, `reduced_chi2` e `p_value` misurano la compatibilita tra dati, modello e incertezze.
 
-Con `fit_method="residual"`, che e il comportamento di default, stima un fattore globale di incertezza dai residui. Se ometti `sigma_y`, esegue un fit lineare non pesato e usa `residual_std` come incertezza verticale comune. Se passi `sigma_y`, quelle incertezze definiscono i pesi relativi e le incertezze finali vengono scalate con il chi quadrato ridotto grezzo osservato.
+Con `fit_method="residual"` stima un fattore globale di incertezza dai residui. Se ometti `sigma_y`, esegue un fit lineare non pesato e usa `residual_std` come incertezza verticale comune. Se passi `sigma_y`, quelle incertezze definiscono i pesi relativi e le incertezze finali vengono scalate con il chi quadrato ridotto grezzo osservato.
+
+Se lasci `fit_method` non specificato e ometti `sigma_y`, `lin_fit` emette un `UserWarning` e usa `fit_method="residual"` per quella chiamata. Per usare la scala stimata dai residui senza avviso, oppure insieme a `sigma_y`, scrivi `fit_method="residual"` esplicitamente. Un `fit_method="absolute"` esplicito senza `sigma_y` resta invece un errore.
 
 Di default applica lo stile Matplotlib `mespy`; passa `style=None` per usare gli `rcParams` correnti oppure il nome di un altro stile per delegare a Matplotlib.
 

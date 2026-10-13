@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-12 15:36+0200\n"
+"POT-Creation-Date: 2026-10-11 22:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../source/moduli/fit_utils/lin-fit.md:66
+#: ../../source/moduli/fit_utils/lin-fit.md:68
 msgid "Panoramica"
 msgstr "Overview"
 
-#: ../../source/moduli/fit_utils/lin-fit.md:66
+#: ../../source/moduli/fit_utils/lin-fit.md:68
 msgid "Funzionamento"
 msgstr "Implementation"
 
@@ -46,13 +46,16 @@ msgstr ""
 
 #: ../../source/moduli/fit_utils/lin-fit.md:50
 msgid ""
-"Con `fit_method=\"absolute\"` usa le incertezze assolute passate in "
-"`sigma_y` e, se presente, `sigma_x`. Questo resta il comportamento di "
-"default ed e compatibile con le chiamate esistenti."
+"Con `fit_method=\"absolute\"`, che e il comportamento di default quando "
+"passi `sigma_y`, usa le incertezze assolute passate in `sigma_y` e, se "
+"presente, `sigma_x`. In questa modalita `chi2`, `reduced_chi2` e "
+"`p_value` misurano la compatibilita tra dati, modello e incertezze."
 msgstr ""
-"With `fit_method=\"absolute\"` use the absolute uncertainties passed in "
-"`sigma_y` and, if present, `sigma_x`. This remains the default behavior "
-"and is compatible with existing calls."
+"With `fit_method=\"absolute\"`, which is the default behavior when you "
+"pass `sigma_y`, it uses the absolute uncertainties passed in `sigma_y` "
+"and, if present, `sigma_x`. In this mode `chi2`, `reduced_chi2`, and "
+"`p_value` measure the compatibility between data, model, and "
+"uncertainties."
 
 #: ../../source/moduli/fit_utils/lin-fit.md:52
 msgid ""
@@ -62,14 +65,29 @@ msgid ""
 "quelle incertezze definiscono i pesi relativi e le incertezze finali "
 "vengono scalate con il chi quadrato ridotto grezzo osservato."
 msgstr ""
-"With `fit_method=\"residual\"` it estimates a global factor of "
-"uncertainty from residues. If you omit `sigma_y`, it performs an "
-"unweighted linear fit and uses `residual_std` as the common vertical "
-"uncertainty. If you pass `sigma_y`, those uncertainties define the "
-"relative weights and the final uncertainties are scaled with the observed"
-" raw reduced chi-square."
+"With `fit_method=\"residual\"` it estimates a global uncertainty factor "
+"from the residuals. If you omit `sigma_y`, it performs an unweighted "
+"linear fit and uses `residual_std` as the common vertical uncertainty. If"
+" you pass `sigma_y`, those uncertainties define the relative weights and "
+"the final uncertainties are scaled by the observed raw reduced chi-"
+"squared."
 
 #: ../../source/moduli/fit_utils/lin-fit.md:54
+msgid ""
+"Se lasci `fit_method` non specificato e ometti `sigma_y`, `lin_fit` "
+"emette un `UserWarning` e usa `fit_method=\"residual\"` per quella "
+"chiamata. Per usare la scala stimata dai residui senza avviso, oppure "
+"insieme a `sigma_y`, scrivi `fit_method=\"residual\"` esplicitamente. Un "
+"`fit_method=\"absolute\"` esplicito senza `sigma_y` resta invece un "
+"errore."
+msgstr ""
+"If you leave `fit_method` unspecified and omit `sigma_y`, `lin_fit` emits"
+" a `UserWarning` and uses `fit_method=\"residual\"` for that call. To use"
+" the scale estimated from the residuals without the warning, or together "
+"with `sigma_y`, write `fit_method=\"residual\"` explicitly. An explicit "
+"`fit_method=\"absolute\"` without `sigma_y` is still an error."
+
+#: ../../source/moduli/fit_utils/lin-fit.md:56
 msgid ""
 "Di default applica lo stile Matplotlib `mespy`; passa `style=None` per "
 "usare gli `rcParams` correnti oppure il nome di un altro stile per "
@@ -79,7 +97,7 @@ msgstr ""
 "use the current `rcParams`, or the name of another style to delegate to "
 "Matplotlib."
 
-#: ../../source/moduli/fit_utils/lin-fit.md:56
+#: ../../source/moduli/fit_utils/lin-fit.md:58
 msgid ""
 "I parametri `figsize`, `dpi`, `title_fontsize`, `title_pad`, "
 "`legend_fontsize`, `legend_loc`, `point_color`, `fit_color`, "
@@ -93,7 +111,7 @@ msgstr ""
 "style when left to `None`. The parameters `data_alpha` and `band_alpha` "
 "remain explicit overrides of the single call."
 
-#: ../../source/moduli/fit_utils/lin-fit.md:58
+#: ../../source/moduli/fit_utils/lin-fit.md:60
 msgid ""
 "`fit_label` e `band_label` permettono di personalizzare i testi della "
 "legenda di retta e banda. In particolare, `fit_label` viene usato solo "
@@ -105,7 +123,7 @@ msgstr ""
 "`show_fit_params=False`; with `show_fit_params=True` the function "
 "automatically generates a label with `m` and `c`."
 
-#: ../../source/moduli/fit_utils/lin-fit.md:60
+#: ../../source/moduli/fit_utils/lin-fit.md:62
 msgid ""
 "`normalize_residuals` controlla solo il pannello inferiore del grafico. "
 "Con il default `False`, il pannello mostra i residui fisici `y_i - (m x_i"
@@ -119,7 +137,7 @@ msgstr ""
 "using the same effective variance used for `chi2`. The "
 "`LinearFitResult.residuals` field is always not normalized."
 
-#: ../../source/moduli/fit_utils/lin-fit.md:62
+#: ../../source/moduli/fit_utils/lin-fit.md:64
 msgid ""
 "Con `fit_method=\"residual\"`, `LinearFitResult.scale_factor` contiene il"
 " fattore stimato. Nel caso non pesato coincide con la deviazione standard"
@@ -132,7 +150,7 @@ msgstr ""
 "it represents the multiplication factor applied to the input "
 "uncertainties."
 
-#: ../../source/moduli/fit_utils/lin-fit.md:64
+#: ../../source/moduli/fit_utils/lin-fit.md:66
 msgid ""
 "Questa pagina resta il punto di accesso rapido alla funzione. I dettagli "
 "pratici sono raccolti in [Panoramica](lin-fit/panoramica.md), mentre "
@@ -142,3 +160,13 @@ msgstr ""
 "This page remains the quick access point for the function. Practical "
 "details are collected in [Overview](lin-fit/panoramica.md), while [How it"
 " works](lin-fit/funzionamento.md) is prepared as a separate subpage."
+
+#~ msgid ""
+#~ "Con `fit_method=\"absolute\"` usa le "
+#~ "incertezze assolute passate in `sigma_y` "
+#~ "e, se presente, `sigma_x`."
+#~ msgstr ""
+#~ "With `fit_method=\"absolute\"` it uses the "
+#~ "absolute uncertainties passed in `sigma_y` "
+#~ "and, if present, `sigma_x`."
+
