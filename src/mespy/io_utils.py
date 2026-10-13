@@ -70,7 +70,7 @@ def load_csv(
         If ``missing="error"`` and the file contains missing values.
     """
     if missing not in {"error", "drop", "allow"}:
-        raise ValueError("missing deve essere uno tra: 'error', 'drop', 'allow'")
+        raise ValueError("missing must be one of: 'error', 'drop', 'allow'")
 
     df = pd.read_csv(
         Path(path),
@@ -86,12 +86,12 @@ def load_csv(
     if required_columns:
         missing_columns = [col for col in required_columns if col not in df.columns]
         if missing_columns:
-            raise ValueError(f"Colonne mancanti: {missing_columns}")
+            raise ValueError(f"Missing columns: {missing_columns}")
 
     if missing == "drop":
         return df.dropna()
 
     if missing == "error" and df.isna().any().any():
-        raise ValueError("Il file contiene valori mancanti")
+        raise ValueError("The file contains missing values")
 
     return df

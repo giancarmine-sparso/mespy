@@ -27,7 +27,7 @@ def variance(x: ArrayLike, w: ArrayLike | None = None, ddof: int | float = 0) ->
         denom = n - ddof
         if denom <= 0:
             raise ValueError(
-                f"denominatore non positivo: len(x) - ddof = {n} - {ddof}"
+                f"non-positive denominator: len(x) - ddof = {n} - {ddof}"
             )
 
         dx = values - float(np.mean(values))
@@ -37,7 +37,7 @@ def variance(x: ArrayLike, w: ArrayLike | None = None, ddof: int | float = 0) ->
     denom = w_sum - ddof
     if denom <= 0:
         raise ValueError(
-            f"denominatore non positivo: sum(w) - ddof = {w_sum} - {ddof}"
+            f"non-positive denominator: sum(w) - ddof = {w_sum} - {ddof}"
         )
 
     dx = values - float(np.sum(weights * values) / w_sum)

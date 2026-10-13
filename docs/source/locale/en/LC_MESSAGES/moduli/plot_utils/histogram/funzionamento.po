@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-06 17:59+0200\n"
+"POT-Creation-Date: 2026-10-13 08:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,57 +18,51 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:1
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:1
 msgid "Funzionamento"
 msgstr "Implementation"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:3
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:3
 msgid ""
-"Questa pagina descrive il flusso interno di `histogram` e l'ordine con "
-"cui vengono applicate validazioni, scelta dei bin e aggiunte grafiche. A "
-"differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere"
-" la lista dei parametri, ma mostrare come la funzione costruisce davvero "
-"l'istogramma."
+"Questa pagina descrive il flusso interno di `histogram` e l'ordine con cui vengono "
+"applicate validazioni, scelta dei bin e aggiunte grafiche. A differenza di "
+"[Panoramica](panoramica.md), qui l'obiettivo non e ripetere la lista dei parametri, "
+"ma mostrare come la funzione costruisce davvero l'istogramma."
 msgstr ""
-"This page describes the internal flow of `histogram` and the order in "
-"which validation, bin selection, and plotting additions are applied. "
-"Unlike [Overview](panoramica.md), the goal here is not to repeat the "
-"parameter list, but to show how the function actually builds the "
-"histogram."
+"This page describes the internal flow of `histogram` and the order in which "
+"validation, bin selection, and plotting additions are applied. Unlike "
+"[Overview](panoramica.md), the goal here is not to repeat the parameter list, but to "
+"show how the function actually builds the histogram."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:5
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:5
 msgid ""
-"I frammenti seguenti sono estratti dal codice attuale di "
-"`src/mespy/plot_utils.py`. Gli helper privati vengono citati solo per "
-"chiarire il flusso; i dettagli completi sono documentati in "
-"[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), "
-"[`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-"
-"limits.md), [`_validate_figsize`](../../../checks/plot_utils/validate-"
-"figsize.md), [`_validate_decimals`](../../../checks/plot_utils/validate-"
-"decimals.md), [`_style_context`](../../../checks/plot_utils/style-"
-"context.md) e [`standard_deviation`](../../stats_utils/standard-"
-"deviation.md)."
+"I frammenti seguenti sono estratti dal codice attuale di `src/mespy/plot_utils.py`. "
+"Gli helper privati vengono citati solo per chiarire il flusso; i dettagli completi "
+"sono documentati in [`_as_float_vector`](../../../checks/stats_utils/as-float-"
+"vector.md), [`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-"
+"limits.md), [`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md), "
+"[`_validate_decimals`](../../../checks/plot_utils/validate-decimals.md), "
+"[`_style_context`](../../../checks/plot_utils/style-context.md) e "
+"[`standard_deviation`](../../stats_utils/standard-deviation.md)."
 msgstr ""
-"The following snippets are taken from the current "
-"`src/mespy/plot_utils.py` implementation. Private helpers are mentioned "
-"only to clarify the flow; complete details are documented in "
-"[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), "
-"[`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-"
-"limits.md), [`_validate_figsize`](../../../checks/plot_utils/validate-"
-"figsize.md), [`_validate_decimals`](../../../checks/plot_utils/validate-"
-"decimals.md), [`_style_context`](../../../checks/plot_utils/style-"
-"context.md), and [`standard_deviation`](../../stats_utils/standard-"
-"deviation.md)."
+"The following snippets are taken from the current `src/mespy/plot_utils.py` "
+"implementation. Private helpers are mentioned only to clarify the flow; complete "
+"details are documented in [`_as_float_vector`](../../../checks/stats_utils/as-float-"
+"vector.md), [`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-"
+"limits.md), [`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md), "
+"[`_validate_decimals`](../../../checks/plot_utils/validate-decimals.md), "
+"[`_style_context`](../../../checks/plot_utils/style-context.md), and "
+"[`standard_deviation`](../../stats_utils/standard-deviation.md)."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:7
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:7
 msgid "Sequenza di esecuzione"
 msgstr "Execution sequence"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:9
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:9
 msgid "L'implementazione segue questa sequenza:"
 msgstr "The implementation follows this sequence:"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:11
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:11
 msgid ""
 "Converte `x` in un vettore `float64` monodimensionale e finito con "
 "`_as_float_vector(\"x\", x)`."
@@ -76,530 +70,535 @@ msgstr ""
 "Converts `x` into a one-dimensional, finite `float64` vector with "
 "`_as_float_vector(\"x\", x)`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:12
-msgid "Valida `decimals` come intero non negativo e leggibile."
-msgstr "Validates `decimals` as a readable non-negative integer."
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:13
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:12
 msgid ""
-"Risolve il nome stile con `_resolve_style(style)` ed entra in "
-"`_style_context(...)` per applicarlo e uniformare il comportamento nei "
-"notebook."
+"Valida `stat` e `decimals`; i valori di `stat` ammessi sono `\"count\"`, "
+"`\"probability\"` e `\"density\"`."
 msgstr ""
-"Resolves the style name with `_resolve_style(style)` and enters "
-"`_style_context(...)` to apply it and make behaviour consistent across "
-"notebooks."
+"Validates `stat` and `decimals`; the accepted `stat` values are `\"count\"`, "
+"`\"probability\"`, and `\"density\"`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:14
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:13
+msgid ""
+"Risolve il nome stile con `_resolve_style(style)` ed entra in `_style_context(...)` "
+"per applicarlo e uniformare il comportamento nei notebook."
+msgstr ""
+"Resolves the style name with `_resolve_style(style)` and enters `_style_context(...)`"
+" to apply it and make behaviour consistent across notebooks."
+
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:14
 msgid "Se `xlim` o `ylim` sono forniti, li valida come coppie di valori finiti."
-msgstr ""
-"If `xlim` or `ylim` are provided, it validates them as pairs of finite "
-"values."
+msgstr "If `xlim` or `ylim` are provided, it validates them as pairs of finite values."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:15
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:15
 msgid ""
-"Se `ax is None`, crea una nuova figura con `plt.subplots(...)`; "
-"altrimenti riusa la figura associata all'asse ricevuto."
+"Se `ax is None`, crea una nuova figura con `plt.subplots(...)`; altrimenti riusa la "
+"figura associata all'asse ricevuto."
 msgstr ""
-"If `ax is None`, it creates a new figure with `plt.subplots(...)`; "
-"otherwise it reuses the figure associated with the provided axis."
+"If `ax is None`, it creates a new figure with `plt.subplots(...)`; otherwise it "
+"reuses the figure associated with the provided axis."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:16
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:16
 msgid ""
-"Costruisce `hist_range_tuple` se `hist_range` e presente, e verifica che "
-"soddisfi `xmin < xmax`."
+"Costruisce `hist_range_tuple` se `hist_range` e presente, e verifica che soddisfi "
+"`xmin < xmax`."
 msgstr ""
-"Builds `hist_range_tuple` if `hist_range` is provided, and checks that it"
-" satisfies `xmin < xmax`."
+"Builds `hist_range_tuple` if `hist_range` is provided, and checks that it satisfies "
+"`xmin < xmax`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:17
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:17
 msgid ""
-"Se `bin_width` e valorizzato, controlla che sia positivo, impone `bins =="
-" \"auto\"` e costruisce esplicitamente i bordi dei bin con "
-"`np.arange(...)`."
+"Se `bin_width` e valorizzato, controlla che sia positivo, impone `bins == \"auto\"` e"
+" costruisce esplicitamente i bordi dei bin con `np.arange(...)`."
 msgstr ""
-"If `bin_width` is provided, it checks that it is positive, enforces `bins"
-" == \"auto\"`, and explicitly builds the bin edges with `np.arange(...)`."
+"If `bin_width` is provided, it checks that it is positive, enforces `bins == "
+"\"auto\"`, and explicitly builds the bin edges with `np.arange(...)`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:18
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:18
 msgid ""
-"Prepara `hist_kwargs`, aggiungendo `bar_color` ed `edgecolor` solo quando"
-" sono stati passati esplicitamente."
+"Prepara le opzioni grafiche del ramo scelto, aggiungendo `bar_color` ed `edgecolor` "
+"solo quando sono stati passati esplicitamente."
 msgstr ""
-"Prepares `hist_kwargs`, adding `bar_color` and `edgecolor` only when they"
-" were passed explicitly."
+"Prepares the plotting options for the selected branch, adding `bar_color` and "
+"`edgecolor` only when explicitly provided."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:19
-msgid "Chiama `ax.hist(...)` per disegnare l'istogramma e recuperare `bin_edges`."
-msgstr "Calls `ax.hist(...)` to draw the histogram and retrieve `bin_edges`."
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:20
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:19
 msgid ""
-"Se richiesto, usa `bin_edges` per impostare tick e label dell'asse x, poi"
-" applica l'eventuale rotazione."
+"Per `\"count\"`, chiama il precedente `ax.hist(...)`; per le modalità normalizzate, "
+"calcola conteggi e bordi con NumPy e disegna le altezze tramite `ax.bar(...)`."
 msgstr ""
-"If requested, it uses `bin_edges` to set x-axis ticks and labels, then "
-"applies any requested rotation."
+"For `\"count\"`, calls the previous `ax.hist(...)`; for normalized modes, computes "
+"counts and edges with NumPy and draws the heights using `ax.bar(...)`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:21
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:20
+msgid ""
+"Se richiesto, usa `bin_edges` per impostare tick e label dell'asse x, poi applica "
+"l'eventuale rotazione."
+msgstr ""
+"If requested, it uses `bin_edges` to set x-axis ticks and labels, then applies any "
+"requested rotation."
+
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:21
 msgid "Calcola media aritmetica e deviazione standard del campione."
 msgstr "Computes the arithmetic mean and standard deviation of the sample."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:22
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:22
 msgid "Se attivi, aggiunge la linea della media e la banda `+- 1 sigma`."
 msgstr "If enabled, it adds the mean line and the `+- 1 sigma` band."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:23
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:23
 msgid ""
-"Imposta etichette, titolo, griglia, legenda, limiti assi, eventuale "
-"salvataggio e infine restituisce `(fig, ax)`."
+"Imposta etichette, titolo, griglia, legenda, limiti assi, eventuale salvataggio e "
+"infine restituisce `(fig, ax)`."
 msgstr ""
-"Sets labels, title, grid, legend, axis limits, optional saving, and "
-"finally returns `(fig, ax)`."
+"Sets labels, title, grid, legend, axis limits, optional saving, and finally returns "
+"`(fig, ax)`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:24
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:24
 msgid ""
-"In ambiente IPython/Jupyter, `_style_context` mostra esplicitamente le "
-"nuove figure prima di uscire dal context manager."
+"In ambiente IPython/Jupyter, `_style_context` mostra esplicitamente le nuove figure "
+"prima di uscire dal context manager."
 msgstr ""
-"In IPython/Jupyter environments, `_style_context` explicitly displays the"
-" new figures before leaving the context manager."
+"In IPython/Jupyter environments, `_style_context` explicitly displays the new figures"
+" before leaving the context manager."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:26
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:26
 msgid "Validazione input, stile e setup figura"
 msgstr "Input validation, style, and figure setup"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:62
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:69
 msgid "Questo primo blocco fissa il contratto di ingresso della funzione."
 msgstr "This first block sets the function's input contract."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:64
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:71
 msgid ""
-"`x` non viene passato direttamente a Matplotlib: prima viene normalizzato"
-" in `values`, che deve essere un array numerico monodimensionale, non "
-"vuoto e senza valori non finiti."
+"`x` non viene passato direttamente a Matplotlib: prima viene normalizzato in "
+"`values`, che deve essere un array numerico monodimensionale, non vuoto e senza "
+"valori non finiti."
 msgstr ""
-"`x` is not passed directly to Matplotlib: it is first normalized into "
-"`values`, which must be a one-dimensional, non-empty numeric array "
-"without non-finite values."
+"`x` is not passed directly to Matplotlib: it is first normalized into `values`, which"
+" must be a one-dimensional, non-empty numeric array without non-finite values."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:65
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:72
 msgid ""
-"`decimals` viene validato subito e resta disponibile sia per i tick "
-"dell'asse x sia per le label testuali di media e banda."
+"`stat` viene validato prima di creare la figura; valori diversi dalle tre stringhe "
+"supportate generano un `ValueError` informativo."
 msgstr ""
-"`decimals` is validated immediately and remains available both for x-axis"
-" ticks and for the textual labels of the mean and band."
+"`stat` is validated before the figure is created; values other than the three "
+"supported strings raise an informative `ValueError`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:66
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:73
 msgid ""
-"`_resolve_style(style)` permette di usare i nomi brevi degli stili "
-"inclusi nel package; `_style_context(...)` centralizza poi tre casi "
-"distinti: `style=None` usa gli `rcParams` correnti, `style=\"mespy\"` "
-"carica il file `mespy.mplstyle`, ogni altra stringa viene passata a "
+"`decimals` viene validato subito e resta disponibile sia per i tick dell'asse x sia "
+"per le label testuali di media e banda."
+msgstr ""
+"`decimals` is validated immediately and remains available both for x-axis ticks and "
+"for the textual labels of the mean and band."
+
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:74
+msgid ""
+"`_resolve_style(style)` permette di usare i nomi brevi degli stili inclusi nel "
+"package; `_style_context(...)` centralizza poi tre casi distinti: `style=None` usa "
+"gli `rcParams` correnti, `style=\"mespy\"` carica il file `mespy.mplstyle`, ogni "
+"altra stringa viene passata a `plt.style.context(...)`."
+msgstr ""
+"`_resolve_style(style)` allows the short names of the styles bundled with the "
+"package; `_style_context(...)` then centralizes three distinct cases: `style=None` "
+"uses the current `rcParams`, `style=\"mespy\"` loads the `mespy.mplstyle` file, and "
+"any other string is passed to `plt.style.context(...)`."
+
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:75
+msgid ""
+"`xlim` e `ylim` vengono controllati prima di qualunque disegno. Se sono presenti, "
+"devono essere coppie valide di numeri finiti."
+msgstr ""
+"`xlim` and `ylim` are checked before any drawing happens. If they are present, they "
+"must be valid pairs of finite numbers."
+
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:76
+msgid ""
+"`figsize` e `dpi` vengono passati a `plt.subplots(...)` solo quando sono esplicitati."
+" Se l'utente passa `ax`, la funzione non crea una nuova figura e riusa "
+"`ax.get_figure()`."
+msgstr ""
+"`figsize` and `dpi` are passed to `plt.subplots(...)` only when they are explicitly "
+"provided. If the user passes `ax`, the function does not create a new figure and "
+"reuses `ax.get_figure()`."
+
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:77
+msgid ""
+"`constrained_layout=True` fa parte del comportamento standard quando `histogram` crea"
+" da sola la figura."
+msgstr ""
+"`constrained_layout=True` is part of the standard behaviour when `histogram` creates "
+"the figure on its own."
+
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:78
+msgid ""
+"In notebook IPython/Jupyter, lo stesso context manager gestisce anche il display "
+"esplicito delle nuove figure per evitare interazioni scomode con "
 "`plt.style.context(...)`."
 msgstr ""
-"`_resolve_style(style)` allows the short names of the styles bundled with"
-" the package; `_style_context(...)` then centralizes three distinct "
-"cases: `style=None` uses the current `rcParams`, `style=\"mespy\"` loads "
-"the `mespy.mplstyle` file, and any other string is passed to "
-"`plt.style.context(...)`."
+"In IPython/Jupyter notebooks, the same context manager also handles explicit display "
+"of new figures to avoid awkward interactions with `plt.style.context(...)`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:67
-msgid ""
-"`xlim` e `ylim` vengono controllati prima di qualunque disegno. Se sono "
-"presenti, devono essere coppie valide di numeri finiti."
-msgstr ""
-"`xlim` and `ylim` are checked before any drawing happens. If they are "
-"present, they must be valid pairs of finite numbers."
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:68
-msgid ""
-"`figsize` e `dpi` vengono passati a `plt.subplots(...)` solo quando sono "
-"esplicitati. Se l'utente passa `ax`, la funzione non crea una nuova "
-"figura e riusa `ax.get_figure()`."
-msgstr ""
-"`figsize` and `dpi` are passed to `plt.subplots(...)` only when they are "
-"explicitly provided. If the user passes `ax`, the function does not "
-"create a new figure and reuses `ax.get_figure()`."
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:69
-msgid ""
-"`constrained_layout=True` fa parte del comportamento standard quando "
-"`histogram` crea da sola la figura."
-msgstr ""
-"`constrained_layout=True` is part of the standard behaviour when "
-"`histogram` creates the figure on its own."
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:70
-msgid ""
-"In notebook IPython/Jupyter, lo stesso context manager gestisce anche il "
-"display esplicito delle nuove figure per evitare interazioni scomode con "
-"`plt.style.context(...)`."
-msgstr ""
-"In IPython/Jupyter notebooks, the same context manager also handles "
-"explicit display of new figures to avoid awkward interactions with "
-"`plt.style.context(...)`."
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:72
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:80
 msgid "Range e costruzione dei bin"
 msgstr "Range and bin construction"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:104
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:112
 msgid "Qui la funzione decide il dominio numerico su cui costruire l'istogramma."
-msgstr ""
-"Here the function decides the numeric domain on which the histogram is "
-"built."
+msgstr "Here the function decides the numeric domain on which the histogram is built."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:106
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:114
 msgid ""
-"Se `hist_range` e presente, viene validato con lo stesso helper dei "
-"limiti degli assi, ma con un controllo aggiuntivo: deve valere "
-"strettamente `xmin < xmax`."
+"Se `hist_range` e presente, viene validato con lo stesso helper dei limiti degli "
+"assi, ma con un controllo aggiuntivo: deve valere strettamente `xmin < xmax`."
 msgstr ""
-"If `hist_range` is given, it is validated with the same helper used for "
-"axis limits, plus an extra check: `xmin < xmax` must hold strictly."
+"If `hist_range` is given, it is validated with the same helper used for axis limits, "
+"plus an extra check: `xmin < xmax` must hold strictly."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:107
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:115
 msgid ""
-"Se `hist_range` non e presente, `xmin` e `xmax` vengono ricavati "
-"direttamente dai dati validati in `values`."
+"Se `hist_range` non e presente, `xmin` e `xmax` vengono ricavati direttamente dai "
+"dati validati in `values`."
 msgstr ""
-"If `hist_range` is not given, `xmin` and `xmax` are taken directly from "
-"the validated data in `values`."
+"If `hist_range` is not given, `xmin` and `xmax` are taken directly from the validated"
+" data in `values`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:108
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:116
 msgid ""
-"`bin_width` non modifica solo la larghezza dei bin: cambia proprio la "
-"strategia di costruzione, perche i bordi vengono generati esplicitamente "
-"con `np.arange(...)`."
+"`bin_width` non modifica solo la larghezza dei bin: cambia proprio la strategia di "
+"costruzione, perche i bordi vengono generati esplicitamente con `np.arange(...)`."
 msgstr ""
-"`bin_width` does not just change the bin width: it changes the "
-"construction strategy itself, because the edges are generated explicitly "
-"with `np.arange(...)`."
+"`bin_width` does not just change the bin width: it changes the construction strategy "
+"itself, because the edges are generated explicitly with `np.arange(...)`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:109
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:117
 msgid ""
-"Il calcolo di `start` e `stop` usa `floor` e `ceil`, quindi i bin vengono"
-" allineati a multipli interi di `bin_width` che coprano tutto "
-"l'intervallo considerato."
+"Il calcolo di `start` e `stop` usa `floor` e `ceil`, quindi i bin vengono allineati a"
+" multipli interi di `bin_width` che coprano tutto l'intervallo considerato. Le "
+"osservazioni in questa eventuale estensione del range restano incluse anche nel "
+"denominatore delle modalità normalizzate."
 msgstr ""
-"Computing `start` and `stop` uses `floor` and `ceil`, so the bins are "
-"aligned to integer multiples of `bin_width` that cover the whole range "
-"considered."
+"The calculation of `start` and `stop` uses `floor` and `ceil`, aligning bins to "
+"integer multiples of `bin_width` that cover the selected interval. Observations in "
+"this possible range extension remain included in the denominator of normalized modes "
+"as well."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:111
-msgid "Chiamata a `ax.hist(...)` e formattazione dell'asse x"
-msgstr "Calling `ax.hist(...)` and formatting the x axis"
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:119
+msgid "Conteggi, normalizzazione e formattazione dell'asse x"
+msgstr "Counts, normalization, and x-axis formatting"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:137
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:171
 msgid "Questo e il punto in cui il grafico viene davvero disegnato."
 msgstr "This is where the plot is actually drawn."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:139
-msgid ""
-"La funzione usa `density=False`, quindi l'istogramma e sempre a conteggi,"
-" non a densita normalizzata."
-msgstr ""
-"The function uses `density=False`, so the histogram always shows counts, "
-"not a normalized density."
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:173
+msgid "Il ramo `\"count\"` mantiene la chiamata originale a `ax.hist(..., density=False)`."
+msgstr "The `\"count\"` branch retains the original `ax.hist(..., density=False)` call."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:140
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:174
 msgid ""
-"`bar_color` ed `edgecolor` non hanno un default hardcoded nella funzione:"
-" vengono inoltrati a Matplotlib solo se l'utente li passa. Altrimenti "
-"decide lo stile attivo."
+"Nei rami normalizzati, `N = counts.sum()` conta solo le osservazioni incluse nei bin;"
+" con `N > 0` le altezze diventano `counts / N` e, per `\"density\"`, vengono divise "
+"anche per le singole ampiezze. Con `N == 0` rimangono nulle."
 msgstr ""
-"`bar_color` and `edgecolor` have no hardcoded default in the function: "
-"they are forwarded to Matplotlib only if the user passes them. Otherwise "
-"the active style decides."
+"In normalized branches, `N = counts.sum()` counts only observations included in the "
+"bins; when `N > 0`, heights become `counts / N` and, for `\"density\"`, are also "
+"divided by the individual widths. When `N == 0`, they remain zero."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:141
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:175
 msgid ""
-"`ax.hist(...)` restituisce `bin_edges`, che diventano la sorgente "
-"ufficiale per i tick dell'asse x quando `show_bin_ticks=True`."
+"`ax.bar(..., align=\"edge\", width=np.diff(bin_edges))` allinea ogni barra al bordo "
+"sinistro e rispetta ampiezze disuguali. Matplotlib gestisce l'autoscaling sulle "
+"altezze finali, senza doppia normalizzazione."
 msgstr ""
-"`ax.hist(...)` returns `bin_edges`, which become the authoritative source"
-" for the x-axis ticks when `show_bin_ticks=True`."
+"`ax.bar(..., align=\"edge\", width=np.diff(bin_edges))` aligns each bar to its left "
+"edge and respects unequal widths. Matplotlib autoscales to the final heights, without"
+" double normalization."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:142
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:176
 msgid ""
-"Le etichette dei bordi non vengono calcolate in modo indipendente: "
-"vengono formattate direttamente dai `bin_edges` prodotti da Matplotlib."
+"`bar_color` ed `edgecolor` non hanno un default hardcoded nella funzione: vengono "
+"inoltrati a Matplotlib solo se l'utente li passa. Altrimenti decide lo stile attivo."
 msgstr ""
-"The edge labels are not computed independently: they are formatted "
-"directly from the `bin_edges` produced by Matplotlib."
+"`bar_color` and `edgecolor` have no hardcoded default in the function: they are "
+"forwarded to Matplotlib only if the user passes them. Otherwise the active style "
+"decides."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:143
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:177
+msgid ""
+"I `bin_edges` restituiti da Matplotlib (`\"count\"`) o NumPy (modalità normalizzate) "
+"sono la sorgente dei tick quando `show_bin_ticks=True`."
+msgstr ""
+"The `bin_edges` returned by Matplotlib (`\"count\"`) or NumPy (normalized modes) are "
+"the source of ticks when `show_bin_ticks=True`."
+
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:178
+msgid ""
+"Le etichette dei bordi vengono formattate direttamente dai `bin_edges` usati per "
+"disegnare le barre."
+msgstr "Bin-edge labels are formatted directly from the `bin_edges` used to draw the bars."
+
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:179
 #, python-brace-format
 msgid ""
-"`decimals` controlla la rappresentazione testuale dei bordi tramite `fmt "
-"= f\".{decimals}f\"`, ma la stessa formattazione verra riusata anche per "
-"media e banda."
+"`decimals` controlla la rappresentazione testuale dei bordi tramite `fmt = "
+"f\".{decimals}f\"`, ma la stessa formattazione verra riusata anche per media e banda."
 msgstr ""
 "`decimals` controls the text representation of the edges through `fmt = "
-"f\".{decimals}f\"`, and the same formatting is reused for the mean and "
-"the band."
+"f\".{decimals}f\"`, and the same formatting is reused for the mean and the band."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:144
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:180
 msgid ""
-"`tick_rotation` e indipendente da `show_bin_ticks`: se diverso da zero, "
-"la rotazione viene comunque applicata all'asse x."
+"`tick_rotation` e indipendente da `show_bin_ticks`: se diverso da zero, la rotazione "
+"viene comunque applicata all'asse x."
 msgstr ""
-"`tick_rotation` is independent of `show_bin_ticks`: if it is non-zero, "
-"the rotation is applied to the x axis in any case."
+"`tick_rotation` is independent of `show_bin_ticks`: if it is non-zero, the rotation "
+"is applied to the x axis in any case."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:146
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:182
 msgid "Media, banda e finalizzazione del grafico"
 msgstr "Mean, band, and plot finalization"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:216
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:257
 msgid ""
-"L'ultima parte aggiunge gli elementi statistici e completa la "
-"configurazione dell'asse."
-msgstr ""
-"The last part adds the statistical elements and completes the axis "
-"configuration."
+"L'ultima parte aggiunge gli elementi statistici e completa la configurazione "
+"dell'asse."
+msgstr "The last part adds the statistical elements and completes the axis configuration."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:218
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:259
 msgid ""
-"La media `mu` e calcolata con `np.mean(values)`, mentre `sigma` viene "
-"delegata a [`standard_deviation`](../../stats_utils/standard-"
-"deviation.md) e quindi dipende da `ddof`."
+"La media `mu` e calcolata con `np.mean(values)`, mentre `sigma` viene delegata a "
+"[`standard_deviation`](../../stats_utils/standard-deviation.md) e quindi dipende da "
+"`ddof`."
 msgstr ""
-"The mean `mu` is computed with `np.mean(values)`, while `sigma` is "
-"delegated to [`standard_deviation`](../../stats_utils/standard-"
-"deviation.md) and therefore depends on `ddof`."
+"The mean `mu` is computed with `np.mean(values)`, while `sigma` is delegated to "
+"[`standard_deviation`](../../stats_utils/standard-deviation.md) and therefore depends"
+" on `ddof`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:219
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:260
 msgid ""
-"`show_mean` e `show_band` sono indipendenti: si puo mostrare solo la "
-"linea, solo la banda, entrambe oppure nessuna delle due."
+"`show_mean` e `show_band` sono indipendenti: si puo mostrare solo la linea, solo la "
+"banda, entrambe oppure nessuna delle due."
 msgstr ""
-"`show_mean` and `show_band` are independent: you can show only the line, "
-"only the band, both, or neither."
+"`show_mean` and `show_band` are independent: you can show only the line, only the "
+"band, both, or neither."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:220
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:261
 msgid ""
-"`mean_color` e `band_color` sovrascrivono lo stile solo quando non sono "
-"`None`; altrimenti la funzione usa i colori del ciclo attivo."
+"`mean_color` e `band_color` sovrascrivono lo stile solo quando non sono `None`; "
+"altrimenti la funzione usa i colori del ciclo attivo."
 msgstr ""
-"`mean_color` and `band_color` override the style only when they are not "
-"`None`; otherwise the function uses the colors of the active cycle."
+"`mean_color` and `band_color` override the style only when they are not `None`; "
+"otherwise the function uses the colors of the active cycle."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:221
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:262
+msgid "La legenda della media usa `mean_symbol`, mentre quella della banda usa `band_symbol`."
+msgstr "The mean legend entry uses `mean_symbol`, while the band entry uses `band_symbol`."
+
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:263
 msgid ""
-"La legenda della media usa `mean_symbol`, mentre quella della banda usa "
-"`band_symbol`."
+"Se `ylabel` è `None`, la funzione sceglie `\"Conteggi\"`, `\"Frequenza relativa\"` o "
+"`\"Densità di frequenza\"` in base a `stat`; rispetta sempre un valore esplicito."
 msgstr ""
-"The mean legend entry uses `mean_symbol`, while the band entry uses "
-"`band_symbol`."
+"If `ylabel` is `None`, the function selects `\"Conteggi\"`, `\"Frequenza relativa\"`,"
+" or `\"Densità di frequenza\"` according to `stat`; it always respects an explicit "
+"value."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:222
-msgid "Se `ylabel` e `None`, la funzione usa il default esplicito `\"Conteggi\"`."
-msgstr ""
-"If `ylabel` is `None`, the function uses the explicit default "
-"`\"Conteggi\"`."
-
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:223
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:264
 msgid ""
-"Titolo e legenda ricevono keyword aggiuntive solo quando l'utente le ha "
-"valorizzate; in tutti gli altri casi resta valida la configurazione dello"
-" stile attivo."
+"Titolo e legenda ricevono keyword aggiuntive solo quando l'utente le ha valorizzate; "
+"in tutti gli altri casi resta valida la configurazione dello stile attivo."
 msgstr ""
-"Title and legend receive extra keyword arguments only when the user has "
-"provided them; in all other cases, the active style configuration remains"
-" in effect."
+"Title and legend receive extra keyword arguments only when the user has provided "
+"them; in all other cases, the active style configuration remains in effect."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:224
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:265
 msgid ""
-"La griglia segue tre rami distinti: `show_grid=False` la spegne "
-"esplicitamente, `show_grid=True` con `grid_alpha is None` la lascia allo "
-"stile attivo, `show_grid=True` con `grid_alpha` esplicito applica una "
-"griglia sull'asse `y` con quell'opacita."
+"La griglia segue tre rami distinti: `show_grid=False` la spegne esplicitamente, "
+"`show_grid=True` con `grid_alpha is None` la lascia allo stile attivo, "
+"`show_grid=True` con `grid_alpha` esplicito applica una griglia sull'asse `y` con "
+"quell'opacita."
 msgstr ""
-"The grid follows three distinct branches: `show_grid=False` turns it off "
-"explicitly, `show_grid=True` with `grid_alpha is None` leaves it to the "
-"active style, and `show_grid=True` with an explicit `grid_alpha` applies "
-"a grid on the `y` axis with that opacity."
+"The grid follows three distinct branches: `show_grid=False` turns it off explicitly, "
+"`show_grid=True` with `grid_alpha is None` leaves it to the active style, and "
+"`show_grid=True` with an explicit `grid_alpha` applies a grid on the `y` axis with "
+"that opacity."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:225
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:266
 msgid ""
-"Il salvataggio avviene alla fine con `bbox_inches=\"tight\"`; il `dpi` "
-"viene passato a `savefig(...)` solo se l'utente lo ha richiesto."
+"Il salvataggio avviene alla fine con `bbox_inches=\"tight\"`; il `dpi` viene passato "
+"a `savefig(...)` solo se l'utente lo ha richiesto."
 msgstr ""
-"Saving happens at the end with `bbox_inches=\"tight\"`; `dpi` is passed "
-"to `savefig(...)` only if the user explicitly requested it."
+"Saving happens at the end with `bbox_inches=\"tight\"`; `dpi` is passed to "
+"`savefig(...)` only if the user explicitly requested it."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:226
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:267
 msgid ""
-"Il formato del file segue l'estensione di `save_path`; se il percorso non"
-" ha estensione, viene aggiunto `.pdf`."
+"Il formato del file segue l'estensione di `save_path`; se il percorso non ha "
+"estensione, viene aggiunto `.pdf`."
 msgstr ""
-"The file format follows the extension of `save_path`; if the path has no "
-"extension, `.pdf` is appended."
+"The file format follows the extension of `save_path`; if the path has no extension, "
+"`.pdf` is appended."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:228
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:269
 msgid "Interazioni importanti tra parametri"
 msgstr "Important interactions between parameters"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:230
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:271
 msgid ""
-"Alcune combinazioni di parametri definiscono il comportamento pratico piu"
-" importante della funzione."
+"Alcune combinazioni di parametri definiscono il comportamento pratico piu importante "
+"della funzione."
 msgstr ""
-"Some parameter combinations define the most important practical behaviour"
-" of the function."
+"Some parameter combinations define the most important practical behaviour of the "
+"function."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:232
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:273
 msgid ""
-"`bin_width` e `bins` sono mutualmente esclusivi, salvo il caso default in"
-" cui `bins == \"auto\"`."
+"`bin_width` e `bins` sono mutualmente esclusivi, salvo il caso default in cui `bins "
+"== \"auto\"`."
 msgstr ""
-"`bin_width` and `bins` are mutually exclusive, except for the default "
-"case where `bins == \"auto\"`."
+"`bin_width` and `bins` are mutually exclusive, except for the default case where "
+"`bins == \"auto\"`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:233
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:274
 msgid ""
-"`hist_range` ha due ruoli diversi: se `bin_width` e assente, viene "
-"passato a `ax.hist(..., range=...)`; se `bin_width` e presente, viene "
-"usato per determinare `xmin` e `xmax` da cui costruire i bordi dei bin."
+"Con bordi espliciti, sono i bordi a determinare le osservazioni incluse: `hist_range`"
+" non applica un filtro aggiuntivo."
 msgstr ""
-"`hist_range` has two different roles: if `bin_width` is absent, it is "
-"passed to `ax.hist(..., range=...)`; if `bin_width` is given, it is used "
-"to determine the `xmin` and `xmax` from which the bin edges are built."
+"With explicit bin edges, the edges determine which observations are included: "
+"`hist_range` does not apply an additional filter."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:234
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:275
 msgid ""
-"`style=None` usa gli `rcParams` correnti; `style=\"mespy\"`, "
-"`style=\"report\"` e gli altri stili inclusi vengono risolti dal package;"
-" qualunque altra stringa passa direttamente da Matplotlib."
+"`hist_range` ha due ruoli diversi: se `bin_width` e assente, viene passato a "
+"`ax.hist(..., range=...)`; se `bin_width` e presente, viene usato per determinare "
+"`xmin` e `xmax` da cui costruire i bordi dei bin."
 msgstr ""
-"`style=None` uses the current `rcParams`; `style=\"mespy\"`, "
-"`style=\"report\"`, and the other bundled styles are resolved by the "
-"package; any other string is passed straight through Matplotlib."
+"`hist_range` has two different roles: if `bin_width` is absent, it is passed to "
+"`ax.hist(..., range=...)`; if `bin_width` is given, it is used to determine the "
+"`xmin` and `xmax` from which the bin edges are built."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:235
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:276
 msgid ""
-"`bar_color`, `mean_color`, `band_color`, `edgecolor`, `title_fontsize`, "
-"`title_pad`, `legend_fontsize`, `legend_loc` e `grid_alpha` sovrascrivono"
-" lo stile solo quando non sono `None`."
+"`style=None` usa gli `rcParams` correnti; `style=\"mespy\"`, `style=\"report\"` e gli"
+" altri stili inclusi vengono risolti dal package; qualunque altra stringa passa "
+"direttamente da Matplotlib."
 msgstr ""
-"`bar_color`, `mean_color`, `band_color`, `edgecolor`, `title_fontsize`, "
-"`title_pad`, `legend_fontsize`, `legend_loc`, and `grid_alpha` override "
-"the style only when they are not `None`."
+"`style=None` uses the current `rcParams`; `style=\"mespy\"`, `style=\"report\"`, and "
+"the other bundled styles are resolved by the package; any other string is passed "
+"straight through Matplotlib."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:236
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:277
 msgid ""
-"`show_bin_ticks=True` usa i `bin_edges` restituiti da Matplotlib, non una"
-" ricostruzione separata fatta da `mespy`."
+"`bar_color`, `mean_color`, `band_color`, `edgecolor`, `title_fontsize`, `title_pad`, "
+"`legend_fontsize`, `legend_loc` e `grid_alpha` sovrascrivono lo stile solo quando non"
+" sono `None`."
 msgstr ""
-"`show_bin_ticks=True` uses the `bin_edges` returned by Matplotlib, not a "
-"separate reconstruction made by `mespy`."
+"`bar_color`, `mean_color`, `band_color`, `edgecolor`, `title_fontsize`, `title_pad`, "
+"`legend_fontsize`, `legend_loc`, and `grid_alpha` override the style only when they "
+"are not `None`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:237
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:278
 msgid ""
-"`ddof` influisce solo sul calcolo di `sigma` e quindi sulla banda `+- 1 "
-"sigma`; non cambia i conteggi dell'istogramma."
+"`show_bin_ticks=True` usa gli stessi bordi del grafico, restituiti da Matplotlib o "
+"NumPy in base alla modalità."
 msgstr ""
-"`ddof` only affects the computation of `sigma` and therefore the `+- 1 "
-"sigma` band; it does not change the histogram counts."
+"`show_bin_ticks=True` uses the same edges as the plot, returned by Matplotlib or "
+"NumPy depending on the mode."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:238
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:279
 msgid ""
-"`ylabel=None` non lascia l'asse senza etichetta: produce sempre "
-"`\"Conteggi\"`."
+"`ddof` influisce solo sul calcolo di `sigma` e quindi sulla banda `+- 1 sigma`; non "
+"cambia i conteggi dell'istogramma."
 msgstr ""
-"`ylabel=None` does not leave the axis unlabelled: it always produces "
-"`\"Conteggi\"`."
+"`ddof` only affects the computation of `sigma` and therefore the `+- 1 sigma` band; "
+"it does not change the histogram counts."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:239
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:280
 msgid ""
-"`figsize` ha effetto solo quando `ax is None`; `dpi` puo invece influire "
-"sia sulla creazione della figura sia sul salvataggio, ma sempre solo se "
-"esplicitato."
+"`stat` cambia solo le altezze delle barre e l'etichetta automatica dell'asse y; media"
+" e deviazione standard rimangono calcolate sull'intero campione."
 msgstr ""
-"`figsize` only has an effect when `ax is None`; `dpi` can instead affect "
-"both figure creation and saving, but always only when it is explicitly "
-"provided."
+"`stat` changes only bar heights and the automatic y-axis label; the mean and standard"
+" deviation are still calculated from the full sample."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:240
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:281
 msgid ""
-"`show_grid` non attiva una griglia completa sul piano, ma solo una "
-"griglia orizzontale legata all'asse `y` quando la funzione interviene "
-"direttamente."
+"`figsize` ha effetto solo quando `ax is None`; `dpi` puo invece influire sia sulla "
+"creazione della figura sia sul salvataggio, ma sempre solo se esplicitato."
 msgstr ""
-"`show_grid` does not enable a full grid on the plane, only a horizontal "
-"grid tied to the `y` axis when the function intervenes directly."
+"`figsize` only has an effect when `ax is None`; `dpi` can instead affect both figure "
+"creation and saving, but always only when it is explicitly provided."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:241
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:282
 msgid ""
-"`save_path` salva sempre la figura finale, anche quando `ax` e stato "
-"passato dall'esterno e la figura non e stata creata dentro `histogram`."
+"`show_grid` non attiva una griglia completa sul piano, ma solo una griglia "
+"orizzontale legata all'asse `y` quando la funzione interviene direttamente."
 msgstr ""
-"`save_path` always saves the final figure, even when `ax` was passed in "
-"from outside and the figure was not created inside `histogram`."
+"`show_grid` does not enable a full grid on the plane, only a horizontal grid tied to "
+"the `y` axis when the function intervenes directly."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:242
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:283
 msgid ""
-"Nei notebook, `_style_context` mostra solo le figure nuove create nel "
-"blocco e poi le chiude, per evitare il doppio display automatico."
+"`save_path` salva sempre la figura finale, anche quando `ax` e stato passato "
+"dall'esterno e la figura non e stata creata dentro `histogram`."
 msgstr ""
-"In notebooks, `_style_context` shows only the new figures created inside "
-"the block and then closes them, to avoid double automatic display."
+"`save_path` always saves the final figure, even when `ax` was passed in from outside "
+"and the figure was not created inside `histogram`."
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:244
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:284
+msgid ""
+"Nei notebook, `_style_context` mostra solo le figure nuove create nel blocco e poi le"
+" chiude, per evitare il doppio display automatico."
+msgstr ""
+"In notebooks, `_style_context` shows only the new figures created inside the block "
+"and then closes them, to avoid double automatic display."
+
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:286
 msgid "Esempio commentato"
 msgstr "Commented example"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:260
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:302
 msgid "In questo esempio:"
 msgstr "In this example:"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:262
-msgid ""
-"`hist_range` definisce l'intervallo numerico da cui ricavare `xmin` e "
-"`xmax`"
-msgstr ""
-"`hist_range` defines the numeric range from which `xmin` and `xmax` are "
-"derived"
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:304
+msgid "`hist_range` definisce l'intervallo numerico da cui ricavare `xmin` e `xmax`"
+msgstr "`hist_range` defines the numeric range from which `xmin` and `xmax` are derived"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:263
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:305
 msgid ""
-"`bin_width=0.5` forza la costruzione esplicita dei bordi dei bin e quindi"
-" esclude l'uso di `bins` diverso da `\"auto\"`"
+"`bin_width=0.5` forza la costruzione esplicita dei bordi dei bin e quindi esclude "
+"l'uso di `bins` diverso da `\"auto\"`"
 msgstr ""
-"`bin_width=0.5` forces explicit construction of the bin edges and "
-"therefore rules out a `bins` value other than `\"auto\"`"
+"`bin_width=0.5` forces explicit construction of the bin edges and therefore rules out"
+" a `bins` value other than `\"auto\"`"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:264
-msgid ""
-"`style=\"mespy\"` chiede esplicitamente lo stile del package per quella "
-"sola chiamata"
-msgstr ""
-"`style=\"mespy\"` explicitly requests the package style for that single "
-"call"
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:306
+msgid "`style=\"mespy\"` chiede esplicitamente lo stile del package per quella sola chiamata"
+msgstr "`style=\"mespy\"` explicitly requests the package style for that single call"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:265
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:307
 msgid ""
-"la linea della media e la banda `+- 1 sigma` vengono aggiunte dopo il "
-"disegno dell'istogramma"
-msgstr ""
-"the mean line and the `+- 1 sigma` band are added after the histogram is "
-"drawn"
+"la linea della media e la banda `+- 1 sigma` vengono aggiunte dopo il disegno "
+"dell'istogramma"
+msgstr "the mean line and the `+- 1 sigma` band are added after the histogram is drawn"
 
-#: ../../source/moduli/plot_utils/histogram/funzionamento.md:266
+#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram/funzionamento.md:308
 msgid ""
-"i tick dell'asse x, se attivi, vengono mostrati usando i bordi dei bin "
-"formattati con 2 decimali"
+"i tick dell'asse x, se attivi, vengono mostrati usando i bordi dei bin formattati con"
+" 2 decimali"
 msgstr ""
-"if x-axis ticks are enabled, they are shown using the bin edges formatted"
-" with 2 decimal places"
+"if x-axis ticks are enabled, they are shown using the bin edges formatted with 2 "
+"decimal places"
 
 #~ msgid ""
-#~ "`decimals` controlla solo la rappresentazione"
-#~ " testuale dei bordi, tramite `fmt ="
-#~ " f\".{decimals}f\"`."
+#~ "`decimals` controlla solo la rappresentazione "
+#~ "testuale dei bordi, tramite `fmt = "
+#~ "f\".{decimals}f\"`."
 #~ msgstr ""
 
 #~ msgid "La griglia, quando attiva, viene applicata solo all'asse `y`."
@@ -607,29 +606,101 @@ msgstr ""
 
 #~ msgid ""
 #~ "Il salvataggio avviene alla fine con "
-#~ "`bbox_inches=\"tight\"`, prima della restituzione"
-#~ " di `(fig, ax)`."
+#~ "`bbox_inches=\"tight\"`, prima della restituzione di "
+#~ "`(fig, ax)`."
 #~ msgstr ""
 
 #~ msgid ""
-#~ "`show_grid` non attiva una griglia "
-#~ "completa sul piano, ma solo una "
-#~ "griglia orizzontale legata all'asse `y`."
+#~ "`show_grid` non attiva una griglia completa "
+#~ "sul piano, ma solo una griglia orizzontale "
+#~ "legata all'asse `y`."
 #~ msgstr ""
 
 #~ msgid ""
-#~ "`mean_color` e `band_color` restano sempre "
-#~ "override espliciti della singola chiamata; "
-#~ "non vengono recuperati da `rcParams`."
+#~ "`mean_color` e `band_color` restano sempre override"
+#~ " espliciti della singola chiamata; non vengono"
+#~ " recuperati da `rcParams`."
 #~ msgstr ""
-#~ "`mean_color` and `band_color` always remain"
-#~ " explicit per-call overrides; they "
-#~ "are not recovered from `rcParams`."
+#~ "`mean_color` and `band_color` always remain explicit"
+#~ " per-call overrides; they are not recovered"
+#~ " from `rcParams`."
 
 #~ msgid ""
-#~ "La legenda della media usa "
-#~ "`mean_symbol`, mentre la banda viene "
-#~ "etichettata come `+- 1 sigma` in "
-#~ "forma matematica."
+#~ "La legenda della media usa `mean_symbol`, "
+#~ "mentre la banda viene etichettata come `+- "
+#~ "1 sigma` in forma matematica."
 #~ msgstr ""
+
+#~ msgid "Valida `decimals` come intero non negativo e leggibile."
+#~ msgstr "Validates `decimals` as a readable non-negative integer."
+
+#~ msgid ""
+#~ "Prepara `hist_kwargs`, aggiungendo `bar_color` ed "
+#~ "`edgecolor` solo quando sono stati passati "
+#~ "esplicitamente."
+#~ msgstr ""
+#~ "Prepares `hist_kwargs`, adding `bar_color` and "
+#~ "`edgecolor` only when they were passed "
+#~ "explicitly."
+
+#~ msgid "Chiama `ax.hist(...)` per disegnare l'istogramma e recuperare `bin_edges`."
+#~ msgstr "Calls `ax.hist(...)` to draw the histogram and retrieve `bin_edges`."
+
+#~ msgid ""
+#~ "Il calcolo di `start` e `stop` usa "
+#~ "`floor` e `ceil`, quindi i bin vengono "
+#~ "allineati a multipli interi di `bin_width` che"
+#~ " coprano tutto l'intervallo considerato."
+#~ msgstr ""
+#~ "Computing `start` and `stop` uses `floor` and"
+#~ " `ceil`, so the bins are aligned to "
+#~ "integer multiples of `bin_width` that cover "
+#~ "the whole range considered."
+
+#~ msgid "Chiamata a `ax.hist(...)` e formattazione dell'asse x"
+#~ msgstr "Calling `ax.hist(...)` and formatting the x axis"
+
+#~ msgid ""
+#~ "La funzione usa `density=False`, quindi l'istogramma"
+#~ " e sempre a conteggi, non a densita "
+#~ "normalizzata."
+#~ msgstr ""
+#~ "The function uses `density=False`, so the "
+#~ "histogram always shows counts, not a "
+#~ "normalized density."
+
+#~ msgid ""
+#~ "`ax.hist(...)` restituisce `bin_edges`, che diventano "
+#~ "la sorgente ufficiale per i tick dell'asse "
+#~ "x quando `show_bin_ticks=True`."
+#~ msgstr ""
+#~ "`ax.hist(...)` returns `bin_edges`, which become the"
+#~ " authoritative source for the x-axis ticks "
+#~ "when `show_bin_ticks=True`."
+
+#~ msgid ""
+#~ "Le etichette dei bordi non vengono calcolate"
+#~ " in modo indipendente: vengono formattate "
+#~ "direttamente dai `bin_edges` prodotti da Matplotlib."
+#~ msgstr ""
+#~ "The edge labels are not computed "
+#~ "independently: they are formatted directly from "
+#~ "the `bin_edges` produced by Matplotlib."
+
+#~ msgid "Se `ylabel` e `None`, la funzione usa il default esplicito `\"Conteggi\"`."
+#~ msgstr "If `ylabel` is `None`, the function uses the explicit default `\"Conteggi\"`."
+
+#~ msgid ""
+#~ "`show_bin_ticks=True` usa i `bin_edges` restituiti "
+#~ "da Matplotlib, non una ricostruzione separata "
+#~ "fatta da `mespy`."
+#~ msgstr ""
+#~ "`show_bin_ticks=True` uses the `bin_edges` returned "
+#~ "by Matplotlib, not a separate reconstruction "
+#~ "made by `mespy`."
+
+#~ msgid "`ylabel=None` non lascia l'asse senza etichetta: produce sempre `\"Conteggi\"`."
+#~ msgstr ""
+#~ "`ylabel=None` does not leave the axis "
+#~ "unlabelled: it always produces `\"Conteggi\"`."
 

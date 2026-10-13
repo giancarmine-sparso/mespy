@@ -149,7 +149,7 @@ def test_lin_fit_without_plot_returns_no_figure():
 
 
 def test_lin_fit_rejects_constant_x():
-    with pytest.raises(ValueError, match="valori distinti"):
+    with pytest.raises(ValueError, match="distinct values"):
         lin_fit([1.0, 1.0, 1.0], [1.0, 2.0, 3.0], [0.1, 0.1, 0.1], plot=False)
 
 
@@ -244,7 +244,7 @@ def test_lin_fit_rejects_constant_large_x_with_uneven_weights():
     rng = np.random.default_rng(1)
     for _ in range(50):
         sigma_y = rng.uniform(0.1, 3.0, 3)
-        with pytest.raises(ValueError, match="valori distinti"):
+        with pytest.raises(ValueError, match="distinct values"):
             lin_fit(np.full(3, 7e15), [1.0, 2.0, 3.0], sigma_y, plot=False)
 
 
@@ -470,7 +470,7 @@ def test_lin_fit_exact_binary_lines_have_zero_dispersion_for_nonminimal_samples(
     assert result.correlation is None
     np.testing.assert_array_equal(result.residuals, np.zeros(x.size))
     np.testing.assert_array_equal(result.predict(x), y)
-    with pytest.raises(ValueError, match="normalize_residuals.*dispersione OLS nulla"):
+    with pytest.raises(ValueError, match="normalize_residuals.*zero OLS dispersion"):
         lin_fit(x, y, normalize_residuals=True)
 
 
@@ -696,8 +696,8 @@ def test_lin_fit_public_analytical_oracles_and_optional_diagnostics(weighted):
         assert recorded[0].category is UserWarning
         assert recorded[0].filename == __file__
         assert str(recorded[0].message) == (
-            "MesPy: sigma_y non fornita. Eseguo un fit non pesato e stimo la dispersione "
-            "dai residui. Le diagnostiche χ² non sono disponibili."
+            "MesPy: sigma_y not provided. Performing an unweighted fit and estimating the "
+            "dispersion from the residuals. χ² diagnostics are not available."
         )
         assert result.fit_method == "ols"
         assert result.intercept == pytest.approx(-1 / 6)
@@ -717,7 +717,7 @@ def test_lin_fit_public_analytical_oracles_and_optional_diagnostics(weighted):
 def test_lin_fit_two_points_require_absolute_uncertainties():
     with warnings.catch_warnings():
         warnings.simplefilter("error")
-        with pytest.raises(ValueError, match="x, y.*3 punti"):
+        with pytest.raises(ValueError, match="x, y.*3 points"):
             lin_fit([0, 2], [1, 5], plot=False)
         result = lin_fit([0, 2], [1, 5], [1, 2], plot=False)
     assert result.fit_method == "wls"
@@ -830,7 +830,7 @@ def test_lin_fit_predict_handles_representable_values_outside_local_scale():
 
 def test_lin_fit_predict_reports_nonrepresentable_output():
     result = lin_fit([0.0, 1.0, 2.0], [0.0, 2.0, 4.0], 1.0, plot=False)
-    with pytest.raises(FloatingPointError, match="previsione.*float64"):
+    with pytest.raises(FloatingPointError, match="prediction.*float64"):
         result.predict(1e308)
 
 
@@ -947,7 +947,7 @@ def test_lin_fit_exact_ols_normalization_fails_before_figure_creation(monkeypatc
 
     monkeypatch.setattr("mespy.fit_utils._plot_linear_fit", forbidden)
     with pytest.raises(
-        ValueError, match="normalize_residuals.*residui non normalizzati"
+        ValueError, match="normalize_residuals.*non-normalized residuals"
     ):
         lin_fit([0, 1, 2], [1, 3, 5], normalize_residuals=True)
 
@@ -2135,7 +2135,7 @@ def test_core_very_different_representable_weights():
 @pytest.mark.parametrize(
     "x, y, sigma_y, message",
     [
-        ([0, 1, 2], [0, 1, 3], [1e-200, 1e200, 1], "sigma_y.*pesi"),
+        ([0, 1, 2], [0, 1, 3], [1e-200, 1e200, 1], "sigma_y.*weights"),
         ([0, 1e-320, 2e-320], [0, 1, 3], 1, "slope"),
         ([0, 1, 2], [0, 1, 3], 1e-200, "chi2|covariance"),
         (1e155 + 1e140 * np.arange(6.0), np.arange(6.0), 1e-154, "covariance"),
@@ -2187,7 +2187,7 @@ def test_core_validation_names_invalid_parameter(name, value, exception):
 def test_core_validation_rejects_length_rank_and_sample_size():
     with pytest.raises(ValueError, match="y"):
         _validate_linear_fit_data([0, 1, 2], [1, 2])
-    with pytest.raises(ValueError, match="x.*distinti"):
+    with pytest.raises(ValueError, match="x.*distinct"):
         _validate_linear_fit_data([1, 1, 1], [1, 2, 3], 1)
     with pytest.raises(ValueError, match="x, y.*3"):
         _validate_linear_fit_data([0, 1], [1, 2])
@@ -2238,7 +2238,7 @@ def test_core_validation_accepts_scalar_and_vector_sigma_without_mutation(sigma)
 def test_core_validation_rejects_boolean_numeric_inputs(name, value):
     arguments = {"x": [0, 1, 2], "y": [0, 1, 3], "sigma_y": 1}
     arguments[name] = value
-    with pytest.raises(TypeError, match=rf"{name}: .*booleani"):
+    with pytest.raises(TypeError, match=rf"{name}: .*boolean"):
         _validate_linear_fit_data(**arguments)
 
 
@@ -2265,7 +2265,7 @@ def test_core_validation_keeps_integer_and_float_sequences(x, y, sigma_y):
 def test_predict_rejects_boolean_coordinates():
     result = lin_fit([0, 1, 2], [0, 1, 3], 1, plot=False)
     for value in (True, np.True_, [False, True]):
-        with pytest.raises(TypeError, match="x_new: .*booleani"):
+        with pytest.raises(TypeError, match="x_new: .*boolean"):
             result.predict(value)
 
 
@@ -2274,7 +2274,7 @@ def test_predict_rejects_boolean_coordinates():
 def test_lin_fit_flags_require_real_booleans(name, value):
     with warnings.catch_warnings():
         warnings.simplefilter("error")
-        with pytest.raises(TypeError, match=rf"{name}: serve un booleano"):
+        with pytest.raises(TypeError, match=rf"{name}: expected a boolean"):
             lin_fit([0, 1, 2], [0, 1, 3], 1, **{name: value})
     assert plt.get_fignums() == []
 
@@ -2320,19 +2320,19 @@ def _replace_fit():
 )
 def test_lin_fit_result_rejects_replacing_fitted_fields(name, value):
     fit = _replace_fit()
-    with pytest.raises(ValueError, match=rf"{name}.*incoerent"):
+    with pytest.raises(ValueError, match=rf"{name}.*inconsistent"):
         dataclasses.replace(fit, **{name: value})
 
 
 @pytest.mark.parametrize("name", ["_core", "_data"])
 def test_lin_fit_result_requires_core_and_data_together(name):
-    with pytest.raises(ValueError, match="_data e _core"):
+    with pytest.raises(ValueError, match="_data and _core"):
         dataclasses.replace(_replace_fit(), **{name: None})
 
 
 @pytest.mark.skipif(not hasattr(copy, "replace"), reason="copy.replace needs 3.13")
 def test_lin_fit_result_copy_replace_is_guarded_too():
-    with pytest.raises(ValueError, match="slope.*incoerent"):
+    with pytest.raises(ValueError, match="slope.*inconsistent"):
         copy.replace(_replace_fit(), slope=10.0)
 
 
@@ -2460,7 +2460,7 @@ def test_lin_fit_rejects_non_string_labels_before_any_artifact(
     target = tmp_path / "new" / "fit"
     with warnings.catch_warnings():
         warnings.simplefilter("error")
-        with pytest.raises(TypeError, match=rf"{name}: serve una stringa"):
+        with pytest.raises(TypeError, match=rf"{name}: expected a string"):
             lin_fit(
                 [0, 1, 2],
                 [0, 1, 3],

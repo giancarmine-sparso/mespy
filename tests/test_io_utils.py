@@ -36,14 +36,14 @@ def test_load_csv_required_columns_are_checked_after_rename(tmp_path):
 def test_load_csv_required_columns_missing(tmp_path):
     csv = tmp_path / "data.csv"
     csv.write_text("a,b\n1,2\n")
-    with pytest.raises(ValueError, match="Colonne mancanti"):
+    with pytest.raises(ValueError, match="Missing columns"):
         load_csv(csv, required_columns=["a", "z"])
 
 
 def test_load_csv_raises_on_missing_values_by_default(tmp_path):
     csv = tmp_path / "data.csv"
     csv.write_text("a,b\n1,2\n3,\n")
-    with pytest.raises(ValueError, match="valori mancanti"):
+    with pytest.raises(ValueError, match="missing values"):
         load_csv(csv)
 
 
@@ -66,7 +66,7 @@ def test_load_csv_missing_allow(tmp_path):
 def test_load_csv_rejects_unknown_missing_policy(tmp_path):
     csv = tmp_path / "data.csv"
     csv.write_text("a,b\n1,2\n")
-    with pytest.raises(ValueError, match="missing deve essere uno tra"):
+    with pytest.raises(ValueError, match="missing must be one of"):
         load_csv(csv, missing="ignore")
 
 

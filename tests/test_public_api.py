@@ -3,7 +3,7 @@ import os
 import subprocess
 import sys
 from importlib import resources
-from typing import get_type_hints
+from typing import Literal, get_type_hints
 
 import mespy as mlt
 from mespy.fit_utils import LinearFitResult
@@ -29,6 +29,23 @@ def test_public_api_freezes_key_signatures():
     histogram_signature = inspect.signature(mlt.histogram)
     assert load_csv_signature.parameters["missing"].default == "error"
     assert histogram_signature.parameters["ddof"].default == 0
+
+
+def test_histogram_stat_signature():
+    from matplotlib.axes import Axes
+    from matplotlib.figure import Figure
+
+    parameters = inspect.signature(mlt.histogram).parameters
+    assert list(parameters)[:2] == ["x", "stat"]
+    assert parameters["stat"].default == "count"
+    for index, parameter in enumerate(parameters.values()):
+        assert parameter.kind == (
+            inspect.Parameter.POSITIONAL_OR_KEYWORD
+            if index < 2
+            else inspect.Parameter.KEYWORD_ONLY
+        )
+    hints = get_type_hints(mlt.histogram, localns={"Axes": Axes, "Figure": Figure})
+    assert hints["stat"] == Literal["count", "probability", "density"]
 
 
 def test_lin_fit_target_signature():

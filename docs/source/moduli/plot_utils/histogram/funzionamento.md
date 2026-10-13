@@ -9,14 +9,14 @@ I frammenti seguenti sono estratti dal codice attuale di `src/mespy/plot_utils.p
 L'implementazione segue questa sequenza:
 
 1. Converte `x` in un vettore `float64` monodimensionale e finito con `_as_float_vector("x", x)`.
-2. Valida `decimals` come intero non negativo e leggibile.
+2. Valida `stat` e `decimals`; i valori di `stat` ammessi sono `"count"`, `"probability"` e `"density"`.
 3. Risolve il nome stile con `_resolve_style(style)` ed entra in `_style_context(...)` per applicarlo e uniformare il comportamento nei notebook.
 4. Se `xlim` o `ylim` sono forniti, li valida come coppie di valori finiti.
 5. Se `ax is None`, crea una nuova figura con `plt.subplots(...)`; altrimenti riusa la figura associata all'asse ricevuto.
 6. Costruisce `hist_range_tuple` se `hist_range` e presente, e verifica che soddisfi `xmin < xmax`.
 7. Se `bin_width` e valorizzato, controlla che sia positivo, impone `bins == "auto"` e costruisce esplicitamente i bordi dei bin con `np.arange(...)`.
-8. Prepara `hist_kwargs`, aggiungendo `bar_color` ed `edgecolor` solo quando sono stati passati esplicitamente.
-9. Chiama `ax.hist(...)` per disegnare l'istogramma e recuperare `bin_edges`.
+8. Prepara le opzioni grafiche del ramo scelto, aggiungendo `bar_color` ed `edgecolor` solo quando sono stati passati esplicitamente.
+9. Per `"count"`, chiama il precedente `ax.hist(...)`; per le modalità normalizzate, calcola conteggi e bordi con NumPy e disegna le altezze tramite `ax.bar(...)`.
 10. Se richiesto, usa `bin_edges` per impostare tick e label dell'asse x, poi applica l'eventuale rotazione.
 11. Calcola media aritmetica e deviazione standard del campione.
 12. Se attivi, aggiunge la linea della media e la banda `+- 1 sigma`.
@@ -27,6 +27,13 @@ L'implementazione segue questa sequenza:
 
 ```python
 values = _as_float_vector("x", x)
+
+if not isinstance(stat, str) or stat not in ("count", "probability", "density"):
+    raise ValueError(
+        "'stat' must be 'count', 'probability' or 'density' "
+        f"| got {stat!r}"
+    )
+
 decimals = _validate_decimals(decimals)
 
 with _style_context(_resolve_style(style)):
@@ -62,6 +69,7 @@ with _style_context(_resolve_style(style)):
 Questo primo blocco fissa il contratto di ingresso della funzione.
 
 - `x` non viene passato direttamente a Matplotlib: prima viene normalizzato in `values`, che deve essere un array numerico monodimensionale, non vuoto e senza valori non finiti.
+- `stat` viene validato prima di creare la figura; valori diversi dalle tre stringhe supportate generano un `ValueError` informativo.
 - `decimals` viene validato subito e resta disponibile sia per i tick dell'asse x sia per le label testuali di media e banda.
 - `_resolve_style(style)` permette di usare i nomi brevi degli stili inclusi nel package; `_style_context(...)` centralizza poi tre casi distinti: `style=None` usa gli `rcParams` correnti, `style="mespy"` carica il file `mespy.mplstyle`, ogni altra stringa viene passata a `plt.style.context(...)`.
 - `xlim` e `ylim` vengono controllati prima di qualunque disegno. Se sono presenti, devono essere coppie valide di numeri finiti.
@@ -82,18 +90,18 @@ if hist_range is not None:
     )
     xmin, xmax = hist_range_tuple
     if xmin >= xmax:
-        raise ValueError("Serve xmin < xmax in 'hist_range'")
+        raise ValueError("'hist_range' requires xmin < xmax")
 else:
     xmin = float(np.min(values))
     xmax = float(np.max(values))
 
 if bin_width is not None:
     if bin_width <= 0:
-        raise ValueError("'bin_width' deve essere > 0.")
+        raise ValueError("'bin_width' must be > 0.")
 
     if bins != "auto":
         raise ValueError(
-            "'bins' e 'bin_width' sono mutualmente esclusivi. Usane uno solo"
+            "'bins' and 'bin_width' are mutually exclusive. Use only one of them"
         )
 
     start = np.floor(xmin / bin_width) * bin_width
@@ -106,24 +114,50 @@ Qui la funzione decide il dominio numerico su cui costruire l'istogramma.
 - Se `hist_range` e presente, viene validato con lo stesso helper dei limiti degli assi, ma con un controllo aggiuntivo: deve valere strettamente `xmin < xmax`.
 - Se `hist_range` non e presente, `xmin` e `xmax` vengono ricavati direttamente dai dati validati in `values`.
 - `bin_width` non modifica solo la larghezza dei bin: cambia proprio la strategia di costruzione, perche i bordi vengono generati esplicitamente con `np.arange(...)`.
-- Il calcolo di `start` e `stop` usa `floor` e `ceil`, quindi i bin vengono allineati a multipli interi di `bin_width` che coprano tutto l'intervallo considerato.
+- Il calcolo di `start` e `stop` usa `floor` e `ceil`, quindi i bin vengono allineati a multipli interi di `bin_width` che coprano tutto l'intervallo considerato. Le osservazioni in questa eventuale estensione del range restano incluse anche nel denominatore delle modalità normalizzate.
 
-## Chiamata a `ax.hist(...)` e formattazione dell'asse x
+## Conteggi, normalizzazione e formattazione dell'asse x
 
 ```python
-hist_kwargs: dict = {
-    "bins": bins,
-    "range": hist_range_tuple if bin_width is None else None,
-    "density": False,
-    "alpha": hist_alpha,
-    "label": label,
-}
-if bar_color is not None:
-    hist_kwargs["color"] = bar_color
-if edgecolor is not None:
-    hist_kwargs["edgecolor"] = edgecolor
+if stat == "count":
+    hist_kwargs: dict = {
+        "bins": bins,
+        "range": hist_range_tuple if bin_width is None else None,
+        "density": False,
+        "alpha": hist_alpha,
+        "label": label,
+    }
+    if bar_color is not None:
+        hist_kwargs["color"] = bar_color
+    if edgecolor is not None:
+        hist_kwargs["edgecolor"] = edgecolor
 
-_, bin_edges, _ = ax.hist(values, **hist_kwargs)
+    _, bin_edges, _ = ax.hist(values, **hist_kwargs)
+else:
+    counts, bin_edges = np.histogram(
+        values,
+        bins=bins,
+        range=hist_range_tuple if bin_width is None else None,
+    )
+    widths = np.diff(bin_edges)
+    heights = counts.astype(float)
+    included = counts.sum()
+    if included > 0:
+        heights /= included
+        if stat == "density":
+            heights /= widths
+
+    bar_kwargs: dict = {"alpha": hist_alpha}
+    if bar_color is not None:
+        bar_kwargs["color"] = bar_color
+    if edgecolor is not None:
+        bar_kwargs["edgecolor"] = edgecolor
+    bars = ax.bar(
+        bin_edges[:-1], heights, width=widths, align="edge", **bar_kwargs
+    )
+    if bars:
+        # Match ax.hist's legend order by labelling the first patch.
+        bars[0].set_label(label)
 
 fmt = f".{decimals}f"
 if show_bin_ticks:
@@ -136,10 +170,12 @@ if tick_rotation != 0:
 
 Questo e il punto in cui il grafico viene davvero disegnato.
 
-- La funzione usa `density=False`, quindi l'istogramma e sempre a conteggi, non a densita normalizzata.
+- Il ramo `"count"` mantiene la chiamata originale a `ax.hist(..., density=False)`.
+- Nei rami normalizzati, `N = counts.sum()` conta solo le osservazioni incluse nei bin; con `N > 0` le altezze diventano `counts / N` e, per `"density"`, vengono divise anche per le singole ampiezze. Con `N == 0` rimangono nulle.
+- `ax.bar(..., align="edge", width=np.diff(bin_edges))` allinea ogni barra al bordo sinistro e rispetta ampiezze disuguali. Matplotlib gestisce l'autoscaling sulle altezze finali, senza doppia normalizzazione.
 - `bar_color` ed `edgecolor` non hanno un default hardcoded nella funzione: vengono inoltrati a Matplotlib solo se l'utente li passa. Altrimenti decide lo stile attivo.
-- `ax.hist(...)` restituisce `bin_edges`, che diventano la sorgente ufficiale per i tick dell'asse x quando `show_bin_ticks=True`.
-- Le etichette dei bordi non vengono calcolate in modo indipendente: vengono formattate direttamente dai `bin_edges` prodotti da Matplotlib.
+- I `bin_edges` restituiti da Matplotlib (`"count"`) o NumPy (modalità normalizzate) sono la sorgente dei tick quando `show_bin_ticks=True`.
+- Le etichette dei bordi vengono formattate direttamente dai `bin_edges` usati per disegnare le barre.
 - `decimals` controlla la rappresentazione testuale dei bordi tramite `fmt = f".{decimals}f"`, ma la stessa formattazione verra riusata anche per media e banda.
 - `tick_rotation` e indipendente da `show_bin_ticks`: se diverso da zero, la rotazione viene comunque applicata all'asse x.
 
@@ -173,7 +209,12 @@ if show_band:
     )
 
 ax.set_xlabel(xlabel)
-ax.set_ylabel(ylabel if ylabel is not None else "Conteggi")
+default_ylabel = {
+    "count": "Conteggi",
+    "probability": "Frequenza relativa",
+    "density": "Densità di frequenza",
+}[stat]
+ax.set_ylabel(ylabel if ylabel is not None else default_ylabel)
 
 title_kwargs: dict = {}
 if title_fontsize is not None:
@@ -219,7 +260,7 @@ L'ultima parte aggiunge gli elementi statistici e completa la configurazione del
 - `show_mean` e `show_band` sono indipendenti: si puo mostrare solo la linea, solo la banda, entrambe oppure nessuna delle due.
 - `mean_color` e `band_color` sovrascrivono lo stile solo quando non sono `None`; altrimenti la funzione usa i colori del ciclo attivo.
 - La legenda della media usa `mean_symbol`, mentre quella della banda usa `band_symbol`.
-- Se `ylabel` e `None`, la funzione usa il default esplicito `"Conteggi"`.
+- Se `ylabel` è `None`, la funzione sceglie `"Conteggi"`, `"Frequenza relativa"` o `"Densità di frequenza"` in base a `stat`; rispetta sempre un valore esplicito.
 - Titolo e legenda ricevono keyword aggiuntive solo quando l'utente le ha valorizzate; in tutti gli altri casi resta valida la configurazione dello stile attivo.
 - La griglia segue tre rami distinti: `show_grid=False` la spegne esplicitamente, `show_grid=True` con `grid_alpha is None` la lascia allo stile attivo, `show_grid=True` con `grid_alpha` esplicito applica una griglia sull'asse `y` con quell'opacita.
 - Il salvataggio avviene alla fine con `bbox_inches="tight"`; il `dpi` viene passato a `savefig(...)` solo se l'utente lo ha richiesto.
@@ -230,12 +271,13 @@ L'ultima parte aggiunge gli elementi statistici e completa la configurazione del
 Alcune combinazioni di parametri definiscono il comportamento pratico piu importante della funzione.
 
 - `bin_width` e `bins` sono mutualmente esclusivi, salvo il caso default in cui `bins == "auto"`.
+- Con bordi espliciti, sono i bordi a determinare le osservazioni incluse: `hist_range` non applica un filtro aggiuntivo.
 - `hist_range` ha due ruoli diversi: se `bin_width` e assente, viene passato a `ax.hist(..., range=...)`; se `bin_width` e presente, viene usato per determinare `xmin` e `xmax` da cui costruire i bordi dei bin.
 - `style=None` usa gli `rcParams` correnti; `style="mespy"`, `style="report"` e gli altri stili inclusi vengono risolti dal package; qualunque altra stringa passa direttamente da Matplotlib.
 - `bar_color`, `mean_color`, `band_color`, `edgecolor`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc` e `grid_alpha` sovrascrivono lo stile solo quando non sono `None`.
-- `show_bin_ticks=True` usa i `bin_edges` restituiti da Matplotlib, non una ricostruzione separata fatta da `mespy`.
+- `show_bin_ticks=True` usa gli stessi bordi del grafico, restituiti da Matplotlib o NumPy in base alla modalità.
 - `ddof` influisce solo sul calcolo di `sigma` e quindi sulla banda `+- 1 sigma`; non cambia i conteggi dell'istogramma.
-- `ylabel=None` non lascia l'asse senza etichetta: produce sempre `"Conteggi"`.
+- `stat` cambia solo le altezze delle barre e l'etichetta automatica dell'asse y; media e deviazione standard rimangono calcolate sull'intero campione.
 - `figsize` ha effetto solo quando `ax is None`; `dpi` puo invece influire sia sulla creazione della figura sia sul salvataggio, ma sempre solo se esplicitato.
 - `show_grid` non attiva una griglia completa sul piano, ma solo una griglia orizzontale legata all'asse `y` quando la funzione interviene direttamente.
 - `save_path` salva sempre la figura finale, anche quando `ax` e stato passato dall'esterno e la figura non e stata creata dentro `histogram`.
