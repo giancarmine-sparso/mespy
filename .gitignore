@@ -35,7 +35,7 @@ trials/
 
 # Output grafici generati automaticamente
 figures/
-
+reference.pdf
 # References
 references/
 plan.md

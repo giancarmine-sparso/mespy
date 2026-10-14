@@ -1,0 +1,28 @@
+{
+  "name": "mespy-install-tutorial",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Four bilingual MesPy installation clips, one shared 29-second timeline",
+  "scripts": {
+    "preview": "remotion studio src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "check": "node scripts/check.mjs",
+    "render": "node scripts/render-all.mjs",
+    "render:all": "node scripts/render-all.mjs",
+    "review": "node scripts/review.mjs"
+  },
+  "dependencies": {
+    "@fontsource/inter": "5.2.8",
+    "@remotion/cli": "4.0.535",
+    "@remotion/bundler": "4.0.535",
+    "@remotion/renderer": "4.0.535",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.535"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "typescript": "5.9.3"
+  }
+}

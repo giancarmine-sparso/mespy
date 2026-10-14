@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cat frames preview</title>
+<!-- Temporary preview, outside the Sphinx source: open this file directly in a browser. -->
+<link rel="stylesheet" href="../source/_static/homepage.css">
+<link rel="stylesheet" href="../source/_static/homepage-duck.css">
+<link rel="stylesheet" href="../source/_static/homepage-cat.css">
+<style>
+  :root { --zoom: 2; }
+  body.mespy-home { margin: 0; padding: 24px 16px 64px; font-family: system-ui, sans-serif; }
+  .pv-head { max-width: 1200px; margin: 0 auto 24px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: end; justify-content: space-between; }
+  .pv-head h1 { font-size: 1.4rem; letter-spacing: -.02em; }
+  .pv-head p, .pv-head label { font: .75rem/1.6 var(--mh-mono); color: var(--mh-muted); margin: 0; }
+  .pv-head select { font: inherit; background: var(--mh-panel); color: var(--mh-ink); border: 1px solid var(--mh-line); border-radius: 3px; padding: 4px 8px; }
+  .pv-controls { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+  #pv-measure { color: var(--mh-blue); }
+  #pv-tail-check { font: .75rem/1.6 var(--mh-mono); margin: 6px 0 0; color: var(--mh-blue); }
+  #pv-tail-check.pv-bad { color: #ffc9ba; }
+  /* Light palette: the site has no light landing yet, so reuse its print tokens. */
+  .theme-light { --mh-bg: white; --mh-panel: white; --mh-ink: #111; --mh-muted: #444; --mh-amber: #805000; --mh-blue: #155a91; --mh-line: #d5d8da; }
+  .pv-theme { max-width: 1200px; margin: 0 auto 24px; padding: 20px; border: 1px solid var(--mh-line); border-radius: 8px; background: var(--mh-bg); color: var(--mh-ink); }
+  .pv-theme h2 { font: 600 .8rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); margin: 24px 0 12px; }
+  .pv-theme h2:first-child { margin-top: 0; }
+  .pv-grid { display: flex; flex-wrap: wrap; gap: 16px; align-items: end; }
+  .pv-tile { margin: 0; padding: 12px; border: 1px dashed var(--mh-line); border-radius: 6px; max-width: 100%; overflow-x: auto; }
+  .pv-tile figcaption { font: .7rem/1.6 var(--mh-mono); color: var(--mh-muted); margin-top: 8px; }
+  .pv-tile figcaption b { color: var(--mh-ink); font-weight: 600; }
+  /* One stage = the top-right corner of the playground card, at real CSS size. */
+  .pv-stage { zoom: var(--zoom); padding-top: 58px; width: max-content; }
+  .pv-actual .pv-stage { zoom: 1; }
+  .pv-stage .mh-fit-editor { overflow: visible; border-radius: 8px 8px 0 0; border-bottom: 0; }
+  .pv-stage .mh-editor-toolbar { border-bottom: 1px dashed var(--mh-line); padding-left: 16px; }
+  .pv-narrow .pv-stage .mh-editor-toolbar { padding-right: 16px; }
+  .pv-anchor { position: relative; display: inline-block; line-height: 0; }
+  .pv-anchor > .mh-fit-run { line-height: 1.5; white-space: nowrap; }
+  /* Body rear on the button's right edge, baseline on its top border. */
+  .pv-cat { position: absolute; pointer-events: none; }
+  .pv-cat svg { display: block; }
+  .pv-ghost { opacity: .3; }
+</style>
+</head>
+<body class="mespy-home">
+  <header class="pv-head">
+    <div>
+      <h1>Gatto di Schrödinger: frame</h1>
+      <p>Tigrato bruno a pelo lungo, pagnotta di profilo, 3 px per pixel logico (come la paperella). Corpo, pettorina e coda sono livelli separati.</p>
+      <p id="pv-measure"></p>
+      <p id="pv-tail-check"></p>
+    </div>
+    <div class="pv-controls">
+      <label>Ingrandimento <select id="pv-zoom"><option>1</option><option selected>2</option><option>3</option><option>4</option></select>×</label>
+      <label>Padding card <select id="pv-pad"><option value="">24 px (desktop)</option><option value="narrow">16 px (≤ 600 px)</option></select></label>
+    </div>
+  </header>
+  <main id="pv-root"></main>
+
+<script src="../source/_static/homepage-pixel.js"></script>
+<script src="../source/_static/homepage-cat-frames.js"></script>
+<script>
+(() => {
+  const { svgEl, frameGroup } = window.mespyPixel;
+  const { BODY, HARNESS, TAIL, ZETA, PALETTE, ANCHOR, BODY_COLS, BODY_ROWS, TOP, COLS, ROWS, UNIT } = window.mespyCatFrames;
+  let uid = 0;
+
+  // layers: { body, harness, tail, zeta, ghost }
+  function sprite({ body, harness, tail, zeta, ghost }) {
+    const svg = svgEl('svg', {
+      viewBox: `0 ${-TOP} ${COLS} ${ROWS + TOP}`, width: COLS * UNIT, height: (ROWS + TOP) * UNIT,
+      'shape-rendering': 'crispEdges', 'aria-hidden': 'true', focusable: 'false',
+    });
+    const layer = (rows, at, cls) => {
+      const g = svgEl('g', { transform: `translate(${at.x} ${at.y})` });
+      if (cls) g.setAttribute('class', cls);
+      g.append(frameGroup(`pv-${uid++}`, rows, PALETTE));
+      svg.append(g);
+    };
+    if (body) layer(BODY[body], { x: 0, y: 0 }, ghost ? 'pv-ghost' : '');
+    if (body && harness) layer(HARNESS[body], { x: 0, y: 0 }, ghost ? 'pv-ghost' : '');
+    if (tail) layer(TAIL[tail], ANCHOR.tail, '');
+    if (zeta) layer(ZETA[zeta], ANCHOR.zeta, '');
+    return svg;
+  }
+
+  function stage(layers, label) {
+    const root = document.createElement('div');
+    root.className = 'pv-stage';
+    root.innerHTML = `<div class="mh-fit-editor"><div class="mh-editor-toolbar"><span class="mh-editor-label">Python</span><div><span class="pv-anchor"><button class="mh-fit-run" type="button"><span aria-hidden="true">▶</span> ${label}</button><span class="pv-cat"></span></span></div></div></div>`;
+    const cat = root.querySelector('.pv-cat');
+    cat.style.top = `${-(BODY_ROWS + TOP) * UNIT}px`;
+    cat.style.right = `${-(COLS - BODY_COLS) * UNIT}px`;
+    cat.append(sprite(layers));
+    return root;
+  }
+
+  function tile(caption, node) {
+    const figure = document.createElement('figure');
+    figure.className = 'pv-tile';
+    figure.append(node);
+    const text = document.createElement('figcaption');
+    text.innerHTML = caption;
+    figure.append(text);
+    return figure;
+  }
+
+  function group(parent, title, items, label = 'Run', cls = '') {
+    const heading = document.createElement('h2');
+    heading.textContent = title;
+    const grid = document.createElement('div');
+    grid.className = `pv-grid ${cls}`;
+    for (const [caption, layers, text] of items) grid.append(tile(caption, stage(layers, text || label)));
+    parent.append(heading, grid);
+    return grid;
+  }
+
+  const COMBOS = [
+    ['<b>dorme1</b> + giu1 + zeta1', { body: 'dorme1', tail: 'giu1', zeta: 'zeta1' }],
+    ['<b>dorme2</b> + giu4 + zeta2', { body: 'dorme2', tail: 'giu4', zeta: 'zeta2' }],
+    ['<b>occhiAperti</b> + orizzontale', { body: 'occhiAperti', tail: 'orizzontale' }],
+    ['<b>attento</b> + su', { body: 'attento', tail: 'su' }],
+    ['<b>attento</b> + su2', { body: 'attento', tail: 'su2' }],
+  ];
+
+  // Preview-only motion, to judge the frames together (not the landing's behaviour).
+  const SWAY = [['giu1', 900], ['giu2', 260], ['giu3', 240], ['giu4', 600], ['giu3', 240], ['giu2', 260]];
+  const BREATH = [['dorme1', 1500, 'zeta1'], ['dorme2', 1500, 'zeta2']];
+  const QUESTION = [['su', 1400], ['su2', 300]];
+  const animated = [];
+
+  function loop(seq, onStep) {
+    let i = 0;
+    let wait = seq[0][1];
+    onStep(seq[0]);
+    return (dt) => {
+      wait -= dt;
+      while (wait <= 0) { i = (i + 1) % seq.length; wait += seq[i][1]; onStep(seq[i]); }
+    };
+  }
+
+  function animatedStage(kind, label, harness = false) {
+    const root = stage({}, label);
+    const cat = root.querySelector('.pv-cat');
+    const state = kind === 'sleep' ? { body: 'dorme1', tail: 'giu1', zeta: 'zeta1', harness } : { body: 'attento', tail: 'su', harness };
+    const draw = () => cat.replaceChildren(sprite(state));
+    const steps = kind === 'sleep'
+      ? [loop(SWAY, ([tail]) => { state.tail = tail; }), loop(BREATH, ([body, , zeta]) => { state.body = body; state.zeta = zeta; })]
+      : [loop(QUESTION, ([tail]) => { state.tail = tail; })];
+    draw();
+    animated.push((dt) => { steps.forEach((step) => step(dt)); draw(); });
+    return root;
+  }
+
+  function section(themeClass, title) {
+    const wrap = document.createElement('section');
+    wrap.className = `pv-theme ${themeClass}`;
+    const heading = document.createElement('h2');
+    heading.textContent = title;
+    wrap.append(heading);
+    const motion = document.createElement('h2');
+    motion.textContent = 'Movimento (solo anteprima)';
+    const motionGrid = document.createElement('div');
+    motionGrid.className = 'pv-grid';
+    motionGrid.append(
+      tile('<b>dorme</b> · respiro + dondolio giu1 → giu4 → giu1', animatedStage('sleep', 'Run')),
+      tile('<b>attento</b> · su ↔ su2', animatedStage('awake', 'Run')),
+      tile('<b>dorme</b> · con pettorina', animatedStage('sleep', 'Run', true)),
+      tile('<b>attento</b> · con pettorina', animatedStage('awake', 'Run', true)),
+    );
+    wrap.append(motion, motionGrid);
+    group(wrap, 'Combinazioni principali', COMBOS);
+    // Each body with the tail it gets on the landing.
+    const tailFor = (name) => (name === 'attento' || name === 'orecchieBasse' ? 'su' : 'giu1');
+    group(wrap, 'Tutti i corpi · senza pettorina', Object.keys(BODY).map((name) => [`<b>${name}</b> + ${tailFor(name)}`, { body: name, tail: tailFor(name) }]));
+    group(wrap, 'Tutti i corpi · con pettorina', Object.keys(BODY).map((name) => [`<b>${name}</b> + ${tailFor(name)} + pettorina`, { body: name, tail: tailFor(name), harness: true }]));
+    group(wrap, 'Tutte le code (corpo dorme1 attenuato)', Object.keys(TAIL).map((name) => [`<b>${name}</b>`, { body: 'dorme1', ghost: true, tail: name }]));
+    const actual = document.createElement('div');
+    actual.className = 'pv-actual';
+    group(actual, 'Scala reale (1×)', [
+      ['<b>dorme1</b> + giu1 · EN', { body: 'dorme1', tail: 'giu1' }, 'Run'],
+      ['<b>occhiAperti</b> + orizzontale · IT', { body: 'occhiAperti', tail: 'orizzontale' }, 'Esegui'],
+      ['<b>attento</b> + su · IT', { body: 'attento', tail: 'su' }, 'Esegui'],
+      ['<b>stiracchio</b> + giu1 · EN', { body: 'stiracchio', tail: 'giu1' }, 'Run'],
+      ['<b>dorme1</b> + giu1 + pettorina · IT', { body: 'dorme1', tail: 'giu1', harness: true }, 'Esegui'],
+    ]);
+    wrap.append(actual);
+    return wrap;
+  }
+
+  const root = document.getElementById('pv-root');
+  // The light section re-declares .mespy-home so the cat tokens resolve against its palette.
+  root.append(section('', 'Tema scuro (token della landing)'), section('mespy-home theme-light', 'Tema chiaro (token di stampa della landing)'));
+
+  // Real widths, measured on the 1x stages.
+  // Tail continuity: every tail pixel must touch another one (side or corner),
+  // the tail must be one piece, and it must touch the body of every frame.
+  function checkTails() {
+    const problems = [];
+    const at = (rows, x, y) => (rows[y] && rows[y][x] && rows[y][x] !== '.');
+    for (const [name, rows] of Object.entries(TAIL)) {
+      const pixels = [];
+      rows.forEach((row, y) => [...row].forEach((c, x) => { if (c !== '.') pixels.push([x, y]); }));
+      const key = ([x, y]) => `${x},${y}`;
+      const set = new Set(pixels.map(key));
+      const near = ([x, y]) => [-1, 0, 1].flatMap((dx) => [-1, 0, 1].map((dy) => [x + dx, y + dy]))
+        .filter(([nx, ny]) => (nx !== x || ny !== y) && set.has(`${nx},${ny}`));
+      for (const p of pixels) if (!near(p).length) problems.push(`${name}: pixel isolato in riga ${p[1]}, colonna ${p[0] + ANCHOR.tail.x}`);
+      const seen = new Set([key(pixels[0])]);
+      const queue = [pixels[0]];
+      while (queue.length) for (const n of near(queue.pop())) if (!seen.has(key(n))) { seen.add(key(n)); queue.push(n); }
+      if (seen.size !== pixels.length) problems.push(`${name}: coda spezzata in più pezzi`);
+      for (const [body, bodyRows] of Object.entries(BODY)) {
+        const touches = pixels.some(([x, y]) => [-1, 0, 1].some((dx) => [-1, 0, 1].some((dy) =>
+          at(bodyRows, x + ANCHOR.tail.x + dx, y + ANCHOR.tail.y + dy))));
+        if (!touches) problems.push(`${name}: staccata dal corpo ${body}`);
+      }
+    }
+    const out = document.getElementById('pv-tail-check');
+    out.classList.toggle('pv-bad', problems.length > 0);
+    out.textContent = problems.length
+      ? `Coda: ${problems.length} problemi. ${problems.join(' · ')}`
+      : `Coda: ${Object.keys(TAIL).length} frame controllati, nessun pixel isolato, ognuno in un solo pezzo e attaccato a tutti i ${Object.keys(BODY).length} corpi.`;
+  }
+  checkTails();
+
+  function measure() {
+    const width = (label) => [...document.querySelectorAll('.pv-actual .mh-fit-run')].find((b) => b.textContent.includes(label)).getBoundingClientRect().width;
+    const body = BODY_COLS * UNIT;
+    const run = width('Run');
+    const esegui = width('Esegui');
+    document.getElementById('pv-measure').textContent =
+      `Corpo ${body} px · bottone Run ${run.toFixed(1)} px · Esegui ${esegui.toFixed(1)} px · coda fino a ${(COLS - BODY_COLS) * UNIT} px oltre il bordo destro`;
+  }
+  (document.fonts?.ready || Promise.resolve()).then(measure);
+
+  let last = null;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const tick = (now) => {
+    const dt = last === null ? 0 : Math.min(now - last, 100);
+    last = now;
+    animated.forEach((step) => step(dt));
+    requestAnimationFrame(tick);
+  };
+  if (!reduced) requestAnimationFrame(tick);
+
+  document.getElementById('pv-zoom').addEventListener('change', (event) => {
+    document.documentElement.style.setProperty('--zoom', event.target.value);
+  });
+  document.getElementById('pv-pad').addEventListener('change', (event) => {
+    root.classList.toggle('pv-narrow', event.target.value === 'narrow');
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+export const MESPY_VERSION = '1.2.0';
+export const PY_VERSION = '3.12.8';
+export const FPS = 30;
+export const WIDTH = 1920;
+export const HEIGHT = 1080;
+export const CHARS_PER_SECOND = 18;
+export const DURATION = 870;
+export type Language = 'en' | 'it';
+export type InstallPath = 'colab' | 'local';
+export type TutorialProps = {language: Language; path: InstallPath};
