@@ -86,11 +86,9 @@ GUIDE_PAGES = {
 }
 
 # Reference families share the guide layout but have their own section strip.
-# The fitting reference intentionally retains its English UI in both builds;
-# other references use translated document titles and the current site language.
+# All references use translated document titles and the current site language.
 REFERENCE_SECTIONS = {
     "lin_fit": {
-        "language": "en",
         "pages": [
             {"doc": "moduli/fit_utils/lin-fit", "title": "lin_fit", "anchor": "lin-fit-reference"},
             {"doc": "moduli/fit_utils/linear-fit-result", "title": "LinearFitResult"},
@@ -244,6 +242,8 @@ def add_language_switcher_context(app, pagename, templatename, context, doctree)
     page_href = f"{pagename}.html"
     site_root = _relative_site_root(pagename)
 
+    # The shared header and theme controls use this UI domain on every page.
+    context["home"] = get_translation("homepage")
     context["current_language"] = current_language
     context["current_language_label"] = next(
         (
@@ -394,6 +394,8 @@ def add_guide_context(app, pagename, templatename, context, doctree):
     context["guide_nav_label"] = "Guide sections" if english else "Sezioni della guida"
     context["guide_section"] = section = _guide_section(app, pagename, english)
     eyebrow = GUIDE_PAGES[pagename].get("eyebrow")
+    if eyebrow and not english:
+        eyebrow = eyebrow.replace("API Reference", "Riferimento API")
     context["guide_eyebrow"] = eyebrow if reference else " / ".join(filter(None, [section and section["title"], eyebrow]))
     if reference:
         reference_section = REFERENCE_SECTIONS[reference]
@@ -401,7 +403,7 @@ def add_guide_context(app, pagename, templatename, context, doctree):
         reference_english = reference_language.startswith("en")
         reference_root = reference_section.get("root", "moduli/index")
         context["guide_nav_title"] = "On this page" if reference_english else "In questa pagina"
-        context["guide_nav_label"] = "Reference sections" if reference_english else "Sezioni della reference"
+        context["guide_nav_label"] = "Reference sections" if reference_english else "Sezioni del riferimento"
         reference_pages = []
         for item in reference_section["pages"]:
             href = app.builder.get_relative_uri(pagename, item["doc"]) or ""
@@ -485,12 +487,15 @@ def add_api_reference_context(app, pagename, templatename, context, doctree):
         if any(entry["doc"] not in core_docs for entry in module["entries"])
     ]
     context["guide_section"] = {
-        "title": "API Reference", "href": "#api-title", "current": True,
-        "label": "API navigation", "lang": "en",
+        "title": "API Reference" if english else "Riferimento API",
+        "href": "#api-title", "current": True,
+        "label": "API navigation" if english else "Navigazione API",
+        "lang": app.config.language or language,
         "pages": [
             {"title": entry["title"], "href": f"#{entry['doc'].rsplit('/', 1)[-1]}"}
             for entry in context["api_core"]
-        ] + [{"title": "Additional utilities", "href": "#additional-utilities"}],
+        ] + [{"title": "Additional utilities" if english else "Altre funzioni di utilità",
+               "href": "#additional-utilities"}],
     }
     app.add_css_file("homepage.css")
     app.add_css_file("api-reference.css")

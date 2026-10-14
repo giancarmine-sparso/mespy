@@ -2,52 +2,52 @@
    existing module toctrees; the core functions are ordered in conf.py. #}
 {% extends "layout.html" %}
 
-{% block htmltitle %}<title>API Reference — MesPy</title>{% endblock %}
+{% block htmltitle %}<title>{{ home('Riferimento API') }} — MesPy</title>{% endblock %}
 {% block extrahead %}
   {{ super() }}
-  <meta name="description" content="Explore MesPy's core plotting and fitting functions, along with the utilities and result objects that support experimental data analysis.">
+  <meta name="description" content="{{ home("Esplora le funzioni principali di MesPy per grafici e fit, insieme alle funzioni di utilità e agli oggetti risultato per l'analisi dei dati sperimentali.") }}">
 {% endblock %}
 {% block body_tag %}
 <body class="mespy-home mespy-api" data-default-mode="{{ default_mode | default('auto', true) }}">
-  <a class="mh-skip" href="#main-content">Skip to content</a>
+  <a class="mh-skip" href="#main-content">{{ home('Vai al contenuto') }}</a>
 {% endblock %}
 
 {% block content %}
 {%- set categories = {
-  'moduli/io_utils/index': {'label': 'Data loading', 'anchor': 'api-module-1'},
-  'moduli/stats_utils/index': {'label': 'Descriptive statistics', 'anchor': 'api-module-2'},
-  'moduli/fit_utils/index': {'label': 'Fit results', 'anchor': 'api-module-4'},
+  'moduli/io_utils/index': {'label': home('Caricamento dei dati'), 'anchor': 'api-module-1'},
+  'moduli/stats_utils/index': {'label': home('Statistica descrittiva'), 'anchor': 'api-module-2'},
+  'moduli/fit_utils/index': {'label': home('Risultati del fit'), 'anchor': 'api-module-4'},
 } %}
 {%- set descriptions = {
-  'histogram': 'Visualize experimental measurements, their distribution, and descriptive statistics.',
-  'lin_fit': 'Fit a straight line to experimental data, estimate parameter uncertainties, and inspect residuals.',
-  'load_csv': 'Load a CSV into a DataFrame with checks on columns and missing values.',
-  'median': 'Compute the median of a numeric sample.',
-  'weighted_mean': 'Compute the arithmetic or weighted mean of a sample.',
-  'variance': 'Compute variance with optional weights and a ddof correction.',
-  'covariance': 'Estimate covariance between two variables with optional weights.',
-  'standard_deviation': 'Compute standard deviation as the square root of variance.',
-  'LinearFitResult': 'Fit parameters, uncertainties, residuals and diagnostics.',
+  'histogram': home('Visualizza le misure sperimentali, la loro distribuzione e le statistiche descrittive.'),
+  'lin_fit': home('Adatta una retta ai dati sperimentali, stima le incertezze dei parametri ed esamina i residui.'),
+  'load_csv': home('Carica un CSV in un DataFrame con controlli sulle colonne e sui valori mancanti.'),
+  'median': home('Calcola la mediana di un campione numerico.'),
+  'weighted_mean': home('Calcola la media aritmetica o pesata di un campione.'),
+  'variance': home('Calcola la varianza con pesi facoltativi e una correzione ddof.'),
+  'covariance': home('Stima la covarianza tra due variabili con pesi facoltativi.'),
+  'standard_deviation': home('Calcola la deviazione standard come radice quadrata della varianza.'),
+  'LinearFitResult': home('Parametri del fit, incertezze, residui e informazioni diagnostiche.'),
 } %}
 
 {% include "components/mespy-header.html" %}
 {% include "components/section-nav.html" %}
 
-<main id="main-content" role="main" lang="en">
+<main id="main-content" role="main" lang="{{ current_language }}">
   <section class="mh-shell api-hero" id="moduli" aria-labelledby="api-title">
     <div id="api-reference">
-      <p class="mh-eyebrow"><span class="mh-status" aria-hidden="true"></span> MesPy / API Reference</p>
-      <h1 id="api-title">API <span class="mh-accent">Reference</span></h1>
-      <p class="mh-lead">Explore MesPy's core plotting and fitting functions, along with the utilities and result objects that support experimental data analysis.</p>
+      <p class="mh-eyebrow"><span class="mh-status" aria-hidden="true"></span> MesPy / {{ home('Riferimento API') }}</p>
+      <h1 id="api-title">{% if current_language == 'en' %}API <span class="mh-accent">{{ home('Riferimento') }}</span>{% else %}{{ home('Riferimento') }} <span class="mh-accent">API</span>{% endif %}</h1>
+      <p class="mh-lead">{{ home("Esplora le funzioni principali di MesPy per grafici e fit, insieme alle funzioni di utilità e agli oggetti risultato per l'analisi dei dati sperimentali.") }}</p>
     </div>
-    <p class="api-hero-note">Each entry links to documentation of signatures, parameters and return values.</p>
+    <p class="api-hero-note">{{ home('Ogni voce rimanda alla documentazione di firme, parametri e valori restituiti.') }}</p>
   </section>
 
   <div class="mh-shell api-catalog" id="moduli-disponibili">
     <section class="api-section" id="core-functions" aria-labelledby="api-core-title">
       <div class="api-section-heading">
-        <p class="mh-eyebrow"><span class="mh-accent">01</span> / Plotting &amp; fitting</p>
-        <h2 id="api-core-title">Core functions</h2>
+        <p class="mh-eyebrow"><span class="mh-accent">01</span> / {{ home('Grafici e fit') }}</p>
+        <h2 id="api-core-title">{{ home('Funzioni principali') }}</h2>
       </div>
       <ul class="api-core-entries">
         {%- for entry in api_core %}
@@ -66,8 +66,8 @@
 
     <section class="api-section api-utilities" id="additional-utilities" aria-labelledby="api-utilities-title">
       <div class="api-section-heading">
-        <p class="mh-eyebrow"><span class="mh-accent">02</span> / Supporting tools</p>
-        <h2 id="api-utilities-title">Additional utilities</h2>
+        <p class="mh-eyebrow"><span class="mh-accent">02</span> / {{ home('Strumenti di supporto') }}</p>
+        <h2 id="api-utilities-title">{{ home('Altre funzioni di utilità') }}</h2>
       </div>
       <div class="api-utility-groups">
         {%- for module in api_utilities %}
@@ -89,7 +89,7 @@
         {%- endfor %}
       </div>
     </section>
-    <p class="api-aside">Looking for practical examples? <a class="mh-text-link" href="{{ pathto('examples/index') }}">Examples <span aria-hidden="true">↗</span></a></p>
+    <p class="api-aside">{{ home('Cerchi esempi pratici?') }} <a class="mh-text-link" href="{{ pathto('examples/index') }}">{{ home('Esempi') }} <span aria-hidden="true">↗</span></a></p>
   </div>
 </main>
 
