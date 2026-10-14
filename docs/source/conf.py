@@ -618,7 +618,7 @@ def _markdown_blocks(node, depth: int) -> list[str]:
             for item in node.children
         ]
     if isinstance(node, nodes.table):
-        cells = [[" ".join(entry.astext().split()) for entry in row.children]
+        cells = [[" ".join(_inline_markdown(entry).split()) for entry in row.children]
                  for row in node.findall(nodes.row)]
         rows = ["| " + " | ".join(row) + " |" for row in cells]
         if rows:
@@ -649,11 +649,16 @@ def write_llms_full(app, exception):
         (
             f"Full text of the main documentation pages. Index: {DOCS_URL}llms.txt"
             if english else
-            f"Testo completo delle pagine principali della documentazione. Indice: {DOCS_URL}llms.txt"
+            f"Testo completo delle pagine principali della documentazione. Indice: {site}llms.txt"
         ),
     ]
     for docname in LLMS_FULL_PAGES:
         doctree = app.env.get_doctree(docname)
         blocks = [b for child in doctree.children for b in _markdown_blocks(child, depth=2)]
-        parts += ["---", *blocks[:1], f"Source: {site}{docname}.html", *blocks[1:]]
+        parts += ["---", *blocks[:1], f"{'Source' if english else 'Fonte'}: {site}{docname}.html", *blocks[1:]]
+    if not english:
+        (Path(app.outdir) / "llms.txt").write_text(
+            (Path(__file__).parent / "locale/llms-it.txt").read_text(encoding="utf-8"),
+            encoding="utf-8",
+        )
     (Path(app.outdir) / "llms-full.txt").write_text("\n\n".join(parts) + "\n", encoding="utf-8")

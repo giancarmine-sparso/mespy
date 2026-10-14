@@ -1,0 +1,44 @@
+# MesPy
+
+> MesPy è una libreria Python didattica per l'analisi dei dati nei laboratori di fisica, rivolta agli studenti dei primi anni di università.
+
+La documentazione è pubblicata in italiano e inglese; i collegamenti seguenti rimandano alle pagine italiane. Le pagine inglesi corrispondenti si trovano sostituendo /it/ con /en/ nel percorso.
+
+Destinatari e impostazione: gli Esempi sono il percorso per principianti e il primo punto di riferimento per aiutare uno studente. Il Riferimento API è volutamente completo e avanzato (parametri, regole di validazione, flusso interno): usalo per rispondere a domande precise, anziché come introduzione.
+
+L'API pubblica è piccola: `load_csv`, `median`, `weighted_mean`, `variance`, `covariance`, `standard_deviation`, `histogram`, `lin_fit`, tutte importabili da `mespy`. Richiede Python 3.12 o successivo; installa con `pip install mespy`.
+
+## Inizia qui
+
+- [Inizia qui](https://giancarmine-sparso.github.io/mespy/it/getting-started.html): installa MesPy, verifica che funzioni e scegli da dove continuare
+
+## Esempi
+
+- [Esempi](https://giancarmine-sparso.github.io/mespy/it/examples/index.html): panoramica dei notebook di esempio eseguibili
+- [Flusso di lavoro di base](https://giancarmine-sparso.github.io/mespy/it/examples/basic-workflow.html): le due chiamate essenziali; `histogram` salva il grafico in PDF, `lin_fit` salva grafico e risultati in PDF e TOML
+- [Stile dei grafici](https://giancarmine-sparso.github.io/mespy/it/examples/plot-style.html): attiva lo stile `mespy` per tutto il notebook o per un solo grafico e personalizza colori, legenda e titoli
+- [Istogramma](https://giancarmine-sparso.github.io/mespy/it/examples/histogram.html): scegli i bin, confronta conteggi, frequenze relative e densità e leggi media e deviazione standard sul grafico
+- [Fit lineare](https://giancarmine-sparso.github.io/mespy/it/examples/linear-fit.html): adatta una retta a misure con incertezze, leggi risultati e residui e decidi se propagare le incertezze su x
+
+## Riferimento API
+
+- [Riferimento API](https://giancarmine-sparso.github.io/mespy/it/moduli/index.html): indice delle funzioni pubbliche, degli oggetti risultato e dei moduli
+- [lin_fit](https://giancarmine-sparso.github.io/mespy/it/moduli/fit_utils/lin-fit.html): fit lineare pesato con incertezze dei parametri e residui
+- [LinearFitResult](https://giancarmine-sparso.github.io/mespy/it/moduli/fit_utils/linear-fit-result.html): il risultato tipizzato restituito da `lin_fit`, in `mespy.fit_utils`
+- [histogram](https://giancarmine-sparso.github.io/mespy/it/moduli/plot_utils/histogram.html): istogramma di un campione con media e banda ±1σ; vedi anche le pagine [Panoramica](https://giancarmine-sparso.github.io/mespy/it/moduli/plot_utils/histogram/panoramica.html) e [Funzionamento](https://giancarmine-sparso.github.io/mespy/it/moduli/plot_utils/histogram/funzionamento.html)
+- [load_csv](https://giancarmine-sparso.github.io/mespy/it/moduli/io_utils/load-csv.html): carica un CSV in un DataFrame con controlli sulle colonne e sui valori mancanti
+- [median](https://giancarmine-sparso.github.io/mespy/it/moduli/stats_utils/median.html): mediana di un campione numerico
+- [weighted_mean](https://giancarmine-sparso.github.io/mespy/it/moduli/stats_utils/weighted-mean.html): media aritmetica o pesata
+- [variance](https://giancarmine-sparso.github.io/mespy/it/moduli/stats_utils/variance.html): varianza con pesi facoltativi e correzione ddof
+- [covariance](https://giancarmine-sparso.github.io/mespy/it/moduli/stats_utils/covariance.html): covarianza tra due variabili con pesi facoltativi
+- [standard_deviation](https://giancarmine-sparso.github.io/mespy/it/moduli/stats_utils/standard-deviation.html): radice quadrata della varianza
+
+## GitHub
+
+- [giancarmine-sparso/mespy](https://github.com/giancarmine-sparso/mespy): codice sorgente, segnalazioni e README
+
+## Approfondimenti
+
+- [Testo completo (italiano)](https://giancarmine-sparso.github.io/mespy/it/llms-full.txt): testo delle pagine principali della documentazione in un unico file
+- [Testo completo (inglese)](https://giancarmine-sparso.github.io/mespy/en/llms-full.txt): le stesse pagine in inglese
+- [Installazione per lo sviluppo](https://giancarmine-sparso.github.io/mespy/it/installazione.html): installazione modificabile, test e build della documentazione per chi contribuisce

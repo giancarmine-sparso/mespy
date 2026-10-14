@@ -129,3 +129,29 @@ def test_homepage_build_bundles_exact_local_mespy_and_styles(tmp_path):
         assert bundle.read("mespy/stylelib/report.mplstyle") == (ROOT / "src/mespy/stylelib/report.mplstyle").read_bytes()
         assert f"Version: {config["release"]}" in bundle.read(f"mespy-{config["release"]}.dist-info/METADATA").decode()
         assert bundle.read("homepage_fit.py") == (DOCS_SOURCE / "_static/homepage-fit.py").read_bytes()
+
+
+def test_llms_tables_preserve_identifier_and_latex_markup():
+    from docutils import nodes as docnodes
+
+    config = runpy.run_path(str(DOCS_SOURCE / "conf.py"))
+    table = docnodes.table()
+    group = docnodes.tgroup(cols=2)
+    body = docnodes.tbody()
+    row = docnodes.row()
+    identifier = docnodes.entry()
+    identifier += docnodes.paragraph("", "", docnodes.literal("", "slope_std"))
+    meaning = docnodes.entry()
+    meaning += docnodes.paragraph(
+        "", "Incertezza tipo di ", docnodes.math("", r"\hat y(x)"),
+    )
+    row += identifier
+    row += meaning
+    body += row
+    group += body
+    table += group
+
+    markdown = "\n".join(config["_markdown_blocks"](table, depth=2))
+    assert "`slope_std`" in markdown
+    assert r"$\hat y(x)$" in markdown
+    assert "Incertezza tipo di" in markdown
