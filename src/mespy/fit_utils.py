@@ -22,8 +22,11 @@ if TYPE_CHECKING:
 
 FloatVector = NDArray[np.float64]
 FitMethod = Literal["ols", "wls"]
+XErrorMethod = Literal["none", "iterate"]
 
 _LINEAR_FIT_SCHEMA_VERSION = 2
+_X_ERROR_TOL = 1e-10
+_X_ERROR_MAX_ITER = 100
 
 
 @dataclass(frozen=True, slots=True)
@@ -33,6 +36,7 @@ class _LinearFitData:
     x: FloatVector
     y: FloatVector
     sigma_y: FloatVector | None
+    sigma_x: FloatVector | None = None
 
 
 def _real_fit_array(name: str, values: ArrayLike) -> FloatVector:
@@ -67,9 +71,13 @@ def _real_fit_array(name: str, values: ArrayLike) -> FloatVector:
 
 
 def _validate_linear_fit_data(
-    x: ArrayLike, y: ArrayLike, sigma_y: ArrayLike | None = None
+    x: ArrayLike,
+    y: ArrayLike,
+    sigma_y: ArrayLike | None = None,
+    *,
+    sigma_x: ArrayLike | None = None,
 ) -> _LinearFitData:
-    """Validate shape, sample size and absolute vertical uncertainties."""
+    """Validate shape, sample size and absolute measurement uncertainties."""
     x_values = _real_fit_array("x", x)
     y_values = _real_fit_array("y", y)
     for name, values in (("x", x_values), ("y", y_values)):
@@ -97,7 +105,28 @@ def _validate_linear_fit_data(
         raise ValueError(f"x, y: at least {minimum} points are required for this fit")
     if np.all(x_values == x_values[0]):
         raise ValueError("x: at least two distinct values are required")
-    return _LinearFitData(x_values, y_values, sigma_values)
+    sigma_x_values = None
+    if sigma_x is not None:
+        sigma_x_values = _real_fit_array("sigma_x", sigma_x)
+        if sigma_x_values.ndim == 0:
+            sigma_x_values = np.full(x_values.shape, float(sigma_x_values))
+        elif sigma_x_values.ndim != 1 or sigma_x_values.shape != x_values.shape:
+            raise ValueError(
+                "sigma_x: a scalar or a vector with the same length as x is required"
+            )
+        if np.any(sigma_x_values < 0):
+            raise ValueError("sigma_x: uncertainties must be non-negative")
+    return _LinearFitData(x_values, y_values, sigma_values, sigma_x_values)
+
+
+def _validate_x_error_method(value: object) -> XErrorMethod:
+    if not isinstance(value, str):
+        raise TypeError("x_error_method: expected 'none' or 'iterate'")
+    if value == "none":
+        return "none"
+    if value == "iterate":
+        return "iterate"
+    raise ValueError("x_error_method: expected 'none' or 'iterate'")
 
 
 def _fit_scaled_value(
@@ -272,6 +301,7 @@ class _LinearFitCore:
     local_slope: float
     center_std: float
     exact_line: bool
+    x_error_method: XErrorMethod = "none"
 
     def predict(self, x: FloatVector) -> FloatVector:
         try:
@@ -353,7 +383,11 @@ class _LinearFitCore:
         )
 
 
-def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
+def _solve_linear_fit(
+    data: _LinearFitData,
+    *,
+    fixed_slope: float | None = None,
+) -> _LinearFitCore:
     """Solve OLS or absolute WLS in O(N), using centered/scaled local coordinates.
 
     No generic solver, matrix inverse or public statistics helper participates.
@@ -361,6 +395,8 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
     Exact local lines are checked against every original observation before
     assigning zero residual dispersion; no numerical tolerance is applied.
     Quantities that cannot be represented raise a contextual FloatingPointError.
+    fixed_slope evaluates the final weighted intercept and covariance at an
+    already converged slope, synchronizing the iterative fit's final weights.
     """
     if data.sigma_y is None:
         sigma_scale = 1.0
@@ -403,7 +439,12 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
         except FloatingPointError:
             exact_line = False
     largest_y = float(np.max(np.abs(weighted_y)))
-    if exact_line:
+    if fixed_slope is not None:
+        local_slope = _fit_scaled_value(
+            "local slope", fixed_slope, exponent=x_axis.exponent - y_axis.exponent
+        )
+        exact_line = exact_line and local_slope == candidate
+    elif exact_line:
         local_slope = candidate
     elif largest_y == 0:
         local_slope = 0.0
@@ -414,8 +455,12 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
         local_slope = _fit_scaled_value(
             "local slope", moment_xy, largest_y, divisors=(largest_x, moment_xx)
         )
-    slope = _fit_scaled_value(
-        "slope", local_slope, exponent=y_axis.exponent - x_axis.exponent
+    slope = (
+        fixed_slope
+        if fixed_slope is not None
+        else _fit_scaled_value(
+            "slope", local_slope, exponent=y_axis.exponent - x_axis.exponent
+        )
     )
 
     x_mean, x_mean_exponent = _fit_sum_parts(
@@ -524,6 +569,51 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
     )
 
 
+def _effective_fit_sigma(data: _LinearFitData, slope: float) -> FloatVector:
+    """Compute hypot(sigma_y, slope*sigma_x), scaling before multiplication."""
+    assert data.sigma_x is not None and data.sigma_y is not None
+    slope_part, slope_power = math.frexp(abs(slope))
+    effective = []
+    for sy, sx in zip(data.sigma_y, data.sigma_x):
+        y_part, y_power = math.frexp(float(sy))
+        x_part, x_power = math.frexp(float(sx))
+        product = slope_part * x_part
+        product_power = slope_power + x_power
+        common = max(y_power, product_power) if product else y_power
+        norm = math.hypot(
+            math.ldexp(y_part, y_power - common),
+            math.ldexp(product, product_power - common),
+        )
+        effective.append(_fit_scaled_value("effective sigma_y", norm, exponent=common))
+    return np.array(effective)
+
+
+def _solve_iterative_linear_fit(data: _LinearFitData) -> _LinearFitCore:
+    """Legacy effective-variance reweighting; not York/ODR minimization.
+
+    Final covariance treats the final effective weights as fixed. The
+    chi-square p-value has only an approximate interpretation in this mode.
+    """
+    core = _solve_linear_fit(data)
+    for _ in range(_X_ERROR_MAX_ITER):
+        effective = _effective_fit_sigma(data, core.slope)
+        updated = _solve_linear_fit(replace(data, sigma_y=effective))
+        scale = max(abs(core.slope), abs(updated.slope))
+        change = abs(updated.slope / scale - core.slope / scale) if scale else 0.0
+        if change <= _X_ERROR_TOL:
+            # Evaluate the returned slope with its own weights, including the
+            # weighted intercept, residuals, covariance and prediction band.
+            effective = _effective_fit_sigma(data, updated.slope)
+            final = _solve_linear_fit(
+                replace(data, sigma_y=effective), fixed_slope=updated.slope
+            )
+            return replace(final, x_error_method="iterate")
+        core = updated
+    raise RuntimeError(
+        f"lin_fit: x_error_method='iterate' did not converge within {_X_ERROR_MAX_ITER} iterations"
+    )
+
+
 _CORE_RESULT_FIELDS = (
     "slope",
     "intercept",
@@ -537,6 +627,7 @@ _CORE_RESULT_FIELDS = (
     "p_value",
     "dof",
     "fit_method",
+    "x_error_method",
 )
 
 
@@ -549,6 +640,8 @@ class LinearFitResult:
     absent. WLS treats sigma_y as absolute standard uncertainties, without
     rescaling the parameter covariance. With two WLS observations, only
     chi2 and dof are defined among the residual diagnostics.
+    x_error_method="iterate" identifies approximate effective-variance WLS;
+    its frozen-weight covariance, band and chi-square p-value are approximate.
 
     The Figure object can still be edited or saved after fitting. Its
     reference, like every other dataclass field, cannot be reassigned.
@@ -571,6 +664,7 @@ class LinearFitResult:
     figure: Figure | None
     fit_method: FitMethod = "wls"
     p_value: float | None = None
+    x_error_method: XErrorMethod = field(default="none", kw_only=True)
     _data: _LinearFitData | None = field(
         default=None, repr=False, compare=False, kw_only=True
     )
@@ -582,6 +676,7 @@ class LinearFitResult:
     )
 
     def __post_init__(self) -> None:
+        _validate_x_error_method(self.x_error_method)
         residuals = np.array(self.residuals, dtype=np.float64, copy=True)
         residuals.setflags(write=False)
         object.__setattr__(self, "residuals", residuals)
@@ -603,6 +698,8 @@ class LinearFitResult:
                     f"LinearFitResult: {', '.join(mismatched)} inconsistent with the computed "
                     "fit; for different parameters run a new lin_fit"
                 )
+        if self.x_error_method == "iterate" and self.fit_method != "wls":
+            raise ValueError("x_error_method='iterate' requires fit_method='wls'")
         if self._plot_metadata is not None:
             object.__setattr__(
                 self, "_plot_metadata", MappingProxyType(dict(self._plot_metadata))
@@ -647,14 +744,16 @@ class LinearFitResult:
         return float(predicted[0]) if scalar else predicted
 
     def to_toml(self, path: str | Path) -> Path:
-        """Save the fit as schema-2 TOML, overwriting the destination atomically.
+        """Save the fit as TOML, overwriting the destination atomically.
 
-        Results from lin_fit retain x, y, effective sigma_y and the original
+        Results from lin_fit retain x, y, original uncertainties and the original
         plot options, so the numerical fit can be rerun. Manually constructed
         results export the supplied numerical fields without inventing inputs.
         Undefined fields are omitted; floats are not rounded for presentation.
         Figure edits and the full Matplotlib state are not serialized.
         A missing suffix becomes .toml. The destination directory must exist.
+        Documents with sigma_x use schema 3 and record x_error_method;
+        existing y-only documents retain schema 2.
         """
         try:
             return _write_toml_document(_linear_fit_document(self), path)
@@ -672,6 +771,8 @@ def _make_linear_fit_result(
     arrays = [data.x, data.y, core.residuals]
     if data.sigma_y is not None:
         arrays.append(data.sigma_y)
+    if data.sigma_x is not None:
+        arrays.append(data.sigma_x)
     for axis in (core.x_axis, core.y_axis):
         arrays.extend((axis.offsets, axis.centered))
     for array in arrays:
@@ -691,6 +792,7 @@ def _make_linear_fit_result(
         figure=None,
         fit_method=core.fit_method,
         p_value=core.p_value,
+        x_error_method=core.x_error_method,
         _data=data,
         _core=core,
         _plot_metadata=plot_metadata,
@@ -698,7 +800,9 @@ def _make_linear_fit_result(
 
 
 def _linear_fit_document(result: LinearFitResult) -> dict[str, Any]:
-    """Serialize schema 2 using original data/options and unrounded numerics."""
+    """Serialize original data/options, using schema 3 when x errors are present."""
+    has_x_errors = result._data is not None and result._data.sigma_x is not None
+    extended = has_x_errors or result.x_error_method != "none"
     fit: dict[str, Any] = {
         "fit_method": str(result.fit_method),
         "slope": float(result.slope),
@@ -709,18 +813,24 @@ def _linear_fit_document(result: LinearFitResult) -> dict[str, Any]:
     }
     if result.correlation is not None:
         fit["correlation"] = float(result.correlation)
+    if extended:
+        fit["x_error_method"] = result.x_error_method
     diagnostics: dict[str, Any] = {"dof": int(result.dof)}
     for name in ("chi2", "reduced_chi2", "p_value", "residual_std", "estimated_sigma"):
         value = getattr(result, name)
         if value is not None:
             diagnostics[name] = float(value)
     document: dict[str, Any] = {
-        "mespy": _mespy_header("linear_fit", _LINEAR_FIT_SCHEMA_VERSION),
+        "mespy": _mespy_header(
+            "linear_fit", 3 if extended else _LINEAR_FIT_SCHEMA_VERSION
+        ),
     }
     if result._data is not None:
         document["data"] = {"x": result._data.x.tolist(), "y": result._data.y.tolist()}
         if result._data.sigma_y is not None:
             document["data"]["sigma_y"] = result._data.sigma_y.tolist()
+        if result._data.sigma_x is not None:
+            document["data"]["sigma_x"] = result._data.sigma_x.tolist()
     document.update(
         {
             "fit": fit,
@@ -902,10 +1012,16 @@ def _plot_linear_fit(
     y_fit = core.predict(x_fit)
     mean_std = core.mean_std(x_fit)
     residuals = core.residuals
-    residual_error = data.sigma_y
+    residual_error = (
+        _effective_fit_sigma(data, core.slope)
+        if core.x_error_method == "iterate"
+        else data.sigma_y
+    )
     residuals_label = "Residuals"
     if normalize_residuals:
-        denominator = data.sigma_y if data.sigma_y is not None else core.residual_std
+        denominator = (
+            residual_error if residual_error is not None else core.residual_std
+        )
         residuals = core.residuals / denominator
         residual_error = (
             np.ones_like(data.sigma_y) if data.sigma_y is not None else None
@@ -913,6 +1029,8 @@ def _plot_linear_fit(
         residuals_label = (
             r"Residuals / $\sigma_y$" if data.sigma_y is not None else "Residuals / s"
         )
+        if core.x_error_method == "iterate":
+            residuals_label = r"Residuals / $\sigma_{\mathrm{eff}}$"
 
     figure = None
     try:
@@ -928,11 +1046,16 @@ def _plot_linear_fit(
                 figure, (ax_fit, ax_res) = plt.subplots(
                     2, 1, sharex=True, gridspec_kw={"height_ratios": [3, 1]}
                 )
-                if data.sigma_y is None:
+                if data.sigma_y is None and data.sigma_x is None:
                     ax_fit.plot(data.x, data.y, "o", color=point_color)
                 else:
                     ax_fit.errorbar(
-                        data.x, data.y, yerr=data.sigma_y, fmt="o", color=point_color
+                        data.x,
+                        data.y,
+                        yerr=data.sigma_y,
+                        xerr=data.sigma_x,
+                        fmt="o",
+                        color=point_color,
                     )
                 ax_fit.plot(x_fit, y_fit, color=fit_color, label="Fit")
                 ax_fit.fill_between(
@@ -947,13 +1070,14 @@ def _plot_linear_fit(
                 if title is not None:
                     ax_fit.set_title(title)
                 ax_fit.legend()
-                if residual_error is None:
+                if residual_error is None and data.sigma_x is None:
                     ax_res.plot(data.x, residuals, "o", color=point_color)
                 else:
                     ax_res.errorbar(
                         data.x,
                         residuals,
                         yerr=residual_error,
+                        xerr=data.sigma_x,
                         fmt="o",
                         color=point_color,
                     )
@@ -983,6 +1107,8 @@ def lin_fit(
     y: ArrayLike,
     sigma_y: ArrayLike | None = None,
     *,
+    sigma_x: ArrayLike | None = None,
+    x_error_method: XErrorMethod = "none",
     xlabel: str = "x",
     ylabel: str = "y",
     title: str | None = None,
@@ -991,7 +1117,7 @@ def lin_fit(
     plot: bool = True,
     normalize_residuals: bool = False,
 ) -> LinearFitResult:
-    """Fit y = slope*x + intercept with exact x and independent y errors.
+    """Fit y = slope*x + intercept, optionally propagating independent x errors.
 
     x and y are finite real 1D sequences of equal length. Without sigma_y,
     ordinary least squares (OLS) requires at least three points, emits a
@@ -1001,23 +1127,39 @@ def lin_fit(
     WLS covariance is not rescaled by reduced chi-squared. Its p-value
     interpretation assumes independent Gaussian errors and a correct model.
 
+    By default x_error_method="none" treats x as exact in the calculation.
+    Optional sigma_x supplies horizontal error bars only in this mode.
+    sigma_x is a finite non-negative scalar or same-length vector; zero
+    denotes an exact x. x_error_method="iterate" requires both sigma_x and
+    sigma_y and uses legacy effective-variance WLS reweighting:
+    sigma_eff = hypot(sigma_y, slope*sigma_x). This approximation is not
+    York/ODR and convergence does not guarantee a minimum of the effective
+    criterion. The relative slope tolerance is 1e-10, with at most 100
+    iterations; failure raises RuntimeError before plotting or export.
+    Covariance and the prediction band use frozen final effective weights;
+    chi2, reduced_chi2 and the historical chi-square p_value have only an
+    approximate statistical interpretation in this mode.
+
     The frozen result contains parameters, their standard uncertainties,
     covariance, optional correlation, physical residuals, residual_std,
     optional chi2/reduced_chi2/p_value, dof, fit_method and figure. It also
-    provides estimated_sigma (OLS only) and a stable predict(x_new) method.
+    provides x_error_method, estimated_sigma (OLS only), and predict(x_new).
     residual_std is sqrt(RSS/dof), descriptive in WLS, and None when dof=0.
 
     plot=False returns figure=None and never loads pyplot or resolves style.
     normalize_residuals affects only the lower plot panel, using sigma_y
-    in WLS and estimated_sigma in OLS. An exact OLS line cannot be plotted
+    in y-only WLS, final sigma_eff in iterative WLS, and estimated_sigma
+    in OLS. Returned and exported residuals always remain physical.
+    An exact OLS line cannot be plotted
     with normalized residuals. xlabel, ylabel and title label the figure;
-    style selects a temporary Matplotlib style (default "report"), including
+    style selects a temporary Matplotlib style (default "mespy"), including
     registered styles, Matplotlib styles and .mplstyle files. None retains
     the active style. The style controls figure size, DPI, fonts, grid,
     line widths, marker sizes, cap sizes and layout. The band shows ± one
     standard uncertainty of the predicted mean, not a prediction interval
-    for new observations. OLS points have no error bars; normalized WLS
-    residuals have unit error bars referencing the observation uncertainties.
+    for new observations. Without sigma_x, OLS points have no error bars.
+    Normalized WLS residuals have unit vertical error bars referencing the
+    supplied or propagated measurement uncertainties.
 
     output is an extension-free str/Path base, for example "results/spring".
     If supplied, missing directories are created and spring.toml is exported,
@@ -1025,26 +1167,36 @@ def lin_fit(
     one at a time, after both requested artifacts are prepared; the pair
     is not an atomic transaction. PDF rendering honors savefig.* within
     the selected style. With output=None no file is written. to_toml(path)
-    exports the same schema-2 document without creating missing directories.
+    exports the same document without creating missing directories. Documents
+    with sigma_x use schema 3 (original sigma_x and x_error_method retained);
+    y-only documents keep schema 2.
 
-    Breaking changes: fit_method, sigma_x, tol, max_iter and aesthetic
+    Breaking changes: fit_method, tol, max_iter and aesthetic
     overrides have been removed. Use plot in place of show_plot; save_path
     is removed in favor of the output workflow. iterations, converged and
-    scale_factor are no longer result fields. TOML uses schema version 2.
-    No legacy keywords are accepted.
+    scale_factor are no longer result fields.
+    sigma_x is now keyword-only and propagation requires explicit selection
+    of x_error_method="iterate"; providing it alone only draws error bars.
 
     Invalid data raise ValueError; incompatible types raise TypeError.
     Unrepresentable numerical results raise FloatingPointError. x must
     contain at least two distinct values, without an absolute tolerance.
     """
-    data = _validate_linear_fit_data(x, y, sigma_y)
+    x_error_method = _validate_x_error_method(x_error_method)
+    if x_error_method == "iterate" and (sigma_x is None or sigma_y is None):
+        raise ValueError("x_error_method='iterate' requires both sigma_x and sigma_y")
+    data = _validate_linear_fit_data(x, y, sigma_y, sigma_x=sigma_x)
     plot = _validate_fit_flag("plot", plot)
     normalize_residuals = _validate_fit_flag("normalize_residuals", normalize_residuals)
     xlabel = _validate_fit_label("xlabel", xlabel)
     ylabel = _validate_fit_label("ylabel", ylabel)
     title = _validate_fit_label("title", title, optional=True)
     base = _validate_fit_output(output) if output is not None else None
-    core = _solve_linear_fit(data)
+    core = (
+        _solve_iterative_linear_fit(data)
+        if x_error_method == "iterate"
+        else _solve_linear_fit(data)
+    )
     if (
         plot
         and normalize_residuals

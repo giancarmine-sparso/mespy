@@ -880,7 +880,6 @@ def test_lin_fit_invalid_calls_raise_without_ols_warning(
     "name",
     [
         "fit_method",
-        "sigma_x",
         "tol",
         "max_iter",
         "residuals_label",
@@ -1154,7 +1153,7 @@ def test_schema2_omits_undefined_two_point_diagnostics_and_absent_title(tmp_path
         "normalize_residuals": False,
         "xlabel": "x",
         "ylabel": "y",
-        "style": "report",
+        "style": "mespy",
     }
 
 
