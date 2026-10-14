@@ -30,7 +30,7 @@
 {% endmacro %}
 {% include "components/mespy-header.html" %}
 
-<main id="main-content" data-copied="{{ home('Copiato') }}" data-copy-failed="{{ home('Seleziona e copia') }}"
+<main id="main-content" role="main" data-copied="{{ home('Copiato') }}" data-copy-failed="{{ home('Seleziona e copia') }}"
       data-copied-status="{{ home('Copiato negli appunti.') }}" data-copy-failed-status="{{ home('Copia non disponibile: seleziona il testo e copialo a mano.') }}">
   <p class="mh-sr-only" role="status" aria-live="polite" id="gs-copy-status"></p>
 

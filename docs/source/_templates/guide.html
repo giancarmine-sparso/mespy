@@ -20,7 +20,7 @@
     {% include "components/guide-nav.html" %}
     {% if guide_station %}<div class="gd-station gd-station--{{ guide_station }}" data-guide-station="{{ guide_station }}" aria-hidden="true"></div>{% endif %}
   </aside>
-  <main id="main-content" class="gd-main">
+  <main id="main-content" role="main" class="gd-main">
     {% include "components/guide-nav-mobile.html" %}
     {% if guide_eyebrow %}<p class="mh-eyebrow gd-eyebrow"><span class="mh-status" aria-hidden="true"></span> {{ guide_eyebrow }}</p>{% endif %}
     <article class="gd-article">
