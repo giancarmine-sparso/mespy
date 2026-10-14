@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../source/moduli/plot_utils/histogram.md:58
+#: ../../source/moduli/plot_utils/histogram.md:152
 msgid "Panoramica"
 msgstr "Overview"
 
-#: ../../source/moduli/plot_utils/histogram.md:58
+#: ../../source/moduli/plot_utils/histogram.md:152
 msgid "Funzionamento"
 msgstr "Implementation"
 
@@ -65,7 +65,599 @@ msgstr ""
 "`band_alpha`, `mean_symbol`, and `band_symbol` parameters remain explicit per-call "
 "overrides instead."
 
-#: ../../source/moduli/plot_utils/histogram.md:54
+#: ../../source/moduli/plot_utils/histogram.md:55
+msgid "Parametri per scopo"
+msgstr "Parameters by purpose"
+
+#: ../../source/moduli/plot_utils/histogram.md:57
+msgid ""
+"I 37 parametri sono raggruppati in base a che cosa controllano. I default indicati "
+"come \"stile\" vengono letti dallo stile Matplotlib attivo durante la chiamata, che "
+"per default è `mespy`."
+msgstr ""
+"The 37 parameters are grouped by what they control. Defaults marked as \"style\" are "
+"read from the Matplotlib style that is active during the call, which is `mespy` by "
+"default."
+
+#: ../../source/moduli/plot_utils/histogram.md:59
+msgid "**Dati e rappresentazione**"
+msgstr "**Data and representation**"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Parametro"
+msgstr "Parameter"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Default"
+msgstr "Default"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Effetto"
+msgstr "Effect"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`x`"
+msgstr "`x`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "obbligatorio"
+msgstr "required"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid ""
+"Campione numerico: lista, array NumPy o colonna pandas. Deve essere monodimensionale,"
+" non vuoto e con soli valori finiti."
+msgstr ""
+"Numeric sample: a list, a NumPy array or a pandas column. It must be one-dimensional,"
+" non-empty and contain only finite values."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`stat`"
+msgstr "`stat`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`\"count\"`"
+msgstr "`\"count\"`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid ""
+"Altezza delle barre: conteggi $n_i$, frequenze relative $n_i/N$ o densità "
+"$n_i/(N\\,\\Delta x_i)$."
+msgstr ""
+"Bar height: counts $n_i$, relative frequencies $n_i/N$ or densities $n_i/(N\\,\\Delta"
+" x_i)$."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`ddof`"
+msgstr "`ddof`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`0`"
+msgstr "`0`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+#, python-brace-format
+msgid ""
+"Gradi di libertà sottratti nel calcolo di $\\sigma$: divide per $N - \\mathrm{ddof}$."
+" Usa `ddof=1` per la deviazione standard campionaria."
+msgstr ""
+"Degrees of freedom subtracted when computing $\\sigma$: it divides by $N - "
+"\\mathrm{ddof}$. Use `ddof=1` for the sample standard deviation."
+
+#: ../../source/moduli/plot_utils/histogram.md:67
+msgid "**Bin**"
+msgstr "**Bins**"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`bins`"
+msgstr "`bins`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`\"auto\"`"
+msgstr "`\"auto\"`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid ""
+"Numero di bin (`10`), regola automatica di NumPy (`\"auto\"`, `\"fd\"`, "
+"`\"sturges\"`, `\"sqrt\"`, ...) o array esplicito dei bordi."
+msgstr ""
+"Number of bins (`10`), a NumPy automatic rule (`\"auto\"`, `\"fd\"`, `\"sturges\"`, "
+"`\"sqrt\"`, ...) or an explicit array of edges."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`bin_width`"
+msgstr "`bin_width`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`None`"
+msgstr "`None`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid ""
+"Larghezza fissa dei bin; i bordi vengono allineati a multipli interi di `bin_width`. "
+"Alternativo a `bins`."
+msgstr ""
+"Fixed bin width; the edges are aligned to integer multiples of `bin_width`. "
+"Alternative to `bins`."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`hist_range`"
+msgstr "`hist_range`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid ""
+"Coppia `(min, max)` dell'intervallo su cui costruire i bin. Con `None` si usa "
+"l'intervallo dei dati."
+msgstr ""
+"Pair `(min, max)` of the interval on which the bins are built. With `None` the range "
+"of the data is used."
+
+#: ../../source/moduli/plot_utils/histogram.md:75
+msgid "**Media e banda**"
+msgstr "**Mean and band**"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`show_mean`"
+msgstr "`show_mean`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`True`"
+msgstr "`True`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Disegna la linea tratteggiata sulla media."
+msgstr "Draws the dashed line at the mean."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`show_band`"
+msgstr "`show_band`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+#, python-brace-format
+msgid "Disegna la banda $\\bar{x} \\pm \\sigma$."
+msgstr "Draws the $\\bar{x} \\pm \\sigma$ band."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`mean_symbol`"
+msgstr "`mean_symbol`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+#, python-brace-format
+msgid "`r\"\\bar{x}\"`"
+msgstr "`r\"\\bar{x}\"`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+#, python-brace-format
+msgid "Simbolo LaTeX della media in legenda, ad esempio `r\"\\bar{T}\"`."
+msgstr "LaTeX symbol of the mean in the legend, for example `r\"\\bar{T}\"`."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`band_symbol`"
+msgstr "`band_symbol`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`r\"\\pm \\sigma\"`"
+msgstr "`r\"\\pm \\sigma\"`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Simbolo LaTeX della banda in legenda, ad esempio `r\"\\pm s\"`."
+msgstr "LaTeX symbol of the band in the legend, for example `r\"\\pm s\"`."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`decimals`"
+msgstr "`decimals`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`3`"
+msgstr "`3`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid ""
+"Cifre decimali di media e $\\sigma$ in legenda e dei bordi sull'asse $x$; intero da 0"
+" a 20."
+msgstr ""
+"Decimal digits of the mean and $\\sigma$ in the legend and of the edges on the $x$ "
+"axis; an integer from 0 to 20."
+
+#: ../../source/moduli/plot_utils/histogram.md:85
+msgid "**Testi e legenda**"
+msgstr "**Text and legend**"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`label`"
+msgstr "`label`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`\"Dati\"`"
+msgstr "`\"Dati\"`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Nome delle barre in legenda."
+msgstr "Name of the bars in the legend."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`xlabel`"
+msgstr "`xlabel`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`\"Valore\"`"
+msgstr "`\"Valore\"`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Etichetta dell'asse $x$: grandezza e unità."
+msgstr "Label of the $x$ axis: quantity and unit."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`ylabel`"
+msgstr "`ylabel`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid ""
+"Etichetta dell'asse $y$. Con `None` diventa `\"Conteggi\"`, `\"Frequenza relativa\"` "
+"o `\"Densità di frequenza\"` secondo `stat`."
+msgstr ""
+"Label of the $y$ axis. With `None` it becomes `\"Conteggi\"`, `\"Frequenza "
+"relativa\"` or `\"Densità di frequenza\"` depending on `stat`."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`title`"
+msgstr "`title`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`\"Istogramma\"`"
+msgstr "`\"Istogramma\"`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Titolo del grafico."
+msgstr "Plot title."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`title_fontsize`"
+msgstr "`title_fontsize`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "stile"
+msgstr "style"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Dimensione del titolo."
+msgstr "Title font size."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`title_pad`"
+msgstr "`title_pad`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Distanza in punti tra titolo e grafico."
+msgstr "Distance in points between the title and the plot."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`show_legend`"
+msgstr "`show_legend`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Mostra la legenda."
+msgstr "Shows the legend."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`legend_loc`"
+msgstr "`legend_loc`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Posizione della legenda, ad esempio `\"upper left\"`."
+msgstr "Legend position, for example `\"upper left\"`."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`legend_fontsize`"
+msgstr "`legend_fontsize`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Dimensione del testo della legenda."
+msgstr "Legend font size."
+
+#: ../../source/moduli/plot_utils/histogram.md:99
+msgid "**Assi e griglia**"
+msgstr "**Axes and grid**"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`show_bin_ticks`"
+msgstr "`show_bin_ticks`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Usa i bordi dei bin come tacche dell'asse $x$."
+msgstr "Uses the bin edges as ticks on the $x$ axis."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`tick_rotation`"
+msgstr "`tick_rotation`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Rotazione in gradi delle etichette dell'asse $x$."
+msgstr "Rotation in degrees of the $x$ tick labels."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`xlim`"
+msgstr "`xlim`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Limiti `(min, max)` dell'asse $x$: cambiano solo la porzione visibile."
+msgstr "`(min, max)` limits of the $x$ axis: they only change the visible region."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`ylim`"
+msgstr "`ylim`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Limiti `(min, max)` dell'asse $y$."
+msgstr "`(min, max)` limits of the $y$ axis."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`show_grid`"
+msgstr "`show_grid`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Con `False` spegne la griglia; con `True` la lascia allo stile."
+msgstr "`False` turns the grid off; `True` leaves it to the style."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`grid_alpha`"
+msgstr "`grid_alpha`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Se indicato, disegna la griglia orizzontale con questa opacità."
+msgstr "If given, draws the horizontal grid with this opacity."
+
+#: ../../source/moduli/plot_utils/histogram.md:110
+msgid "**Figura, stile e salvataggio**"
+msgstr "**Figure, style and saving**"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`style`"
+msgstr "`style`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`\"mespy\"`"
+msgstr "`\"mespy\"`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid ""
+"Stile applicato solo durante la chiamata. `None` usa le impostazioni correnti; "
+"accetta anche `\"report\"`, `\"column\"` o il nome di uno stile Matplotlib."
+msgstr ""
+"Style applied during the call only. `None` uses the current settings; it also accepts"
+" `\"report\"`, `\"column\"` or the name of a Matplotlib style."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`ax`"
+msgstr "`ax`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Asse su cui disegnare. Con `None` viene creata una nuova figura."
+msgstr "Axes to draw on. With `None` a new figure is created."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`figsize`"
+msgstr "`figsize`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid ""
+"Dimensioni `(larghezza, altezza)` in pollici; usato solo se la figura viene creata "
+"dalla funzione."
+msgstr "Size `(width, height)` in inches; used only when the function creates the figure."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`dpi`"
+msgstr "`dpi`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Risoluzione della nuova figura e del file salvato con `save_path`."
+msgstr "Resolution of the new figure and of the file saved with `save_path`."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`save_path`"
+msgstr "`save_path`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Percorso del file in cui salvare la figura; senza estensione viene aggiunto `.pdf`."
+msgstr "Path of the file the figure is saved to; without an extension `.pdf` is added."
+
+#: ../../source/moduli/plot_utils/histogram.md:120
+msgid "**Colori e trasparenze**"
+msgstr "**Colours and transparency**"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`bar_color`"
+msgstr "`bar_color`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Colore di riempimento delle barre."
+msgstr "Fill colour of the bars."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`edgecolor`"
+msgstr "`edgecolor`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Colore del bordo delle barre (bianco nello stile `mespy`)."
+msgstr "Colour of the bar edges (white in the `mespy` style)."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`hist_alpha`"
+msgstr "`hist_alpha`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`0.85`"
+msgstr "`0.85`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Opacità delle barre, da 0 a 1."
+msgstr "Bar opacity, from 0 to 1."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`mean_color`"
+msgstr "`mean_color`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid ""
+"Colore della linea della media. Con `None` usa `\"C1\"`, il secondo colore del ciclo "
+"dello stile attivo."
+msgstr ""
+"Colour of the mean line. With `None` it uses `\"C1\"`, the second colour of the "
+"active style's cycle."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`band_color`"
+msgstr "`band_color`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid ""
+"Colore della banda. Con `None` usa `\"C2\"`, il terzo colore del ciclo dello stile "
+"attivo."
+msgstr ""
+"Colour of the band. With `None` it uses `\"C2\"`, the third colour of the active "
+"style's cycle."
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`band_alpha`"
+msgstr "`band_alpha`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "`0.15`"
+msgstr "`0.15`"
+
+#: ../../source/moduli/plot_utils/histogram.md:None
+msgid "Opacità della banda, da 0 a 1."
+msgstr "Band opacity, from 0 to 1."
+
+#: ../../source/moduli/plot_utils/histogram.md:132
+msgid "Comportamenti da conoscere"
+msgstr "Behaviours worth knowing"
+
+#: ../../source/moduli/plot_utils/histogram.md:134
+msgid ""
+"Alcuni comportamenti non si deducono dalla firma ma cambiano il modo di leggere il "
+"grafico."
+msgstr ""
+"Some behaviours cannot be read from the signature but change how you should read the "
+"plot."
+
+#: ../../source/moduli/plot_utils/histogram.md:136
+msgid ""
+"**Media e $\\sigma$ usano sempre tutto il campione.** Non dipendono da `stat`, da "
+"`bins` né da `hist_range`: anche le misure escluse dai bin contribuiscono alla linea "
+"e alla banda. Con $N$ valori,"
+msgstr ""
+"**The mean and $\\sigma$ always use the whole sample.** They do not depend on `stat`,"
+" `bins` or `hist_range`: even the measurements left out of the bins contribute to the"
+" line and the band. With $N$ values,"
+
+#: ../../source/moduli/plot_utils/histogram.md:138
+msgid ""
+"\\bar{x} = \\frac{1}{N}\\sum_{j=1}^{N} x_j, \\qquad \\sigma = \\sqrt{\\frac{1}{N - "
+"\\mathrm{ddof}}\\sum_{j=1}^{N}\\left(x_j - \\bar{x}\\right)^2}."
+msgstr ""
+"\\bar{x} = \\frac{1}{N}\\sum_{j=1}^{N} x_j, \\qquad \\sigma = \\sqrt{\\frac{1}{N - "
+"\\mathrm{ddof}}\\sum_{j=1}^{N}\\left(x_j - \\bar{x}\\right)^2}."
+
+#: ../../source/moduli/plot_utils/histogram.md:139
+msgid ""
+"**I bin sono intervalli semiaperti.** Ogni bin è $[a, b)$: include il bordo sinistro "
+"ed esclude il destro. Solo l'ultimo è chiuso, $[a, b]$. Un valore che cade "
+"esattamente su un bordo finisce nel bin a destra, e piccoli errori di arrotondamento "
+"sul bordo possono spostarlo nel bin a sinistra."
+msgstr ""
+"**Bins are half-open intervals.** Each bin is $[a, b)$: it includes its left edge and"
+" excludes its right edge. Only the last one is closed, $[a, b]$. A value that lies "
+"exactly on an edge goes into the bin on the right, and tiny rounding errors on the "
+"edge can move it into the bin on the left."
+
+#: ../../source/moduli/plot_utils/histogram.md:140
+msgid ""
+"**Le normalizzazioni contano solo le osservazioni nei bin.** In `\"probability\"` e "
+"`\"density\"`, $N = \\sum_i n_i$ è il numero di osservazioni effettivamente contenute"
+" nei bin, che può essere minore della dimensione del campione. Se nessuna "
+"osservazione cade nei bin, tutte le altezze restano zero."
+msgstr ""
+"**The normalisations only count the observations inside the bins.** In "
+"`\"probability\"` and `\"density\"`, $N = \\sum_i n_i$ is the number of observations "
+"actually inside the bins, which can be smaller than the sample size. If no "
+"observation falls into the bins, every height stays zero."
+
+#: ../../source/moduli/plot_utils/histogram.md:141
+msgid ""
+"**`bin_width` costruisce i bordi da solo.** Con $a$ e $b$ estremi dei dati (o di "
+"`hist_range`) e $w$ la larghezza, i bordi partono da $\\lfloor a/w \\rfloor\\, w$ e "
+"arrivano a $\\lceil b/w \\rceil\\, w$, con passo $w$. Per questo `bins` e `bin_width`"
+" non si possono usare insieme."
+msgstr ""
+"**`bin_width` builds the edges by itself.** With $a$ and $b$ the extremes of the data"
+" (or of `hist_range`) and $w$ the width, the edges start at $\\lfloor a/w \\rfloor\\,"
+" w$ and end at $\\lceil b/w \\rceil\\, w$, with step $w$. This is why `bins` and "
+"`bin_width` cannot be used together."
+
+#: ../../source/moduli/plot_utils/histogram.md:142
+msgid ""
+"**`hist_range` ha effetti diversi secondo `bins`.** Con un numero di bin o una regola"
+" automatica, delimita l'intervallo e i valori esterni non entrano nelle barre. Con un"
+" array esplicito di bordi viene ignorato, perché comandano i bordi. Con `bin_width` "
+"fornisce gli estremi da cui costruire i bordi."
+msgstr ""
+"**`hist_range` acts differently depending on `bins`.** With a number of bins or an "
+"automatic rule, it bounds the interval and values outside it do not enter the bars. "
+"With an explicit array of edges it is ignored, because the edges are in charge. With "
+"`bin_width` it provides the extremes from which the edges are built."
+
+#: ../../source/moduli/plot_utils/histogram.md:143
+msgid ""
+"**`xlim` e `ylim` cambiano solo la vista.** Non modificano bin, conteggi o "
+"normalizzazioni."
+msgstr ""
+"**`xlim` and `ylim` only change the view.** They do not modify bins, counts or "
+"normalisations."
+
+#: ../../source/moduli/plot_utils/histogram.md:144
+msgid ""
+"**Lo stile è temporaneo.** Con `style=\"mespy\"` lo stile vale solo durante la "
+"chiamata e non modifica le impostazioni globali. Se passi `ax`, lo stile si applica "
+"solo agli elementi disegnati da `histogram`: l'asse e la figura mantengono le "
+"proprietà che avevano alla creazione. Per i grafici a più pannelli conviene attivare "
+"lo stile per tutta la sessione con `plt.style.use(\"mespy\")`, disponibile dopo "
+"`import mespy`."
+msgstr ""
+"**The style is temporary.** With `style=\"mespy\"` the style holds only during the "
+"call and does not change the global settings. If you pass `ax`, the style applies "
+"only to the elements drawn by `histogram`: the axes and the figure keep the "
+"properties they had when they were created. For multi-panel plots it is convenient to"
+" activate the style for the whole session with `plt.style.use(\"mespy\")`, available "
+"after `import mespy`."
+
+#: ../../source/moduli/plot_utils/histogram.md:145
+msgid ""
+"**Nei notebook la figura viene mostrata subito.** In Jupyter, una figura creata da "
+"`histogram` viene mostrata e chiusa prima che la funzione termini: le modifiche fatte"
+" dopo, ad esempio con `ax.plot(...)`, non compaiono automaticamente. Se vuoi "
+"aggiungere elementi, crea prima l'asse con `plt.subplots()` e passalo con `ax=`. In "
+"uno script, invece, chiama `plt.show()` per aprire la finestra."
+msgstr ""
+"**In notebooks the figure is shown immediately.** In Jupyter, a figure created by "
+"`histogram` is shown and closed before the function returns: changes made afterwards,"
+" for example with `ax.plot(...)`, do not appear automatically. If you want to add "
+"elements, create the axes first with `plt.subplots()` and pass them with `ax=`. In a "
+"script, on the other hand, call `plt.show()` to open the window."
+
+#: ../../source/moduli/plot_utils/histogram.md:146
+msgid ""
+"**Il salvataggio avviene alla fine.** Con `save_path` la figura viene salvata con "
+"`bbox_inches=\"tight\"` dopo che lo stile temporaneo è stato rimosso. Se non indichi "
+"`dpi`, un file raster come un PNG viene salvato con la risoluzione della figura, 100 "
+"dpi con lo stile `mespy`: per un PNG nitido passa ad esempio `dpi=300`."
+msgstr ""
+"**Saving happens at the end.** With `save_path` the figure is saved with "
+"`bbox_inches=\"tight\"` after the temporary style has been removed. If you do not "
+"give `dpi`, a raster file such as a PNG is saved at the figure resolution, 100 dpi "
+"with the `mespy` style: for a sharp PNG pass, for example, `dpi=300`."
+
+#: ../../source/moduli/plot_utils/histogram.md:148
 msgid ""
 "Per una guida passo passo, con undici esempi eseguiti e il significato statistico di "
 "ogni opzione, vedi [Istogramma](../../examples/histogram.ipynb) nella sezione Esempi."
@@ -74,7 +666,7 @@ msgstr ""
 "of every option, see [Histogram](../../examples/histogram.ipynb) in the Examples "
 "section."
 
-#: ../../source/moduli/plot_utils/histogram.md:56
+#: ../../source/moduli/plot_utils/histogram.md:150
 msgid ""
 "Questa pagina resta il punto di ingresso rapido. I dettagli completi sono in "
 "[Panoramica](histogram/panoramica.md), mentre "
