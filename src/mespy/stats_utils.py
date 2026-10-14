@@ -11,13 +11,13 @@ def _as_float_vector(name: str, values: ArrayLike, *, allow_empty: bool = False)
     vector = np.asarray(values, dtype=float)
 
     if vector.ndim != 1:
-        raise ValueError(f"{name} deve essere un array monodimensionale")
+        raise ValueError(f"{name} must be a one-dimensional array")
 
     if not allow_empty and vector.size == 0:
-        raise ValueError(f"{name} deve contenere almeno un valore")
+        raise ValueError(f"{name} must contain at least one value")
 
     if not np.all(np.isfinite(vector)):
-        raise ValueError(f"{name} deve contenere solo valori finiti")
+        raise ValueError(f"{name} must contain only finite values")
 
     return vector
 
@@ -30,15 +30,15 @@ def _validate_weights(x: FloatVector, w: ArrayLike | None) -> FloatVector | None
     weights = _as_float_vector("w", w)
     if weights.shape != x.shape:
         raise ValueError(
-            f"w deve avere la stessa forma di x | x.shape={x.shape}, w.shape={weights.shape}"
+            f"w must have the same shape as x | x.shape={x.shape}, w.shape={weights.shape}"
         )
 
     if np.any(weights <= 0):
-        raise ValueError("w deve contenere solo valori strettamente positivi")
+        raise ValueError("w must contain only strictly positive values")
 
     w_sum = float(np.sum(weights))
     if not np.isfinite(w_sum) or w_sum <= 0:
-        raise ValueError("la somma dei pesi deve essere strettamente positiva")
+        raise ValueError("the sum of the weights must be strictly positive")
 
     return weights
 
@@ -143,7 +143,7 @@ def variance(x: ArrayLike, w: ArrayLike | None = None, ddof: int | float = 0) ->
         denom = n - ddof
         if denom <= 0:
             raise ValueError(
-                f"denominatore non positivo: len(x) - ddof = {n} - {ddof}"
+                f"non-positive denominator: len(x) - ddof = {n} - {ddof}"
             )
 
         dx = values - float(np.mean(values))
@@ -156,7 +156,7 @@ def variance(x: ArrayLike, w: ArrayLike | None = None, ddof: int | float = 0) ->
     denom = w_sum - ddof
     if denom <= 0:
         raise ValueError(
-            f"denominatore non positivo: sum(w) - ddof = {w_sum} - {ddof}"
+            f"non-positive denominator: sum(w) - ddof = {w_sum} - {ddof}"
         )
 
     dx = values - float(np.sum(weights * values) / w_sum)
@@ -203,7 +203,7 @@ def covariance(x: ArrayLike, y: ArrayLike, w: ArrayLike | None = None) -> float:
     y_values = _as_float_vector("y", y)
 
     if x_values.shape != y_values.shape:
-        raise ValueError("x e y devono avere la stessa lunghezza")
+        raise ValueError("x and y must have the same length")
 
     weights = _validate_weights(x_values, w)
     if weights is None:

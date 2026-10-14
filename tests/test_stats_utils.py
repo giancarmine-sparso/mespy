@@ -24,19 +24,19 @@ def test_weighted_mean_without_weights_matches_arithmetic_mean():
 
 
 def test_weighted_mean_rejects_invalid_inputs():
-    with pytest.raises(ValueError, match="almeno un valore"):
+    with pytest.raises(ValueError, match="at least one value"):
         weighted_mean([])
 
-    with pytest.raises(ValueError, match="solo valori finiti"):
+    with pytest.raises(ValueError, match="only finite values"):
         weighted_mean([1.0, np.nan, 3.0])
 
-    with pytest.raises(ValueError, match="stessa forma"):
+    with pytest.raises(ValueError, match="same shape"):
         weighted_mean([1.0, 2.0, 3.0], [1.0, 2.0])
 
-    with pytest.raises(ValueError, match="strettamente positivi"):
+    with pytest.raises(ValueError, match="strictly positive"):
         weighted_mean([1.0, 2.0, 3.0], [1.0, 0.0, 1.0])
 
-    with pytest.raises(ValueError, match="strettamente positivi"):
+    with pytest.raises(ValueError, match="strictly positive"):
         weighted_mean([1.0, 2.0, 3.0], [1.0, -1.0, 2.0])
 
 
@@ -46,12 +46,12 @@ def test_variance_basic():
 
 
 def test_variance_raises_on_empty():
-    with pytest.raises(ValueError, match="almeno un valore"):
+    with pytest.raises(ValueError, match="at least one value"):
         variance([])
 
 
 def test_variance_raises_on_non_finite_values():
-    with pytest.raises(ValueError, match="solo valori finiti"):
+    with pytest.raises(ValueError, match="only finite values"):
         variance([1.0, np.inf, 3.0])
 
 
@@ -59,24 +59,24 @@ def test_variance_raises_on_weight_shape_mismatch():
     values = np.array([1.0, 2.0, 3.0])
     weights = np.array([1.0, 2.0])
 
-    with pytest.raises(ValueError, match="stessa forma"):
+    with pytest.raises(ValueError, match="same shape"):
         variance(values, weights)
 
 
 def test_variance_raises_on_non_positive_weights():
     values = np.array([1.0, 2.0, 3.0])
 
-    with pytest.raises(ValueError, match="strettamente positivi"):
+    with pytest.raises(ValueError, match="strictly positive"):
         variance(values, [1.0, 0.0, 1.0])
 
-    with pytest.raises(ValueError, match="strettamente positivi"):
+    with pytest.raises(ValueError, match="strictly positive"):
         variance(values, [1.0, -1.0, 2.0])
 
 
 def test_variance_raises_when_ddof_makes_unweighted_denominator_non_positive():
     values = np.array([1.0, 2.0, 3.0])
 
-    with pytest.raises(ValueError, match="denominatore non positivo"):
+    with pytest.raises(ValueError, match="non-positive denominator"):
         variance(values, ddof=3)
 
 
@@ -90,7 +90,7 @@ def test_variance_raises_when_ddof_makes_weighted_denominator_non_positive():
     values = np.array([1.0, 2.0, 3.0])
     weights = np.array([1.0, 1.0, 1.0])
 
-    with pytest.raises(ValueError, match="denominatore non positivo"):
+    with pytest.raises(ValueError, match="non-positive denominator"):
         variance(values, weights, ddof=3)
 
 
@@ -122,7 +122,7 @@ def test_covariance_large_offset(w):
 
 
 def _exact_covariance(x, y, w):
-    """Covarianza esatta (razionale) dei valori float64 effettivamente passati."""
+    """Exact (rational) covariance of the float64 values actually passed in."""
     xs = [Fraction(v) for v in x]
     ys = [Fraction(v) for v in y]
     ws = [Fraction(1)] * len(xs) if w is None else [Fraction(v) for v in w]
@@ -158,15 +158,15 @@ def test_variance_large_offset(w):
 
 
 def test_covariance_raises_on_length_mismatch():
-    with pytest.raises(ValueError, match="stessa lunghezza"):
+    with pytest.raises(ValueError, match="same length"):
         covariance([1.0, 2.0], [1.0, 2.0, 3.0])
 
 
 def test_covariance_rejects_non_finite_values_and_invalid_weights():
-    with pytest.raises(ValueError, match="solo valori finiti"):
+    with pytest.raises(ValueError, match="only finite values"):
         covariance([1.0, 2.0], [1.0, np.nan])
 
-    with pytest.raises(ValueError, match="strettamente positivi"):
+    with pytest.raises(ValueError, match="strictly positive"):
         covariance([1.0, 2.0], [1.0, 2.0], [1.0, 0.0])
 
 
@@ -176,7 +176,7 @@ def test_standard_deviation_basic():
 
 
 def test_standard_deviation_raises_on_empty():
-    with pytest.raises(ValueError, match="almeno un valore"):
+    with pytest.raises(ValueError, match="at least one value"):
         standard_deviation([])
 
 
@@ -192,8 +192,8 @@ def test_median_odd():
 
 
 def test_median_rejects_empty_or_non_finite_values():
-    with pytest.raises(ValueError, match="almeno un valore"):
+    with pytest.raises(ValueError, match="at least one value"):
         median([])
 
-    with pytest.raises(ValueError, match="solo valori finiti"):
+    with pytest.raises(ValueError, match="only finite values"):
         median([1.0, np.nan, 2.0])

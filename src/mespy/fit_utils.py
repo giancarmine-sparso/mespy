@@ -38,11 +38,11 @@ class _LinearFitData:
 def _real_fit_array(name: str, values: ArrayLike) -> FloatVector:
     """Convert real numeric input once, without discarding masks or imaginary parts."""
     if np.ma.isMaskedArray(values):
-        raise TypeError(f"{name}: i masked array non sono supportati")
+        raise TypeError(f"{name}: masked arrays are not supported")
     try:
         raw = np.asarray(values)
     except (TypeError, ValueError) as exc:
-        raise ValueError(f"{name}: serve un array numerico regolare") from exc
+        raise ValueError(f"{name}: a regular numeric array is required") from exc
     # NumPy silently promotes booleans mixed with numbers in lists/tuples.
     if raw.dtype.kind == "b" or (
         isinstance(values, (list, tuple))
@@ -52,17 +52,17 @@ def _real_fit_array(name: str, values: ArrayLike) -> FloatVector:
         )
     ):
         raise TypeError(
-            f"{name}: i valori booleani non sono ammessi; servono numeri interi o floating-point"
+            f"{name}: boolean values are not allowed; integer or floating-point numbers are required"
         )
     if raw.dtype.kind not in "iuf":
-        raise TypeError(f"{name}: servono numeri reali, non complessi o altri tipi")
+        raise TypeError(f"{name}: real numbers are required, not complex numbers or other types")
     try:
         with np.errstate(over="ignore", invalid="ignore"):
             result = np.array(raw, dtype=np.float64, copy=True)
     except (TypeError, ValueError, OverflowError) as exc:
-        raise ValueError(f"{name}: valori non convertibili in float64") from exc
+        raise ValueError(f"{name}: values cannot be converted to float64") from exc
     if not np.all(np.isfinite(result)):
-        raise ValueError(f"{name}: tutti i valori devono essere finiti in float64")
+        raise ValueError(f"{name}: all values must be finite in float64")
     return result
 
 
@@ -74,9 +74,9 @@ def _validate_linear_fit_data(
     y_values = _real_fit_array("y", y)
     for name, values in (("x", x_values), ("y", y_values)):
         if values.ndim != 1 or values.size == 0:
-            raise ValueError(f"{name}: serve un vettore monodimensionale non vuoto")
+            raise ValueError(f"{name}: a non-empty one-dimensional vector is required")
     if x_values.shape != y_values.shape:
-        raise ValueError("y: deve avere la stessa lunghezza di x")
+        raise ValueError("y: must have the same length as x")
 
     sigma_values = None
     if sigma_y is not None:
@@ -85,18 +85,18 @@ def _validate_linear_fit_data(
             sigma_values = np.full(x_values.shape, float(sigma_values))
         elif sigma_values.ndim != 1 or sigma_values.shape != x_values.shape:
             raise ValueError(
-                "sigma_y: serve uno scalare o un vettore della lunghezza di x"
+                "sigma_y: a scalar or a vector with the same length as x is required"
             )
         if np.any(sigma_values <= 0):
             raise ValueError(
-                "sigma_y: le incertezze devono essere strettamente positive"
+                "sigma_y: uncertainties must be strictly positive"
             )
 
     minimum = 3 if sigma_values is None else 2
     if x_values.size < minimum:
-        raise ValueError(f"x, y: servono almeno {minimum} punti per questo fit")
+        raise ValueError(f"x, y: at least {minimum} points are required for this fit")
     if np.all(x_values == x_values[0]):
-        raise ValueError("x: servono almeno due valori distinti")
+        raise ValueError("x: at least two distinct values are required")
     return _LinearFitData(x_values, y_values, sigma_values)
 
 
@@ -115,17 +115,17 @@ def _fit_scaled_value(
     for divisor in divisors:
         part, power = math.frexp(divisor)
         if part == 0:
-            raise FloatingPointError(f"lin_fit: {name}, perdita di rango numerico")
+            raise FloatingPointError(f"lin_fit: {name}, numerical rank deficiency")
         mantissa /= part
         exponent -= power
     try:
         result = math.ldexp(mantissa, exponent)
     except OverflowError as exc:
         raise FloatingPointError(
-            f"lin_fit: {name} non rappresentabile in float64"
+            f"lin_fit: {name} not representable in float64"
         ) from exc
     if not math.isfinite(result) or (result == 0 and mantissa != 0):
-        raise FloatingPointError(f"lin_fit: {name} non rappresentabile in float64")
+        raise FloatingPointError(f"lin_fit: {name} not representable in float64")
     return result
 
 
@@ -165,7 +165,7 @@ def _fit_restore(name: str, values: FloatVector, exponent: int) -> FloatVector:
     with np.errstate(over="ignore", under="ignore", invalid="ignore"):
         restored = np.ldexp(values, exponent)
     if not np.all(np.isfinite(restored)) or np.any((values != 0) & (restored == 0)):
-        raise FloatingPointError(f"lin_fit: {name} non rappresentabili in float64")
+        raise FloatingPointError(f"lin_fit: {name} not representable in float64")
     return restored
 
 
@@ -175,7 +175,7 @@ def _fit_origin_values(
     """Restore ordinates from local offsets, cancelling before restoring units."""
     return np.array(
         [
-            _fit_scaled_sum("previsione", (origin, 0), (float(value), exponent))
+            _fit_scaled_sum("prediction", (origin, 0), (float(value), exponent))
             for value in offsets
         ]
     )
@@ -205,7 +205,7 @@ class _FitLocalAxis:
                 )
         if not np.all(np.isfinite(local)):
             raise FloatingPointError(
-                "lin_fit: x della previsione fuori dalla scala locale"
+                "lin_fit: prediction x outside the local scale"
             )
         return local
 
@@ -246,7 +246,7 @@ def _fit_norm(values: FloatVector) -> float:
         return 0.0
     scaled = values / largest
     return _fit_scaled_value(
-        "norma", largest, math.sqrt(math.fsum(float(v * v) for v in scaled))
+        "norm", largest, math.sqrt(math.fsum(float(v * v) for v in scaled))
     )
 
 
@@ -285,7 +285,7 @@ class _LinearFitCore:
                         + self.local_slope * self.x_axis.deviations(x)
                     )
             if not np.all(np.isfinite(offsets)):
-                raise FloatingPointError("previsione fuori dalla scala locale")
+                raise FloatingPointError("prediction outside the local scale")
         except FloatingPointError:
             # A finite prediction may lie beyond the local coordinate range.
             # Keep the offset and slope as binary-scaled parts in that case.
@@ -298,7 +298,7 @@ class _LinearFitCore:
                 delta_part, delta_shift = math.frexp(delta)
                 predictions.append(
                     _fit_scaled_sum(
-                        "previsione",
+                        "prediction",
                         (self.y_axis.origin, 0),
                         (
                             0.0 if self.exact_line else self.y_axis.mean,
@@ -345,7 +345,7 @@ class _LinearFitCore:
                 math.hypot(
                     self.center_std,
                     _fit_scaled_value(
-                        "banda", self.slope_std, float(v), exponent=self.x_axis.exponent
+                        "band", self.slope_std, float(v), exponent=self.x_axis.exponent
                     ),
                 )
                 for v in deviations
@@ -371,7 +371,7 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
             weights = np.square(sigma_scale / data.sigma_y)
         if np.any(weights == 0):
             raise FloatingPointError(
-                "lin_fit: sigma_y, pesi positivi ridotti a zero dalla normalizzazione"
+                "lin_fit: sigma_y, positive weights reduced to zero by normalization"
             )
 
     sum_weights = math.fsum(float(w) for w in weights)
@@ -382,10 +382,10 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
     weighted_y = root_weights * y_axis.centered
     largest_x = float(np.max(np.abs(weighted_x)))
     if largest_x == 0:
-        raise FloatingPointError("lin_fit: x, perdita di rango numerico")
+        raise FloatingPointError("lin_fit: x, numerical rank deficiency")
     scaled_x = weighted_x / largest_x
     moment_xx = math.fsum(float(v * v) for v in scaled_x)
-    norm_x = _fit_scaled_value("momento centrato x", largest_x, math.sqrt(moment_xx))
+    norm_x = _fit_scaled_value("centered x moment", largest_x, math.sqrt(moment_xx))
 
     # Exact equality in the original local offsets avoids creating artificial
     # OLS dispersion through rounded moment products. No tolerance is applied.
@@ -412,7 +412,7 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
             float(a * b) for a, b in zip(scaled_x, weighted_y / largest_y)
         )
         local_slope = _fit_scaled_value(
-            "slope locale", moment_xy, largest_y, divisors=(largest_x, moment_xx)
+            "local slope", moment_xy, largest_y, divisors=(largest_x, moment_xx)
         )
     slope = _fit_scaled_value(
         "slope", local_slope, exponent=y_axis.exponent - x_axis.exponent
@@ -446,7 +446,7 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
         if exact_line
         else y_axis.centered - local_slope * x_axis.centered
     )
-    residuals = _fit_restore("residui", local_residuals, y_axis.exponent)
+    residuals = _fit_restore("residuals", local_residuals, y_axis.exponent)
     dof = data.x.size - 2
     residual_norm = _fit_norm(local_residuals)
     residual_std = (
@@ -465,17 +465,17 @@ def _solve_linear_fit(data: _LinearFitData) -> _LinearFitCore:
         "slope_std", uncertainty_scale, divisors=(norm_x,), exponent=-x_axis.exponent
     )
     center_std = _fit_scaled_value(
-        "incertezza al baricentro",
+        "uncertainty at the centroid",
         uncertainty_scale,
         divisors=(math.sqrt(sum_weights),),
     )
     offset_std = _fit_scaled_value(
-        "incertezza dell'intercetta", slope_std, x_mean, exponent=x_mean_exponent
+        "intercept uncertainty", slope_std, x_mean, exponent=x_mean_exponent
     )
     intercept_std = math.hypot(center_std, offset_std)
     if not math.isfinite(intercept_std):
         raise FloatingPointError(
-            "lin_fit: intercept_std non rappresentabile in float64"
+            "lin_fit: intercept_std not representable in float64"
         )
     covariance = _fit_scaled_value(
         "covariance", -x_mean, slope_std, slope_std, exponent=x_mean_exponent
@@ -587,7 +587,7 @@ class LinearFitResult:
         object.__setattr__(self, "residuals", residuals)
         if (self._data is None) != (self._core is None):
             raise ValueError(
-                "LinearFitResult: _data e _core devono essere forniti insieme"
+                "LinearFitResult: _data and _core must be provided together"
             )
         if self._core is not None:
             # predict() and TOML data follow _core; public copies must agree.
@@ -600,8 +600,8 @@ class LinearFitResult:
                 mismatched.append("residuals")
             if mismatched:
                 raise ValueError(
-                    f"LinearFitResult: {', '.join(mismatched)} incoerenti con il fit "
-                    "calcolato; per parametri diversi esegui un nuovo lin_fit"
+                    f"LinearFitResult: {', '.join(mismatched)} inconsistent with the computed "
+                    "fit; for different parameters run a new lin_fit"
                 )
         if self._plot_metadata is not None:
             object.__setattr__(
@@ -623,7 +623,7 @@ class LinearFitResult:
         """
         values = _real_fit_array("x_new", x_new)
         if values.ndim > 1:
-            raise ValueError("x_new: serve uno scalare o un vettore monodimensionale")
+            raise ValueError("x_new: a scalar or a one-dimensional vector is required")
         scalar = values.ndim == 0
         vector = values.reshape(-1)
         if self._core is not None:
@@ -634,7 +634,7 @@ class LinearFitResult:
             predicted = np.array(
                 [
                     _fit_scaled_sum(
-                        "previsione",
+                        "prediction",
                         (
                             slope_part * math.frexp(float(value))[0],
                             slope_power + math.frexp(float(value))[1],
@@ -737,7 +737,7 @@ def _validate_fit_flag(name: str, value: object) -> bool:
     """Accept only Python or NumPy booleans, never truthy strings or numbers."""
     if not isinstance(value, (bool, np.bool_)):
         raise TypeError(
-            f"{name}: serve un booleano (True o False), non {type(value).__name__}"
+            f"{name}: expected a boolean (True or False), got {type(value).__name__}"
         )
     return bool(value)
 
@@ -747,9 +747,9 @@ def _validate_fit_label(name: str, value: object, *, optional: bool = False) -> 
     if value is None and optional:
         return None
     if not isinstance(value, str):
-        hint = "o None" if optional else '(usa "" per nessuna etichetta)'
+        hint = "or None" if optional else '(use "" for no label)'
         raise TypeError(
-            f"{name}: serve una stringa {hint}, non {type(value).__name__}"
+            f"{name}: expected a string {hint}, got {type(value).__name__}"
         )
     return str(value)
 
@@ -775,19 +775,19 @@ def _fit_output_target(base: Path, suffix: str) -> Path:
 def _validate_fit_output(output: str | Path) -> Path:
     """Require a file base without a file extension; never reinterpret save_path."""
     if not isinstance(output, (str, Path)):
-        raise TypeError("output: serve un percorso base str o Path senza estensione")
+        raise TypeError("output: expected a str or Path base path without an extension")
     if isinstance(output, str) and (not output or output.endswith(os.sep)):
-        raise ValueError("output: serve un percorso base di file, non una directory")
+        raise ValueError("output: expected a file base path, not a directory")
     path = Path(output)
     if path.name in ("", ".", "..") or "\x00" in str(path) or path.is_dir():
         raise ValueError(
-            "output: serve un percorso base di file valido, non una directory"
+            "output: expected a valid file base path, not a directory"
         )
     if path.name.endswith("."):
-        raise ValueError("output: il percorso base non può terminare con un punto")
+        raise ValueError("output: the base path cannot end with a dot")
     if path.suffix.lower() in _FIT_OUTPUT_EXTENSIONS:
         raise ValueError(
-            f"output: usa un percorso base senza l'estensione '{path.suffix}', ad esempio 'risultati/molla' invece di 'risultati/molla.pdf'; .pdf e .toml vengono aggiunti automaticamente"
+            f"output: use a base path without the '{path.suffix}' extension, for example 'results/spring' instead of 'results/spring.pdf'; .pdf and .toml are appended automatically"
         )
     return path
 
@@ -796,7 +796,7 @@ def _fit_export_error(error: OSError, target: Path) -> OSError:
     """Preserve errno/subclass while identifying the requested destination."""
     return OSError(
         error.errno,
-        f"MesPy: esportazione fallita: {error.strerror or error}",
+        f"MesPy: export failed: {error.strerror or error}",
         str(target),
     )
 
@@ -1019,9 +1019,9 @@ def lin_fit(
     for new observations. OLS points have no error bars; normalized WLS
     residuals have unit error bars referencing the observation uncertainties.
 
-    output is an extension-free str/Path base, for example "risultati/molla".
-    If supplied, missing directories are created and molla.toml is exported,
-    plus molla.pdf when plot=True. Existing files are replaced atomically
+    output is an extension-free str/Path base, for example "results/spring".
+    If supplied, missing directories are created and spring.toml is exported,
+    plus spring.pdf when plot=True. Existing files are replaced atomically
     one at a time, after both requested artifacts are prepared; the pair
     is not an atomic transaction. PDF rendering honors savefig.* within
     the selected style. With output=None no file is written. to_toml(path)
@@ -1052,11 +1052,11 @@ def lin_fit(
         and core.residual_std == 0
     ):
         raise ValueError(
-            "normalize_residuals: dispersione OLS nulla; usa residui non normalizzati (normalize_residuals=False)"
+            "normalize_residuals: zero OLS dispersion; use non-normalized residuals (normalize_residuals=False)"
         )
     if core.fit_method == "ols":
         warnings.warn(
-            "MesPy: sigma_y non fornita. Eseguo un fit non pesato e stimo la dispersione dai residui. Le diagnostiche χ² non sono disponibili.",
+            "MesPy: sigma_y not provided. Performing an unweighted fit and estimating the dispersion from the residuals. χ² diagnostics are not available.",
             UserWarning,
             stacklevel=2,
         )

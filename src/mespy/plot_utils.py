@@ -40,43 +40,43 @@ def _validate_axis_limits(
 ) -> tuple[float, float]:
     if isinstance(limits, (str, bytes)):
         raise ValueError(
-            f"{name} deve essere una sequenza di 2 elementi ({min_label}, {max_label})"
+            f"{name} must be a sequence of 2 elements ({min_label}, {max_label})"
         )
 
     try:
         values = tuple(limits)
     except TypeError as exc:
         raise ValueError(
-            f"{name} deve essere una sequenza di 2 elementi ({min_label}, {max_label})"
+            f"{name} must be a sequence of 2 elements ({min_label}, {max_label})"
         ) from exc
 
     if len(values) != 2:
         raise ValueError(
-            f"{name} deve avere 2 elementi ({min_label}, {max_label}) | ricevuti {len(values)}"
+            f"{name} must have 2 elements ({min_label}, {max_label}) | got {len(values)}"
         )
 
     axis_limits = np.asarray(values, dtype=float)
     if not np.all(np.isfinite(axis_limits)):
-        raise ValueError(f"{name} deve contenere solo valori finiti")
+        raise ValueError(f"{name} must contain only finite values")
 
     return float(axis_limits[0]), float(axis_limits[1])
 
 
 def _validate_figsize(figsize: ArrayLike) -> tuple[float, float]:
     if isinstance(figsize, (str, bytes)):
-        raise ValueError("figsize deve essere una coppia di valori positivi")
+        raise ValueError("figsize must be a pair of positive values")
 
     try:
         values = tuple(figsize)
     except TypeError as exc:
-        raise ValueError("figsize deve essere una coppia di valori positivi") from exc
+        raise ValueError("figsize must be a pair of positive values") from exc
 
     if len(values) != 2:
-        raise ValueError("figsize deve essere una coppia di valori positivi")
+        raise ValueError("figsize must be a pair of positive values")
 
     figure_size = np.asarray(values, dtype=float)
     if not np.all(np.isfinite(figure_size)) or np.any(figure_size <= 0):
-        raise ValueError("figsize deve essere una coppia di valori positivi")
+        raise ValueError("figsize must be a pair of positive values")
 
     return float(figure_size[0]), float(figure_size[1])
 
@@ -84,15 +84,15 @@ def _validate_figsize(figsize: ArrayLike) -> tuple[float, float]:
 def _validate_decimals(decimals: int) -> int:
     if not isinstance(decimals, (int, np.integer)) or isinstance(decimals, bool):
         raise ValueError(
-            f"'decimals' deve essere un intero non negativo | ricevuto {decimals!r}"
+            f"'decimals' must be a non-negative integer | got {decimals!r}"
         )
     value = int(decimals)
     if value < 0:
-        raise ValueError(f"'decimals' deve essere >= 0 | ricevuto {value}")
+        raise ValueError(f"'decimals' must be >= 0 | got {value}")
     if value > 20:
         raise ValueError(
-            f"'decimals' deve essere <= 20 per evitare etichette illeggibili "
-            f"| ricevuto {value}"
+            f"'decimals' must be <= 20 to avoid unreadable labels "
+            f"| got {value}"
         )
     return value
 
@@ -406,18 +406,18 @@ def histogram(
             )
             xmin, xmax = hist_range_tuple
             if xmin >= xmax:
-                raise ValueError("Serve xmin < xmax in 'hist_range'")
+                raise ValueError("'hist_range' requires xmin < xmax")
         else:
             xmin = float(np.min(values))
             xmax = float(np.max(values))
 
         if bin_width is not None:
             if bin_width <= 0:
-                raise ValueError("'bin_width' deve essere > 0.")
+                raise ValueError("'bin_width' must be > 0.")
 
             if bins != "auto":
                 raise ValueError(
-                    "'bins' e 'bin_width' sono mutualmente esclusivi. Usane uno solo"
+                    "'bins' and 'bin_width' are mutually exclusive. Use only one of them"
                 )
 
             start = np.floor(xmin / bin_width) * bin_width

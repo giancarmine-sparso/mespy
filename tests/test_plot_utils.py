@@ -155,20 +155,20 @@ def test_histogram_external_ax():
 def test_histogram_rejects_scalar_axis_limits():
     data = np.random.normal(size=20)
 
-    with pytest.raises(ValueError, match="xlim deve essere una sequenza di 2 elementi"):
+    with pytest.raises(ValueError, match="xlim must be a sequence of 2 elements"):
         histogram(data, xlim=1)
 
-    with pytest.raises(ValueError, match="ylim deve essere una sequenza di 2 elementi"):
+    with pytest.raises(ValueError, match="ylim must be a sequence of 2 elements"):
         histogram(data, ylim=1)
 
     plt.close("all")
 
 
 def test_histogram_rejects_empty_or_non_finite_input():
-    with pytest.raises(ValueError, match="x deve contenere almeno un valore"):
+    with pytest.raises(ValueError, match="x must contain at least one value"):
         histogram([])
 
-    with pytest.raises(ValueError, match="x deve contenere solo valori finiti"):
+    with pytest.raises(ValueError, match="x must contain only finite values"):
         histogram([1.0, np.nan])
 
     plt.close("all")
@@ -177,10 +177,10 @@ def test_histogram_rejects_empty_or_non_finite_input():
 def test_histogram_rejects_invalid_hist_range():
     data = np.random.normal(size=20)
 
-    with pytest.raises(ValueError, match="hist_range deve avere 2 elementi"):
+    with pytest.raises(ValueError, match="hist_range must have 2 elements"):
         histogram(data, hist_range=(0.0,))
 
-    with pytest.raises(ValueError, match="Serve xmin < xmax"):
+    with pytest.raises(ValueError, match="requires xmin < xmax"):
         histogram(data, hist_range=(2.0, 1.0))
 
     plt.close("all")
