@@ -31,8 +31,6 @@
 
 Gli helper di questo modulo non servono solo alle funzioni statistiche. `_as_float_vector` viene importata anche da [`plot_utils`](../plot_utils/index.md); [`fit_utils`](../fit_utils/index.md) usa invece la propria validazione degli input del fit.
 
-Per esempi pratici delle funzioni statistiche, vedi il notebook [Statistiche](../../examples/stats-utils.ipynb) nella sezione Esempi.
-
 ## Pagine di dettaglio
 
 - [`median`](median.md)

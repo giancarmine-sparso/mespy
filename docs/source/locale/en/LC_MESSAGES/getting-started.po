@@ -199,9 +199,6 @@ msgstr "[Development setup](installazione.md): for contributors to MesPy."
 #~ msgid "[Stile dei grafici](examples/plot-style.ipynb)"
 #~ msgstr "[Plot styling](examples/plot-style.ipynb)"
 
-#~ msgid "[Statistiche](examples/stats-utils.ipynb)"
-#~ msgstr "[Statistics](examples/stats-utils.ipynb)"
-
 #~ msgid "La tua prima analisi"
 #~ msgstr "Your first analysis"
 

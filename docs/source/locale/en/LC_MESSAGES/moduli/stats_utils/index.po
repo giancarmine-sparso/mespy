@@ -120,14 +120,6 @@ msgstr ""
 " imported by [`plot_utils`](../plot_utils/index.md); "
 "[`fit_utils`](../fit_utils/index.md) uses its own fit input validation."
 
-#: ../../source/moduli/stats_utils/index.md:34
-msgid ""
-"Per esempi pratici delle funzioni statistiche, vedi il notebook "
-"[Statistiche](../../examples/stats-utils.ipynb) nella sezione Esempi."
-msgstr ""
-"For practical statistical examples, see the [Statistics](../../examples"
-"/stats-utils.ipynb) notebook in Examples."
-
 #: ../../source/moduli/stats_utils/index.md:36
 msgid "Pagine di dettaglio"
 msgstr "Detailed pages"
