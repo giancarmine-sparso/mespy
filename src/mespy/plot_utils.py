@@ -3,7 +3,7 @@ from __future__ import annotations
 from contextlib import contextmanager
 from importlib.resources import as_file, files
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 from numpy.typing import ArrayLike
@@ -181,6 +181,7 @@ def _style_context(style: str | None):
 
 def histogram(
     x: ArrayLike,
+    stat: Literal["count", "probability", "density"] = "count",
     *,
     ddof: int | float = 0,
     style: str | None = "mespy",
@@ -221,7 +222,8 @@ def histogram(
     """
     Histogram of an experimental distribution.
 
-    Draws a count histogram of the data in ``x``, optionally
+    Draws a count, relative-frequency, or frequency-density histogram
+    of the data in ``x``, optionally
     highlighting the arithmetic mean (dashed line) and the ±1σ band
     (transparent band).
 
@@ -239,6 +241,19 @@ def histogram(
     ----------
     x : array-like
         Numeric sample to plot.
+    stat : {"count", "probability", "density"}, optional
+        Bar heights: ``n_i`` for counts (default ``"count"``),
+        ``n_i / N`` for relative frequencies, or ``n_i / (N * width_i)``
+        for frequency densities. Here ``N`` is the number of observations
+        included in the bins, ``n_i`` is the count in bin i, and
+        ``width_i`` is its width, which may vary between bins.
+        Relative frequencies are dimensionless and their heights sum to
+        one; densities have inverse units of ``x`` and their areas sum
+        to one. A density bar's area gives the relative frequency of
+        observations in that interval; its height may exceed one.
+        If no observations fall in the bins, all heights remain zero.
+        The mean and standard deviation always use the full sample,
+        independently of ``stat``.
     ddof : int or float, optional
         Delta degrees of freedom used for the standard deviation
         (default ``0``).
@@ -261,8 +276,9 @@ def histogram(
     xlabel : str, optional
         x-axis label (default ``"Valore"``).
     ylabel : str or None, optional
-        y-axis label. ``None`` automatically sets ``"Conteggi"``
-        (default ``None``).
+        y-axis label. ``None`` automatically sets ``"Conteggi"``,
+        ``"Frequenza relativa"``, or ``"Densità di frequenza"`` according
+        to ``stat`` (default ``None``).
     title : str, optional
         Plot title (default ``"Istogramma"``).
     show_bin_ticks : bool, optional
@@ -348,6 +364,8 @@ def histogram(
     Raises
     ------
     ValueError
+        If ``stat`` is not ``"count"``, ``"probability"``, or ``"density"``.
+    ValueError
         If ``x`` is empty, contains non-finite values, or is not
         one-dimensional.
     ValueError
@@ -364,6 +382,12 @@ def histogram(
         If ``bins`` and ``bin_width`` are both provided.
     """
     values = _as_float_vector("x", x)
+
+    if not isinstance(stat, str) or stat not in ("count", "probability", "density"):
+        raise ValueError(
+            "'stat' must be 'count', 'probability' or 'density' "
+            f"| got {stat!r}"
+        )
 
     decimals = _validate_decimals(decimals)
 
@@ -424,19 +448,45 @@ def histogram(
             stop = np.ceil(xmax / bin_width) * bin_width
             bins = np.arange(start, stop + bin_width, bin_width)
 
-        hist_kwargs: dict = {
-            "bins": bins,
-            "range": hist_range_tuple if bin_width is None else None,
-            "density": False,
-            "alpha": hist_alpha,
-            "label": label,
-        }
-        if bar_color is not None:
-            hist_kwargs["color"] = bar_color
-        if edgecolor is not None:
-            hist_kwargs["edgecolor"] = edgecolor
+        if stat == "count":
+            hist_kwargs: dict = {
+                "bins": bins,
+                "range": hist_range_tuple if bin_width is None else None,
+                "density": False,
+                "alpha": hist_alpha,
+                "label": label,
+            }
+            if bar_color is not None:
+                hist_kwargs["color"] = bar_color
+            if edgecolor is not None:
+                hist_kwargs["edgecolor"] = edgecolor
 
-        _, bin_edges, _ = ax.hist(values, **hist_kwargs)
+            _, bin_edges, _ = ax.hist(values, **hist_kwargs)
+        else:
+            counts, bin_edges = np.histogram(
+                values,
+                bins=bins,
+                range=hist_range_tuple if bin_width is None else None,
+            )
+            widths = np.diff(bin_edges)
+            heights = counts.astype(float)
+            included = counts.sum()
+            if included > 0:
+                heights /= included
+                if stat == "density":
+                    heights /= widths
+
+            bar_kwargs: dict = {"alpha": hist_alpha}
+            if bar_color is not None:
+                bar_kwargs["color"] = bar_color
+            if edgecolor is not None:
+                bar_kwargs["edgecolor"] = edgecolor
+            bars = ax.bar(
+                bin_edges[:-1], heights, width=widths, align="edge", **bar_kwargs
+            )
+            if bars:
+                # Match ax.hist's legend order by labelling the first patch.
+                bars[0].set_label(label)
 
         fmt = f".{decimals}f"
         if show_bin_ticks:
@@ -473,7 +523,12 @@ def histogram(
             )
 
         ax.set_xlabel(xlabel)
-        ax.set_ylabel(ylabel if ylabel is not None else "Conteggi")
+        default_ylabel = {
+            "count": "Conteggi",
+            "probability": "Frequenza relativa",
+            "density": "Densità di frequenza",
+        }[stat]
+        ax.set_ylabel(ylabel if ylabel is not None else default_ylabel)
 
         title_kwargs: dict = {}
         if title_fontsize is not None:
