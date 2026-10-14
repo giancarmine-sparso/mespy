@@ -1,0 +1,73 @@
+/* Loaded only by examples.html, after homepage.css: it reuses the landing
+   tokens (--mh-*) and components (mh-*). Every selector is scoped to its body. */
+
+/* Hero: the Get started hero, compact so that all four cards fit in a
+   full-screen window (1920×1080 at 100%) without scrolling. */
+.mespy-examples .ex-hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 64px; align-items: end; padding-block: 36px 28px; }
+.mespy-examples .ex-hero .mh-eyebrow { margin-bottom: 16px; }
+.mespy-examples .ex-hero h1 { font-size: clamp(2.1rem, 2.9vw, 2.6rem); line-height: 1.1; letter-spacing: -.045em; text-wrap: balance; }
+.mespy-examples .ex-hero .mh-lead { max-width: 600px; margin-top: 14px; color: var(--mh-muted); }
+.mespy-examples .ex-hero-note { max-width: 400px; justify-self: end; padding-left: 14px; border-left: 1px solid var(--mh-amber); font: .75rem/1.75 var(--mh-mono); color: var(--mh-muted); }
+
+/* Cards: the landing's editorial cards, two by two; the whole card is the link. */
+.mespy-examples .ex-catalog { padding-bottom: 88px; }
+.mespy-examples .ex-cards { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin: 0; padding: 0; }
+.mespy-examples .ex-card { position: relative; display: flex; flex-direction: column; background: var(--mh-panel); border: 1px solid var(--mh-line); border-radius: 5px; min-width: 0; transition: border-color .25s; }
+.mespy-examples .ex-card:hover { border-color: #68757b; }
+.mespy-examples .ex-card-start { box-shadow: inset 0 2px 0 var(--mh-amber); }
+.mespy-examples .ex-card:has(.ex-card-link:focus-visible) { outline: 2px solid var(--mh-amber); outline-offset: 4px; }
+.mespy-examples .ex-card .mh-feature-top { min-height: 46px; padding-block: 0; padding-inline: 28px; }
+.mespy-examples .ex-card .mh-badge { margin-left: 0; padding: 2px 8px; line-height: 1.6; }
+.mespy-examples .ex-card-body { display: flex; flex-direction: column; flex: 1; padding: 20px 28px 18px; }
+.mespy-examples .ex-card-body > p { color: var(--mh-muted); font-size: .95rem; margin: 10px 0 16px; }
+.mespy-examples .ex-card-link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.mespy-examples .ex-card-link:focus-visible { outline: none; }
+.mespy-examples .ex-card:hover .ex-card-link { color: var(--mh-ink); }
+.mespy-examples .ex-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--mh-line); }
+.mespy-examples .ex-card-foot code { min-width: 0; font-size: .75rem; line-height: 1.6; color: var(--mh-blue); }
+.mespy-examples .ex-card-cta { flex: none; margin-left: auto; font-size: .85rem; font-weight: 600; transition: color .2s; }
+.mespy-examples .ex-card-cta > span { display: inline-block; margin-left: 8px; color: var(--mh-amber); transition: transform .2s; }
+.mespy-examples .ex-card:hover .ex-card-cta { color: var(--mh-amber); }
+.mespy-examples .ex-card:hover .ex-card-cta > span { transform: translate(3px, -3px); }
+
+/* Glyphs: square markers like the landing plots. */
+/* Icon and title share one row. */
+.mespy-examples .ex-card-head { display: flex; align-items: center; gap: 18px; }
+.mespy-examples .ex-card-head h3 { min-width: 0; font-size: clamp(1.35rem, 1.9vw, 1.7rem); }
+.mespy-examples .ex-icon { display: block; flex: none; width: 36px; height: 36px; overflow: visible; }
+.mespy-examples .ex-icon-data { fill: var(--mh-blue); }
+.mespy-examples .ex-icon-accent { fill: var(--mh-amber); }
+.mespy-examples .ex-icon-ink { fill: var(--mh-ink); }
+.mespy-examples .ex-icon-line { stroke: #68757b; stroke-width: 1.5; fill: none; }
+.mespy-examples .ex-icon-axis { stroke: #788489; stroke-width: 1.5; fill: none; }
+.mespy-examples .ex-icon-fit { stroke: var(--mh-amber); stroke-width: 2; fill: none; }
+.mespy-examples .ex-icon-dash { stroke: var(--mh-amber); stroke-width: 1.5; stroke-dasharray: 3 3; fill: none; }
+
+.mespy-examples .ex-aside { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 24px; font: .75rem/1.7 var(--mh-mono); color: var(--mh-muted); }
+.mespy-examples .ex-aside .mh-text-link { gap: 10px; color: var(--mh-ink); font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: .85rem; }
+
+@media (max-width: 1150px) {
+  .mespy-examples .ex-hero { gap: 40px; }
+}
+@media (max-width: 900px) {
+  .mespy-examples .ex-hero { grid-template-columns: 1fr; gap: 24px; padding-block: 44px 32px; }
+  .mespy-examples .ex-hero h1 { font-size: clamp(2.2rem, 5.4vw, 3rem); }
+  .mespy-examples .ex-hero-note { justify-self: start; max-width: 540px; }
+  .mespy-examples .ex-catalog { padding-bottom: 64px; }
+}
+@media (max-width: 760px) {
+  .mespy-examples .ex-cards { grid-template-columns: 1fr; gap: 16px; }
+}
+@media (max-width: 600px) {
+  .mespy-examples .ex-hero { padding-block: 36px 28px; }
+  .mespy-examples .ex-hero h1 { font-size: clamp(2rem, 8.4vw, 2.6rem); }
+  .mespy-examples .ex-card .mh-feature-top { padding-inline: 20px; }
+  .mespy-examples .ex-card-body { padding: 20px 20px 18px; }
+  .mespy-examples .ex-card-body > p { font-size: .9rem; margin: 12px 0 18px; }
+  .mespy-examples .ex-card-head { gap: 14px; }
+  .mespy-examples .ex-icon { width: 30px; height: 30px; }
+}
+@media print {
+  .mespy-examples .ex-card { break-inside: avoid; }
+  .mespy-examples .ex-card-cta { display: none; }
+}

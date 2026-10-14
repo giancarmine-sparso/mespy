@@ -1,0 +1,202 @@
+{# Get started page. Same chrome, tokens and "homepage" UI catalog as the
+   landing page: home() strings live in locale/en/LC_MESSAGES/homepage.po,
+   which Sphinx's MyST extractor does not update. getting-started.md supplies
+   search/non-HTML content; keep its commands in sync with this template. #}
+{% extends "layout.html" %}
+
+{% block htmltitle %}<title>{{ home('Inizia qui') }} — MesPy</title>{% endblock %}
+
+{% block extrahead %}
+  {{ super() }}
+  <meta name="description" content="{{ home('Installa MesPy, verifica che funzioni e scegli da dove continuare. Tutto quello che serve per iniziare, in pochi passi.') }}">
+{% endblock %}
+
+{% block body_tag %}
+<body class="mespy-home mespy-start" data-default-mode="{{ default_mode }}">
+  <a class="mh-skip" href="#main-content">{{ home('Vai al contenuto') }}</a>
+{% endblock %}
+
+
+{% block content %}
+{# One copyable line. Without JavaScript the button stays hidden. #}
+{% macro command(id, code, label, prompt='') %}
+<div class="gs-command">
+  <p class="gs-command-label">{{ label }}</p>
+  <div class="gs-command-line">
+    <pre tabindex="0">{% if prompt %}<span class="gs-prompt" aria-hidden="true">{{ prompt }}</span>{% endif %}<code id="{{ id }}">{{ code }}</code></pre>
+    <button class="mh-fit-copy gs-copy" type="button" data-copy="{{ id }}" aria-describedby="{{ id }}" hidden>{{ home('Copia') }} <span aria-hidden="true">⧉</span></button>
+  </div>
+</div>
+{% endmacro %}
+{% include "components/mespy-header.html" %}
+
+<main id="main-content" data-copied="{{ home('Copiato') }}" data-copy-failed="{{ home('Seleziona e copia') }}"
+      data-copied-status="{{ home('Copiato negli appunti.') }}" data-copy-failed-status="{{ home('Copia non disponibile: seleziona il testo e copialo a mano.') }}">
+  <p class="mh-sr-only" role="status" aria-live="polite" id="gs-copy-status"></p>
+
+  <section class="mh-shell gs-hero" aria-labelledby="gs-title">
+    <div class="gs-hero-copy">
+      <p class="mh-eyebrow"><span class="mh-status" aria-hidden="true"></span> 01 / {{ home('Inizia') }}</p>
+      <h1 id="gs-title">{{ home('Fai i primi passi') }} <span class="mh-accent">{{ home('con MesPy.') }}</span></h1>
+      <p class="mh-lead">{{ home('Installa MesPy, verifica che funzioni e scegli da dove continuare. Tutto quello che serve per iniziare, in pochi passi.') }}</p>
+      <p class="mh-hero-meta">Python ≥ 3.12 <span aria-hidden="true">/</span> {{ home('Open source') }} <span aria-hidden="true">/</span> {{ home('Fatto per imparare') }}</p>
+    </div>
+    <nav class="gs-protocol" aria-labelledby="gs-protocol-title">
+      <p class="gs-protocol-head" id="gs-protocol-title"><span>{{ home('Procedura') }}</span><span aria-hidden="true">3 {{ home('passi') }}</span></p>
+      <ol>
+        <li><a href="#setup"><span class="gs-step">02</span><span>{{ home('Scegli l’ambiente e installa MesPy') }}</span><span class="gs-arrow" aria-hidden="true">↓</span></a></li>
+        <li><a href="#first-import"><span class="gs-step">03</span><span>{{ home('Verifica l’installazione') }}</span><span class="gs-arrow" aria-hidden="true">↓</span></a></li>
+        <li><a href="#keep-exploring"><span class="gs-step">04</span><span>{{ home('Esempi, API e teoria') }}</span><span class="gs-arrow" aria-hidden="true">↓</span></a></li>
+      </ol>
+    </nav>
+  </section>
+
+  <section class="mh-section mh-shell" id="setup" aria-labelledby="setup-title">
+    <div class="mh-section-heading">
+      <div><p class="mh-eyebrow">02 / {{ home('Preparazione') }}</p><h2 id="setup-title">{{ home('Scegli il tuo ambiente.') }}</h2></div>
+      <p>{{ home('MesPy funziona con il tuo flusso di lavoro Python preferito. Scegli la configurazione più adatta a te.') }}</p>
+    </div>
+
+    <div class="gs-installer" data-tabs>
+      {# Hidden until get-started.js wires it up; without JS every panel is listed. #}
+      <div class="gs-tablist" role="tablist" aria-label="{{ home('Metodo di installazione') }}" hidden>
+        <button role="tab" type="button" id="tab-colab" aria-controls="install-colab" aria-selected="true"><span class="gs-tab-name">Google Colab</span><span class="gs-tab-note">{{ home('Nel browser') }}</span></button>
+        <button role="tab" type="button" id="tab-uv" aria-controls="install-uv" aria-selected="false" tabindex="-1"><span class="gs-tab-name">uv</span><span class="gs-tab-note">{{ home('Progetti locali') }}</span></button>
+        <button role="tab" type="button" id="tab-jupyter" aria-controls="install-jupyter" aria-selected="false" tabindex="-1"><span class="gs-tab-name">Jupyter Notebook</span><span class="gs-tab-note">{{ home('Notebook locale') }}</span></button>
+        <button role="tab" type="button" id="tab-pip" aria-controls="install-pip" aria-selected="false" tabindex="-1"><span class="gs-tab-name">pip</span><span class="gs-tab-note">{{ home('Qualsiasi ambiente') }}</span></button>
+      </div>
+
+      <div class="gs-panel" id="install-colab" role="tabpanel" aria-labelledby="tab-colab">
+        <div class="gs-panel-main">
+          <p class="gs-panel-kicker">Google Colab</p>
+          <h3>{{ home('Il modo più rapido per iniziare.') }}</h3>
+          <p>{{ home('Apri un nuovo notebook e installa MesPy eseguendo questa cella:') }}</p>
+          {{ command('cmd-colab', '%pip install mespy', home('Cella di codice')) }}
+        </div>
+        <aside class="gs-panel-notes" aria-label="{{ home('Note su Google Colab') }}">
+          <p class="gs-notes-title">{{ home('Note') }}</p>
+          <p>{{ home('Colab funziona nel browser: non devi configurare Python sul tuo computer.') }}</p>
+          <p>{{ home('Ogni nuova sessione parte da zero: quando riapri il notebook, esegui di nuovo la cella.') }}</p>
+          <p><a class="mh-text-link" href="https://colab.research.google.com/" target="_blank" rel="noopener noreferrer">{{ home('Apri Google Colab') }} <span aria-hidden="true">↗</span></a></p>
+        </aside>
+      </div>
+
+      <div class="gs-panel" id="install-uv" role="tabpanel" aria-labelledby="tab-uv">
+        <div class="gs-panel-main">
+          <p class="gs-panel-kicker">uv</p>
+          <h3>{{ home('Consigliato per i progetti locali.') }}</h3>
+          <p>{{ home('uv gestisce per te Python, l’ambiente virtuale e le dipendenze. In un progetto uv (crealo con <code>uv init</code>), aggiungi MesPy alle dipendenze:') }}</p>
+          {{ command('cmd-uv-add', 'uv add mespy', home('Terminale'), '$') }}
+          <p>{{ home('Vuoi solo provarlo, senza creare un progetto? Apri una sessione Python temporanea con MesPy già disponibile:') }}</p>
+          {{ command('cmd-uv-run', 'uv run --with mespy python', home('Terminale'), '$') }}
+        </div>
+        <aside class="gs-panel-notes" aria-label="{{ home('Note su uv') }}">
+          <p class="gs-notes-title">{{ home('Note') }}</p>
+          <p>{{ home('MesPy richiede Python 3.12 o successivo. Se il tuo Python predefinito è più vecchio, aggiungi <code>--python 3.12</code> a <code>uv init</code> o <code>uv run</code>: uv lo scarica se serve.') }}</p>
+          <p><a class="mh-text-link" href="https://docs.astral.sh/uv/getting-started/installation/" target="_blank" rel="noopener noreferrer">{{ home('Come installare uv') }} <span aria-hidden="true">↗</span></a></p>
+        </aside>
+      </div>
+
+      <div class="gs-panel" id="install-jupyter" role="tabpanel" aria-labelledby="tab-jupyter">
+        <div class="gs-panel-main">
+          <p class="gs-panel-kicker">Jupyter Notebook</p>
+          <h3>{{ home('Installa nel kernel che stai usando.') }}</h3>
+          <p>{{ home('Esegui il comando in una cella del notebook:') }}</p>
+          {{ command('cmd-jupyter', '%pip install mespy', home('Cella di codice')) }}
+        </div>
+        <aside class="gs-panel-notes" aria-label="{{ home('Note su Jupyter') }}">
+          <p class="gs-notes-title">{{ home('Note') }}</p>
+          <p>{{ home('<code>%pip</code> installa MesPy nell’ambiente Python del kernel attivo, anche se è diverso da quello del tuo terminale.') }}</p>
+          <p>{{ home('Se dopo l’installazione l’import non funziona, riavvia il kernel. Il kernel deve usare Python 3.12 o successivo.') }}</p>
+        </aside>
+      </div>
+
+      <div class="gs-panel" id="install-pip" role="tabpanel" aria-labelledby="tab-pip">
+        <div class="gs-panel-main">
+          <p class="gs-panel-kicker">pip</p>
+          <h3>{{ home('Il metodo classico, ovunque ci sia Python.') }}</h3>
+          <p>{{ home('Installa MesPy dal Python Package Index:') }}</p>
+          {{ command('cmd-pip', 'python -m pip install mespy', home('Terminale'), '$') }}
+        </div>
+        <aside class="gs-panel-notes" aria-label="{{ home('Note su pip') }}">
+          <p class="gs-notes-title">{{ home('Note') }}</p>
+          <p>{{ home('Per un progetto locale usa un ambiente virtuale, così ogni progetto tiene le sue dipendenze: crealo con <code>python -m venv .venv</code> e attivalo prima di installare.') }}</p>
+          <p>{{ home('Controlla la versione con <code>python --version</code>: serve Python 3.12 o successivo.') }}</p>
+          <p><a class="mh-text-link" href="https://docs.python.org/3/library/venv.html" target="_blank" rel="noopener noreferrer">{{ home('Guida agli ambienti virtuali') }} <span aria-hidden="true">↗</span></a></p>
+        </aside>
+      </div>
+    </div>
+    <p class="gs-footnote">{{ home('Le dipendenze, come NumPy, pandas e Matplotlib, vengono installate automaticamente.') }}</p>
+  </section>
+
+  <section class="mh-section mh-shell gs-verify" id="first-import" aria-labelledby="verify-title">
+    <div>
+      <p class="mh-eyebrow">03 / {{ home('Primo import') }}</p>
+      <h2 id="verify-title">{{ home('Verifica che tutto funzioni.') }}</h2>
+      <p>{{ home('Esegui queste righe in una sessione Python o in una cella del notebook. Se compare il messaggio, MesPy è installato e pronto.') }}</p>
+      <p class="gs-hint">{{ home('Vedi <code>ModuleNotFoundError</code>? MesPy è installato in un altro ambiente: usa lo stesso Python, o lo stesso kernel, con cui l’hai installato.') }}</p>
+    </div>
+    <div class="gs-terminal">
+      <div class="mh-editor-toolbar"><span class="mh-editor-label">Python</span><button class="mh-fit-copy gs-copy" type="button" data-copy="code-verify" aria-describedby="code-verify-label" hidden>{{ home('Copia') }} <span aria-hidden="true">⧉</span></button></div>
+      <span class="mh-sr-only" id="code-verify-label">{{ home('Codice di verifica') }}</span>
+      <pre tabindex="0" aria-labelledby="code-verify-label"><code id="code-verify">{{ gs_verify_html | safe }}</code></pre>
+      <div class="gs-output"><span class="gs-output-label">{{ home('Output') }}</span><samp>{{ gs_ready }}</samp></div>
+    </div>
+  </section>
+
+  {# Video: copy of video/install-tutorial/out/legacy/mespy-installation-web.mp4 (+ poster),
+     whose out/ folder is gitignored. English only, no audio. Not a numbered step. #}
+  <section class="mh-section mh-shell" id="video" aria-labelledby="video-title">
+    <div class="mh-section-heading">
+      <div><p class="mh-eyebrow">{{ home('Video') }} / 1:15</p><h2 id="video-title">{{ home('Guarda l’installazione passo per passo.') }}</h2></div>
+      <p>{{ home('Una demo simulata di 75 secondi: installazione e verifica su Google Colab, poi con pip in un Python locale.') }}{% if current_language != 'en' %} {{ home('Il video è in inglese.') }}{% endif %}</p>
+    </div>
+    <figure class="gs-video">
+      <video controls preload="none" playsinline width="1920" height="1080"
+             poster="{{ pathto('_static/get-started-installation-poster.png', 1) }}"
+             aria-label="{{ home('Video dimostrativo: installazione di MesPy su Google Colab e in Python locale') }}" aria-describedby="video-caption">
+        <source src="{{ pathto('_static/get-started-installation.mp4', 1) }}" type="video/mp4">
+        <p><a class="mh-text-link" href="{{ pathto('_static/get-started-installation.mp4', 1) }}">{{ home('Il browser non riproduce il video: scaricalo') }} <span aria-hidden="true">↓</span></a></p>
+      </video>
+      <figcaption id="video-caption">{{ home('Demo simulata · Senza audio · I tempi reali di installazione possono variare.') }}</figcaption>
+    </figure>
+  </section>
+
+  <section class="mh-section mh-shell gs-explore" id="keep-exploring" aria-labelledby="explore-title">
+    <div class="mh-section-heading">
+      <div><p class="mh-eyebrow">04 / {{ home('Continua a esplorare') }}</p><h2 id="explore-title">{{ home('Pronto per andare oltre?') }}</h2></div>
+    </div>
+    <ul class="gs-destinations">
+      <li class="gs-destination">
+        <div class="mh-feature-top"><span>01 / {{ home('Pratica') }}</span><code>examples/</code></div>
+        <div class="gs-destination-body">
+          <h3>{{ home('Esempi') }}</h3>
+          <p>{{ home('Esplora flussi di analisi pratici e notebook.') }}</p>
+          <a class="mh-text-link" href="{{ pathto('examples/index') }}">{{ home('Apri gli esempi') }} <span aria-hidden="true">↗</span></a>
+        </div>
+      </li>
+      <li class="gs-destination">
+        <div class="mh-feature-top"><span>02 / {{ home('Riferimento') }}</span><code>mespy.*</code></div>
+        <div class="gs-destination-body">
+          <h3>{{ home('Riferimento API') }}</h3>
+          <p>{{ home('Scopri le funzioni disponibili, i loro parametri e i valori restituiti.') }}</p>
+          <a class="mh-text-link" href="{{ pathto('moduli/index') }}">{{ home('Apri il riferimento API') }} <span aria-hidden="true">↗</span></a>
+        </div>
+      </li>
+      <li class="gs-destination gs-destination-soon">
+        <div class="mh-feature-top"><span>03 / {{ home('Teoria') }}</span><span class="mh-badge">{{ home('In arrivo') }}</span></div>
+        <div class="gs-destination-body">
+          <h3>{{ home('Come funziona') }}</h3>
+          <p>{{ home('Le idee scientifiche e matematiche dietro gli strumenti.') }}</p>
+          <p class="gs-soon-note">{{ home('Questa sezione è in preparazione.') }}</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+</main>
+
+{% include "components/mespy-footer.html" %}
+{{ self.scripts_end() }}
+{% endblock %}
+
+{% block footer %}{% endblock %}

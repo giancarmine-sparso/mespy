@@ -1,0 +1,26 @@
+/* Homepage duck mascot. Loaded by the landing page, next to homepage.css, and
+   for its colours by guide pages with the duck station (guide-duck-station.css). */
+.mespy-home {
+  /* Duck accents, derived from the brand amber. */
+  --mh-duck-beak: color-mix(in srgb, var(--mh-amber) 70%, red);
+  --mh-duck-wing: color-mix(in srgb, var(--mh-amber) 70%, black);
+}
+.mespy-home .mh-principles { position: relative; }
+.mespy-home .mh-duck {
+  position: absolute;
+  left: 0;
+  /* Size comes from the svg attributes; the sprite's water line sits on the strip's bottom border. */
+  bottom: calc(-1 * var(--mh-duck-sink, 0px));
+  padding: 0;
+  border: 0;
+  background: none;
+  line-height: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  transform-origin: center;
+}
+.mespy-home .mh-duck svg { display: block; }
+.mespy-home .mh-duck-wet { opacity: .4; }
+@media print {
+  .mespy-home .mh-duck { display: none; }
+}

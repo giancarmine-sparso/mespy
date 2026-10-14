@@ -1,0 +1,20 @@
+{# Shared by guide-nav.html (desktop sidebar) and guide-nav-mobile.html.
+   guide_nav comes from add_guide_context in conf.py: H2 groups, H3 entries. #}
+{% macro guide_list(groups) -%}
+<ol class="mx-guide-nav__groups">
+  {%- for group in groups %}
+  <li class="mx-guide-nav__group">
+    <a class="mx-guide-nav__group-link" href="#{{ group.id }}">{{ group.title }}</a>
+    {%- if group.entries %}
+    <ol class="mx-guide-nav__entries">
+      {%- for entry in group.entries %}
+      <li><a class="mx-guide-nav__link" href="#{{ entry.id }}">
+        {%- if entry.num %}<span class="mx-guide-nav__num" aria-hidden="true">{{ entry.num }}</span>{% endif -%}
+        <span class="mx-guide-nav__text">{{ entry.title }}</span></a></li>
+      {%- endfor %}
+    </ol>
+    {%- endif %}
+  </li>
+  {%- endfor %}
+</ol>
+{%- endmacro %}

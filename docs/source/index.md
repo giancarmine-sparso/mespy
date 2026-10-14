@@ -1,50 +1,17 @@
-# <span class="visually-hidden">MesPy</span><span class="mespy-home-brand"><img src="_static/mespy-logo-horizontal.svg" class="only-light" alt="MesPy"><img src="_static/mespy-logo-horizontal-dark.svg" class="only-dark pst-js-only" alt="MesPy"></span>
+# MesPy
 
-`mespy` è una toolbox Python per l'analisi di dati sperimentali.
+MesPy è una toolbox Python per chi muove i primi passi nella fisica sperimentale. Aiuta a visualizzare le misure, esplorare le distribuzioni e trovare le relazioni tra i dati, per interpretare i risultati e le loro incertezze senza riscrivere ogni volta lo stesso codice di analisi.
 
-Questa documentazione e organizzata per modulo: ogni file principale ha una pagina panoramica e una pagina separata per ogni funzione pubblica. In parallelo c'e una sezione dedicata ai controlli interni, utile per capire come il package normalizza gli input e gestisce gli errori.
+Con `histogram` puoi visualizzare la distribuzione delle misure, la media e la deviazione standard. Con `lin_fit` puoi trovare la retta che descrive i dati e ottenere i parametri, le loro incertezze e i residui.
 
-## Cosa trovi qui
-
-- [Installazione](installazione.md) per preparare l'ambiente locale e verificare l'import.
-- [Guida rapida](getting-started.md) per partire dal flusso di lavoro piu comune.
-- [Esempi](examples/index.md) per notebook d'uso pronti da adattare.
-- [io_utils](moduli/io_utils/index.md) per il caricamento dei CSV.
-- [stats_utils](moduli/stats_utils/index.md) per le statistiche descrittive e pesate.
-- [plot_utils](moduli/plot_utils/index.md) per la visualizzazione.
-- [fit_utils](moduli/fit_utils/index.md) per il fit lineare pesato.
-- [Controlli e helper interni](checks/index.md) per i validatori e gli helper privati.
-
-## Obiettivi del package
-
-- offrire API piccole e leggibili
-- validare subito gli input problematici
-- produrre errori chiari in notebook e script didattici
-- mantenere separata l'API pubblica dai dettagli interni
-
-## Esempio rapido
-
-```python
-from mespy import histogram, load_csv, weighted_mean
-
-df = load_csv(
-    "docs/source/examples/data/test_misure.csv",
-    required_columns=["lunghezza_mm", "sigma_mm"],
-)
-media = weighted_mean(df["lunghezza_mm"], 1 / df["sigma_mm"]**2)
-fig, ax = histogram(
-    df["lunghezza_mm"],
-    xlabel="lunghezza [mm]",
-    title=f"Media = {media:.3f} mm",
-)
-```
+Parti da [Inizia qui](getting-started.md): installazione e primo import. Poi esplora gli [esempi](examples/index.md).
 
 ```{toctree}
 :hidden:
 :maxdepth: 2
 
-installazione
 getting-started
+installazione
 moduli/index
 checks/index
 examples/index

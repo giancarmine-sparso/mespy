@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-06 17:28+0200\n"
+"POT-Creation-Date: 2026-10-14 13:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -24,188 +24,70 @@ msgstr "fit_utils.py"
 
 #: ../../source/moduli/fit_utils/index.md:3
 msgid ""
-"`fit_utils.py` contiene il fit lineare del package e il tipo di ritorno "
-"associato. E il modulo piu denso del progetto, perche combina statistica,"
-" validazione degli input e plotting opzionale, riusando anche il sistema "
-"di stile gia definito in `plot_utils`."
+"`fit_utils.py` implements MesPy's linear fitting function and its immutable "
+"result object."
 msgstr ""
-"`fit_utils.py` contains the linear fit of the package and the associated "
-"return type. It is the densest module of the project, because it combines"
-" statistics, input validation and optional plotting, also reusing the "
-"style system already defined in `plot_utils`."
+"`fit_utils.py` implements MesPy's linear fitting function and its immutable "
+"result object."
 
 #: ../../source/moduli/fit_utils/index.md:5
-msgid "Import principali"
-msgstr "Main imports"
+msgid "Public interface"
+msgstr "Public interface"
 
 #: ../../source/moduli/fit_utils/index.md:7
-msgid "Standard library: `dataclasses.dataclass`, `typing.TYPE_CHECKING`"
-msgstr "Standard library: `dataclasses.dataclass`, `typing.TYPE_CHECKING`"
+msgid ""
+"[`lin_fit`](lin-fit.md): OLS, absolute WLS, and optional horizontal "
+"uncertainty propagation selected explicitly through `x_error_method`."
+msgstr ""
+"[`lin_fit`](lin-fit.md): OLS, absolute WLS, and optional horizontal "
+"uncertainty propagation selected explicitly through `x_error_method`."
+
+#: ../../source/moduli/fit_utils/index.md:8
+msgid ""
+"[`LinearFitResult`](linear-fit-result.md): fitted parameters, uncertainties,"
+" physical residuals, diagnostics, prediction, and TOML export."
+msgstr ""
+"[`LinearFitResult`](linear-fit-result.md): fitted parameters, uncertainties,"
+" physical residuals, diagnostics, prediction, and TOML export."
 
 #: ../../source/moduli/fit_utils/index.md:9
 msgid ""
-"Librerie esterne: `numpy as np`, `numpy.typing.ArrayLike`, "
-"`numpy.typing.NDArray`"
+"`XErrorMethod`: the type alias `Literal[\"none\", \"iterate\"]` for "
+"horizontal uncertainty treatment."
 msgstr ""
-"External libraries: `numpy as np`, `numpy.typing.ArrayLike`, "
-"`numpy.typing.NDArray`"
+"`XErrorMethod`: the type alias `Literal[\"none\", \"iterate\"]` for "
+"horizontal uncertainty treatment."
 
 #: ../../source/moduli/fit_utils/index.md:11
+msgid "Implementation"
+msgstr "Implementation"
+
+#: ../../source/moduli/fit_utils/index.md:13
 msgid ""
-"Import interni da `plot_utils`: "
-"[`_resolve_style`](../../checks/plot_utils/resolve-style.md), "
-"[`_style_context`](../../checks/plot_utils/style-context.md), "
-"[`_validate_axis_limits`](../../checks/plot_utils/validate-axis-"
-"limits.md), [`_validate_decimals`](../../checks/plot_utils/validate-"
-"decimals.md), [`_validate_figsize`](../../checks/plot_utils/validate-"
-"figsize.md)"
+"The module validates finite real input vectors, positive vertical "
+"uncertainties, and optional non-negative horizontal uncertainties. Centered "
+"and scaled coordinates preserve numerical accuracy for fitting and "
+"prediction. Optional effective-variance iteration has fixed convergence "
+"settings; `fit_method`, `tol`, and `max_iter` are no longer public input "
+"arguments."
 msgstr ""
-"Internal imports from `plot_utils`: "
-"[`_resolve_style`](../../checks/plot_utils/resolve-style.md), "
-"[`_style_context`](../../checks/plot_utils/style-context.md), "
-"[`_validate_axis_limits`](../../checks/plot_utils/validate-axis-"
-"limits.md), [`_validate_decimals`](../../checks/plot_utils/validate-"
-"decimals.md), [`_validate_figsize`](../../checks/plot_utils/validate-"
-"figsize.md)"
+"The module validates finite real input vectors, positive vertical "
+"uncertainties, and optional non-negative horizontal uncertainties. Centered "
+"and scaled coordinates preserve numerical accuracy for fitting and "
+"prediction. Optional effective-variance iteration has fixed convergence "
+"settings; `fit_method`, `tol`, and `max_iter` are no longer public input "
+"arguments."
 
-#: ../../source/moduli/fit_utils/index.md:17
+#: ../../source/moduli/fit_utils/index.md:15
 msgid ""
-"Import interni da `stats_utils`: "
-"[`_as_float_vector`](../../checks/stats_utils/as-float-vector.md), "
-"[`weighted_mean`](../stats_utils/weighted-mean.md), "
-"[`covariance`](../stats_utils/covariance.md), "
-"[`variance`](../stats_utils/variance.md)"
+"Plotting uses the shared [style context](../../checks/plot_utils/style-"
+"context.md), with `\"mespy\"` as the default style. Export writes TOML and, "
+"when plotting is enabled, PDF files from an extension-free base path. The "
+"[function reference](lin-fit.md) describes validation, iteration, plotting, "
+"and export in detail."
 msgstr ""
-"Internal imports from `stats_utils`: "
-"[`_as_float_vector`](../../checks/stats_utils/as-float-vector.md), "
-"[`weighted_mean`](../stats_utils/weighted-mean.md), "
-"[`covariance`](../stats_utils/covariance.md), "
-"[`variance`](../stats_utils/variance.md)"
-
-#: ../../source/moduli/fit_utils/index.md:22
-msgid ""
-"Import interni da `_toml` (scrittura TOML con `tomli_w`): "
-"`_mespy_header`, `_write_toml_document`"
-msgstr "Internal imports from `_toml` (TOML writing with `tomli_w`): `_mespy_header`, `_write_toml_document`"
-
-#: ../../source/moduli/fit_utils/index.md:25
-msgid "Cosa espone"
-msgstr "What it exports"
-
-#: ../../source/moduli/fit_utils/index.md:27
-msgid ""
-"[`LinearFitResult`](linear-fit-result.md), con il metodo `to_toml` per "
-"esportare il risultato in TOML"
-msgstr "[`LinearFitResult`](linear-fit-result.md), with the `to_toml` method to export the result to TOML"
-
-#: ../../source/moduli/fit_utils/index.md:28
-msgid "[`lin_fit`](lin-fit.md), con incertezze assolute o scalate dai residui"
-msgstr ""
-"[`lin_fit`](lin-fit.md), with absolute uncertainties or scaled by the "
-"residuals"
-
-#: ../../source/moduli/fit_utils/index.md:30
-msgid "Di cosa si occupa"
-msgstr "What it does"
-
-#: ../../source/moduli/fit_utils/index.md:32
-msgid "validare `x`, `y`, `sigma_y` e opzionalmente `sigma_x`"
-msgstr "validate `x`, `y`, `sigma_y`, and optionally `sigma_x`"
-
-#: ../../source/moduli/fit_utils/index.md:33
-msgid "validare `decimals`, `tol` e `max_iter`"
-msgstr "validate `decimals`, `tol`, and `max_iter`"
-
-#: ../../source/moduli/fit_utils/index.md:34
-msgid "stimare pendenza e intercetta con minimi quadrati pesati o non pesati"
-msgstr "estimate slope and intercept with weighted or unweighted least squares"
-
-#: ../../source/moduli/fit_utils/index.md:35
-msgid "stimare una scala globale di incertezza dai residui"
-msgstr "estimate a global scale of uncertainty from the residuals"
-
-#: ../../source/moduli/fit_utils/index.md:36
-msgid "aggiornare iterativamente i pesi quando esistono incertezze anche su `x`"
-msgstr "update the weights iteratively when uncertainties on `x` are also present"
-
-#: ../../source/moduli/fit_utils/index.md:37
-msgid ""
-"calcolare residui, `chi2`, `reduced_chi2`, correlazione e altre "
-"diagnostiche"
-msgstr ""
-"compute residuals, `chi2`, `reduced_chi2`, correlation, and other "
-"diagnostics"
-
-#: ../../source/moduli/fit_utils/index.md:38
-msgid ""
-"creare, se richiesto, una figura matplotlib con pannello del fit e "
-"pannello dei residui fisici o normalizzati usando lo stesso sistema di "
-"stile di `histogram`"
-msgstr ""
-"create, if required, a matplotlib figure with fit panel and physical or "
-"normalized residuals panel using the same style system as `histogram`"
-
-#: ../../source/moduli/fit_utils/index.md:40
-msgid "Helper collegati"
-msgstr "Related helpers"
-
-#: ../../source/moduli/fit_utils/index.md:42
-msgid ""
-"[`_validate_positive_vector`](../../checks/fit_utils/validate-positive-"
-"vector.md)"
-msgstr ""
-"[`_validate_positive_vector`](../../checks/fit_utils/validate-positive-"
-"vector.md)"
-
-#: ../../source/moduli/fit_utils/index.md:43
-msgid ""
-"[`_validate_positive_scalar`](../../checks/fit_utils/validate-positive-"
-"scalar.md)"
-msgstr ""
-"[`_validate_positive_scalar`](../../checks/fit_utils/validate-positive-"
-"scalar.md)"
-
-#: ../../source/moduli/fit_utils/index.md:44
-msgid "[`_validate_max_iter`](../../checks/fit_utils/validate-max-iter.md)"
-msgstr "[`_validate_max_iter`](../../checks/fit_utils/validate-max-iter.md)"
-
-#: ../../source/moduli/fit_utils/index.md:45
-msgid "[`_validate_fit_method`](../../checks/fit_utils/validate-fit-method.md)"
-msgstr "[`_validate_fit_method`](../../checks/fit_utils/validate-fit-method.md)"
-
-#: ../../source/moduli/fit_utils/index.md:46
-msgid "[`_fit_coefficients`](../../checks/fit_utils/fit-coefficients.md)"
-msgstr "[`_fit_coefficients`](../../checks/fit_utils/fit-coefficients.md)"
-
-#: ../../source/moduli/fit_utils/index.md:47
-msgid "[`_resolve_style`](../../checks/plot_utils/resolve-style.md)"
-msgstr "[`_resolve_style`](../../checks/plot_utils/resolve-style.md)"
-
-#: ../../source/moduli/fit_utils/index.md:48
-msgid "[`_style_context`](../../checks/plot_utils/style-context.md)"
-msgstr "[`_style_context`](../../checks/plot_utils/style-context.md)"
-
-#: ../../source/moduli/fit_utils/index.md:49
-msgid "[`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md)"
-msgstr "[`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md)"
-
-#: ../../source/moduli/fit_utils/index.md:50
-msgid "[`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)"
-msgstr "[`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)"
-
-#: ../../source/moduli/fit_utils/index.md:51
-msgid "[`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)"
-msgstr "[`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)"
-
-#: ../../source/moduli/fit_utils/index.md:53
-msgid "Pagine di dettaglio"
-msgstr "Detailed pages"
-
-#: ../../source/moduli/fit_utils/index.md:55
-msgid "[`LinearFitResult`](linear-fit-result.md)"
-msgstr "[`LinearFitResult`](linear-fit-result.md)"
-
-#: ../../source/moduli/fit_utils/index.md:56
-msgid "[`lin_fit`](lin-fit.md)"
-msgstr "[`lin_fit`](lin-fit.md)"
-
+"Plotting uses the shared [style context](../../checks/plot_utils/style-"
+"context.md), with `\"mespy\"` as the default style. Export writes TOML and, "
+"when plotting is enabled, PDF files from an extension-free base path. The "
+"[function reference](lin-fit.md) describes validation, iteration, plotting, "
+"and export in detail."

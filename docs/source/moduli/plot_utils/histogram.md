@@ -5,6 +5,7 @@
 ```python
 histogram(
     x: ArrayLike,
+    stat: Literal["count", "probability", "density"] = "count",
     *,
     ddof: int | float = 0,
     style: str | None = "mespy",
@@ -45,9 +46,12 @@ histogram(
 ```
 
 `histogram` disegna un istogramma di un campione numerico e puo aggiungere media, banda `+- 1 sigma`, legenda, griglia e salvataggio della figura.
+`stat` sceglie conteggi (`"count"`, default), frequenze relative (`"probability"`) o densità di frequenza (`"density"`). Può essere passato come secondo argomento posizionale oppure per keyword.
 Di default applica lo stile Matplotlib `mespy`; passa `style=None` per usare gli `rcParams` correnti oppure il nome di un altro stile per delegare a Matplotlib.
 
 I parametri `figsize`, `dpi`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, `bar_color`, `mean_color`, `band_color`, `edgecolor` e `grid_alpha` possono ereditare lo stile attivo quando lasciati a `None`. I parametri `hist_alpha`, `band_alpha`, `mean_symbol` e `band_symbol` restano invece override espliciti della singola chiamata.
+
+Per una guida passo passo, con undici esempi eseguiti e il significato statistico di ogni opzione, vedi [Istogramma](../../examples/histogram.ipynb) nella sezione Esempi.
 
 Questa pagina resta il punto di ingresso rapido. I dettagli completi sono in [Panoramica](histogram/panoramica.md), mentre [Funzionamento](histogram/funzionamento.md) e predisposta come sottopagina dedicata.
 

@@ -1,0 +1,15 @@
+{# Section strip shared by guide.html and examples.html: the section landing
+   and the pages of its toctree. guide_section comes from _guide_section in
+   conf.py; "current" marks the page being shown. #}
+{%- if guide_section %}
+<nav class="gd-section" aria-label="{{ guide_section.label }}"{% if guide_section.lang %} lang="{{ guide_section.lang }}"{% endif %}>
+  <div class="mh-shell gd-section-inner">
+    <a class="gd-section-title" href="{{ guide_section.href }}"{% if guide_section.current %} aria-current="page"{% endif %}>{{ guide_section.title }}</a>
+    <ol class="gd-section-pages">
+      {%- for page in guide_section.pages %}
+      <li><a href="{{ page.href }}"{% if page.current %} aria-current="page"{% endif %}>{{ page.title }}</a></li>
+      {%- endfor %}
+    </ol>
+  </div>
+</nav>
+{%- endif %}

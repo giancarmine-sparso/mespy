@@ -1,0 +1,60 @@
+/* Overview only. Reuses the landing tokens/chrome and the Examples hero
+   proportions; no styling is applied to individual reference pages. */
+.mespy-api .api-hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 64px; align-items: end; padding-block: 36px 40px; }
+.mespy-api .api-hero .mh-eyebrow { margin-bottom: 16px; }
+.mespy-api .api-hero h1 { font-size: clamp(2.1rem, 2.9vw, 2.6rem); line-height: 1.1; letter-spacing: -.045em; text-wrap: balance; }
+.mespy-api .api-hero .mh-lead { max-width: 600px; margin-top: 14px; color: var(--mh-muted); }
+.mespy-api .api-hero-note { max-width: 400px; justify-self: end; padding-left: 14px; border-left: 1px solid var(--mh-amber); font: .75rem/1.75 var(--mh-mono); color: var(--mh-muted); }
+.mespy-api .api-catalog { padding-bottom: 88px; }
+.mespy-api .api-section { padding-block: 32px; border-top: 1px solid var(--mh-line); scroll-margin-top: 24px; }
+.mespy-api .api-section-heading { margin-bottom: 24px; }
+.mespy-api .api-section-heading .mh-eyebrow { margin-bottom: 12px; }
+.mespy-api .api-section-heading h2 { font-size: clamp(1.35rem, 1.8vw, 1.6rem); letter-spacing: -.035em; }
+.mespy-api .api-core-entries { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; list-style: none; margin: 0; padding: 0; }
+.mespy-api .api-core-item { display: flex; flex-direction: column; min-width: 0; border: 1px solid var(--mh-line); border-radius: 3px; scroll-margin-top: 24px; }
+.mespy-api .api-entries { list-style: none; margin: 0; padding: 0; min-width: 0; }
+.mespy-api .api-entries > li + li { border-top: 1px solid var(--mh-line); }
+.mespy-api .api-entry { display: block; padding: 12px; border-left: 2px solid transparent; transition: background-color .2s, border-color .2s; }
+.mespy-api .api-entry-name { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; font-size: .875rem; }
+.mespy-api .api-entry-name code { min-width: 0; overflow-wrap: anywhere; }
+.mespy-api .api-entry-name > span { flex: none; color: var(--mh-amber); }
+.mespy-api .api-entry-description { display: block; margin-top: 6px; font-size: .8rem; color: var(--mh-muted); }
+.mespy-api .api-entry:hover, .mespy-api .api-entry:focus-visible { background: var(--mh-panel); border-left-color: var(--mh-amber); }
+.mespy-api .api-core-entry { flex: 1; padding: 24px; }
+.mespy-api .api-core-entry .api-entry-name { font-size: clamp(1.5rem, 2.2vw, 2rem); letter-spacing: -.035em; }
+.mespy-api .api-core-entry .api-entry-name > span { font-size: 1rem; }
+.mespy-api .api-core-entry .api-entry-description { max-width: 480px; margin-top: 14px; font-size: .95rem; }
+.mespy-api .api-origin { font: .68rem/1.7 var(--mh-mono); color: var(--mh-muted); }
+.mespy-api .api-origin a { display: inline-flex; align-items: baseline; gap: 10px; padding-block: 6px; }
+.mespy-api .api-origin a > span { color: var(--mh-amber); }
+.mespy-api .api-core-item > .api-origin { padding: 8px 24px; border-top: 1px solid var(--mh-line); }
+.mespy-api .api-utility-groups { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.mespy-api .api-utility-group { min-width: 0; }
+.mespy-api .api-utility-group h3 { font-size: 1rem; letter-spacing: -.02em; }
+.mespy-api .api-utility-group > .api-origin { margin-block: 6px 14px; }
+.mespy-api .api-aside { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding-top: 24px; border-top: 1px solid var(--mh-line); font: .75rem/1.7 var(--mh-mono); color: var(--mh-muted); }
+.mespy-api .api-aside .mh-text-link { gap: 10px; color: var(--mh-ink); font-family: var(--pst-font-family-base); font-size: .85rem; }
+@media (max-width: 1150px) {
+  .mespy-api .api-hero { gap: 40px; }
+  .mespy-api .api-utility-groups { gap: 24px; }
+}
+@media (max-width: 900px) {
+  .mespy-api .api-hero { grid-template-columns: 1fr; gap: 24px; padding-block: 44px 32px; }
+  .mespy-api .api-hero h1 { font-size: clamp(2.2rem, 5.4vw, 3rem); }
+  .mespy-api .api-hero-note { justify-self: start; max-width: 540px; }
+  .mespy-api .api-catalog { padding-bottom: 64px; }
+}
+@media (max-width: 760px) {
+  .mespy-api .api-core-entries, .mespy-api .api-utility-groups { grid-template-columns: 1fr; gap: 24px; }
+  .mespy-api .api-utility-group > .api-entries { border-top: 1px solid var(--mh-line); }
+}
+@media (max-width: 600px) {
+  .mespy-api .api-hero { padding-block: 36px 28px; }
+  .mespy-api .api-hero h1 { font-size: clamp(2rem, 8.4vw, 2.6rem); }
+  .mespy-api .api-section { padding-block: 28px; }
+  .mespy-api .api-core-entry { padding: 20px; }
+  .mespy-api .api-core-item > .api-origin { padding-inline: 20px; }
+}
+@media print {
+  .mespy-api .api-core-item, .mespy-api .api-utility-group { break-inside: avoid; }
+}

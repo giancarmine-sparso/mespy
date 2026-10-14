@@ -1,0 +1,25 @@
+/* Guide sidebar illustration (guide-capybara-station.js). Loaded after
+   guide.css, only on guide pages with "station": "capybara" in GUIDE_PAGES.
+   The block's layout is shared, in guide.css. */
+.mespy-guide .gd-station--capybara {
+  /* The capybara and its mandarin. Deliberate exception to the
+     site-tokens-only rule, like the homepage cat's coat. */
+  --gd-capy-outline: #2a1a10;
+  --gd-capy-coat: #9a6a3c;
+  --gd-capy-coat-light: #b8844f;
+  --gd-capy-coat-shade: #74502d;
+  --gd-capy-snout: #5c3d24;
+  --gd-capy-fruit: #f08a24;
+  --gd-capy-fruit-light: #ffc46b;
+  --gd-capy-fruit-shade: #c8611a;
+  --gd-capy-leaf: #6fae4a;
+  /* The fit in the station greys, its data in a quiet article blue. */
+  --gd-capy-line: #5b6468;
+  --gd-capy-point: color-mix(in srgb, var(--mh-blue) 70%, var(--mh-bg));
+  --gd-capy-speed: #4b5357;
+  --gd-capy-zz: var(--mh-muted);
+  /* Room for the scene before the script draws it: no shift when it does. */
+  min-height: 126px;
+}
+/* Drawn at a whole 3 px per pixel instead of stretched to the column. */
+.mespy-guide .gd-station--capybara svg { width: auto; max-width: 100%; image-rendering: pixelated; }

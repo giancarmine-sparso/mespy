@@ -1,0 +1,52 @@
+/* Guide sidebar illustration (guide-duck-station.js). Loaded after guide.css
+   and homepage-duck.css, only on guide pages with "station": "duck" in
+   GUIDE_PAGES. The block's layout is shared, in guide.css. */
+.mespy-guide .gd-station--duck {
+  /* Station hardware: greys between --mh-line and --mh-muted. */
+  --gd-station-case: #4b5357;
+  --gd-station-case-top: #68737a;
+  --gd-station-case-shade: var(--mh-line);
+  --gd-station-vent: var(--mh-panel);
+  --gd-station-tower: #2b3033;
+  --gd-station-desk: #3a4044;
+  --gd-station-desk-edge: var(--gd-station-case);
+  --gd-station-desk-front: #25292c;
+  --gd-station-keyboard: #5d676c;
+  --gd-station-keys: var(--mh-line);
+  --gd-station-mug: var(--mh-muted);
+  --gd-station-floor: var(--mh-line);
+  --gd-station-glass: #0b0f12;
+  /* Plots in the data blue and the fit amber of the article. */
+  --gd-station-blue: var(--mh-blue);
+  --gd-station-blue-dim: #3d5876;
+  --gd-station-amber: var(--mh-amber);
+  --gd-station-amber-dim: #7d6442;
+  /* Green phosphor of a 1980s Unix terminal. Deliberate exception to the
+     site-tokens-only rule, like the homepage cat's coat. */
+  --gd-station-terminal: #08130c;
+  --gd-station-phosphor: #7cf29c;
+  --gd-station-phosphor-dim: #3f9f5f;
+  --gd-station-cable: #5b6468;
+  --gd-station-cable-dark: #3a4144;
+  --gd-station-cable-green: #2f6b45;
+}
+
+/* Blinking cursor and LEDs; the duck types in short bursts, then reads. */
+.mespy-guide .gd-station__duck-b { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .mespy-guide .gd-station__cursor { animation: gd-station-blink 1.1s steps(1, end) infinite; }
+  .mespy-guide .gd-station__led-a { animation: gd-station-blink 2.4s steps(1, end) infinite; }
+  .mespy-guide .gd-station__led-b { animation: gd-station-blink 3.1s steps(1, end) -1.3s infinite; }
+  .mespy-guide .gd-station__led-c { animation: gd-station-blink 4.6s steps(1, end) -.8s infinite; }
+  .mespy-guide .gd-station__duck-a { animation: gd-station-type-a 4.8s steps(1, end) infinite; }
+  .mespy-guide .gd-station__duck-b { animation: gd-station-type-b 4.8s steps(1, end) infinite; }
+}
+@keyframes gd-station-blink { 50% { opacity: 0; } }
+@keyframes gd-station-type-a {
+  0%, 8%, 16%, 24%, 32% { opacity: 1; }
+  4%, 12%, 20%, 28% { opacity: 0; }
+}
+@keyframes gd-station-type-b {
+  0%, 8%, 16%, 24%, 32% { opacity: 0; }
+  4%, 12%, 20%, 28% { opacity: 1; }
+}

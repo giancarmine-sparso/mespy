@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-12 15:36+0200\n"
+"POT-Creation-Date: 2026-10-14 10:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,41 +18,105 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../source/examples/basic-workflow.md:1
-msgid "Workflow base"
+#: ../../source/examples/basic-workflow.ipynb:10002
+msgid "Basic workflow"
 msgstr "Basic workflow"
 
-#: ../../source/examples/basic-workflow.md:3
+#: ../../source/examples/basic-workflow.ipynb:10004
 msgid ""
-"Questo esempio mostra un uso tipico del package: caricamento del CSV, "
-"statistica descrittiva e istogramma finale. Il file usato qui e "
-"`docs/source/examples/data/test_misure.csv`, gia incluso nel repository."
+"Load a CSV with pandas, then create a histogram with `mespy.histogram` and a"
+" linear fit with `mespy.lin_fit`. Find the PDF plots and TOML fit results in"
+" your chosen output folder."
 msgstr ""
-"This example shows a typical use of the package: CSV loading, descriptive"
-" statistics and final histogram. The file used here is "
-"`docs/source/examples/data/test_misure.csv`, already included in the "
-"repository."
+"Load a CSV with pandas, then create a histogram with `mespy.histogram` and a"
+" linear fit with `mespy.lin_fit`. Find the PDF plots and TOML fit results in"
+" your chosen output folder."
 
-#: ../../source/examples/basic-workflow.md:6
-msgid "Esempio"
-msgstr "Example"
+#: ../../source/examples/basic-workflow.ipynb:20003
+msgid "Load your data"
+msgstr "Load your data"
 
-#: ../../source/examples/basic-workflow.md:29
-msgid "Funzioni coinvolte"
-msgstr "Functions involved"
+#: ../../source/examples/basic-workflow.ipynb:20005
+#, python-brace-format
+msgid ""
+"Save {download}`measurements.csv <data/measurements.csv>` in your project's "
+"`data/` folder. It has three columns: `x`, `y`, and `sigma_y`, the "
+"uncertainty on each `y` value."
+msgstr ""
+"Save {download}`measurements.csv <data/measurements.csv>` in your project's "
+"`data/` folder. It has three columns: `x`, `y`, and `sigma_y`, the "
+"uncertainty on each `y` value."
 
-#: ../../source/examples/basic-workflow.md:31
-msgid "[`load_csv`](../moduli/io_utils/load-csv.md)"
-msgstr "[`load_csv`](../moduli/io_utils/load-csv.md)"
+#: ../../source/examples/basic-workflow.ipynb:20011
+msgid ""
+"Run the code from your project folder. pandas reads the CSV into a DataFrame"
+" named `df`:"
+msgstr ""
+"Run the code from your project folder. pandas reads the CSV into a DataFrame"
+" named `df`:"
 
-#: ../../source/examples/basic-workflow.md:32
-msgid "[`weighted_mean`](../moduli/stats_utils/weighted-mean.md)"
-msgstr "[`weighted_mean`](../moduli/stats_utils/weighted-mean.md)"
+#: ../../source/examples/basic-workflow.ipynb:40002
+msgid ""
+"Access any column with `df[\"column_name\"]`. For example, `df[\"y\"]` "
+"contains the measured values."
+msgstr ""
+"Access any column with `df[\"column_name\"]`. For example, `df[\"y\"]` "
+"contains the measured values."
 
-#: ../../source/examples/basic-workflow.md:33
-msgid "[`standard_deviation`](../moduli/stats_utils/standard-deviation.md)"
-msgstr "[`standard_deviation`](../moduli/stats_utils/standard-deviation.md)"
+#: ../../source/examples/basic-workflow.ipynb:40005
+msgid "Create a histogram"
+msgstr "Create a histogram"
 
-#: ../../source/examples/basic-workflow.md:34
-msgid "[`histogram`](../moduli/plot_utils/histogram.md)"
-msgstr "[`histogram`](../moduli/plot_utils/histogram.md)"
+#: ../../source/examples/basic-workflow.ipynb:40007
+msgid ""
+"`histogram` saves a PDF at `save_path`. The `results/` folder must already "
+"exist: `histogram` does not create missing folders, so create it before "
+"saving."
+msgstr ""
+"`histogram` saves a PDF at `save_path`. The `results/` folder must already "
+"exist: `histogram` does not create missing folders, so create it before "
+"saving."
+
+#: ../../source/examples/basic-workflow.ipynb:60003
+msgid "Perform a linear fit"
+msgstr "Perform a linear fit"
+
+#: ../../source/examples/basic-workflow.ipynb:60005
+msgid ""
+"Use the same DataFrame. Pass `sigma_y` to include the measurement "
+"uncertainties in the fit."
+msgstr ""
+"Use the same DataFrame. Pass `sigma_y` to include the measurement "
+"uncertainties in the fit."
+
+#: ../../source/examples/basic-workflow.ipynb:80002
+msgid ""
+"`output` sets the destination and base filename, **without an extension**. "
+"This call creates:"
+msgstr ""
+"`output` sets the destination and base filename, **without an extension**. "
+"This call creates:"
+
+#: ../../source/examples/basic-workflow.ipynb:80004
+msgid "`linear_fit.pdf` — the fit plot."
+msgstr "`linear_fit.pdf` — the fit plot."
+
+#: ../../source/examples/basic-workflow.ipynb:80005
+msgid "`linear_fit.toml` — the numerical fit results."
+msgstr "`linear_fit.toml` — the numerical fit results."
+
+#: ../../source/examples/basic-workflow.ipynb:80008
+msgid "Saved files"
+msgstr "Saved files"
+
+#: ../../source/examples/basic-workflow.ipynb:80010
+msgid "Your project now contains:"
+msgstr "Your project now contains:"
+
+#: ../../source/examples/basic-workflow.ipynb:80022
+msgid ""
+"**Both functions save PDF plots.** `lin_fit` also saves numerical results in"
+" TOML, a text file you can open in any text editor."
+msgstr ""
+"**Both functions save PDF plots.** `lin_fit` also saves numerical results in"
+" TOML, a text file you can open in any text editor."

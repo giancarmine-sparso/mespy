@@ -1,71 +1,47 @@
 # LinearFitResult
 
-## Definizione
+The immutable result object returned by [`lin_fit`](lin-fit.md). Its numerical fields describe one fit; its optional Matplotlib figure can still be edited and saved.
 
-`LinearFitResult` e una `dataclass` immutabile con `slots=True`, usata come oggetto di ritorno di [`lin_fit`](lin-fit.md).
+## Public attributes
 
-## Scopo
+| Attribute | Meaning |
+| --- | --- |
+| `slope`, `intercept` | The fitted slope and intercept. |
+| `slope_std`, `intercept_std` | Their standard uncertainties. |
+| `covariance` | Covariance between slope and intercept. |
+| `correlation` | Parameter correlation, or `None` when undefined. |
+| `residuals` | Read-only physical residuals, `y - (slope*x + intercept)`. |
+| `residual_std` | Square root of the residual sum of squares divided by `dof`, or `None` if `dof=0`. |
+| `estimated_sigma` | Common vertical dispersion estimated in OLS; equals `residual_std` in OLS and is `None` in WLS. |
+| `chi2` | Weighted residual criterion, or `None` in OLS. Iterative WLS uses effective variances. |
+| `reduced_chi2` | `chi2 / dof`, or `None` when undefined. |
+| `p_value` | Upper-tail chi-square probability, or `None` in OLS or with zero degrees of freedom. Approximate in iterative WLS. |
+| `dof` | Number of observations minus two. |
+| `fit_method` | `"ols"` or `"wls"`. |
+| `x_error_method` | `"none"` or `"iterate"`; a keyword-only field defaulting to `"none"`. |
+| `figure` | Matplotlib figure, or `None` when `plot=False`. |
 
-Raccogliere in un unico contenitore tipizzato i parametri del fit, le incertezze associate, i residui, le diagnostiche e la figura opzionale.
+For `x_error_method="iterate"`, parameter covariance, the band, and the interpretation of chi-squared and p-value belong to the historical effective-variance approximation. They are not validated York/ODR results. `fit_method` remains `"wls"` and `estimated_sigma` remains `None`.
 
-## Campi
+`normalize_residuals` changes only the plot; `residuals` always keep the units of `y`. Changes to fitted fields through `dataclasses.replace()` are rejected when they would disagree with the retained fit. You may modify `result.figure` and save it separately; this does not update an earlier automatic PDF export.
 
-- `slope`: pendenza della retta stimata.
-- `intercept`: intercetta della retta stimata.
-- `slope_std`: incertezza standard sulla pendenza.
-- `intercept_std`: incertezza standard sull'intercetta.
-- `covariance`: covarianza tra i due parametri del fit.
-- `correlation`: coefficiente di correlazione tra pendenza e intercetta.
-- `residuals`: vettore dei residui fisici `y - (m x + c)`, sempre non normalizzati anche quando `lin_fit(..., normalize_residuals=True)` mostra residui normalizzati nel grafico.
-- `residual_std`: stima sintetica della dispersione dei residui.
-- `chi2`: chi quadrato del fit.
-- `reduced_chi2`: chi quadrato ridotto.
-- `dof`: gradi di liberta, pari a `n - 2`.
-- `iterations`: numero di aggiornamenti dei pesi effettuati.
-- `converged`: indica se l'iterazione con `sigma_x` ha soddisfatto il criterio di arresto.
-- `figure`: oggetto matplotlib oppure `None` se `show_plot=False`.
-- `fit_method`: modello di incertezza usato, `"absolute"` oppure `"residual"`.
-- `scale_factor`: fattore globale applicato alle incertezze con `fit_method="residual"`; vale `1.0` con `fit_method="absolute"`.
-
-## Quando leggerlo
-
-Usa questo oggetto quando vuoi:
-
-- recuperare i parametri del fit senza dover parsare una stringa o una legenda
-- controllare la qualita del fit tramite residui e `reduced_chi2`
-- decidere se salvare o riusare la figura generata
-
-## Esempio
+## Prediction
 
 ```python
-result = lin_fit(x, y, sigma_y, show_plot=False)
-
-print(result.slope)
-print(result.intercept_std)
-print(result.reduced_chi2)
-print(result.fit_method)
+result = lin_fit(x, y, sigma_y, plot=False)
+predicted = result.predict([1.0, 2.0, 3.0])
 ```
 
-## Esportazione in TOML
+`predict()` accepts a finite real scalar or one-dimensional vector. It uses the retained local representation to preserve accuracy near large coordinate offsets.
 
-Il metodo `to_toml(path)` salva il risultato numerico del fit in un file TOML leggibile e versionabile:
+## TOML export
 
 ```python
-fit = mespy.lin_fit(x, y, sigma_y)
-fit.to_toml("fit_molla.toml")
+result.to_toml("fit_results.toml")
 ```
 
-Il file contiene quattro tabelle:
+The destination directory must already exist. A missing extension becomes `.toml`; an existing destination is replaced atomically. The method returns the written `Path`.
 
-- `[mespy]`: `schema_version`, `mespy_version` e `result_type = "linear_fit"`, per riconoscere il formato del file.
-- `[fit]`: `fit_method`, `slope`, `slope_std`, `intercept`, `intercept_std`, `covariance`, `correlation` e `scale_factor`.
-- `[diagnostics]`: `chi2`, `reduced_chi2`, `dof`, `residual_std`, `iterations` e `converged`.
-- `[residuals]`: il vettore `values` con i residui fisici.
+The document contains `[mespy]`, `[fit]`, `[diagnostics]`, and `[residuals]`, plus `[data]` and `[plot]` for results produced by `lin_fit`. Input uncertainties are stored in their original form after scalar expansion, and floating-point results keep full precision. Undefined diagnostics are omitted. Figure edits and the full Matplotlib configuration are not serialized.
 
-Il campo `figure` non viene mai salvato: per conservare il grafico usa il parametro `save_path` di [`lin_fit`](lin-fit.md).
-
-Se `path` non ha estensione viene aggiunto `.toml`. Un file esistente viene sovrascritto in modo atomico, quindi non resta mai un file a meta. Il metodo restituisce il `Path` del file scritto. I valori vengono salvati con precisione completa: rileggendo il file con `tomllib` si ottengono esattamente gli stessi numeri.
-
-## Note
-
-La classe non esegue calcoli da sola: e una rappresentazione dell'output prodotto da [`lin_fit`](lin-fit.md). Il parametro `normalize_residuals` di `lin_fit` non aggiunge campi e non cambia i valori numerici contenuti in questa classe; agisce solo sul pannello dei residui della figura. Il campo `scale_factor` e invece parte del calcolo: con `fit_method="residual"` descrive la scala di incertezza stimata dai residui.
+Without `sigma_x`, exports retain schema 2. With `sigma_x`, schema 3 also stores `[data].sigma_x` and `[fit].x_error_method`, including `"none"` when horizontal bars were only displayed. Manually constructed iterative results use schema 3 and record the method without inventing input data.

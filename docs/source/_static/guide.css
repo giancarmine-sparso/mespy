@@ -1,0 +1,230 @@
+/* Guide pages (guide.html, GUIDE_PAGES in conf.py). Loaded after
+   homepage.css: reuses the landing tokens (--mh-*) and components (mh-*).
+   Every selector is scoped to body.mespy-guide. */
+body.mespy-guide {
+  --pst-color-border: var(--mh-line);
+  --pst-color-primary: var(--mh-amber);
+  --pst-color-link: var(--mh-ink);
+  --pst-color-inline-code: var(--mh-blue);
+  --gd-measure: 72ch;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html:has(body.mespy-guide) { scroll-behavior: smooth; }
+}
+html:has(body.mespy-guide) { scroll-padding-top: 24px; }
+
+/* Two columns: guide navigator and article. */
+.mespy-guide .gd-layout { display: grid; grid-template-columns: 236px minmax(0, 1fr); gap: 72px; padding-block: 64px 112px; }
+.mespy-guide .gd-aside { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow-y: auto; padding-right: 8px; scrollbar-width: thin; scrollbar-color: var(--mh-line) transparent; }
+.mespy-guide .gd-main { min-width: 0; max-width: 860px; }
+
+/* Level 2 — guide navigator. */
+.mespy-guide .mx-guide-nav ol { list-style: none; margin: 0; padding: 0; }
+.mespy-guide .mx-guide-nav__title { margin: 0 0 18px; font: .68rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); }
+.mespy-guide .mx-guide-nav__group + .mx-guide-nav__group { margin-top: 20px; }
+.mespy-guide .mx-guide-nav__group-link { display: block; padding-block: 2px; font-size: .85rem; font-weight: 600; color: var(--mh-ink); }
+.mespy-guide .mx-guide-nav__entries { margin-top: 8px !important; border-left: 1px solid var(--mh-line); }
+.mespy-guide .mx-guide-nav__link { display: grid; grid-template-columns: 26px minmax(0, 1fr); align-items: baseline; margin-left: -1px; padding: 5px 0 5px 13px; border-left: 1px solid transparent; font-size: .8rem; line-height: 1.45; color: var(--mh-muted); transition: color .2s, border-color .2s; }
+.mespy-guide .mx-guide-nav__link:not(:has(.mx-guide-nav__num)) { grid-template-columns: minmax(0, 1fr); }
+.mespy-guide .mx-guide-nav__num { font: .66rem/1.45 var(--mh-mono); color: #727a7e; }
+.mespy-guide .mx-guide-nav a:hover { color: var(--mh-ink); }
+.mespy-guide .mx-guide-nav__link:hover { border-left-color: #68757b; }
+.mespy-guide .mx-guide-nav a[aria-current] { color: var(--mh-amber); }
+.mespy-guide .mx-guide-nav__link[aria-current] { border-left-color: var(--mh-amber); }
+.mespy-guide .mx-guide-nav__link[aria-current] .mx-guide-nav__num { color: var(--mh-amber); }
+.mespy-guide .mx-guide-nav__group--active > .mx-guide-nav__group-link { color: var(--mh-amber); }
+.mespy-guide .mx-guide-nav a:focus-visible { outline-offset: 2px; }
+
+/* Pixel-art scene under the navigator ("station" in GUIDE_PAGES), drawn by
+   guide-<station>-station.js, coloured by guide-<station>-station.css.
+   As wide as the navigator column, so its right edge lines up with the links. */
+.mespy-guide .gd-station { margin-top: 56px; line-height: 0; pointer-events: none; }
+.mespy-guide .gd-station[hidden] { display: none; }
+.mespy-guide .gd-station svg { display: block; width: 100%; height: auto; }
+@media print, (forced-colors: active) {
+  .mespy-guide .gd-station { display: none; }
+}
+
+/* Compact menu, shown only when the side column is hidden. */
+.mespy-guide .mx-guide-menu { display: none; }
+
+/* ------------------------------------------------------------ article */
+.mespy-guide .gd-eyebrow { margin-bottom: 22px; }
+.mespy-guide .gd-article { color: var(--mh-muted); font-size: 1rem; line-height: 1.7; }
+.mespy-guide .gd-article > section > p,
+.mespy-guide .gd-article section section > p,
+.mespy-guide .gd-article section > ul,
+.mespy-guide .gd-article section > ol { max-width: var(--gd-measure); }
+.mespy-guide .gd-article p { margin: 0 0 18px; }
+.mespy-guide .gd-article strong { color: var(--mh-ink); font-weight: 600; }
+.mespy-guide .gd-article a { color: var(--mh-ink); text-decoration: underline; text-decoration-color: #7d6442; text-decoration-thickness: 1px; text-underline-offset: 4px; transition: color .2s, text-decoration-color .2s; }
+.mespy-guide .gd-article a:hover { color: var(--mh-amber); text-decoration-color: var(--mh-amber); }
+.mespy-guide .gd-article code.literal { font: .88em/1.5 var(--mh-mono); color: var(--mh-blue); background: none; border: 0; padding: 0; }
+.mespy-guide .gd-article a code.literal { color: inherit; }
+.mespy-guide .gd-article .math { color: var(--mh-ink); }
+.mespy-guide .gd-article div.math { margin: 8px 0 24px; overflow-x: auto; overflow-y: hidden; }
+
+/* Headings: the landing scale, one step smaller. */
+.mespy-guide .gd-article h1 { font-size: clamp(2.3rem, 3.4vw, 3.1rem); line-height: 1.1; letter-spacing: -.045em; text-wrap: balance; margin-bottom: 26px; }
+.mespy-guide .gd-article h1 + p { font-size: clamp(1.05rem, 1.4vw, 1.2rem); line-height: 1.55; color: var(--mh-ink); margin-bottom: 14px; }
+.mespy-guide .gd-article h2 { font-size: clamp(2rem, 3.2vw, 2.75rem); margin-bottom: 28px; }
+.mespy-guide .gd-article h3 { font-size: clamp(1.45rem, 2vw, 1.85rem); letter-spacing: -.035em; margin: 0 0 18px; }
+.mespy-guide .gd-article h4 { margin: 40px 0 14px; font: .68rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-ink); }
+
+/* Parts (H2): numbered eyebrow and a rule, like the landing sections. */
+.mespy-guide .mx-guide { counter-reset: gd-part; }
+.mespy-guide .mx-guide > section { counter-increment: gd-part; margin-top: 96px; padding-top: 56px; border-top: 1px solid var(--mh-line); }
+.mespy-guide .mx-guide > section > h2::before { content: counter(gd-part, decimal-leading-zero) " /"; display: block; margin-bottom: 18px; font: 400 .72rem/1.6 var(--mh-mono); letter-spacing: .11em; color: var(--mh-muted); }
+.mespy-guide .mx-guide > section > section { margin-top: 64px; }
+
+/* Examples (numbered H3). */
+.mespy-guide .gd-article .mx-guide-example { margin-top: 88px; padding-top: 48px; border-top: 1px solid var(--mh-line); }
+.mespy-guide .gd-article .mx-guide-num { display: block; margin-bottom: 14px; font: 600 .75rem/1.6 var(--mh-mono); letter-spacing: 0; color: var(--mh-amber); }
+
+/* Lists: the landing's small square markers. */
+.mespy-guide .gd-article ul { list-style: none; margin: 0 0 22px; padding: 0; }
+.mespy-guide .gd-article ul > li { position: relative; padding-left: 22px; }
+.mespy-guide .gd-article ul > li::before { content: ""; position: absolute; left: 2px; top: .72em; width: 5px; height: 5px; background: var(--mh-amber); opacity: .75; }
+.mespy-guide .gd-article section > ol { margin: 0 0 22px; padding-left: 22px; }
+.mespy-guide .gd-article section > ol > li::marker { font: .8rem var(--mh-mono); color: var(--mh-amber); }
+.mespy-guide .gd-article li + li { margin-top: 10px; }
+.mespy-guide .gd-article li > p { margin: 0; }
+
+/* Code + output: the Get started terminal panel, Python above, output below. */
+.mespy-guide .gd-article div.cell,
+.mespy-guide .gd-article section > div[class^="highlight-"] { margin: 30px 0 34px; border: 1px solid var(--mh-line); border-radius: 8px; background: var(--mh-panel); overflow: hidden; }
+.mespy-guide .gd-article div.cell > div.cell_input { border: 0; border-radius: 0; background: transparent; }
+.mespy-guide .gd-article div.cell > div.cell_input::before,
+.mespy-guide .gd-article section > div[class^="highlight-"]::before { content: "Python"; display: flex; align-items: center; min-height: 52px; padding: 0 24px; border-bottom: 1px solid var(--mh-line); font: .75rem/1.6 var(--mh-mono); color: var(--mh-ink); }
+.mespy-guide #bw-data ~ .highlight-text::before { content: "CSV"; }
+.mespy-guide #bw-files ~ .highlight-text::before { content: "Project files"; }
+.mespy-guide #ps-fit-style ~ .highlight-text::before { content: "lab.mplstyle"; }
+.mespy-guide #lf-basic ~ .highlight-text:first-of-type::before { content: "CSV"; }
+.mespy-guide #lf-basic ~ .highlight-text:not(:first-of-type)::before { content: "Saved files"; }
+.mespy-guide .gd-article div.highlight { position: relative; background: transparent; }
+.mespy-guide .gd-article div.highlight pre { margin: 0; padding: 22px 24px; border: 0; border-radius: 0; background: transparent; color: var(--mh-ink); font: .86rem/1.8 var(--mh-mono); tab-size: 4; box-shadow: none; overflow-x: auto; }
+.mespy-guide .gd-article .cell_output { margin: 0; padding: 0; border-top: 1px solid var(--mh-line); background: var(--mh-bg); }
+.mespy-guide .gd-article .cell_output::before { content: "Output"; display: block; padding: 16px 24px 0; font: .62rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); }
+.mespy-guide .gd-article .cell_output > * { margin: 0; }
+.mespy-guide .gd-article .cell_output figure { margin: 0; padding: 14px 24px 18px; }
+.mespy-guide .gd-article .cell_output figure + .output,
+.mespy-guide .gd-article .cell_output .output + figure { border-top: 1px solid var(--mh-line); }
+.mespy-guide .gd-article .cell_output img { display: block; width: auto; max-width: 100%; height: auto; margin: 0 auto; padding: 8px; background: white; border-radius: 4px; }
+/* Plots without a caption are a bare <img>, not a <figure>: same gutters. */
+.mespy-guide .gd-article .cell_output > img { max-width: calc(100% - 48px); margin: 14px auto 18px; }
+.mespy-guide .gd-article .cell_output figcaption { margin-top: 14px; text-align: left; }
+.mespy-guide .gd-article .cell_output figcaption p { margin: 0; font: .72rem/1.7 var(--mh-mono); color: var(--mh-muted); }
+.mespy-guide .gd-article .cell_output figcaption code.literal { font-size: 1em; }
+.mespy-guide .gd-article .cell_output .output.stream,
+.mespy-guide .gd-article .cell_output .output.text_plain { margin: 0; padding: 10px 24px 18px; border: 0; background: transparent; }
+.mespy-guide .gd-article .cell_output .output pre { margin: 0; padding: 0; border: 0; background: transparent; font: .82rem/1.7 var(--mh-mono); color: var(--mh-blue); }
+
+/* Syntax colours of the landing editor (mh-syntax-*), mapped to Pygments. */
+.mespy-guide .gd-article .highlight pre * { color: var(--mh-ink); background: none; font-style: normal; font-weight: 400; }
+.mespy-guide .gd-article .highlight pre :is(.k, .kn, .kc, .kd, .kr, .ow, .o) { color: #c9acf1; }
+.mespy-guide .gd-article .highlight pre :is(.nf, .na, .nb, .bp, .fm) { color: var(--mh-amber); }
+.mespy-guide .gd-article .highlight pre :is(.s, .s1, .s2, .sa, .sb, .sc, .sd, .se, .sh, .si, .sx, .dl) { color: #9bd1b7; }
+.mespy-guide .gd-article .highlight pre :is(.m, .mi, .mf, .mh, .mo) { color: var(--mh-blue); }
+.mespy-guide .gd-article .highlight pre :is(.c, .c1, .cm, .ch) { color: var(--mh-muted); }
+
+/* sphinx-copybutton, styled like the landing's copy button. */
+.mespy-guide .gd-article button.copybtn { top: 12px; right: 14px; width: auto; height: auto; padding: 5px 8px; border: 1px solid var(--mh-line); border-radius: 4px; background: var(--mh-panel); color: var(--mh-muted); transition: opacity .2s, color .2s, border-color .2s; }
+.mespy-guide .gd-article button.copybtn:hover { color: var(--mh-amber); border-color: var(--mh-amber); }
+
+/* Tables: a panel with mono headers, like the Get started protocol. */
+.mespy-guide .gd-article .pst-scrollable-table-container { margin: 6px 0 36px; border: 1px solid var(--mh-line); border-radius: 5px; background: var(--mh-panel); overflow-x: auto; }
+.mespy-guide .gd-article table.table { --bs-table-bg: transparent; --bs-table-accent-bg: transparent; --bs-table-border-color: var(--mh-line); width: 100%; margin: 0; border: 0; color: var(--mh-muted); font-size: .86rem; line-height: 1.6; }
+.mespy-guide .gd-article table.table:has(thead th:nth-child(3):last-child) { table-layout: fixed; }
+.mespy-guide .gd-article table.table:has(thead th:nth-child(3):last-child) th:nth-child(1) { width: 11rem; }
+.mespy-guide .gd-article table.table:has(thead th:nth-child(3):last-child) th:nth-child(2) { width: 9.5rem; }
+.mespy-guide .gd-article table.table tr,
+.mespy-guide .gd-article table.table tbody tr:nth-child(n) { background: transparent; border: 0; }
+.mespy-guide .gd-article table.table th,
+.mespy-guide .gd-article table.table td { padding: 13px 22px 13px 0; border: 0; box-shadow: none; background: transparent; color: inherit; vertical-align: top; }
+.mespy-guide .gd-article table.table :is(th, td):first-child { padding-left: 22px; }
+.mespy-guide .gd-article table.table tbody tr + tr td { border-top: 1px solid var(--mh-line); }
+.mespy-guide .gd-article table.table thead th { padding-block: 14px; border-bottom: 1px solid var(--mh-line); background: var(--mh-bg); font: .64rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); }
+.mespy-guide .gd-article table.table :is(th, td) p { margin: 0; }
+.mespy-guide .gd-article table.table td:first-child code.literal { color: var(--mh-ink); font-weight: 600; }
+.mespy-guide .gd-article table.table td:nth-child(2) { overflow-wrap: anywhere; }
+.mespy-guide .gd-article p:has(> strong:only-child):has(+ .pst-scrollable-table-container) { margin: 36px 0 12px; font: .7rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; }
+.mespy-guide .gd-article p:has(> strong:only-child):has(+ .pst-scrollable-table-container) strong { color: var(--mh-amber); font-weight: 400; }
+
+/* Key takeaway: the Get started hint, as a quiet panel. */
+.mespy-guide .gd-article .admonition.mx-takeaway { max-width: var(--gd-measure); margin: 36px 0 0; padding: 18px 22px 20px; border: 1px solid var(--mh-line); border-left: 2px solid var(--mh-amber); border-radius: 0 5px 5px 0; background: var(--mh-panel); box-shadow: none !important; color: var(--mh-ink); }
+.mespy-guide .gd-article .admonition.mx-takeaway > * { margin-inline: 0; }
+.mespy-guide .gd-article .admonition.mx-takeaway > .admonition-title { margin: 0 0 8px; padding: 0; background: transparent; font: .64rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-amber); }
+.mespy-guide .gd-article .admonition.mx-takeaway > .admonition-title::before,
+.mespy-guide .gd-article .admonition.mx-takeaway > .admonition-title::after { display: none; }
+.mespy-guide .gd-article .admonition.mx-takeaway > p:last-child { margin-bottom: 0; }
+
+/* Saved files: an editor/Colab file sidebar, rendered by a hidden notebook
+   cell from the files the page actually wrote (basic-workflow.ipynb). */
+.mespy-guide .gd-article div.cell:has(.mx-files) { border: 0; background: transparent; overflow: visible; }
+.mespy-guide .gd-article .cell_output:has(.mx-files) { border: 0; background: transparent; }
+.mespy-guide .gd-article .cell_output:has(.mx-files)::before { display: none; }
+.mespy-guide .mx-files { width: min(380px, 100%); border: 1px solid var(--mh-line); border-radius: 8px; background: var(--mh-panel); font: .8rem/1.6 var(--mh-mono); color: var(--mh-ink); overflow: hidden; }
+.mespy-guide .mx-files__bar { display: flex; align-items: center; gap: 14px; min-height: 44px; padding: 0 16px; border-bottom: 1px solid var(--mh-line); background: var(--mh-bg); color: var(--mh-muted); font-size: .7rem; }
+.mespy-guide .mx-files__dots { display: flex; gap: 6px; }
+.mespy-guide .mx-files__dots i { width: 7px; height: 7px; background: var(--mh-line); }
+.mespy-guide .gd-article .mx-files ul { margin: 0; padding: 0; list-style: none; }
+.mespy-guide .gd-article .mx-files ul.mx-files__tree { padding-block: 10px 12px; }
+.mespy-guide .gd-article .mx-files li { margin: 0; padding: 0; }
+.mespy-guide .gd-article .mx-files li::before { content: none; }
+.mespy-guide .mx-files__dir { display: flex; align-items: center; gap: 8px; padding: 5px 16px; }
+.mespy-guide .mx-files__chev { width: 10px; color: var(--mh-muted); font-size: .85rem; line-height: 1; }
+.mespy-guide .mx-files__folder { width: 13px; height: 10px; border: 1px solid var(--mh-muted); border-radius: 1px; box-shadow: inset 0 2px 0 var(--mh-muted); }
+.mespy-guide .gd-article .mx-files li.mx-files__file { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto 6px; align-items: center; gap: 12px; padding: 5px 16px 5px 40px; background: #f2b45d0d; }
+.mespy-guide .mx-files__type { justify-self: start; padding: 0 4px; border: 1px solid #7d6442; border-radius: 2px; font-size: .56rem; line-height: 1.7; letter-spacing: .04em; color: var(--mh-amber); }
+.mespy-guide .mx-files__type--toml { border-color: #3d5876; color: var(--mh-blue); }
+.mespy-guide .mx-files__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mespy-guide .mx-files__size { color: var(--mh-muted); font-size: .7rem; }
+.mespy-guide .mx-files__new { width: 6px; height: 6px; background: var(--mh-amber); }
+
+/* ------------------------------------------------------------ responsive */
+@media (max-width: 1150px) {
+  .mespy-guide .gd-layout { grid-template-columns: 210px minmax(0, 1fr); gap: 48px; }
+}
+@media (max-width: 959.98px) {
+  .mespy-guide .gd-layout { grid-template-columns: minmax(0, 1fr); padding-top: 0; }
+  .mespy-guide .gd-aside { display: none; }
+  html:has(body.mespy-guide) { scroll-padding-top: 88px; }
+  .mespy-guide .mx-guide-menu { display: block; position: sticky; top: 0; z-index: 20; margin: 0 -36px 44px; padding: 12px 36px; background: var(--mh-bg); border-bottom: 1px solid var(--mh-line); }
+  .mespy-guide .mx-guide-menu__summary { display: flex; align-items: center; gap: 14px; min-height: 44px; padding: 8px 14px; border: 1px solid var(--mh-line); border-radius: 3px; cursor: pointer; list-style: none; }
+  .mespy-guide .mx-guide-menu__summary::-webkit-details-marker { display: none; }
+  .mespy-guide .mx-guide-menu__summary:hover { border-color: var(--mh-amber); }
+  .mespy-guide .mx-guide-menu__label { flex: none; font: .62rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); }
+  .mespy-guide .mx-guide-menu__current { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: .85rem; font-weight: 600; color: var(--mh-ink); }
+  .mespy-guide .mx-guide-menu__chevron { flex: none; width: 7px; height: 7px; margin: 0 4px 3px 0; border-right: 1px solid var(--mh-muted); border-bottom: 1px solid var(--mh-muted); transform: rotate(45deg); transition: transform .2s; }
+  .mespy-guide .mx-guide-menu[open] .mx-guide-menu__chevron { transform: translateY(3px) rotate(-135deg); }
+  .mespy-guide .mx-guide-menu__panel { position: absolute; inset: calc(100% - 4px) 36px auto; max-height: min(70vh, 540px); overflow-y: auto; padding: 22px 22px 24px; border: 1px solid var(--mh-line); border-radius: 5px; background: var(--mh-panel); box-shadow: 0 18px 40px rgb(0 0 0 / .45); }
+}
+@media (max-width: 600px) {
+  .mespy-guide .mx-guide-menu { margin-inline: -20px; padding-inline: 20px; }
+  .mespy-guide .mx-guide-menu__panel { inset-inline: 20px; }
+  .mespy-guide .gd-layout { padding-bottom: 80px; }
+  .mespy-guide .gd-article { font-size: .95rem; }
+  .mespy-guide .mx-guide > section { margin-top: 72px; padding-top: 44px; }
+  .mespy-guide .gd-article .mx-guide-example { margin-top: 64px; padding-top: 40px; }
+  .mespy-guide .gd-article div.highlight pre { padding: 18px 16px; font-size: .76rem; }
+  .mespy-guide .gd-article div.cell > div.cell_input::before,
+  .mespy-guide .gd-article section > div[class^="highlight-"]::before { padding-inline: 16px; min-height: 46px; }
+  .mespy-guide .gd-article .cell_output::before,
+  .mespy-guide .gd-article .cell_output .output.stream,
+  .mespy-guide .gd-article .cell_output .output.text_plain { padding-inline: 16px; }
+  /* Wide figures scroll sideways instead of shrinking below legibility. */
+  .mespy-guide .gd-article .cell_output figure { padding: 12px 16px 16px; overflow-x: auto; }
+  .mespy-guide .gd-article .cell_output > img { max-width: calc(100% - 32px); margin: 12px auto 16px; }
+  .mespy-guide .gd-article .cell_output figure img { width: 34rem; max-width: none; }
+  .mespy-guide .gd-article .cell_output figure.mx-plot-wide img { width: 46rem; }
+  .mespy-guide .gd-article .cell_output figcaption { position: sticky; left: 0; max-width: calc(100vw - 72px); }
+  .mespy-guide .gd-article table.table:has(thead th:nth-child(3):last-child) th:nth-child(1) { width: 8.5rem; }
+  .mespy-guide .gd-article table.table:has(thead th:nth-child(3):last-child) th:nth-child(2) { width: 6.5rem; }
+  .mespy-guide .gd-article table.table :is(th, td):first-child { padding-left: 14px; }
+  .mespy-guide .gd-article table.table th,
+  .mespy-guide .gd-article table.table td { padding-right: 14px; }
+}
+@media print {
+  .mespy-guide .gd-aside, .mespy-guide .mx-guide-menu { display: none !important; }
+  .mespy-guide .gd-layout { display: block; padding: 0; }
+}

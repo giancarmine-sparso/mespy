@@ -1,0 +1,36 @@
+<div class="mh-fit-editor" data-fit-demo data-worker="{{ pathto('_static/homepage-fit-worker.js', 1) }}"
+     data-ready="{{ home('Modifica le misure e premi Esegui.') }}"
+     data-runtime="{{ home('Caricamento di Python…') }}"
+     data-packages="{{ home('Caricamento di NumPy, SciPy e Matplotlib…') }}"
+     data-execute="{{ home('Esecuzione di lin_fit…') }}"
+     data-success="{{ home('Fit completato. Grafico e TOML aggiornati.') }}"
+     data-stale="{{ home('Codice modificato. Premi Esegui per aggiornare i risultati.') }}"
+     data-cancelled="{{ home('Esecuzione annullata.') }}"
+     data-timeout="{{ home('Tempo limite raggiunto. Riprova con meno misure o controlla la connessione.') }}"
+     data-load-error="{{ home('Impossibile avviare Python. Controlla la connessione e riprova.') }}"
+     data-copy-success="{{ home('TOML copiato.') }}"
+     data-copy-failure="{{ home('Copia non disponibile. Seleziona e copia il TOML.') }}">
+  <div class="mh-editor-toolbar"><span class="mh-editor-label">Python</span><div><button class="mh-fit-cancel" type="button" hidden>{{ home('Annulla') }}</button><button class="mh-fit-run" type="button" disabled><span aria-hidden="true">▶</span> {{ home('Esegui') }}</button></div></div>
+  <div class="mh-editor-code">
+    <pre class="mh-editor-lines" aria-hidden="true"></pre>
+    <div class="mh-editor-input">
+      <pre class="mh-editor-highlight" aria-hidden="true"><code>{{ fit_example_html | safe }}</code></pre>
+      <textarea id="mh-fit-source" aria-label="{{ home('Esempio Python modificabile: misure e fit lineare') }}" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" wrap="off">{{ fit_example }}</textarea>
+    </div>
+  </div>
+  <p class="mh-fit-status" role="status" aria-live="polite">{{ home('Modifica le misure e premi Esegui.') }}</p>
+  <p class="mh-editor-note">{{ home('Il primo avvio scarica Python e i pacchetti scientifici. L’analisi viene eseguita nel tuo browser.') }}</p>
+  <noscript><p class="mh-fit-error">{{ home('Attiva JavaScript per eseguire questo esempio.') }}</p></noscript>
+  <p class="mh-fit-error" role="alert" hidden></p>
+  <div class="mh-fit-errors" hidden>
+    <span data-error="structure">{{ home('Usa solo gli array x, y, sigma_y e una chiamata finale a lin_fit.') }}</span>
+    <span data-error="import">{{ home('Inizia con: from mespy import lin_fit.') }}</span>
+    <span data-error="call">{{ home('Concludi con lin_fit(x, y, sigma_y=sigma_y). Puoi anche modificare le etichette degli assi.') }}</span>
+    <span data-error="literals">{{ home('Inserisci numeri direttamente negli array. Espressioni, cicli e altre funzioni non sono supportati in questo esempio.') }}</span>
+    <span data-error="numbers">{{ home('Gli array devono contenere solo numeri.') }}</span>
+    <span data-error="points">{{ home('Questo esempio accetta al massimo 1000 misure.') }}</span>
+    <span data-error="size">{{ home('Il codice è troppo lungo per questo esempio.') }}</span>
+    <span data-error="style">{{ home('Gli stili disponibili nella demo sono report e mespy.') }}</span>
+    <span data-error="labels">{{ home('Le etichette devono essere stringhe di massimo 100 caratteri.') }}</span>
+  </div>
+</div>

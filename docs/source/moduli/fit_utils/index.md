@@ -1,59 +1,18 @@
 # fit_utils.py
 
-`fit_utils.py` contiene il fit lineare del package e il tipo di ritorno associato. E il modulo piu denso del progetto, perche combina statistica, validazione degli input e plotting opzionale, riusando anche il sistema di stile gia definito in `plot_utils`.
+`fit_utils.py` implements MesPy's linear fitting function and its immutable result object.
 
-## Import principali
+## Public interface
 
-- Standard library:
-  `dataclasses.dataclass`, `typing.TYPE_CHECKING`
-- Librerie esterne:
-  `numpy as np`, `numpy.typing.ArrayLike`, `numpy.typing.NDArray`
-- Import interni da `plot_utils`:
-  [`_resolve_style`](../../checks/plot_utils/resolve-style.md),
-  [`_style_context`](../../checks/plot_utils/style-context.md),
-  [`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md),
-  [`_validate_decimals`](../../checks/plot_utils/validate-decimals.md),
-  [`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)
-- Import interni da `stats_utils`:
-  [`_as_float_vector`](../../checks/stats_utils/as-float-vector.md),
-  [`weighted_mean`](../stats_utils/weighted-mean.md),
-  [`covariance`](../stats_utils/covariance.md),
-  [`variance`](../stats_utils/variance.md)
-- Import interni da `_toml` (scrittura TOML con `tomli_w`):
-  `_mespy_header`, `_write_toml_document`
+- [`lin_fit`](lin-fit.md): OLS, absolute WLS, and optional horizontal uncertainty propagation selected explicitly through `x_error_method`.
+- [`LinearFitResult`](linear-fit-result.md): fitted parameters, uncertainties, physical residuals, diagnostics, prediction, and TOML export.
+- `XErrorMethod`: the type alias `Literal["none", "iterate"]` for horizontal uncertainty treatment.
 
-## Cosa espone
+## Implementation
 
-- [`LinearFitResult`](linear-fit-result.md), con il metodo `to_toml` per esportare il risultato in TOML
-- [`lin_fit`](lin-fit.md), con incertezze assolute o scalate dai residui
+The module validates finite real input vectors, positive vertical uncertainties, and optional non-negative horizontal uncertainties. Centered and scaled coordinates preserve numerical accuracy for fitting and prediction. Optional effective-variance iteration has fixed convergence settings; `fit_method`, `tol`, and `max_iter` are no longer public input arguments.
 
-## Di cosa si occupa
-
-- validare `x`, `y`, `sigma_y` e opzionalmente `sigma_x`
-- validare `decimals`, `tol` e `max_iter`
-- stimare pendenza e intercetta con minimi quadrati pesati o non pesati
-- stimare una scala globale di incertezza dai residui
-- aggiornare iterativamente i pesi quando esistono incertezze anche su `x`
-- calcolare residui, `chi2`, `reduced_chi2`, correlazione e altre diagnostiche
-- creare, se richiesto, una figura matplotlib con pannello del fit e pannello dei residui fisici o normalizzati usando lo stesso sistema di stile di `histogram`
-
-## Helper collegati
-
-- [`_validate_positive_vector`](../../checks/fit_utils/validate-positive-vector.md)
-- [`_validate_positive_scalar`](../../checks/fit_utils/validate-positive-scalar.md)
-- [`_validate_max_iter`](../../checks/fit_utils/validate-max-iter.md)
-- [`_validate_fit_method`](../../checks/fit_utils/validate-fit-method.md)
-- [`_fit_coefficients`](../../checks/fit_utils/fit-coefficients.md)
-- [`_resolve_style`](../../checks/plot_utils/resolve-style.md)
-- [`_style_context`](../../checks/plot_utils/style-context.md)
-- [`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md)
-- [`_validate_decimals`](../../checks/plot_utils/validate-decimals.md)
-- [`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)
-
-## Pagine di dettaglio
-
-- [`LinearFitResult`](linear-fit-result.md)
-- [`lin_fit`](lin-fit.md)
+Plotting uses the shared [style context](../../checks/plot_utils/style-context.md), with `"mespy"` as the default style. Export writes TOML and, when plotting is enabled, PDF files from an extension-free base path. The [function reference](lin-fit.md) describes validation, iteration, plotting, and export in detail.
 
 ```{toctree}
 :hidden:

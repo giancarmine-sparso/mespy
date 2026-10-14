@@ -1,0 +1,795 @@
+# English translations for MesPy homepage.
+# Copyright (C) 2026 Giancarmine Sparso
+# This file is distributed under the same license as the MesPy homepage project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: MesPy homepage 2.0.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-10-12 19:01+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: _templates/api-reference.html
+msgid "Documentazione tecnica delle funzioni e degli oggetti pubblici di MesPy, organizzata per modulo."
+msgstr "Technical documentation for MesPy’s public functions and objects, organized by module."
+
+#: _templates/api-reference.html
+msgid "Ogni voce rimanda alla documentazione di firme, parametri e valori restituiti."
+msgstr "Each entry links to documentation of signatures, parameters and return values."
+
+#: _templates/api-reference.html
+msgid "Caricamento dati"
+msgstr "Data loading"
+
+#: _templates/api-reference.html
+msgid "Lettura di file CSV e validazione delle colonne e dei valori mancanti."
+msgstr "CSV loading and validation of columns and missing values."
+
+#: _templates/api-reference.html
+msgid "Statistica descrittiva"
+msgstr "Descriptive statistics"
+
+#: _templates/api-reference.html
+msgid "Statistiche di base con validazione degli input e supporto ai pesi."
+msgstr "Basic statistics with input validation and support for weights."
+
+#: _templates/api-reference.html
+msgid "Visualizzazione"
+msgstr "Visualization"
+
+#: _templates/api-reference.html
+msgid "Distribuzioni delle misure e statistiche sul grafico."
+msgstr "Measurement distributions and statistics on the plot."
+
+#: _templates/api-reference.html
+msgid "Fit di una retta, incertezze dei parametri e diagnostiche dei residui."
+msgstr "Straight-line fitting, parameter uncertainties and residual diagnostics."
+
+#: _templates/api-reference.html
+msgid "Carica un CSV in un DataFrame con controlli su colonne e valori mancanti."
+msgstr "Load a CSV into a DataFrame with checks on columns and missing values."
+
+#: _templates/api-reference.html
+msgid "Calcola la mediana di un campione numerico."
+msgstr "Compute the median of a numeric sample."
+
+#: _templates/api-reference.html
+msgid "Calcola la media aritmetica o pesata di un campione."
+msgstr "Compute the arithmetic or weighted mean of a sample."
+
+#: _templates/api-reference.html
+msgid "Calcola la varianza, con pesi opzionali e correzione ddof."
+msgstr "Compute variance with optional weights and a ddof correction."
+
+#: _templates/api-reference.html
+msgid "Stima la covarianza tra due variabili, con pesi opzionali."
+msgstr "Estimate covariance between two variables with optional weights."
+
+#: _templates/api-reference.html
+msgid "Calcola la deviazione standard come radice della varianza."
+msgstr "Compute standard deviation as the square root of variance."
+
+#: _templates/api-reference.html
+msgid "Crea un istogramma di conteggi, frequenze relative o densità."
+msgstr "Create a histogram of counts, relative frequencies or density."
+
+#: _templates/api-reference.html
+msgid "Raccoglie parametri, incertezze, residui e diagnostiche del fit."
+msgstr "Collect fit parameters, uncertainties, residuals and diagnostics."
+
+#: _templates/api-reference.html
+msgid "Esegue un fit lineare con incertezze e grafico opzionale."
+msgstr "Fit a straight line with uncertainties and an optional plot."
+
+#: _templates/api-reference.html
+msgid "Cerchi esempi pratici?"
+msgstr "Looking for practical examples?"
+
+#: _templates/homepage.html:8 _templates/homepage.html:48
+msgid "I tuoi dati sperimentali, più semplici."
+msgstr "Your experimental data, made easier."
+
+#: _templates/homepage.html:12
+msgid ""
+"Dalle misure ai risultati. Strumenti Python per la fisica sperimentale, pensati per il tuo "
+"primo laboratorio."
+msgstr "From measurements to results. Python tools for experimental physics, made for your first lab."
+
+#: _templates/homepage.html:17
+msgid "Vai al contenuto"
+msgstr "Skip to content"
+
+#: _templates/homepage.html:24
+msgid "Torna su"
+msgstr "Back to top"
+
+#: _templates/homepage.html:31
+msgid "Menu"
+msgstr "Menu"
+
+#: _templates/homepage.html:33
+msgid "Navigazione principale"
+msgstr "Main navigation"
+
+#: _templates/homepage.html:34 _templates/homepage.html:52
+msgid "Inizia qui"
+msgstr "Get started"
+
+#: _templates/components/homepage-plots.html:23 _templates/homepage.html:35
+#: _templates/homepage.html:84
+msgid "Istogramma"
+msgstr "Histogram"
+
+#: _templates/components/homepage-plots.html:4 _templates/homepage.html:36
+#: _templates/homepage.html:95
+msgid "Fit lineare"
+msgstr "Linear fit"
+
+#: _templates/homepage.html:37 _templates/homepage.html:108
+msgid "Dietro le quinte"
+msgstr "Behind the scenes"
+
+#: _templates/homepage.html:47
+msgid "Il tuo laboratorio, in Python"
+msgstr "Your lab, in Python"
+
+#: _templates/homepage.html:49
+msgid "Una toolbox Python per chi muove i primi passi nella fisica sperimentale."
+msgstr "A Python toolbox for students taking their first steps in experimental physics."
+
+#: _templates/homepage.html:50
+msgid ""
+"Visualizza le misure, esplora le distribuzioni e trova le relazioni tra i dati. MesPy ti "
+"aiuta a interpretare i risultati e le loro incertezze, senza riscrivere ogni volta lo stesso"
+" codice di analisi."
+msgstr ""
+"Visualize measurements, explore distributions and fit relationships. MesPy helps you "
+"interpret results and uncertainties, without rewriting the same analysis code every time."
+
+#: _templates/homepage.html:53
+msgid "Scopri le funzioni"
+msgstr "Explore features"
+
+#: _templates/homepage.html:55
+msgid "Open source"
+msgstr "Open source"
+
+#: _templates/homepage.html:55
+msgid "Fatto per imparare"
+msgstr "Made for learning"
+
+#: _templates/homepage.html:58
+msgid "Esperimento 001"
+msgstr "Experiment 001"
+
+#: _templates/homepage.html:59
+msgid "Un po’ di ordine."
+msgstr "A little order."
+
+#: _templates/homepage.html:61
+msgid "Misure"
+msgstr "Measurements"
+
+#: _templates/homepage.html:61
+msgid "Una relazione da scoprire"
+msgstr "A relationship to discover"
+
+#: _templates/homepage.html:62
+msgid "Misura. Esplora. Comprendi."
+msgstr "Measure. Explore. Understand."
+
+#: _templates/homepage.html:68
+msgid "Pensato per chi inizia"
+msgstr "Built for beginners"
+
+#: _templates/homepage.html:69
+msgid "Con NumPy e Matplotlib"
+msgstr "With NumPy & Matplotlib"
+
+#: _templates/homepage.html:70
+msgid "La fisica resta al centro"
+msgstr "Keep the focus on physics"
+
+#: _templates/homepage.html:76
+msgid "Piccole funzioni. Grandi scoperte."
+msgstr "Small functions. Big discoveries."
+
+#: _templates/homepage.html:76
+msgid "I tuoi compagni di laboratorio."
+msgstr "Meet your lab partners."
+
+#: _templates/homepage.html:77
+msgid "Meno tempo a impostare grafici. Più tempo a capire cosa raccontano i dati."
+msgstr "Less time setting up plots. More time understanding what your data is telling you."
+
+#: _templates/homepage.html:81
+msgid "Distribuzioni"
+msgstr "Distributions"
+
+#: _templates/homepage.html:82
+msgid "Una distribuzione, la sua media e la banda ±σ. Esempio illustrativo."
+msgstr "A distribution, its mean and the ±σ band. Illustrative example."
+
+#: _templates/homepage.html:85
+msgid "Ogni misura ha una storia."
+msgstr "Every measurement tells a story."
+
+#: _templates/homepage.html:86
+msgid ""
+"Raggruppa le misure in un istogramma. Visualizza la media e la deviazione standard per "
+"capire dove si concentrano i dati e quanto sono dispersi."
+msgstr ""
+"Group your measurements in a histogram. See the mean and standard deviation to understand "
+"where your data clusters and how much it spreads."
+
+#: _templates/homepage.html:87
+msgid "Esempio Python per un istogramma"
+msgstr "Python histogram example"
+
+#: _templates/homepage.html:88
+msgid "Esplora histogram"
+msgstr "Explore histogram"
+
+#: _templates/homepage.html:92
+msgid "Relazioni"
+msgstr "Relationships"
+
+#: _templates/homepage.html:93
+msgid "Misure con incertezze e una retta di fit. Esempio illustrativo."
+msgstr "Measurements with uncertainties and a fitted line. Illustrative example."
+
+#: _templates/homepage.html:96
+msgid "Trova il filo tra i punti."
+msgstr "Find the thread between points."
+
+#: _templates/homepage.html:97
+msgid ""
+"Trova la retta che descrive le tue misure. Ottieni pendenza, intercetta e le loro "
+"incertezze, con un grafico dei residui per esplorare il risultato."
+msgstr ""
+"Find the line that describes your measurements. Get the slope, intercept and their "
+"uncertainties, with a residual plot to explore the result."
+
+#: _templates/homepage.html:98
+msgid "Esempio Python per un fit lineare"
+msgstr "Python linear fit example"
+
+#: _templates/homepage.html:99
+msgid "Esplora lin_fit"
+msgstr "Explore lin_fit"
+
+#: _templates/homepage.html:108
+msgid "In arrivo"
+msgstr "Coming soon"
+
+#: _templates/homepage.html:109
+msgid "Il come è utile."
+msgstr "The how is useful."
+
+#: _templates/homepage.html:109
+msgid "Il perché, ancora di più."
+msgstr "The why, even more."
+
+#: _templates/homepage.html:110
+msgid ""
+"Un risultato non è solo un numero. Stiamo preparando un percorso per capire la matematica "
+"dietro le funzioni, un concetto alla volta."
+msgstr ""
+"A result is more than a number. We’re preparing a path through the mathematics behind the "
+"functions, one concept at a time."
+
+#: _templates/homepage.html:111
+msgid "Questa sezione è un’anteprima: le nuove guide arriveranno in seguito."
+msgstr "This section is a preview: new guides will follow."
+
+#: _templates/homepage.html:115
+msgid "Chi-quadro: somma dei residui al quadrato, pesati con l’inverso della varianza."
+msgstr "Chi-square: the sum of squared residuals, weighted by the inverse variance."
+
+#: _templates/homepage.html:125
+msgid "Ogni scarto, rapportato alla sua incertezza. Ogni misura conta."
+msgstr "Each residual, measured against its uncertainty. Every measurement counts."
+
+#: _templates/homepage.html:127
+msgid "Argomenti in programma"
+msgstr "Planned topics"
+
+#: _templates/homepage.html:128
+msgid "Media aritmetica e pesata"
+msgstr "Arithmetic & weighted mean"
+
+#: _templates/homepage.html:128
+msgid "Varianza e deviazione standard"
+msgstr "Variance & standard deviation"
+
+#: _templates/homepage.html:128
+msgid "Incertezza di misura"
+msgstr "Measurement uncertainty"
+
+#: _templates/homepage.html:128
+msgid "Covarianza e correlazione"
+msgstr "Covariance & correlation"
+
+#: _templates/homepage.html:128
+msgid "Propagazione delle incertezze"
+msgstr "Propagation of uncertainties"
+
+#: _templates/homepage.html:128
+msgid "Metodo dei minimi quadrati"
+msgstr "Least squares method"
+
+#: _templates/homepage.html:135
+msgid "Dal primo import al primo risultato"
+msgstr "From first import to first result"
+
+#: _templates/homepage.html:135
+msgid "Il prossimo esperimento"
+msgstr "Your next experiment"
+
+#: _templates/homepage.html:135
+msgid "inizia qui."
+msgstr "starts here."
+
+#: _templates/homepage.html:135
+msgid "Installa MesPy e porta i tuoi dati. Al resto, un passo alla volta."
+msgstr "Install MesPy and bring your data. Take the rest one step at a time."
+
+#: _templates/homepage.html:135
+msgid "Guida all’installazione"
+msgstr "Installation guide"
+
+#: _templates/homepage.html:142
+msgid "La curiosità è tua. Gli strumenti sono qui."
+msgstr "Bring your curiosity. The tools are here."
+
+#: _templates/homepage.html:142
+msgid "Link utili"
+msgstr "Useful links"
+
+#: _templates/homepage.html:142
+msgid "Installazione"
+msgstr "Installation"
+
+#: _templates/homepage.html:142
+msgid "Documentazione"
+msgstr "Documentation"
+
+#: _templates/homepage.html:142
+msgid "Esempi"
+msgstr "Examples"
+
+#: _templates/homepage.html:143
+msgid "Licenza MIT"
+msgstr "MIT license"
+
+#: _templates/homepage.html:143
+msgid "Costruito con Sphinx e PyData"
+msgstr "Built with Sphinx & PyData"
+
+#: _templates/components/homepage-plots.html:5
+msgid "Esempio illustrativo: punti sperimentali con barre di incertezza lungo una retta crescente."
+msgstr ""
+"Illustrative example: experimental points with uncertainty bars along an increasing straight"
+" line."
+
+#: _templates/components/homepage-plots.html:24
+msgid ""
+"Esempio illustrativo: barre di frequenza, una linea sulla media e una banda di una "
+"deviazione standard per lato."
+msgstr ""
+"Illustrative example: frequency bars, a mean line and a band of one standard deviation on "
+"each side."
+
+#: _templates/components/homepage-terminal.html:16 _templates/components/homepage-terminal.html:21
+#: _templates/components/homepage-terminal.html:27
+msgid "Copia"
+msgstr "Copy"
+
+#: _templates/components/homepage-demo-results.html:5
+msgid "Risultati del fit in formato TOML"
+msgstr "Fit results in TOML format"
+
+msgid "Concludi con lin_fit(x, y, sigma_y=sigma_y). Puoi anche modificare le etichette degli assi."
+msgstr "Finish with lin_fit(x, y, sigma_y=sigma_y). You can also edit the axis labels."
+
+msgid "Impossibile avviare Python. Controlla la connessione e riprova."
+msgstr "Could not start Python. Check your connection and try again."
+
+msgid "Caricamento di Python…"
+msgstr "Loading Python…"
+
+msgid "Inizia con: from mespy import lin_fit."
+msgstr "Start with: from mespy import lin_fit."
+
+msgid "Risultati della stessa esecuzione di lin_fit"
+msgstr "Results from the same lin_fit execution"
+
+msgid "Fit completato. Grafico e TOML aggiornati."
+msgstr "Fit complete. Figure and TOML updated."
+
+msgid "Figura generata da lin_fit"
+msgstr "Figure generated by lin_fit"
+
+msgid "Codice modificato. Premi Esegui per aggiornare i risultati."
+msgstr "Code edited. Press Run to update the results."
+
+msgid "Esecuzione di lin_fit…"
+msgstr "Running lin_fit…"
+
+msgid "Attiva JavaScript per eseguire questo esempio."
+msgstr "Enable JavaScript to run this example."
+
+msgid ""
+"Il primo avvio scarica Python e i pacchetti scientifici. L’analisi viene eseguita nel tuo "
+"browser."
+msgstr "The first run downloads Python and the scientific packages. Analysis runs in your browser."
+
+msgid "Le etichette devono essere stringhe di massimo 100 caratteri."
+msgstr "Labels must be strings of at most 100 characters."
+
+msgid "Gli stili disponibili nella demo sono report e mespy."
+msgstr "Available demo styles are report and mespy."
+
+msgid "Esegui"
+msgstr "Run"
+
+msgid "Modifica le misure e premi Esegui."
+msgstr "Edit the measurements and press Run."
+
+msgid "Questo esempio accetta al massimo 1000 misure."
+msgstr "This example accepts at most 1000 measurements."
+
+msgid "Esempio Python modificabile: misure e fit lineare"
+msgstr "Editable Python example: measurements and linear fit"
+
+msgid "Annulla"
+msgstr "Cancel"
+
+msgid "TOML generato da lin_fit"
+msgstr "TOML generated by lin_fit"
+
+msgid "Figura generata da MesPy: misure con incertezze, retta del fit e residui."
+msgstr "Figure generated by MesPy: measurements with uncertainties, fitted line and residuals."
+
+msgid "Esecuzione annullata."
+msgstr "Execution cancelled."
+
+msgid ""
+"Inserisci numeri direttamente negli array. Espressioni, cicli e altre funzioni non sono "
+"supportati in questo esempio."
+msgstr ""
+"Enter numbers directly in the arrays. Expressions, loops and other functions are not "
+"supported in this example."
+
+msgid "Gli array devono contenere solo numeri."
+msgstr "Arrays must contain numbers only."
+
+msgid "Copia non disponibile. Seleziona e copia il TOML."
+msgstr "Copy unavailable. Select and copy the TOML."
+
+msgid "Usa solo gli array x, y, sigma_y e una chiamata finale a lin_fit."
+msgstr "Use only the x, y, sigma_y arrays and a final lin_fit call."
+
+msgid "Caricamento di NumPy, SciPy e Matplotlib…"
+msgstr "Loading NumPy, SciPy and Matplotlib…"
+
+msgid "TOML copiato."
+msgstr "TOML copied."
+
+msgid "Tempo limite raggiunto. Riprova con meno misure o controlla la connessione."
+msgstr "Time limit reached. Try fewer measurements or check your connection."
+
+msgid "Il codice è troppo lungo per questo esempio."
+msgstr "The code is too long for this example."
+
+msgid "Apri"
+msgstr "Open"
+
+msgid "Apri la figura generata (nuova scheda)"
+msgstr "Open the generated figure (new tab)"
+
+msgid "Grafico scorrevole: su schermi piccoli puoi scorrere orizzontalmente."
+msgstr "Scrollable plot: on small screens you can scroll horizontally."
+
+msgid "Riferimento API"
+msgstr "API Reference"
+
+msgid "Per agenti AI"
+msgstr "For AI Agents"
+
+msgid "Come funziona"
+msgstr "How it works"
+
+msgid "GitHub"
+msgstr "GitHub"
+
+msgid "GitHub (nuova scheda)"
+msgstr "GitHub (new tab)"
+
+# Get started page (_templates/get-started.html).
+msgid "Fai i primi passi"
+msgstr "Take your first steps"
+
+msgid "con MesPy."
+msgstr "with MesPy."
+
+msgid "Inizia"
+msgstr "Get started"
+
+msgid "Procedura"
+msgstr "Procedure"
+
+msgid "passi"
+msgstr "steps"
+
+msgid "Scegli l’ambiente e installa MesPy"
+msgstr "Choose an environment and install MesPy"
+
+msgid "Verifica l’installazione"
+msgstr "Verify the installation"
+
+msgid "Esempi, API e teoria"
+msgstr "Examples, API and theory"
+
+msgid "Preparazione"
+msgstr "Setup"
+
+msgid "Scegli il tuo ambiente."
+msgstr "Choose your environment."
+
+msgid "MesPy funziona con il tuo flusso di lavoro Python preferito. Scegli la configurazione più adatta a te."
+msgstr "MesPy works with your favorite Python workflow. Pick the setup that works best for you."
+
+msgid "Metodo di installazione"
+msgstr "Installation method"
+
+msgid "Progetti locali"
+msgstr "Local projects"
+
+msgid "Nel browser"
+msgstr "In the browser"
+
+msgid "Notebook locale"
+msgstr "Local notebook"
+
+msgid "Qualsiasi ambiente"
+msgstr "Any environment"
+
+msgid "Consigliato per i progetti locali."
+msgstr "Recommended for local projects."
+
+msgid "uv gestisce per te Python, l’ambiente virtuale e le dipendenze. In un progetto uv (crealo con <code>uv init</code>), aggiungi MesPy alle dipendenze:"
+msgstr "uv manages Python, the virtual environment and dependencies for you. Inside a uv project (create one with <code>uv init</code>), add MesPy as a dependency:"
+
+msgid "Terminale"
+msgstr "Terminal"
+
+msgid "Vuoi solo provarlo, senza creare un progetto? Apri una sessione Python temporanea con MesPy già disponibile:"
+msgstr "Just want to try it without creating a project? Start a temporary Python session with MesPy already available:"
+
+msgid "Note su uv"
+msgstr "Notes on uv"
+
+msgid "Note"
+msgstr "Notes"
+
+msgid "MesPy richiede Python 3.12 o successivo. Se il tuo Python predefinito è più vecchio, aggiungi <code>--python 3.12</code> a <code>uv init</code> o <code>uv run</code>: uv lo scarica se serve."
+msgstr "MesPy requires Python 3.12 or newer. If your default Python is older, add <code>--python 3.12</code> to <code>uv init</code> or <code>uv run</code>: uv downloads it if needed."
+
+msgid "Come installare uv"
+msgstr "How to install uv"
+
+msgid "Il modo più rapido per iniziare."
+msgstr "The quickest way to start."
+
+msgid "Apri un nuovo notebook e installa MesPy eseguendo questa cella:"
+msgstr "Open a new notebook and install MesPy by running this cell:"
+
+msgid "Cella di codice"
+msgstr "Code cell"
+
+msgid "Note su Google Colab"
+msgstr "Notes on Google Colab"
+
+msgid "Colab funziona nel browser: non devi configurare Python sul tuo computer."
+msgstr "Colab runs in your browser, so there is no local Python environment to configure."
+
+msgid "Ogni nuova sessione parte da zero: quando riapri il notebook, esegui di nuovo la cella."
+msgstr "Each new session starts fresh: run the cell again when you reopen the notebook."
+
+msgid "Installa nel kernel che stai usando."
+msgstr "Install into the kernel you are using."
+
+msgid "Esegui il comando in una cella del notebook:"
+msgstr "Run the command in a notebook cell:"
+
+msgid "Note su Jupyter"
+msgstr "Notes on Jupyter"
+
+msgid "<code>%pip</code> installa MesPy nell’ambiente Python del kernel attivo, anche se è diverso da quello del tuo terminale."
+msgstr "<code>%pip</code> installs MesPy into the Python environment of the current kernel, even if it differs from the one in your terminal."
+
+msgid "Se dopo l’installazione l’import non funziona, riavvia il kernel. Il kernel deve usare Python 3.12 o successivo."
+msgstr "If the import fails after installing, restart the kernel. The kernel must run Python 3.12 or newer."
+
+msgid "Il metodo classico, ovunque ci sia Python."
+msgstr "The classic route, wherever Python runs."
+
+msgid "Installa MesPy dal Python Package Index:"
+msgstr "Install MesPy from the Python Package Index:"
+
+msgid "Note su pip"
+msgstr "Notes on pip"
+
+msgid "Per un progetto locale usa un ambiente virtuale, così ogni progetto tiene le sue dipendenze: crealo con <code>python -m venv .venv</code> e attivalo prima di installare."
+msgstr "For a local project, use a virtual environment so each project keeps its own dependencies: create one with <code>python -m venv .venv</code> and activate it before installing."
+
+msgid "Controlla la versione con <code>python --version</code>: serve Python 3.12 o successivo."
+msgstr "Check your version with <code>python --version</code>: you need Python 3.12 or newer."
+
+msgid "Guida agli ambienti virtuali"
+msgstr "Guide to virtual environments"
+
+msgid "Le dipendenze, come NumPy, pandas e Matplotlib, vengono installate automaticamente."
+msgstr "Dependencies such as NumPy, pandas and Matplotlib are installed automatically."
+
+msgid "Primo import"
+msgstr "First import"
+
+msgid "Verifica che tutto funzioni."
+msgstr "Make sure everything works."
+
+msgid "Esegui queste righe in una sessione Python o in una cella del notebook. Se compare il messaggio, MesPy è installato e pronto."
+msgstr "Run these lines in a Python session or a notebook cell. If the message appears, MesPy is installed and ready."
+
+msgid "Vedi <code>ModuleNotFoundError</code>? MesPy è installato in un altro ambiente: usa lo stesso Python, o lo stesso kernel, con cui l’hai installato."
+msgstr "Seeing <code>ModuleNotFoundError</code>? MesPy is installed in a different environment: run the same Python, or the same kernel, you installed it with."
+
+msgid "Codice di verifica"
+msgstr "Verification code"
+
+msgid "Output"
+msgstr "Output"
+
+msgid "MesPy è pronto."
+msgstr "MesPy is ready."
+
+msgid "Continua a esplorare"
+msgstr "Keep exploring"
+
+msgid "Pronto per andare oltre?"
+msgstr "Ready to go further?"
+
+msgid "Pratica"
+msgstr "Practice"
+
+msgid "Esplora flussi di analisi pratici e notebook."
+msgstr "Explore practical analysis workflows and notebooks."
+
+msgid "Apri gli esempi"
+msgstr "Browse the examples"
+
+msgid "Riferimento"
+msgstr "Reference"
+
+msgid "Scopri le funzioni disponibili, i loro parametri e i valori restituiti."
+msgstr "Discover the available functions, their parameters and return values."
+
+msgid "Apri il riferimento API"
+msgstr "Open the API reference"
+
+msgid "Teoria"
+msgstr "Theory"
+
+msgid "Le idee scientifiche e matematiche dietro gli strumenti."
+msgstr "Understand the scientific and mathematical ideas behind the tools."
+
+msgid "Questa sezione è in preparazione."
+msgstr "This section is in preparation."
+
+msgid "Copiato"
+msgstr "Copied"
+
+msgid "Seleziona e copia"
+msgstr "Select and copy"
+
+msgid "Copiato negli appunti."
+msgstr "Copied to clipboard."
+
+msgid "Copia non disponibile: seleziona il testo e copialo a mano."
+msgstr "Copy unavailable: select the text and copy it manually."
+
+msgid "Installa MesPy, verifica che funzioni e scegli da dove continuare. Tutto quello che serve per iniziare, in pochi passi."
+msgstr "Install MesPy, check that it works, and choose where to go next. Everything you need to get started, in just a few steps."
+
+msgid "Apri Google Colab"
+msgstr "Open Google Colab"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Guarda l’installazione passo per passo."
+msgstr "Watch the installation step by step."
+
+msgid "Una demo simulata di 75 secondi: installazione e verifica su Google Colab, poi con pip in un Python locale."
+msgstr "A 75-second simulated demo: installing and verifying MesPy in Google Colab, then with pip in a local Python."
+
+msgid "Il video è in inglese."
+msgstr "The video is in English."
+
+msgid "Video dimostrativo: installazione di MesPy su Google Colab e in Python locale"
+msgstr "Demo video: installing MesPy in Google Colab and in a local Python"
+
+msgid "Il browser non riproduce il video: scaricalo"
+msgstr "Your browser can’t play this video: download it"
+
+msgid "Demo simulata · Senza audio · I tempi reali di installazione possono variare."
+msgstr "Simulated demo · No audio · Real installation times may vary."
+
+#: _templates/examples.html
+msgid "Esempi pratici ed eseguibili di analisi dei dati sperimentali con MesPy: workflow base, istogrammi, fit lineari e stile dei grafici."
+msgstr "Practical, runnable examples of experimental data analysis with MesPy: basic workflow, histograms, linear fits and plot styling."
+
+msgid "Impara MesPy"
+msgstr "Learn MesPy"
+
+msgid "con gli esempi."
+msgstr "through examples."
+
+msgid "Esempi pratici ed eseguibili di analisi dei dati sperimentali: leggi il codice, eseguilo e adattalo alle tue misure."
+msgstr "Practical, runnable examples of experimental data analysis: read the code, run it and adapt it to your own measurements."
+
+msgid "Prima volta? Parti da Workflow base: in pochi passi vedi l’intero percorso. Gli altri esempi approfondiscono uno strumento alla volta e si leggono in qualsiasi ordine."
+msgstr "New here? Start with Basic workflow: in a few steps you see the whole path. The other examples explore one tool at a time and can be read in any order."
+
+msgid "Esempi disponibili"
+msgstr "Available examples"
+
+msgid "Primi passi"
+msgstr "First steps"
+
+msgid "Inizia da qui"
+msgstr "Start here"
+
+msgid "Due chiamate essenziali: histogram salva il grafico in PDF, lin_fit salva grafico e risultati in PDF e TOML."
+msgstr "Two essential calls: histogram saves the plot as PDF, lin_fit saves the plot and the results as PDF and TOML."
+
+msgid "Guida completa"
+msgstr "Full guide"
+
+msgid "Dalle misure alla distribuzione: scegli i bin, confronta conteggi, frequenze relative e densità e leggi media e deviazione standard sul grafico."
+msgstr "From measurements to a distribution: choose the bins, compare counts, relative frequencies and density, and read the mean and standard deviation on the plot."
+
+msgid "Notebook"
+msgstr "Notebook"
+
+msgid "Adatta una retta a misure con incertezze, solo su y o anche su x, e interpreta pendenza, intercetta e χ² ridotto."
+msgstr "Fit a straight line to measurements with uncertainties, on y only or on x as well, and interpret the slope, intercept and reduced χ²."
+
+msgid "Presentazione"
+msgstr "Presentation"
+
+msgid "Attiva lo stile mespy per tutto il notebook o per un solo grafico e personalizza colori, legenda e titoli di histogram e lin_fit."
+msgstr "Apply the mespy style to a whole notebook or to a single plot, and customize the colors, legend and titles of histogram and lin_fit."
+
+msgid "Apri l’esempio"
+msgstr "Open example"
+
+msgid "Cerchi firme e parametri?"
+msgstr "Looking for signatures and parameters?"
+
+msgid "percorsi guidati"
+msgstr "guided paths"
+
+#: _templates/examples.html:67
+msgid "Fit measurements with uncertainties, read the results and residuals, and choose whether to propagate uncertainties on x."
+msgstr "Fit measurements with uncertainties, read the results and residuals, and choose whether to propagate uncertainties on x."

@@ -1,0 +1,8 @@
+{# Example navigator in the side column of guide.html (GUIDE_PAGES in conf.py). #}
+{%- from "components/guide-nav-list.html" import guide_list -%}
+{%- if guide_nav %}
+<nav class="mx-guide-nav" aria-labelledby="mx-guide-nav-title" data-guide-nav>
+  <p class="mx-guide-nav__title" id="mx-guide-nav-title">{{ guide_nav_title }}</p>
+  {{ guide_list(guide_nav) }}
+</nav>
+{%- endif %}

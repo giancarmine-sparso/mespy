@@ -23,7 +23,7 @@ def covariance(x: ArrayLike, y: ArrayLike, w: ArrayLike | None = None) -> float:
     y_values = _as_float_vector("y", y)
 
     if x_values.shape != y_values.shape:
-        raise ValueError("x e y devono avere la stessa lunghezza")
+        raise ValueError("x and y must have the same length")
 
     weights = _validate_weights(x_values, w)
     if weights is None:

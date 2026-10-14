@@ -1,0 +1,37 @@
+/* Guide sidebar illustration (guide-painter-station.js). Loaded after guide.css
+   and homepage-duck.css (the duck's colours), only on guide pages with
+   "station": "painter" in GUIDE_PAGES. The block's layout is shared, in guide.css. */
+.mespy-guide .gd-station--painter {
+  /* Platform, hoists and cables: the duck station's hardware greys. */
+  --gd-paint-steel-top: #68737a;
+  --gd-paint-steel: #4b5357;
+  --gd-paint-steel-shade: var(--mh-line);
+  --gd-paint-hoist: #2b3033;
+  --gd-paint-cable: #5b6468;
+  --gd-paint-metal: var(--mh-muted);
+  --gd-paint-led: var(--mh-blue);
+  /* The paint: the site's accent amber, with the primary button's hover
+     tint as its sheen. */
+  --gd-paint-orange: var(--mh-amber);
+  --gd-paint-orange-shade: color-mix(in srgb, var(--mh-amber) 70%, var(--mh-bg));
+  --gd-paint-orange-sheen: #ffcb84;
+  /* Earlier passes, already dry: the same amber, duller. */
+  --gd-paint-dry: color-mix(in srgb, var(--mh-amber) 58%, var(--mh-bg));
+  --gd-paint-dry-shade: color-mix(in srgb, var(--mh-amber) 38%, var(--mh-bg));
+  /* Shaded inner edge of the duck's feet, which keep the beak's orange. */
+  --gd-paint-feet-shade: color-mix(in srgb, var(--mh-duck-beak) 70%, var(--mh-bg));
+  /* Glossy highlight on the rubber duck. */
+  --gd-paint-gloss: color-mix(in srgb, var(--mh-amber) 55%, white);
+  /* The painter's whites: the dungarees. */
+  --gd-paint-whites: var(--mh-ink);
+  --gd-paint-whites-shade: color-mix(in srgb, var(--mh-ink) 72%, var(--mh-bg));
+}
+/* Drawn at a whole 3 px per pixel instead of stretched to the column. */
+.mespy-guide .gd-station--painter svg { width: auto; max-width: 100%; }
+
+/* The duck's painting stroke is frame by frame, in guide-painter-station.js.
+   The hoist LED blinks. */
+@media (prefers-reduced-motion: no-preference) {
+  .mespy-guide .gd-station__led { animation: gd-paint-blink 2.8s steps(1, end) infinite; }
+}
+@keyframes gd-paint-blink { 50% { opacity: 0; } }

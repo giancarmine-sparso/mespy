@@ -1,0 +1,17 @@
+{# Compact example menu included by guide.html, shown when the side column
+   is hidden (< 960px). Works as a plain <details> without JavaScript;
+   guide.js keeps the current section in the summary and closes the panel
+   after a jump. #}
+{%- from "components/guide-nav-list.html" import guide_list -%}
+{%- if guide_nav %}
+<details class="mx-guide-menu" data-guide-menu>
+  <summary class="mx-guide-menu__summary">
+    <span class="mx-guide-menu__label">{{ guide_nav_title }}</span>
+    <span class="mx-guide-menu__current" data-guide-current>{{ guide_nav[0].title }}</span>
+    <span class="mx-guide-menu__chevron" aria-hidden="true"></span>
+  </summary>
+  <nav class="mx-guide-menu__panel mx-guide-nav" aria-label="{{ guide_nav_label }}" data-guide-nav>
+    {{ guide_list(guide_nav) }}
+  </nav>
+</details>
+{%- endif %}
