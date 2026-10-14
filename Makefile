@@ -105,6 +105,7 @@ docs: venv
 		'</html>' \
 		> "$(SPHINX_HTML_DIR)/index.html"
 	@touch "$(SPHINX_HTML_DIR)/.nojekyll"
+	@cp "$(SPHINX_HTML_EN_DIR)/llms.txt" "$(SPHINX_HTML_EN_DIR)/llms-full.txt" "$(SPHINX_HTML_DIR)/"
 
 docs-notebooks: venv
 	@$(VENV)/bin/jupyter-execute --inplace --timeout=600 $(DOCS_NOTEBOOKS)

@@ -42,6 +42,9 @@ myst_heading_anchors = 3
 
 html_theme = "pydata_sphinx_theme"
 html_static_path = ["_static", "../../assets/brand"]
+# Copied verbatim to the root of each language build (llms.txt, see llmstxt.org);
+# `make docs` also copies it to the site root.
+html_extra_path = ["_extra"]
 html_css_files = ["custom.css"]
 html_js_files = ["language-switcher.js"]
 html_title = "MesPy"
@@ -161,6 +164,19 @@ for _module, _helpers in CHECK_REFERENCES.items():
             "eyebrow": f"mespy.{_module}", "reference": _family,
         }
 
+# Pages whose text is concatenated into llms-full.txt, in reading order: the
+# beginner path first, then the public API reference (private checks excluded).
+DOCS_URL = "https://giancarmine-sparso.github.io/mespy/"
+LLMS_FULL_PAGES = [
+    "getting-started",
+    "examples/basic-workflow", "examples/plot-style",
+    "examples/histogram", "examples/linear-fit",
+    "moduli/index",
+    *(page["doc"] for name in ("lin_fit", "histogram", *UTILITY_REFERENCES.values())
+      for page in REFERENCE_SECTIONS[name]["pages"]),
+    "installazione",
+]
+
 # Sidebar scenes: stylesheets and scripts, in load order. The shared layout of
 # the [data-guide-station] block lives in guide.css.
 GUIDE_STATIONS = {
@@ -279,6 +295,7 @@ def setup(app):
     app.connect("html-page-context", add_guide_context)
     app.connect("html-page-context", add_system_page_context)
     app.connect("build-finished", bundle_homepage_runtime)
+    app.connect("build-finished", write_llms_full)
     app.add_transform(EnglishLinearFitReference)
 
 
@@ -563,3 +580,89 @@ def bundle_homepage_runtime(app, exception):
             info = ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
             info.compress_type = ZIP_DEFLATED
             archive.writestr(info, content)
+
+
+def _inline_markdown(node) -> str:
+    """Text of an inline container, keeping code and math markup."""
+    if isinstance(node, nodes.Text):
+        return node.astext()
+    if isinstance(node, (nodes.image, nodes.raw, nodes.comment, nodes.target)):
+        return ""
+    if isinstance(node, nodes.literal):
+        return f"`{node.astext()}`"
+    if isinstance(node, nodes.math):
+        return f"${node.astext()}$"
+    return "".join(_inline_markdown(child) for child in node.children)
+
+
+def _markdown_blocks(node, depth: int) -> list[str]:
+    """Markdown blocks for a doctree node; images, raw HTML and comments are dropped."""
+    if isinstance(node, (nodes.image, nodes.raw, nodes.comment, nodes.target,
+                         nodes.system_message, nodes.substitution_definition)):
+        return []
+    if isinstance(node, nodes.section):
+        title, *body = node.children
+        heading = f"{'#' * min(depth, 6)} {_inline_markdown(title).strip()}"
+        return [heading] + [b for child in body for b in _markdown_blocks(child, depth + 1)]
+    if isinstance(node, nodes.literal_block):
+        text = node.astext().rstrip()
+        if all(line.startswith("<Figure size ") for line in text.splitlines()):
+            return []  # Notebook repr of a figure whose image is dropped.
+        language = node.get("language", "")
+        language = {"ipython3": "python", "myst-ansi": "text", "default": "", "none": ""}.get(language, language)
+        return [f"```{language}\n{text}\n```"]
+    if isinstance(node, nodes.math_block):
+        return [f"$$\n{node.astext().strip()}\n$$"]
+    if isinstance(node, (nodes.bullet_list, nodes.enumerated_list)):
+        items = []
+        for number, item in enumerate(node.children, start=1):
+            marker = f"{number}. " if isinstance(node, nodes.enumerated_list) else "- "
+            text = "\n\n".join(b for child in item.children for b in _markdown_blocks(child, depth))
+            items.append(marker + text.replace("\n", "\n" + " " * len(marker)))
+        return ["\n".join(items)]
+    if isinstance(node, nodes.definition_list):
+        return [
+            f"- **{_inline_markdown(item[0]).strip()}**: "
+            + " ".join(b for child in item[-1].children for b in _markdown_blocks(child, depth))
+            for item in node.children
+        ]
+    if isinstance(node, nodes.table):
+        cells = [[" ".join(entry.astext().split()) for entry in row.children]
+                 for row in node.findall(nodes.row)]
+        rows = ["| " + " | ".join(row) + " |" for row in cells]
+        if rows:
+            rows.insert(1, "|" + " --- |" * len(cells[0]))
+        return ["\n".join(rows)]
+    if isinstance(node, (nodes.paragraph, nodes.rubric, nodes.caption, nodes.title)):
+        text = _inline_markdown(node).strip()
+        return [text] if text else []
+    return [b for child in node.children for b in _markdown_blocks(child, depth)]
+
+
+def write_llms_full(app, exception):
+    """Write llms-full.txt: the text of LLMS_FULL_PAGES in the build's language."""
+    if exception is not None or app.builder.format != "html":
+        return
+    current_language = (app.config.language or language).split("_", 1)[0]
+    english = current_language == "en"
+    site = f"{DOCS_URL}{current_language}/"
+    parts = [
+        "# MesPy",
+        "> " + (
+            "MesPy is an educational Python library for data analysis in physics "
+            "laboratories, aimed at students in the first years of university."
+            if english else
+            "MesPy è una libreria Python didattica per l'analisi dei dati nei laboratori "
+            "di fisica, rivolta agli studenti dei primi anni di università."
+        ),
+        (
+            f"Full text of the main documentation pages. Index: {DOCS_URL}llms.txt"
+            if english else
+            f"Testo completo delle pagine principali della documentazione. Indice: {DOCS_URL}llms.txt"
+        ),
+    ]
+    for docname in LLMS_FULL_PAGES:
+        doctree = app.env.get_doctree(docname)
+        blocks = [b for child in doctree.children for b in _markdown_blocks(child, depth=2)]
+        parts += ["---", *blocks[:1], f"Source: {site}{docname}.html", *blocks[1:]]
+    (Path(app.outdir) / "llms-full.txt").write_text("\n\n".join(parts) + "\n", encoding="utf-8")

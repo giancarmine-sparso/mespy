@@ -39,8 +39,6 @@ body.mespy-home #pst-back-to-top { left: auto; top: auto; transform: none; width
 .mespy-home .mh-brand { flex: 0 0 auto; display: inline-flex; align-items: center; }
 .mespy-home .mh-brand img { object-fit: contain; max-width: 100%; }
 .mespy-home .mh-nav-links { display: flex; align-items: center; justify-content: flex-end; gap: 28px; flex: 1; font-size: .875rem; }
-.mespy-home .mh-nav-disabled { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; padding-block: 12px; color: var(--mh-muted); cursor: default; }
-.mespy-home .mh-nav-soon { font: .6rem/1.5 var(--mh-mono); color: var(--mh-amber); border: 1px solid #7d6442; border-radius: 2px; padding: 2px 4px; }
 .mespy-home .mh-nav-links a { white-space: nowrap; padding-block: 12px; }
 .mespy-home .mh-nav-links a[aria-current] { color: var(--mh-amber); }
 .mespy-home .mh-github { border-left: 1px solid var(--mh-line); padding-left: 28px; }
@@ -258,7 +256,7 @@ body.mespy-home #pst-back-to-top:hover { background: var(--mh-amber); color: var
   .mespy-home .mh-nav { flex-wrap: wrap; gap: 18px; }
   .mespy-home .mh-language { margin-left: auto; }
   .mespy-home .mh-nav-links { order: 4; flex-basis: 100%; flex-direction: column; align-items: stretch; gap: 0; font-size: .875rem; }
-  .mespy-home .mh-nav-links > a, .mespy-home .mh-nav-disabled { min-height: 44px; padding-block: 10px; }
+  .mespy-home .mh-nav-links > a { min-height: 44px; padding-block: 10px; }
   .mespy-home .mh-menu-toggle:not([hidden]) { display: inline-flex; align-items: center; gap: 10px; margin-left: auto; }
   .mespy-home.mh-menu-ready .mh-language { margin-left: 0; }
   .mespy-home.mh-menu-ready .mh-nav-links { display: none; }

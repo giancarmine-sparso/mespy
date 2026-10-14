@@ -503,9 +503,6 @@ msgstr "Scrollable plot: on small screens you can scroll horizontally."
 msgid "Riferimento API"
 msgstr "API Reference"
 
-msgid "Per agenti AI"
-msgstr "For AI Agents"
-
 msgid "Come funziona"
 msgstr "How it works"
 

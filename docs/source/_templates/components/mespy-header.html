@@ -17,7 +17,6 @@
       <a href="{{ pathto('getting-started') }}"{% if pagename == 'getting-started' %} aria-current="page"{% endif %}>{{ home('Inizia qui') }}</a>
       <a href="{{ pathto('examples/index') }}"{% if pagename.startswith('examples/') %} aria-current="{{ 'page' if pagename == 'examples/index' else 'true' }}"{% endif %}>{{ home('Esempi') }}</a>
       <a href="{{ pathto('moduli/index') }}"{% if pagename == 'moduli/index' %} aria-current="page"{% endif %}>{{ home('Riferimento API') }}</a>
-      <span class="mh-nav-disabled" role="link" aria-disabled="true" tabindex="0" aria-label="{{ home('Per agenti AI') }}" aria-describedby="mh-agents-status">{{ home('Per agenti AI') }} <span class="mh-nav-soon" id="mh-agents-status">{{ home('In arrivo') }}</span></span>
       <a href="{{ landing }}#behind-the-scenes">{{ home('Come funziona') }}</a>
       <a class="mh-github" href="{{ theme_github_url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ home('GitHub (nuova scheda)') }}">{{ home('GitHub') }} <span aria-hidden="true">↗</span></a>
     </nav>

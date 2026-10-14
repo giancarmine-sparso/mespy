@@ -1,0 +1,44 @@
+# MesPy
+
+> MesPy is an educational Python library for data analysis in physics laboratories, aimed at students in the first years of university.
+
+The documentation is published in English and Italian; every link below points to the English page, with the Italian equivalent in parentheses.
+
+Audience and philosophy: the Examples are the path for beginners and should be the first stop when helping a student. The API Reference is deliberately complete and advanced (parameters, validation rules, internal flow), so use it to answer precise questions rather than as an introduction.
+
+The public API is small: `load_csv`, `median`, `weighted_mean`, `variance`, `covariance`, `standard_deviation`, `histogram`, `lin_fit`, all importable from `mespy`. Requires Python 3.12 or later; install with `pip install mespy`.
+
+## Start here
+
+- [Get started](https://giancarmine-sparso.github.io/mespy/en/getting-started.html): install MesPy, check that it works and choose where to continue ([italiano](https://giancarmine-sparso.github.io/mespy/it/getting-started.html))
+
+## Examples
+
+- [Examples](https://giancarmine-sparso.github.io/mespy/en/examples/index.html): overview of the runnable example notebooks ([italiano](https://giancarmine-sparso.github.io/mespy/it/examples/index.html))
+- [Basic workflow](https://giancarmine-sparso.github.io/mespy/en/examples/basic-workflow.html): the two essential calls; `histogram` saves the plot to PDF, `lin_fit` saves plot and results to PDF and TOML ([italiano](https://giancarmine-sparso.github.io/mespy/it/examples/basic-workflow.html))
+- [Plot styling](https://giancarmine-sparso.github.io/mespy/en/examples/plot-style.html): enable the `mespy` style for a whole notebook or a single plot and customise colours, legend and titles ([italiano](https://giancarmine-sparso.github.io/mespy/it/examples/plot-style.html))
+- [Histogram](https://giancarmine-sparso.github.io/mespy/en/examples/histogram.html): choose the bins, compare counts, relative frequencies and density, read mean and standard deviation on the plot ([italiano](https://giancarmine-sparso.github.io/mespy/it/examples/histogram.html))
+- [Linear fit](https://giancarmine-sparso.github.io/mespy/en/examples/linear-fit.html): fit measurements with uncertainties, read results and residuals, decide whether to propagate uncertainties on x ([italiano](https://giancarmine-sparso.github.io/mespy/it/examples/linear-fit.html))
+
+## API Reference
+
+- [API Reference](https://giancarmine-sparso.github.io/mespy/en/moduli/index.html): index of the public functions, result objects and modules ([italiano](https://giancarmine-sparso.github.io/mespy/it/moduli/index.html))
+- [lin_fit](https://giancarmine-sparso.github.io/mespy/en/moduli/fit_utils/lin-fit.html): weighted linear fit with parameter uncertainties and residuals ([italiano](https://giancarmine-sparso.github.io/mespy/it/moduli/fit_utils/lin-fit.html))
+- [LinearFitResult](https://giancarmine-sparso.github.io/mespy/en/moduli/fit_utils/linear-fit-result.html): the typed result returned by `lin_fit`, in `mespy.fit_utils` ([italiano](https://giancarmine-sparso.github.io/mespy/it/moduli/fit_utils/linear-fit-result.html))
+- [histogram](https://giancarmine-sparso.github.io/mespy/en/moduli/plot_utils/histogram.html): histogram of a sample with mean and ±1σ band ([italiano](https://giancarmine-sparso.github.io/mespy/it/moduli/plot_utils/histogram.html)); see also its [Overview](https://giancarmine-sparso.github.io/mespy/en/moduli/plot_utils/histogram/panoramica.html) and [Implementation](https://giancarmine-sparso.github.io/mespy/en/moduli/plot_utils/histogram/funzionamento.html) pages
+- [load_csv](https://giancarmine-sparso.github.io/mespy/en/moduli/io_utils/load-csv.html): load a CSV into a DataFrame with checks on columns and missing values ([italiano](https://giancarmine-sparso.github.io/mespy/it/moduli/io_utils/load-csv.html))
+- [median](https://giancarmine-sparso.github.io/mespy/en/moduli/stats_utils/median.html): median of a numeric sample ([italiano](https://giancarmine-sparso.github.io/mespy/it/moduli/stats_utils/median.html))
+- [weighted_mean](https://giancarmine-sparso.github.io/mespy/en/moduli/stats_utils/weighted-mean.html): arithmetic or weighted mean ([italiano](https://giancarmine-sparso.github.io/mespy/it/moduli/stats_utils/weighted-mean.html))
+- [variance](https://giancarmine-sparso.github.io/mespy/en/moduli/stats_utils/variance.html): variance with optional weights and ddof correction ([italiano](https://giancarmine-sparso.github.io/mespy/it/moduli/stats_utils/variance.html))
+- [covariance](https://giancarmine-sparso.github.io/mespy/en/moduli/stats_utils/covariance.html): covariance of two variables with optional weights ([italiano](https://giancarmine-sparso.github.io/mespy/it/moduli/stats_utils/covariance.html))
+- [standard_deviation](https://giancarmine-sparso.github.io/mespy/en/moduli/stats_utils/standard-deviation.html): square root of the variance ([italiano](https://giancarmine-sparso.github.io/mespy/it/moduli/stats_utils/standard-deviation.html))
+
+## GitHub
+
+- [giancarmine-sparso/mespy](https://github.com/giancarmine-sparso/mespy): source code, issues and README
+
+## Optional
+
+- [Full text (English)](https://giancarmine-sparso.github.io/mespy/en/llms-full.txt): text of the main documentation pages in a single file
+- [Full text (italiano)](https://giancarmine-sparso.github.io/mespy/it/llms-full.txt): the same pages in Italian
+- [Development setup](https://giancarmine-sparso.github.io/mespy/en/installazione.html): editable install, tests and docs build for contributors ([italiano](https://giancarmine-sparso.github.io/mespy/it/installazione.html))
