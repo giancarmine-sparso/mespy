@@ -164,9 +164,18 @@ def add_language_switcher_context(app, pagename, templatename, context, doctree)
     ]
 
 
+def set_search_bar_text(app, config):
+    """PyData's search placeholder is a theme option, not a translated string."""
+    english = (config.language or language).startswith("en")
+    config.html_theme_options["search_bar_text"] = (
+        "Search the docs ..." if english else "Cerca nella documentazione ..."
+    )
+
+
 def setup(app):
     # UI translation catalog for the landing-style templates (homepage, Get started, Examples).
     app.add_message_catalog("homepage", Path(__file__).parent / "locale")
+    app.connect("config-inited", set_search_bar_text)
     app.connect("html-page-context", add_language_switcher_context)
     app.connect("html-page-context", add_homepage_context)
     app.connect("html-page-context", add_get_started_context)
