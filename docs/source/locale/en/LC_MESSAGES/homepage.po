@@ -993,3 +993,16 @@ msgstr "Light"
 
 msgid "Scuro"
 msgstr "Dark"
+
+msgid ""
+"Due demo simulate di 29 secondi ciascuna: installazione e verifica su Google"
+" Colab e con pip in Python locale."
+msgstr ""
+"Two simulated demos, 29 seconds each: installing and verifying on Google "
+"Colab and with pip in a local Python."
+
+msgid "Installazione su Google Colab"
+msgstr "Installation on Google Colab"
+
+msgid "Installazione in Python locale"
+msgstr "Installation in a local Python"

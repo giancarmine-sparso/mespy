@@ -25,8 +25,16 @@ assert.ok(config.DURATION/config.FPS<=30);assert.ok(t.titleEnd/config.FPS<=3);as
 for(const [end,next] of [[t.notebookReady,t.installStart],[t.checkResult,t.installStart],[t.installResult,t.verifyStart],[t.verifyResult,t.endStart]]) assert.ok(next-end>=60);
 assert.ok(t.endStart-t.resetNote>=90);
 for(const [command,start,run] of [[commands.localCheck,t.checkType,t.checkResult],[commands.colabInstall,t.installType,t.installRun],[commands.localInstall,t.installType,t.installRun],[commands.colabVerify,t.verifyType,t.verifyRun],[commands.localVerify,t.verifyType,t.verifyRun]]) assert.ok(start+typingFrames(command)<run);
-assert.deepEqual(strings.en.commands,strings.it.commands);
-assert.equal(strings.en.version,config.MESPY_VERSION);assert.equal(strings.it.version,config.MESPY_VERSION);
+assert.deepEqual(strings.it.commands,{
+ ...commands,
+ colabVerify:'import mespy\nprint("MesPy è pronto.")',
+ localVerify:'python -c "import mespy; print(\'MesPy è pronto.\')"',
+});
+for (const copy of Object.values(strings)) {
+ for (const command of [copy.commands.colabVerify,copy.commands.localVerify])
+  assert.ok(t.verifyType+typingFrames(command)<t.verifyRun);
+}
+assert.equal(strings.en.version,config.MESPY_VERSION);assert.equal(strings.it.version,'MesPy è pronto.');
 function checkFonts(dir){for(const entry of readdirSync(dir,{withFileTypes:true})){const file=`${dir}/${entry.name}`;if(entry.isDirectory())checkFonts(file);else if(file.endsWith('.tsx')){for(const match of readFileSync(file,'utf8').matchAll(/fontSize:\s*(\d+)/g))assert.ok(Number(match[1])>=32,`${file}: font below 32 px`);}}}
 checkFonts('src');
-console.log('PASS: exact commands, demo config, identical language timelines, 18 chars/s, holds, duration, minimum font sizes.');
+console.log('PASS: exact localized commands, demo config, identical language timelines, 18 chars/s, holds, duration, minimum font sizes.');

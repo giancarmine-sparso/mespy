@@ -13,7 +13,7 @@ In `out/`, per ciascuno dei nomi seguenti:
 | `mespy-install-local-en` | `.mp4`, 29 s | `.png`, 1920×1080 |
 | `mespy-install-local-it` | `.mp4`, 29 s | `.png`, 1920×1080 |
 
-I vecchi export da 75 secondi sono conservati in `out/legacy/`. Dipendenze, export e QA sono ignorati da Git; vanno copiati esplicitamente per la consegna. Nessuna modifica al sito o al package Python.
+I vecchi export da 75 secondi sono conservati in `out/legacy/`. Dipendenze, export e QA sono ignorati da Git; vanno copiati esplicitamente per la consegna. Le clip italiane sono integrate nella documentazione Sphinx; il package Python resta invariato.
 
 ## Anteprima e render
 
@@ -69,12 +69,21 @@ npm run review
 
 ## Compatibilità del package e output simulato
 
-Le versioni mostrate sono i valori dimostrativi richiesti, non una registrazione di un'installazione reale. Il badge `SIMULATED DEMO` è visibile per tutta la durata; i log pip sono una ricostruzione semplificata.
+Le versioni mostrate sono i valori dimostrativi richiesti, non una registrazione di un'installazione reale. Il badge `SIMULATED DEMO` / `DEMO SIMULATA` è visibile per tutta la durata; i log pip sono una ricostruzione semplificata.
 
-**Discrepanza verificata nel repository:** `pyproject.toml` dichiara MesPy 2.0.0 e Python >=3.12; `src/mespy/__init__.py` non espone `__version__`. Pertanto i comandi di verifica richiesti sono sintatticamente validi ma, contro il package attuale, terminano con `AttributeError` invece di stampare la versione. Nei video sono riportati esattamente come richiesto. Prima della pubblicazione occorre esporre `mespy.__version__` nel package distribuito oppure concordare un diverso comando di verifica. Il package non è stato modificato da questo lavoro.
+Le clip italiane verificano l'import con un messaggio di conferma, come la guida Sphinx. La versione nel log pip simulato italiano è 2.0.0. Le clip inglesi storiche conservano i comandi con `mespy.__version__` e la versione dimostrativa 1.2.0: questi comandi non funzionano con l'API corrente, che non espone quell'attributo. Il video inglese incorporato nel sito non è stato rigenerato in questo intervento.
 
 ## Etichette Colab italiane
 
 Il mock contiene `File`, `+ Codice`, `+ Testo` ed `Esegui`. `File` è confermato dal [notebook introduttivo ufficiale in italiano](https://colab.research.google.com/notebooks/welcome.ipynb?hl=it); le altre tre diciture seguono il testo richiesto. Non è stato possibile verificare direttamente la barra menu completa o la dicitura attuale del pulsante per creare un notebook: gli altri menu sono rappresentati da icone neutre e il pulsante da `+`, senza inventare traduzioni. La didascalia italiana spiega comunque di creare un nuovo notebook. Nessun link o CTA verso gli esempi è simulato come cliccabile.
 
 Logo: copia invariata di `../../assets/brand/mespy-logo-horizontal-dark.svg`. Inter: pacchetto locale `@fontsource/inter` con licenza OFL; Liberation Mono: `public/fonts/` con relativa licenza.
+
+## Integrazione nella documentazione italiana
+
+La build Sphinx italiana di “Inizia qui” usa le due clip `*-it`, copiate in
+`docs/source/_static/get-started-install-{colab|local}-it.{mp4|png}`. I testi
+italiani usano il badge `DEMO SIMULATA` e verificano l'import stampando
+`MesPy è pronto.`, come la guida Sphinx. I comandi non richiedono
+`mespy.__version__`. Il log pip simulato italiano mostra MesPy 2.0.0.
+La clip inglese da 75 secondi già incorporata nel sito resta invariata.
