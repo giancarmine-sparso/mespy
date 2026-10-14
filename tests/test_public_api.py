@@ -54,6 +54,8 @@ def test_lin_fit_target_signature():
         "x": inspect.Parameter.empty,
         "y": inspect.Parameter.empty,
         "sigma_y": None,
+        "sigma_x": None,
+        "x_error_method": "none",
         "xlabel": "x",
         "ylabel": "y",
         "title": None,

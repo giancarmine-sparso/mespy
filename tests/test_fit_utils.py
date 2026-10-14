@@ -880,7 +880,6 @@ def test_lin_fit_invalid_calls_raise_without_ols_warning(
     "name",
     [
         "fit_method",
-        "sigma_x",
         "tol",
         "max_iter",
         "residuals_label",
