@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-12 15:36+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -19,18 +19,18 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 
 #: ../../source/checks/plot_utils/index.md:1
-msgid "Helper di `plot_utils`"
+msgid "Funzioni di supporto di `plot_utils`"
 msgstr "`plot_utils` helpers"
 
 #: ../../source/checks/plot_utils/index.md:3
 msgid ""
-"Questa sottosezione documenta i controlli privati e i piccoli helper "
-"usati da `plot_utils` per validare input, applicare stili Matplotlib e "
-"gestire il display delle figure nei notebook."
+"Questa sottosezione documenta i controlli privati e le piccole funzioni di "
+"supporto usate da `plot_utils` per validare dati in ingresso, applicare "
+"stili Matplotlib e gestire la visualizzazione delle figure nei notebook."
 msgstr ""
 "This subsection documents the private checks and small helpers used by "
-"`plot_utils` to validate inputs, apply Matplotlib styles, and manage "
-"figure display in notebooks."
+"`plot_utils` to validate inputs, apply Matplotlib styles, and manage figure "
+"display in notebooks."
 
 #: ../../source/checks/plot_utils/index.md:5
 msgid "Pagine disponibili"

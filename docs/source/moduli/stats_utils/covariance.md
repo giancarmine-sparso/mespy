@@ -10,7 +10,7 @@ covariance(
 ) -> float
 ```
 
-`covariance` stima la covarianza tra due variabili numeriche, con supporto opzionale ai pesi e con validazione coerente degli input.
+`covariance` stima la covarianza tra due variabili numeriche, con supporto opzionale ai pesi e con validazione coerente dei dati in ingresso.
 
 Questa pagina resta il punto di ingresso rapido. I dettagli operativi sono in [Panoramica](covariance/panoramica.md), mentre [Funzionamento](covariance/funzionamento.md) e predisposta come sottopagina separata.
 

@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -24,19 +24,18 @@ msgstr "Implementation"
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:3
 msgid ""
-"Questa pagina descrive il flusso interno di `standard_deviation` e il "
-"modo in cui la funzione delega quasi tutto il lavoro a "
-"[`variance`](../variance.md). A differenza di "
-"[Panoramica](panoramica.md), qui l'obiettivo non e ripetere i parametri, "
-"ma mostrare perche il comportamento pratico della deviazione standard "
-"coincide quasi interamente con quello della varianza."
+"Questa pagina descrive il flusso interno di `standard_deviation` e il modo "
+"in cui la funzione delega quasi tutto il lavoro a "
+"[`variance`](../variance.md). A differenza di [Panoramica](panoramica.md), "
+"qui l'obiettivo non e ripetere i parametri, ma mostrare perche il "
+"comportamento pratico della deviazione standard coincide quasi interamente "
+"con quello della varianza."
 msgstr ""
-"This page describes the internal flow of `standard_deviation` and how the"
-" function delegates almost all of its work to "
-"[`variance`](../variance.md). Unlike [Overview](panoramica.md), the goal "
-"here is not to repeat the parameters, but to show why the practical "
-"behavior of standard deviation almost entirely coincides with that of "
-"variance."
+"This page describes the internal flow of `standard_deviation` and how the "
+"function delegates almost all of its work to [`variance`](../variance.md). "
+"Unlike [Overview](panoramica.md), the goal here is not to repeat the "
+"parameters, but to show why the practical behavior of standard deviation "
+"almost entirely coincides with that of variance."
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:5
 msgid ""
@@ -48,13 +47,13 @@ msgid ""
 "[`_validate_weights`](../../../checks/stats_utils/validate-weights.md) "
 "quando `w` e presente."
 msgstr ""
-"The following snippets are taken from the current "
-"`src/mespy/stats_utils.py` implementation. Even though "
-"[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) does"
-" not appear directly in the body of `standard_deviation`, it comes into "
-"play immediately through `variance(...)`; the same is true for "
-"[`_validate_weights`](../../../checks/stats_utils/validate-weights.md) "
-"when `w` is provided."
+"The following snippets are taken from the current `src/mespy/stats_utils.py`"
+" implementation. Even though "
+"[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) does "
+"not appear directly in the body of `standard_deviation`, it comes into play "
+"immediately through `variance(...)`; the same is true for "
+"[`_validate_weights`](../../../checks/stats_utils/validate-weights.md) when "
+"`w` is provided."
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:7
 msgid "Sequenza di esecuzione"
@@ -81,24 +80,20 @@ msgid "Converte il risultato in `float` Python."
 msgstr "Converts the result to a Python `float`."
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:16
-msgid "Wrapper minimale sopra `variance`"
+msgid "Interfaccia minimale per `variance`"
 msgstr "Minimal wrapper over `variance`"
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:27
 msgid ""
-"Questo frammento mostra che `standard_deviation` non reimplementa nessuna"
-" parte della logica statistica."
+"Questo frammento mostra che `standard_deviation` non reimplementa nessuna "
+"parte della logica statistica."
 msgstr ""
-"This snippet shows that `standard_deviation` does not reimplement any "
-"part of the statistical logic."
+"This snippet shows that `standard_deviation` does not reimplement any part "
+"of the statistical logic."
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:29
-msgid ""
-"Non valida direttamente `x`: la validazione avviene dentro "
-"`variance(...)`."
-msgstr ""
-"It does not validate `x` directly: validation happens inside "
-"`variance(...)`."
+msgid "Non valida direttamente `x`: la validazione avviene dentro `variance(...)`."
+msgstr "It does not validate `x` directly: validation happens inside `variance(...)`."
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:30
 msgid "Non gestisce direttamente i pesi: anche questo controllo e delegato."
@@ -106,8 +101,8 @@ msgstr "It does not handle the weights directly: this check is delegated too."
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:31
 msgid ""
-"Non distingue con rami propri tra caso pesato e non pesato: eredita i due"
-" rami gia presenti nella varianza."
+"Non distingue con rami propri tra caso pesato e non pesato: eredita i due "
+"rami gia presenti nella varianza."
 msgstr ""
 "It has no branches of its own for the weighted and unweighted cases: it "
 "inherits the two branches already present in the variance."
@@ -145,8 +140,8 @@ msgid ""
 "Per questo motivo tutto cio che influenza la varianza influenza "
 "automaticamente anche la deviazione standard."
 msgstr ""
-"For this reason, everything that affects the variance automatically "
-"affects the standard deviation as well."
+"For this reason, everything that affects the variance automatically affects "
+"the standard deviation as well."
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:49
 msgid "`ddof` viene passato senza modifiche a `variance(...)`."
@@ -154,11 +149,11 @@ msgstr "`ddof` is passed unchanged to `variance(...)`."
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:50
 msgid ""
-"Se il denominatore della varianza diventa non positivo, l'errore nasce "
-"prima della radice quadrata."
+"Se il denominatore della varianza diventa non positivo, l'errore nasce prima"
+" della radice quadrata."
 msgstr ""
-"If the variance denominator becomes non-positive, the error is raised "
-"before the square root."
+"If the variance denominator becomes non-positive, the error is raised before"
+" the square root."
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:51
 msgid ""
@@ -174,11 +169,11 @@ msgstr "Important interactions with `variance`"
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:55
 msgid ""
-"Il comportamento pratico della funzione si capisce meglio leggendo questa"
-" dipendenza esplicita."
+"Il comportamento pratico della funzione si capisce meglio leggendo questa "
+"dipendenza esplicita."
 msgstr ""
-"The practical behaviour of the function is easiest to understand by "
-"reading this explicit dependency."
+"The practical behaviour of the function is easiest to understand by reading "
+"this explicit dependency."
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:57
 msgid ""
@@ -190,25 +185,24 @@ msgstr ""
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:58
 msgid ""
-"`standard_deviation(x, w=w)` equivale a prendere la radice quadrata della"
-" varianza pesata costruita con gli stessi pesi."
+"`standard_deviation(x, w=w)` equivale a prendere la radice quadrata della "
+"varianza pesata costruita con gli stessi pesi."
 msgstr ""
-"`standard_deviation(x, w=w)` is equivalent to taking the square root of "
-"the weighted variance built with the same weights."
+"`standard_deviation(x, w=w)` is equivalent to taking the square root of the "
+"weighted variance built with the same weights."
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:59
 msgid ""
-"`standard_deviation(x, ddof=1)` non introduce una nuova convenzione: "
-"chiede semplicemente a `variance(...)` di usare un denominatore corretto."
+"`standard_deviation(x, ddof=1)` non introduce una nuova convenzione: chiede "
+"semplicemente a `variance(...)` di usare un denominatore corretto."
 msgstr ""
 "`standard_deviation(x, ddof=1)` does not introduce a new convention: it "
 "simply asks `variance(...)` to use a corrected denominator."
 
 #: ../../source/moduli/stats_utils/standard-deviation/funzionamento.md:60
 msgid ""
-"Di conseguenza, per capire davvero errori, casi limite e ruolo di `ddof`,"
-" la pagina di riferimento resta [`variance`](../variance.md)."
+"Di conseguenza, per capire davvero errori, casi limite e ruolo di `ddof`, la"
+" pagina di riferimento resta [`variance`](../variance.md)."
 msgstr ""
 "Consequently, to really understand errors, edge cases, and the role of "
 "`ddof`, the reference page remains [`variance`](../variance.md)."
-

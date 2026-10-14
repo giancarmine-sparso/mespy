@@ -16,7 +16,7 @@ _validate_axis_limits(
 
 Converte e valida una coppia di limiti per assi o range, mantenendo messaggi di errore specifici per il parametro che li ha richiesti.
 
-## Contratto sugli input
+## Contratto sui dati in ingresso
 
 - `limits` deve essere una sequenza di esattamente due elementi.
 - Stringhe e `bytes` vengono rifiutati esplicitamente.
@@ -35,4 +35,4 @@ Converte e valida una coppia di limiti per assi o range, mantenendo messaggi di 
 
 ## Perche resta privata
 
-E un validatore di supporto per la parte grafica. La sua utilita e interna, ma documentarla rende piu leggibili le regole comuni di plotting.
+E un validatore di supporto per la parte grafica. La sua utilita e interna, ma documentarla rende piu leggibili le regole comuni di visualizzazione grafica.

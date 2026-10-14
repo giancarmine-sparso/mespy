@@ -3,7 +3,6 @@ import tomllib
 
 from docutils import nodes
 from sphinx.locale import get_translation
-from sphinx.transforms import SphinxTransform
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
@@ -296,19 +295,6 @@ def setup(app):
     app.connect("html-page-context", add_system_page_context)
     app.connect("build-finished", bundle_homepage_runtime)
     app.connect("build-finished", write_llms_full)
-    app.add_transform(EnglishLinearFitReference)
-
-
-class EnglishLinearFitReference(SphinxTransform):
-    """Keep the rebuilt English reference independent of legacy catalogs."""
-
-    default_priority = 19  # Before Sphinx's Locale transform (priority 20).
-
-    def apply(self, **kwargs):
-        if self.env.current_document.docname == "moduli/fit_utils/lin-fit":
-            for node in self.document.findall(nodes.TextElement):
-                if not isinstance(node, nodes.Inline):
-                    node["translatable"] = False
 
 
 def _is_example_number(node) -> bool:

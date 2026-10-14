@@ -13,7 +13,7 @@ _validate_weights(
 
 Centralizza la validazione dei pesi usati nelle statistiche pesate.
 
-## Contratto sugli input
+## Contratto sui dati in ingresso
 
 - Se `w is None`, restituisce `None` e il chiamante ricade nel caso non pesato.
 - Se `w` e presente, viene prima convertito con [`_as_float_vector`](as-float-vector.md).

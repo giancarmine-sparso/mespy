@@ -1,0 +1,36 @@
+Glossario della documentazione italiana MesPy
+===========================================
+
+Il progetto usa sorgenti italiane, gettext_compact = False, locale_dirs = ["locale/"]
+e cataloghi inglesi locale/en/LC_MESSAGES. Le sorgenti vengono mostrate direttamente
+nella build it; i template personalizzati usano il dominio gettext "homepage".
+
+Scelte terminologiche:
+- standard uncertainty → incertezza tipo (non deviazione standard del campione).
+- ordinary least squares → minimi quadrati ordinari (OLS alla prima occorrenza).
+- weighted least squares → minimi quadrati pesati (WLS alla prima occorrenza).
+- absolute WLS → WLS con incertezze assolute; non si riscalano le incertezze
+  dei parametri con il chi quadro ridotto.
+- covariance / correlation → covarianza / correlazione.
+- chi-squared / reduced chi-squared → chi quadro / chi quadro ridotto.
+- degrees of freedom → gradi di libertà.
+- residuals / physical residuals → residui / residui in unità fisiche.
+- effective variance → varianza efficace.
+- iteratively reweighted → con ripesatura iterativa.
+- p-value → valore p; upper-tail probability → probabilità nella coda superiore.
+- fitted mean → media stimata dal fit; prediction → previsione.
+- design matrix → matrice del modello.
+- standard deviation → deviazione standard; variance → varianza.
+- weighted mean → media pesata.
+- API Reference → Riferimento API; function signature → firma della funzione.
+- default → valore predefinito; keyword-only → da passare solo per nome.
+- workflow → flusso di lavoro; helper → funzione di supporto.
+
+Fit, array, notebook e kernel sono termini tecnici d'uso corrente, già presenti
+nelle pagine introduttive; si mantengono senza aggiungere spiegazioni improprie.
+Bin indica una classe dell'istogramma; il parametro bins resta invariato.
+Non si traducono codice, commenti nei blocchi di codice (il progetto non abilita
+l'estrazione gettext dei literal_block), stringhe letterali delle API, tipi,
+eccezioni, identificatori, chiavi TOML, percorsi, formule e notazione LaTeX.
+Le etichette letterali Residuals / σ_y, Residuals / σ_eff e Residuals / s descrivono
+l'uscita effettiva della libreria e si mantengono in codice in linea.

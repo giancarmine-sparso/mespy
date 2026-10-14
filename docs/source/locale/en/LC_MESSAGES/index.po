@@ -1,13 +1,13 @@
-# English translations for MesPy.
-# Copyright (C) 2026 Giancarmine Sparso
-# This file is distributed under the same license as the MesPy project.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, Giancarmine Sparso
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: MesPy 2.0.0\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-13 18:30+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -24,10 +24,11 @@ msgstr "MesPy"
 
 #: ../../source/index.md:3
 msgid ""
-"MesPy è una toolbox Python per chi muove i primi passi nella fisica "
-"sperimentale. Aiuta a visualizzare le misure, esplorare le distribuzioni "
-"e trovare le relazioni tra i dati, per interpretare i risultati e le loro"
-" incertezze senza riscrivere ogni volta lo stesso codice di analisi."
+"MesPy è una raccolta di strumenti Python per chi muove i primi passi nella "
+"fisica sperimentale. Aiuta a visualizzare le misure, esplorare le "
+"distribuzioni e trovare le relazioni tra i dati, per interpretare i "
+"risultati e le loro incertezze senza riscrivere ogni volta lo stesso codice "
+"di analisi."
 msgstr ""
 "MesPy is a Python toolbox for students taking their first steps in "
 "experimental physics. It helps you visualize measurements, explore "
@@ -36,18 +37,18 @@ msgstr ""
 
 #: ../../source/index.md:5
 msgid ""
-"Con `histogram` puoi visualizzare la distribuzione delle misure, la media"
-" e la deviazione standard. Con `lin_fit` puoi trovare la retta che "
-"descrive i dati e ottenere i parametri, le loro incertezze e i residui."
+"Con `histogram` puoi visualizzare la distribuzione delle misure, la media e "
+"la deviazione standard. Con `lin_fit` puoi trovare la retta che descrive i "
+"dati e ottenere i parametri, le loro incertezze e i residui."
 msgstr ""
-"Use `histogram` to see the distribution of your measurements, their mean "
-"and standard deviation. Use `lin_fit` to find the line that describes "
-"your data and get its parameters, their uncertainties and residuals."
+"Use `histogram` to see the distribution of your measurements, their mean and"
+" standard deviation. Use `lin_fit` to find the line that describes your data"
+" and get its parameters, their uncertainties and residuals."
 
 #: ../../source/index.md:7
 msgid ""
-"Parti da [Inizia qui](getting-started.md): installazione e primo import. "
-"Poi esplora gli [esempi](examples/index.md)."
+"Parti da [Inizia qui](getting-started.md): installazione e primo import. Poi"
+" esplora gli [esempi](examples/index.md)."
 msgstr ""
-"Start from [Get started](getting-started.md): installation and first "
-"import. Then explore the [examples](examples/index.md)."
+"Start from [Get started](getting-started.md): installation and first import."
+" Then explore the [examples](examples/index.md)."

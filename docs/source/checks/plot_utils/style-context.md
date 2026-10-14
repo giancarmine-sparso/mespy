@@ -10,13 +10,13 @@ _style_context(style: str | None)
 
 Applica uno stile Matplotlib temporaneo e rende coerente il comportamento delle figure create da `mespy`, soprattutto nei notebook IPython/Jupyter.
 
-## Contratto sugli input
+## Contratto sui dati in ingresso
 
 - `style=None` non aggiunge uno stile extra e lascia validi gli `rcParams` correnti.
-- `style="mespy"` carica il file di stile incluso nel package.
+- `style="mespy"` carica il file di stile incluso nel pacchetto.
 - Qualunque altra stringa viene passata a Matplotlib come nome stile.
 
-Nelle funzioni pubbliche lo stile passa prima da [`_resolve_style`](resolve-style.md), così anche gli altri stili bundled possono essere richiamati con il nome breve.
+Nelle funzioni pubbliche lo stile passa prima da [`_resolve_style`](resolve-style.md), così anche gli altri stili inclusi possono essere richiamati con il nome breve.
 
 ## Dove viene usata
 
@@ -25,9 +25,9 @@ Nelle funzioni pubbliche lo stile passa prima da [`_resolve_style`](resolve-styl
 
 ## Come fallisce
 
-- Se Matplotlib non riesce a caricare lo stile richiesto, propaga l'errore del backend di stile sottostante.
-- In ambiente notebook, alla fine del blocco mostra le nuove figure create e poi le chiude per evitare il doppio display automatico.
+- Se Matplotlib non riesce a caricare lo stile richiesto, propaga l'errore del sistema di stile sottostante.
+- In ambiente notebook, alla fine del blocco mostra le nuove figure create e poi le chiude per evitare la doppia visualizzazione automatica.
 
 ## Perche resta privata
 
-E un dettaglio infrastrutturale condiviso dalle funzioni di plotting. Documentarlo chiarisce il comportamento del package, ma non e pensato come interfaccia pubblica stabile.
+E un dettaglio infrastrutturale condiviso dalle funzioni di visualizzazione grafica. Documentarlo chiarisce il comportamento del pacchetto, ma non e pensato come interfaccia pubblica stabile.

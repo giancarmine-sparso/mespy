@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../source/moduli/io_utils/load-csv.md:23
 msgid "Panoramica"
@@ -36,19 +36,18 @@ msgstr "Signature"
 
 #: ../../source/moduli/io_utils/load-csv.md:19
 msgid ""
-"`load_csv` carica un file CSV in un `DataFrame` pandas con controlli espliciti su rinomina "
-"colonne, colonne richieste e valori mancanti."
+"`load_csv` carica un file CSV in un `DataFrame` pandas con controlli "
+"espliciti su rinomina colonne, colonne richieste e valori mancanti."
 msgstr ""
-"`load_csv` loads a CSV file into a pandas `DataFrame` with explicit checks for column renaming, "
-"required columns, and missing values."
+"`load_csv` loads a CSV file into a pandas `DataFrame` with explicit checks "
+"for column renaming, required columns, and missing values."
 
 #: ../../source/moduli/io_utils/load-csv.md:21
 msgid ""
-"Questa pagina fa da hub rapido della funzione. I dettagli di utilizzo stanno in [Panoramica"
-"](load-csv/panoramica.md), mentre [Funzionamento](load-csv/funzionamento.md) resta disponibile "
-"come sottopagina dedicata."
+"Questa pagina fa da hub rapido della funzione. I dettagli di utilizzo stanno"
+" in [Panoramica](load-csv/panoramica.md), mentre [Funzionamento](load-"
+"csv/funzionamento.md) resta disponibile come sottopagina dedicata."
 msgstr ""
-"This page serves as a quick entry point for the function. Usage details are in [Overview](load-"
-"csv/panoramica.md), while [How it works](load-csv/funzionamento.md) remains available as a "
-"dedicated subpage."
-
+"This page serves as a quick entry point for the function. Usage details are "
+"in [Overview](load-csv/panoramica.md), while [How it works](load-"
+"csv/funzionamento.md) remains available as a dedicated subpage."

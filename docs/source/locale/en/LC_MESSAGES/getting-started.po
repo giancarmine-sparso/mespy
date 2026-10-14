@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 18:30+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -25,12 +25,12 @@ msgstr "Get started"
 #: ../../source/getting-started.md:7
 msgid ""
 "Installa MesPy, verifica che funzioni e scegli da dove continuare. Tutto "
-"quello che serve per iniziare, in pochi passi. MesPy richiede Python 3.12"
-" o successivo."
+"quello che serve per iniziare, in pochi passi. MesPy richiede Python 3.12 o "
+"successivo."
 msgstr ""
-"Install MesPy, check that it works, and choose where to go next. "
-"Everything you need to get started, in just a few steps. MesPy requires "
-"Python 3.12 or newer."
+"Install MesPy, check that it works, and choose where to go next. Everything "
+"you need to get started, in just a few steps. MesPy requires Python 3.12 or "
+"newer."
 
 #: ../../source/getting-started.md:9
 msgid "Scegli il tuo ambiente"
@@ -42,24 +42,22 @@ msgstr "In Google Colab or a Jupyter notebook, run in a code cell:"
 
 #: ../../source/getting-started.md:17
 msgid ""
-"`%pip` installa MesPy nell'ambiente del kernel attivo; se poi l'import "
-"non funziona, riavvia il kernel."
+"`%pip` installa MesPy nell'ambiente del kernel attivo; se poi l'import non "
+"funziona, riavvia il kernel."
 msgstr ""
-"`%pip` installs MesPy into the current kernel's environment; if the "
-"import fails afterwards, restart the kernel."
+"`%pip` installs MesPy into the current kernel's environment; if the import "
+"fails afterwards, restart the kernel."
 
 #: ../../source/getting-started.md:19
 msgid ""
 "Con uv, consigliato per i progetti locali, aggiungi MesPy a un progetto "
 "creato con `uv init`:"
 msgstr ""
-"With uv, recommended for local projects, add MesPy to a project created "
-"with `uv init`:"
+"With uv, recommended for local projects, add MesPy to a project created with"
+" `uv init`:"
 
 #: ../../source/getting-started.md:25
-msgid ""
-"Per provarlo senza creare un progetto, apri una sessione Python "
-"temporanea:"
+msgid "Per provarlo senza creare un progetto, apri una sessione Python temporanea:"
 msgstr "To try it without creating a project, start a temporary Python session:"
 
 #: ../../source/getting-started.md:31
@@ -79,136 +77,11 @@ msgid "[Esempi](examples/index.md): flussi di analisi pratici e notebook."
 msgstr "[Examples](examples/index.md): practical analysis workflows and notebooks."
 
 #: ../../source/getting-started.md:48
-msgid ""
-"[Riferimento API](moduli/index.md): funzioni, parametri e valori "
-"restituiti."
+msgid "[Riferimento API](moduli/index.md): funzioni, parametri e valori restituiti."
 msgstr "[API Reference](moduli/index.md): functions, parameters and return values."
 
 #: ../../source/getting-started.md:49
 msgid ""
-"[Installazione per lo sviluppo](installazione.md): per chi vuole "
-"contribuire a MesPy."
+"[Installazione per lo sviluppo](installazione.md): per chi vuole contribuire"
+" a MesPy."
 msgstr "[Development setup](installazione.md): for contributors to MesPy."
-
-#~ msgid "Guida rapida"
-#~ msgstr "Quick start"
-
-#~ msgid ""
-#~ "Questa guida presenta il percorso piu"
-#~ " semplice per usare `mespy`: caricare "
-#~ "un file, fare qualche statistica di "
-#~ "base, creare un grafico e, se "
-#~ "serve, eseguire un fit lineare."
-#~ msgstr ""
-#~ "This guide presents the simplest path"
-#~ " for using `mespy`: load a file, "
-#~ "run a few basic statistics, create "
-#~ "a plot, and, if needed, perform a"
-#~ " linear fit."
-
-#~ msgid ""
-#~ "Se vuoi studiare il codice delle "
-#~ "funzioni e il significato matematico dei"
-#~ " risultati, vai direttamente alla sezione"
-#~ " [Moduli](moduli/index.md). Ogni modulo raccoglie"
-#~ " la panoramica concettuale e le "
-#~ "pagine dedicate alle singole funzioni "
-#~ "pubbliche."
-#~ msgstr ""
-#~ "If you want to study the function"
-#~ " code and the mathematical meaning of"
-#~ " the results, go directly to the "
-#~ "[Modules](moduli/index.md) section. Each module "
-#~ "collects the conceptual overview and the"
-#~ " pages dedicated to individual public "
-#~ "functions."
-
-#~ msgid "Moduli principali"
-#~ msgstr "Main modules"
-
-#~ msgid "[`io_utils`](moduli/io_utils/index.md) gestisce il caricamento dei CSV."
-#~ msgstr "[`io_utils`](moduli/io_utils/index.md) handles CSV loading."
-
-#~ msgid ""
-#~ "[`stats_utils`](moduli/stats_utils/index.md) raccoglie le"
-#~ " funzioni statistiche."
-#~ msgstr ""
-#~ "[`stats_utils`](moduli/stats_utils/index.md) collects the"
-#~ " statistical functions."
-
-#~ msgid ""
-#~ "[`plot_utils`](moduli/plot_utils/index.md) contiene gli"
-#~ " strumenti di visualizzazione."
-#~ msgstr ""
-#~ "[`plot_utils`](moduli/plot_utils/index.md) contains the"
-#~ " visualization tools."
-
-#~ msgid ""
-#~ "[`fit_utils`](moduli/fit_utils/index.md) contiene il "
-#~ "fit lineare e il tipo di "
-#~ "risultato."
-#~ msgstr ""
-#~ "[`fit_utils`](moduli/fit_utils/index.md) contains the "
-#~ "linear fit and its result type."
-
-#~ msgid "Primo flusso di lavoro"
-#~ msgstr "First workflow"
-
-#~ msgid "Come navigare la docs"
-#~ msgstr "How to navigate the docs"
-
-#~ msgid ""
-#~ "Parti dalla pagina madre del modulo "
-#~ "per vedere scopo, import e collegamenti"
-#~ " interni."
-#~ msgstr ""
-#~ "Start from the module landing page "
-#~ "to see its purpose, imports, and "
-#~ "internal links."
-
-#~ msgid ""
-#~ "Apri poi la pagina della funzione "
-#~ "per firma, parametri, ritorno, errori ed"
-#~ " esempi."
-#~ msgstr ""
-#~ "Then open the function page for "
-#~ "its signature, parameters, return value, "
-#~ "errors, and examples."
-
-#~ msgid ""
-#~ "Se vuoi capire i check sugli "
-#~ "input, consulta [Controlli e helper "
-#~ "interni](checks/index.md)."
-#~ msgstr ""
-#~ "If you want to understand the "
-#~ "input checks, consult [Internal checks "
-#~ "and helpers](checks/index.md)."
-
-#~ msgid "Esempi"
-#~ msgstr "Examples"
-
-#~ msgid "[Workflow base](examples/basic-workflow.md)"
-#~ msgstr "[Basic workflow](examples/basic-workflow.md)"
-
-#~ msgid "[Istogramma](examples/histogram.ipynb)"
-#~ msgstr "[Histogram](examples/histogram.ipynb)"
-
-#~ msgid "[Fit lineare](examples/linear-fit.ipynb)"
-#~ msgstr "[Linear fit](examples/linear-fit.ipynb)"
-
-#~ msgid "[Stile dei grafici](examples/plot-style.ipynb)"
-#~ msgstr "[Plot styling](examples/plot-style.ipynb)"
-
-#~ msgid "La tua prima analisi"
-#~ msgstr "Your first analysis"
-
-#~ msgid ""
-#~ "Venti misure del periodo di un "
-#~ "pendolo diventano un istogramma con la"
-#~ " media e la banda di una "
-#~ "deviazione standard:"
-#~ msgstr ""
-#~ "Twenty measurements of a pendulum's "
-#~ "period become a histogram with the "
-#~ "mean and a one-standard-deviation "
-#~ "band:"

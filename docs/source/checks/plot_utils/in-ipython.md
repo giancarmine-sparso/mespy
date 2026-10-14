@@ -8,9 +8,9 @@ _in_ipython() -> bool
 
 ## Che problema risolve
 
-Rileva se il codice sta girando dentro un kernel IPython/Jupyter con display inline disponibile, distinguendolo da una shell terminale o da un ambiente senza IPython.
+Rileva se il codice sta girando dentro un kernel IPython/Jupyter con visualizzazione nel notebook disponibile, distinguendolo da una shell terminale o da un ambiente senza IPython.
 
-## Contratto sugli input
+## Contratto sui dati in ingresso
 
 - Non richiede argomenti.
 - Restituisce `True` solo se `IPython` e importabile, esiste una sessione corrente e la configurazione contiene `IPKernelApp`.

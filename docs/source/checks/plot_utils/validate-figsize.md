@@ -10,7 +10,7 @@ _validate_figsize(figsize: ArrayLike) -> tuple[float, float]
 
 Verifica che `figsize` sia una coppia valida di dimensioni positive, prima di creare una figura matplotlib.
 
-## Contratto sugli input
+## Contratto sui dati in ingresso
 
 - `figsize` deve essere una sequenza di due elementi.
 - Non puo essere una stringa o un oggetto bytes.
@@ -28,4 +28,4 @@ Verifica che `figsize` sia una coppia valida di dimensioni positive, prima di cr
 
 ## Perche resta privata
 
-Evita di duplicare sempre lo stesso controllo nel codice di plotting, ma non aggiunge un concetto autonomo per l'utente finale.
+Evita di duplicare sempre lo stesso controllo nel codice di visualizzazione grafica, ma non aggiunge un concetto autonomo per l'utente finale.

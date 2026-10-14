@@ -42,4 +42,4 @@ df = load_csv(
 
 - Il controllo su `required_columns` avviene dopo `rename_columns`.
 - `missing="drop"` rimuove le righe incomplete con `DataFrame.dropna()`.
-- La funzione non converte direttamente il `DataFrame` in array numerici: quel passaggio resta alle funzioni statistiche e di plotting.
+- La funzione non converte direttamente il `DataFrame` in array numerici: quel passaggio resta alle funzioni statistiche e di visualizzazione grafica.

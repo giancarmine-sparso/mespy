@@ -1,8 +1,8 @@
 # Funzionamento
 
-Questa pagina descrive il flusso interno di `weighted_mean` e l'ordine con cui vengono applicate validazione degli input, scelta tra ramo non pesato e ramo pesato, e calcolo finale della media. A differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere i parametri, ma mostrare come la funzione costruisce davvero il risultato.
+Questa pagina descrive il flusso interno di `weighted_mean` e l'ordine con cui vengono applicate validazione dei dati in ingresso, scelta tra ramo non pesato e ramo pesato, e calcolo finale della media. A differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere i parametri, ma mostrare come la funzione costruisce davvero il risultato.
 
-I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. Gli helper privati vengono citati solo per chiarire il flusso; i dettagli completi sono documentati in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) e [`_validate_weights`](../../../checks/stats_utils/validate-weights.md).
+I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. Le funzioni di supporto private vengono citate solo per chiarire il flusso; i dettagli completi sono documentati in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) e [`_validate_weights`](../../../checks/stats_utils/validate-weights.md).
 
 ## Sequenza di esecuzione
 
@@ -61,7 +61,7 @@ return float(np.sum(values * weights) / np.sum(weights))
 - Il denominatore normalizza il risultato usando la somma degli stessi pesi.
 - La funzione non normalizza `w` in anticipo: usa i pesi cosi come arrivano, purche siano validi.
 
-## Interazioni importanti tra input e risultato
+## Interazioni importanti tra dati in ingresso e risultato
 
 Alcuni dettagli pratici definiscono il comportamento reale di `weighted_mean`.
 

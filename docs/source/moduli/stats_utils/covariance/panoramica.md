@@ -17,7 +17,7 @@ Un `float` con la covarianza tra `x` e `y`.
 ## Errori ed eccezioni
 
 - `ValueError` se `x` e `y` non hanno la stessa lunghezza.
-- `ValueError` se gli input contengono valori non finiti.
+- `ValueError` se i dati in ingresso contengono valori non finiti.
 - `ValueError` se `w` e incompatibile o non positivo.
 
 ## Esempio

@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 19:48+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -33,25 +33,32 @@ msgstr "What problem it solves"
 #: ../../source/checks/plot_utils/display-new-figures.md:11
 msgid ""
 "Mostra esplicitamente in IPython/Jupyter le figure create dopo un certo "
-"snapshot iniziale, evitando che restino nascoste dentro un context "
-"manager di stile."
-msgstr "Explicitly shows in IPython/Jupyter the figures created after a given initial snapshot, preventing them from staying hidden inside a style context manager."
+"stato iniziale, evitando che restino nascoste dentro un gestore di contesto "
+"di stile."
+msgstr ""
+"Explicitly shows in IPython/Jupyter the figures created after a given "
+"initial snapshot, preventing them from staying hidden inside a style context"
+" manager."
 
 #: ../../source/checks/plot_utils/display-new-figures.md:13
-msgid "Contratto sugli input"
+msgid "Contratto sui dati in ingresso"
 msgstr "Input contract"
 
 #: ../../source/checks/plot_utils/display-new-figures.md:15
 msgid ""
-"`existing_nums` deve contenere i numeri di figura presenti prima di "
-"entrare nel blocco monitorato."
-msgstr "`existing_nums` must contain the figure numbers present before entering the monitored block."
+"`existing_nums` deve contenere i numeri di figura presenti prima di entrare "
+"nel blocco monitorato."
+msgstr ""
+"`existing_nums` must contain the figure numbers present before entering the "
+"monitored block."
 
 #: ../../source/checks/plot_utils/display-new-figures.md:16
 msgid ""
-"La funzione confronta questo insieme con `plt.get_fignums()` per "
-"individuare solo le figure nuove."
-msgstr "The function compares this set with `plt.get_fignums()` to identify only the new figures."
+"La funzione confronta questo insieme con `plt.get_fignums()` per individuare"
+" solo le figure nuove."
+msgstr ""
+"The function compares this set with `plt.get_fignums()` to identify only the"
+" new figures."
 
 #: ../../source/checks/plot_utils/display-new-figures.md:17
 msgid "Se `IPython.display` non e disponibile, la funzione non fa nulla."
@@ -63,22 +70,24 @@ msgstr "Where it is used"
 
 #: ../../source/checks/plot_utils/display-new-figures.md:21
 msgid ""
-"in [`_style_context`](style-context.md) quando l'esecuzione avviene in un"
-" notebook IPython/Jupyter"
-msgstr "in [`_style_context`](style-context.md) when execution happens inside an IPython/Jupyter notebook"
+"in [`_style_context`](style-context.md) quando l'esecuzione avviene in un "
+"notebook IPython/Jupyter"
+msgstr ""
+"in [`_style_context`](style-context.md) when execution happens inside an "
+"IPython/Jupyter notebook"
 
 #: ../../source/checks/plot_utils/display-new-figures.md:23
 msgid "Come fallisce"
 msgstr "How it fails"
 
 #: ../../source/checks/plot_utils/display-new-figures.md:25
-msgid "In uso normale non alza eccezioni specifiche del package."
+msgid "In uso normale non alza eccezioni specifiche del pacchetto."
 msgstr "In normal use it does not raise package-specific exceptions."
 
 #: ../../source/checks/plot_utils/display-new-figures.md:26
 msgid ""
-"Se il supporto di display non e disponibile, la funzione si comporta come"
-" un no-op."
+"Se il supporto di visualizzazione non e disponibile, la funzione si comporta"
+" come un'operazione senza effetti."
 msgstr "If display support is not available, the function behaves as a no-op."
 
 #: ../../source/checks/plot_utils/display-new-figures.md:28
@@ -87,7 +96,8 @@ msgstr "Why it remains private"
 
 #: ../../source/checks/plot_utils/display-new-figures.md:30
 msgid ""
-"Serve solo a rifinire l'integrazione notebook di `mespy`: non rappresenta"
-" un'operazione autonoma utile per l'utente finale."
-msgstr "It is only meant to refine `mespy`'s notebook integration: it does not represent an autonomous operation that is useful to end users."
-
+"Serve solo a rifinire l'integrazione notebook di `mespy`: non rappresenta "
+"un'operazione autonoma utile per l'utente finale."
+msgstr ""
+"It is only meant to refine `mespy`'s notebook integration: it does not "
+"represent an autonomous operation that is useful to end users."

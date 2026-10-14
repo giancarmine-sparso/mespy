@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 12:46+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -19,116 +18,121 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:5
-msgid "API Reference"
+#: ../../source/moduli/index.md:5
+msgid "Riferimento API"
 msgstr "API Reference"
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:7
+#: ../../source/moduli/index.md:7
 msgid ""
-"Explore MesPy's core plotting and fitting functions, along with the utilities and result objects "
-"that support experimental data analysis."
+"Esplora le funzioni principali di MesPy per grafici e fit, insieme alle "
+"funzioni di utilità e agli oggetti risultato per l'analisi dei dati "
+"sperimentali."
 msgstr ""
-"Explore MesPy's core plotting and fitting functions, along with the utilities and result objects "
-"that support experimental data analysis."
+"Explore MesPy's core plotting and fitting functions, along with the "
+"utilities and result objects that support experimental data analysis."
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:10
-msgid "Core functions"
+#: ../../source/moduli/index.md:10
+msgid "Funzioni principali"
 msgstr "Core functions"
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:12
+#: ../../source/moduli/index.md:12
 msgid ""
-"[`histogram`](plot_utils/histogram.md): visualize experimental measurements, their distribution, "
-"and descriptive statistics."
+"[`histogram`](plot_utils/histogram.md): visualizza le misure sperimentali, "
+"la loro distribuzione e le statistiche descrittive."
 msgstr ""
-"[`histogram`](plot_utils/histogram.md): visualize experimental measurements, their distribution, "
-"and descriptive statistics."
+"[`histogram`](plot_utils/histogram.md): visualize experimental measurements,"
+" their distribution, and descriptive statistics."
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:13
+#: ../../source/moduli/index.md:13
 msgid ""
-"[`lin_fit`](fit_utils/lin-fit.md): fit a straight line to experimental data, estimate parameter "
-"uncertainties, and inspect residuals."
+"[`lin_fit`](fit_utils/lin-fit.md): adatta una retta ai dati sperimentali, "
+"stima le incertezze dei parametri ed esamina i residui."
 msgstr ""
-"[`lin_fit`](fit_utils/lin-fit.md): fit a straight line to experimental data, estimate parameter "
-"uncertainties, and inspect residuals."
+"[`lin_fit`](fit_utils/lin-fit.md): fit a straight line to experimental data,"
+" estimate parameter uncertainties, and inspect residuals."
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:15
-msgid "Additional utilities"
+#: ../../source/moduli/index.md:15
+msgid "Altre funzioni di utilità"
 msgstr "Additional utilities"
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:17
-msgid "Data loading"
+#: ../../source/moduli/index.md:17
+msgid "Caricamento dei dati"
 msgstr "Data loading"
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:19
+#: ../../source/moduli/index.md:19
 msgid ""
-"[`load_csv`](io_utils/load-csv.md): load a CSV into a DataFrame with checks on columns and "
-"missing values."
+"[`load_csv`](io_utils/load-csv.md): carica un CSV in un DataFrame con "
+"controlli sulle colonne e sui valori mancanti."
 msgstr ""
-"[`load_csv`](io_utils/load-csv.md): load a CSV into a DataFrame with checks on columns and "
-"missing values."
+"[`load_csv`](io_utils/load-csv.md): load a CSV into a DataFrame with checks "
+"on columns and missing values."
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:21
-msgid "Descriptive statistics"
+#: ../../source/moduli/index.md:21
+msgid "Statistica descrittiva"
 msgstr "Descriptive statistics"
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:23
-msgid "[`median`](stats_utils/median.md): compute the median of a numeric sample."
+#: ../../source/moduli/index.md:23
+msgid ""
+"[`median`](stats_utils/median.md): calcola la mediana di un campione "
+"numerico."
 msgstr "[`median`](stats_utils/median.md): compute the median of a numeric sample."
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:24
+#: ../../source/moduli/index.md:24
 msgid ""
-"[`weighted_mean`](stats_utils/weighted-mean.md): compute the arithmetic or weighted mean of a "
-"sample."
+"[`weighted_mean`](stats_utils/weighted-mean.md): calcola la media aritmetica"
+" o pesata di un campione."
 msgstr ""
-"[`weighted_mean`](stats_utils/weighted-mean.md): compute the arithmetic or weighted mean of a "
-"sample."
+"[`weighted_mean`](stats_utils/weighted-mean.md): compute the arithmetic or "
+"weighted mean of a sample."
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:25
+#: ../../source/moduli/index.md:25
 msgid ""
-"[`variance`](stats_utils/variance.md): compute variance with optional weights and a ddof "
-"correction."
+"[`variance`](stats_utils/variance.md): calcola la varianza con pesi "
+"facoltativi e una correzione `ddof`."
 msgstr ""
-"[`variance`](stats_utils/variance.md): compute variance with optional weights and a ddof "
-"correction."
+"[`variance`](stats_utils/variance.md): compute variance with optional "
+"weights and a ddof correction."
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:26
+#: ../../source/moduli/index.md:26
 msgid ""
-"[`covariance`](stats_utils/covariance.md): estimate covariance between two variables with "
-"optional weights."
+"[`covariance`](stats_utils/covariance.md): stima la covarianza tra due "
+"variabili con pesi facoltativi."
 msgstr ""
-"[`covariance`](stats_utils/covariance.md): estimate covariance between two variables with "
-"optional weights."
+"[`covariance`](stats_utils/covariance.md): estimate covariance between two "
+"variables with optional weights."
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:27
+#: ../../source/moduli/index.md:27
 msgid ""
-"[`standard_deviation`](stats_utils/standard-deviation.md): compute standard deviation as the "
-"square root of variance."
+"[`standard_deviation`](stats_utils/standard-deviation.md): calcola la "
+"deviazione standard come radice quadrata della varianza."
 msgstr ""
-"[`standard_deviation`](stats_utils/standard-deviation.md): compute standard deviation as the "
-"square root of variance."
+"[`standard_deviation`](stats_utils/standard-deviation.md): compute standard "
+"deviation as the square root of variance."
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:29
-msgid "Fit results"
+#: ../../source/moduli/index.md:29
+msgid "Risultati del fit"
 msgstr "Fit results"
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:31
+#: ../../source/moduli/index.md:31
 msgid ""
-"[`LinearFitResult`](fit_utils/linear-fit-result.md): fit parameters, uncertainties, residuals and"
-" diagnostics."
+"[`LinearFitResult`](fit_utils/linear-fit-result.md): parametri del fit, "
+"incertezze, residui e informazioni diagnostiche."
 msgstr ""
-"[`LinearFitResult`](fit_utils/linear-fit-result.md): fit parameters, uncertainties, residuals and"
-" diagnostics."
+"[`LinearFitResult`](fit_utils/linear-fit-result.md): fit parameters, "
+"uncertainties, residuals and diagnostics."
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:33
+#: ../../source/moduli/index.md:33
 msgid ""
-"Module documentation: [`io_utils.py`](io_utils/index.md), "
-"[`stats_utils.py`](stats_utils/index.md), [`plot_utils.py`](plot_utils/index.md), "
+"Documentazione dei moduli: [`io_utils.py`](io_utils/index.md), "
+"[`stats_utils.py`](stats_utils/index.md), "
+"[`plot_utils.py`](plot_utils/index.md), "
 "[`fit_utils.py`](fit_utils/index.md)."
 msgstr ""
 "Module documentation: [`io_utils.py`](io_utils/index.md), "
-"[`stats_utils.py`](stats_utils/index.md), [`plot_utils.py`](plot_utils/index.md), "
+"[`stats_utils.py`](stats_utils/index.md), "
+"[`plot_utils.py`](plot_utils/index.md), "
 "[`fit_utils.py`](fit_utils/index.md)."
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/index.md:35
-msgid "Looking for practical examples? Explore the [Examples](../examples/index.md)."
+#: ../../source/moduli/index.md:35
+msgid "Cerchi esempi pratici? Esplora gli [Esempi](../examples/index.md)."
 msgstr "Looking for practical examples? Explore the [Examples](../examples/index.md)."

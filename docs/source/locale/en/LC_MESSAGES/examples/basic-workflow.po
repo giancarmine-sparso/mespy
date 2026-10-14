@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 10:52+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -19,29 +19,29 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 
 #: ../../source/examples/basic-workflow.ipynb:10002
-msgid "Basic workflow"
+msgid "Flusso di lavoro di base"
 msgstr "Basic workflow"
 
 #: ../../source/examples/basic-workflow.ipynb:10004
 msgid ""
-"Load a CSV with pandas, then create a histogram with `mespy.histogram` and a"
-" linear fit with `mespy.lin_fit`. Find the PDF plots and TOML fit results in"
-" your chosen output folder."
+"Carica un CSV con pandas, poi crea un istogramma con `mespy.histogram` e un "
+"fit lineare con `mespy.lin_fit`. Trovi i grafici PDF e i risultati del fit "
+"in TOML nella cartella di destinazione scelta."
 msgstr ""
 "Load a CSV with pandas, then create a histogram with `mespy.histogram` and a"
 " linear fit with `mespy.lin_fit`. Find the PDF plots and TOML fit results in"
 " your chosen output folder."
 
 #: ../../source/examples/basic-workflow.ipynb:20003
-msgid "Load your data"
+msgid "Carica i tuoi dati"
 msgstr "Load your data"
 
 #: ../../source/examples/basic-workflow.ipynb:20005
 #, python-brace-format
 msgid ""
-"Save {download}`measurements.csv <data/measurements.csv>` in your project's "
-"`data/` folder. It has three columns: `x`, `y`, and `sigma_y`, the "
-"uncertainty on each `y` value."
+"Salva {download}`measurements.csv <data/measurements.csv>` nella cartella "
+"`data/` del progetto. Contiene tre colonne: `x`, `y` e `sigma_y`, "
+"l'incertezza su ogni valore di `y`."
 msgstr ""
 "Save {download}`measurements.csv <data/measurements.csv>` in your project's "
 "`data/` folder. It has three columns: `x`, `y`, and `sigma_y`, the "
@@ -49,74 +49,75 @@ msgstr ""
 
 #: ../../source/examples/basic-workflow.ipynb:20011
 msgid ""
-"Run the code from your project folder. pandas reads the CSV into a DataFrame"
-" named `df`:"
+"Esegui il codice dalla cartella del progetto. pandas legge il CSV in un "
+"DataFrame chiamato `df`:"
 msgstr ""
 "Run the code from your project folder. pandas reads the CSV into a DataFrame"
 " named `df`:"
 
 #: ../../source/examples/basic-workflow.ipynb:40002
 msgid ""
-"Access any column with `df[\"column_name\"]`. For example, `df[\"y\"]` "
-"contains the measured values."
+"Accedi a qualsiasi colonna con `df[\"column_name\"]`. Per esempio, "
+"`df[\"y\"]` contiene i valori misurati."
 msgstr ""
 "Access any column with `df[\"column_name\"]`. For example, `df[\"y\"]` "
 "contains the measured values."
 
 #: ../../source/examples/basic-workflow.ipynb:40005
-msgid "Create a histogram"
+msgid "Crea un istogramma"
 msgstr "Create a histogram"
 
 #: ../../source/examples/basic-workflow.ipynb:40007
 msgid ""
-"`histogram` saves a PDF at `save_path`. The `results/` folder must already "
-"exist: `histogram` does not create missing folders, so create it before "
-"saving."
+"`histogram` salva un PDF in `save_path`. La cartella `results/` deve già "
+"esistere: `histogram` non crea le cartelle mancanti, quindi creala prima di "
+"salvare."
 msgstr ""
 "`histogram` saves a PDF at `save_path`. The `results/` folder must already "
 "exist: `histogram` does not create missing folders, so create it before "
 "saving."
 
 #: ../../source/examples/basic-workflow.ipynb:60003
-msgid "Perform a linear fit"
+msgid "Esegui un fit lineare"
 msgstr "Perform a linear fit"
 
 #: ../../source/examples/basic-workflow.ipynb:60005
 msgid ""
-"Use the same DataFrame. Pass `sigma_y` to include the measurement "
-"uncertainties in the fit."
+"Usa lo stesso DataFrame. Passa `sigma_y` per includere le incertezze di "
+"misura nel fit."
 msgstr ""
 "Use the same DataFrame. Pass `sigma_y` to include the measurement "
 "uncertainties in the fit."
 
 #: ../../source/examples/basic-workflow.ipynb:80002
 msgid ""
-"`output` sets the destination and base filename, **without an extension**. "
-"This call creates:"
+"`output` imposta la destinazione e il nome base dei file, **senza "
+"estensione**. Questa chiamata crea:"
 msgstr ""
 "`output` sets the destination and base filename, **without an extension**. "
 "This call creates:"
 
 #: ../../source/examples/basic-workflow.ipynb:80004
-msgid "`linear_fit.pdf` — the fit plot."
+msgid "`linear_fit.pdf` — il grafico del fit."
 msgstr "`linear_fit.pdf` — the fit plot."
 
 #: ../../source/examples/basic-workflow.ipynb:80005
-msgid "`linear_fit.toml` — the numerical fit results."
+msgid "`linear_fit.toml` — i risultati numerici del fit."
 msgstr "`linear_fit.toml` — the numerical fit results."
 
 #: ../../source/examples/basic-workflow.ipynb:80008
-msgid "Saved files"
+msgid "File salvati"
 msgstr "Saved files"
 
 #: ../../source/examples/basic-workflow.ipynb:80010
-msgid "Your project now contains:"
+msgid "Il progetto ora contiene:"
 msgstr "Your project now contains:"
 
 #: ../../source/examples/basic-workflow.ipynb:80022
 msgid ""
-"**Both functions save PDF plots.** `lin_fit` also saves numerical results in"
-" TOML, a text file you can open in any text editor."
+"**Entrambe le funzioni salvano grafici PDF.** `lin_fit` salva anche i "
+"risultati numerici in TOML, un file di testo che puoi aprire con qualsiasi "
+"editor di testo."
 msgstr ""
 "**Both functions save PDF plots.** `lin_fit` also saves numerical results in"
 " TOML, a text file you can open in any text editor."

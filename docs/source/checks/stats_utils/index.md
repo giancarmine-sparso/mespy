@@ -1,4 +1,4 @@
-# Helper di `stats_utils`
+# Funzioni di supporto di `stats_utils`
 
 Questa sottosezione raccoglie i validatori numerici condivisi che nascono in `stats_utils.py` e vengono riusati anche dagli altri moduli.
 

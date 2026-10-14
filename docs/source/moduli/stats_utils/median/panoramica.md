@@ -2,7 +2,7 @@
 
 ## Scopo
 
-Restituire la mediana di un campione numerico dopo aver validato che l'input sia monodimensionale, non vuoto e finito.
+Restituire la mediana di un campione numerico dopo aver validato che i dati in ingresso siano monodimensionali, non vuoti e finiti.
 
 ## Parametri
 

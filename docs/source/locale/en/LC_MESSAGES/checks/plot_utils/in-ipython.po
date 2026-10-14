@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 19:48+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -33,12 +33,15 @@ msgstr "What problem it solves"
 #: ../../source/checks/plot_utils/in-ipython.md:11
 msgid ""
 "Rileva se il codice sta girando dentro un kernel IPython/Jupyter con "
-"display inline disponibile, distinguendolo da una shell terminale o da un"
-" ambiente senza IPython."
-msgstr "Detects whether the code is running inside an IPython/Jupyter kernel with inline display available, distinguishing it from a terminal shell or an environment without IPython."
+"visualizzazione nel notebook disponibile, distinguendolo da una shell "
+"terminale o da un ambiente senza IPython."
+msgstr ""
+"Detects whether the code is running inside an IPython/Jupyter kernel with "
+"inline display available, distinguishing it from a terminal shell or an "
+"environment without IPython."
 
 #: ../../source/checks/plot_utils/in-ipython.md:13
-msgid "Contratto sugli input"
+msgid "Contratto sui dati in ingresso"
 msgstr "Input contract"
 
 #: ../../source/checks/plot_utils/in-ipython.md:15
@@ -49,7 +52,9 @@ msgstr "It takes no arguments."
 msgid ""
 "Restituisce `True` solo se `IPython` e importabile, esiste una sessione "
 "corrente e la configurazione contiene `IPKernelApp`."
-msgstr "Returns `True` only if `IPython` is importable, there is a current session, and the configuration contains `IPKernelApp`."
+msgstr ""
+"Returns `True` only if `IPython` is importable, there is a current session, "
+"and the configuration contains `IPKernelApp`."
 
 #: ../../source/checks/plot_utils/in-ipython.md:18
 msgid "Dove viene usata"
@@ -57,15 +62,19 @@ msgstr "Where it is used"
 
 #: ../../source/checks/plot_utils/in-ipython.md:20
 msgid ""
-"in [`_style_context`](style-context.md) per decidere se tracciare le "
-"figure aperte prima del blocco"
-msgstr "in [`_style_context`](style-context.md) to decide whether to track the figures already open before the block"
+"in [`_style_context`](style-context.md) per decidere se tracciare le figure "
+"aperte prima del blocco"
+msgstr ""
+"in [`_style_context`](style-context.md) to decide whether to track the "
+"figures already open before the block"
 
 #: ../../source/checks/plot_utils/in-ipython.md:21
 msgid ""
 "indirettamente in [`_display_new_figures`](display-new-figures.md) per "
 "mostrare solo le nuove figure create nel contesto"
-msgstr "indirectly in [`_display_new_figures`](display-new-figures.md) to show only the new figures created inside the context"
+msgstr ""
+"indirectly in [`_display_new_figures`](display-new-figures.md) to show only "
+"the new figures created inside the context"
 
 #: ../../source/checks/plot_utils/in-ipython.md:23
 msgid "Come fallisce"
@@ -75,7 +84,9 @@ msgstr "How it fails"
 msgid ""
 "Se `IPython` non e installato oppure non esiste una sessione attiva, "
 "restituisce semplicemente `False`."
-msgstr "If `IPython` is not installed or there is no active session, it simply returns `False`."
+msgstr ""
+"If `IPython` is not installed or there is no active session, it simply "
+"returns `False`."
 
 #: ../../source/checks/plot_utils/in-ipython.md:27
 msgid "Perche resta privata"
@@ -85,5 +96,6 @@ msgstr "Why it remains private"
 msgid ""
 "E una piccola euristica infrastrutturale specifica del comportamento dei "
 "notebook, utile internamente ma poco significativa come API pubblica."
-msgstr "It is a small infrastructural heuristic specific to notebook behaviour, useful internally but not very meaningful as a public API."
-
+msgstr ""
+"It is a small infrastructural heuristic specific to notebook behaviour, "
+"useful internally but not very meaningful as a public API."

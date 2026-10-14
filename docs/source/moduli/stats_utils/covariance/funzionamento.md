@@ -2,7 +2,7 @@
 
 Questa pagina descrive il flusso interno di `covariance` e l'ordine con cui vengono applicate validazione separata di `x` e `y`, controllo di compatibilita delle forme, eventuale validazione dei pesi e calcolo finale della covarianza sui dati centrati. A differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere i parametri, ma mostrare come la funzione costruisce davvero il risultato.
 
-I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. Gli helper privati vengono citati solo per chiarire il flusso; i dettagli completi sono documentati in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) e [`_validate_weights`](../../../checks/stats_utils/validate-weights.md).
+I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. Le funzioni di supporto private vengono citate solo per chiarire il flusso; i dettagli completi sono documentati in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) e [`_validate_weights`](../../../checks/stats_utils/validate-weights.md).
 
 ## Sequenza di esecuzione
 
@@ -15,7 +15,7 @@ L'implementazione segue questa sequenza:
 5. Centra `x` e `y` sottraendo le rispettive medie (pesate se `w` e presente).
 6. Restituisce la somma pesata dei prodotti degli scarti, con il termine correttivo two-pass, divisa per `sum(w)`.
 
-## Validazione degli input e centratura
+## Validazione dei dati in ingresso e centratura
 
 ```python
 def covariance(x: ArrayLike, y: ArrayLike, w: ArrayLike | None = None) -> float:
@@ -40,7 +40,7 @@ def covariance(x: ArrayLike, y: ArrayLike, w: ArrayLike | None = None) -> float:
 
 Il primo tratto del flusso e interamente dedicato a mettere `x` e `y` sullo stesso piano numerico.
 
-- I due input vengono validati separatamente, quindi entrambi devono essere monodimensionali, non vuoti e composti da valori finiti.
+- I due dati in ingresso vengono validati separatamente, quindi entrambi devono essere monodimensionali, non vuoti e composti da valori finiti.
 - Solo dopo questa normalizzazione la funzione controlla che `x_values.shape == y_values.shape`.
 - Se i vettori non sono compatibili, il calcolo non parte nemmeno.
 

@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-06 17:59+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -65,7 +65,7 @@ msgid "`ValueError` se `x` e `y` non hanno la stessa lunghezza."
 msgstr "`ValueError` if `x` and `y` do not have the same length."
 
 #: ../../source/moduli/stats_utils/covariance/panoramica.md:20
-msgid "`ValueError` se gli input contengono valori non finiti."
+msgid "`ValueError` se i dati in ingresso contengono valori non finiti."
 msgstr "`ValueError` if the inputs contain non-finite values."
 
 #: ../../source/moduli/stats_utils/covariance/panoramica.md:21
@@ -82,24 +82,12 @@ msgstr "Notes"
 
 #: ../../source/moduli/stats_utils/covariance/panoramica.md:36
 msgid ""
-"La covarianza e definita come `E[(x - E[x])(y - E[y])]`, normalizzata per"
-" `n` oppure per `sum(w)`. Nel caso pesato, le medie sono pesate con lo "
-"stesso vettore `w`. Il calcolo centra i dati prima di moltiplicarli, cosi"
-" resta accurato anche con grandi offset."
+"La covarianza e definita come `E[(x - E[x])(y - E[y])]`, normalizzata per "
+"`n` oppure per `sum(w)`. Nel caso pesato, le medie sono pesate con lo stesso"
+" vettore `w`. Il calcolo centra i dati prima di moltiplicarli, cosi resta "
+"accurato anche con grandi offset."
 msgstr ""
-"Covariance is defined as `E[(x - E[x])(y - E[y])]`, normalized by `n` or "
-"by `sum(w)`. In the weighted case, the means are weighted with the same "
-"vector `w`. The computation centers the data before multiplying them, so "
-"it stays accurate even with large offsets."
-
-#~ msgid ""
-#~ "La formula implementata e `E[xy] - "
-#~ "E[x]E[y]`. Nel caso pesato, le medie "
-#~ "sono pesate con lo stesso vettore "
-#~ "`w`."
-#~ msgstr ""
-#~ "The implemented formula is `E[xy] - "
-#~ "E[x]E[y]`. In the weighted case, the "
-#~ "means are weighted with the same "
-#~ "`w` vector."
-
+"Covariance is defined as `E[(x - E[x])(y - E[y])]`, normalized by `n` or by "
+"`sum(w)`. In the weighted case, the means are weighted with the same vector "
+"`w`. The computation centers the data before multiplying them, so it stays "
+"accurate even with large offsets."

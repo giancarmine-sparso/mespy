@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 19:48+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -32,12 +32,14 @@ msgstr "What problem it solves"
 
 #: ../../source/checks/plot_utils/validate-decimals.md:11
 msgid ""
-"Verifica che la precisione usata per etichette e legende resti leggibile "
-"e coerente tra le funzioni di plotting del package."
-msgstr "Ensures that the precision used for labels and legends remains readable and consistent across the package plotting functions."
+"Verifica che la precisione usata per etichette e legende resti leggibile e "
+"coerente tra le funzioni di visualizzazione grafica del pacchetto."
+msgstr ""
+"Ensures that the precision used for labels and legends remains readable and "
+"consistent across the package plotting functions."
 
 #: ../../source/checks/plot_utils/validate-decimals.md:13
-msgid "Contratto sugli input"
+msgid "Contratto sui dati in ingresso"
 msgstr "Input contract"
 
 #: ../../source/checks/plot_utils/validate-decimals.md:15
@@ -58,15 +60,19 @@ msgstr "Where it is used"
 
 #: ../../source/checks/plot_utils/validate-decimals.md:21
 msgid ""
-"in [`histogram`](../../moduli/plot_utils/histogram.md) per formattare "
-"tick, media e banda"
-msgstr "in [`histogram`](../../moduli/plot_utils/histogram.md) to format ticks, the mean, and the band"
+"in [`histogram`](../../moduli/plot_utils/histogram.md) per formattare tick, "
+"media e banda"
+msgstr ""
+"in [`histogram`](../../moduli/plot_utils/histogram.md) to format ticks, the "
+"mean, and the band"
 
 #: ../../source/checks/plot_utils/validate-decimals.md:22
 msgid ""
-"in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) per formattare la "
-"legenda del fit quando serve"
-msgstr "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) to format the fit legend when needed"
+"in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) per formattare la legenda "
+"del fit quando serve"
+msgstr ""
+"in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) to format the fit legend "
+"when needed"
 
 #: ../../source/checks/plot_utils/validate-decimals.md:24
 msgid "Come fallisce"
@@ -91,7 +97,8 @@ msgstr "Why it remains private"
 #: ../../source/checks/plot_utils/validate-decimals.md:32
 msgid ""
 "E una regola di validazione orientata alla presentazione, condivisa "
-"internamente dalle API di plotting ma non pensata come utilita pubblica "
-"autonoma."
-msgstr "It is a presentation-oriented validation rule, shared internally by the plotting APIs but not intended as a standalone public utility."
-
+"internamente dalle API di visualizzazione grafica ma non pensata come "
+"utilita pubblica autonoma."
+msgstr ""
+"It is a presentation-oriented validation rule, shared internally by the "
+"plotting APIs but not intended as a standalone public utility."

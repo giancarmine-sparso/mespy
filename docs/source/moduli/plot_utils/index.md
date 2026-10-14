@@ -1,10 +1,10 @@
 # plot_utils.py
 
-`plot_utils.py` raccoglie gli strumenti di visualizzazione del package. Ospita `histogram` e un piccolo gruppo di helper privati condivisi anche con `fit_utils` per validazione, gestione dello stile e comportamento coerente nei notebook.
+`plot_utils.py` raccoglie gli strumenti di visualizzazione del pacchetto. Ospita `histogram` e un piccolo gruppo di funzioni di supporto private condivise anche con `fit_utils` per validazione, gestione dello stile e comportamento coerente nei notebook.
 
 ## Import principali
 
-- Standard library:
+- Libreria standard:
   `contextlib.contextmanager`,
   `importlib.resources.as_file`,
   `importlib.resources.files`,
@@ -23,13 +23,13 @@
 
 ## Di cosa si occupa
 
-- validare input numerici, limiti degli assi, `figsize` e precisione testuale
+- validare dati in ingresso numerici, limiti degli assi, `figsize` e precisione testuale
 - applicare temporaneamente lo stile `mespy`, gli `rcParams` correnti o un altro stile Matplotlib
-- gestire il display delle figure create dentro notebook IPython/Jupyter
+- gestire la visualizzazione delle figure create dentro notebook IPython/Jupyter
 - creare una nuova figura oppure disegnare su un asse esistente
 - mostrare opzionalmente media, banda a una sigma, legenda e griglia
 
-## Helper collegati
+## Funzioni di supporto collegate
 
 - [`_validate_axis_limits`](../../checks/plot_utils/validate-axis-limits.md)
 - [`_validate_figsize`](../../checks/plot_utils/validate-figsize.md)

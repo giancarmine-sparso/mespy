@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../source/moduli/stats_utils/variance/panoramica.md:1
 msgid "Panoramica"
@@ -27,8 +27,12 @@ msgid "Scopo"
 msgstr "Purpose"
 
 #: ../../source/moduli/stats_utils/variance/panoramica.md:5
-msgid "Calcolare la varianza di `x`, con supporto sia al caso non pesato sia al caso pesato."
-msgstr "Compute the variance of `x`, supporting both the unweighted and weighted cases."
+msgid ""
+"Calcolare la varianza di `x`, con supporto sia al caso non pesato sia al "
+"caso pesato."
+msgstr ""
+"Compute the variance of `x`, supporting both the unweighted and weighted "
+"cases."
 
 #: ../../source/moduli/stats_utils/variance/panoramica.md:7
 msgid "Parametri"
@@ -44,11 +48,11 @@ msgstr "`w`: optional weights."
 
 #: ../../source/moduli/stats_utils/variance/panoramica.md:11
 msgid ""
-"`ddof`: correzione sul denominatore. Nel caso non pesato il denominatore e `len(x) - ddof`; nel "
-"caso pesato e `sum(w) - ddof`."
+"`ddof`: correzione sul denominatore. Nel caso non pesato il denominatore e "
+"`len(x) - ddof`; nel caso pesato e `sum(w) - ddof`."
 msgstr ""
-"`ddof`: correction applied to the denominator. In the unweighted case the denominator is `len(x) "
-"- ddof`; in the weighted case it is `sum(w) - ddof`."
+"`ddof`: correction applied to the denominator. In the unweighted case the "
+"denominator is `len(x) - ddof`; in the weighted case it is `sum(w) - ddof`."
 
 #: ../../source/moduli/stats_utils/variance/panoramica.md:13
 msgid "Restituisce"
@@ -83,10 +87,13 @@ msgid "Note"
 msgstr "Notes"
 
 #: ../../source/moduli/stats_utils/variance/panoramica.md:36
-msgid "Il default `ddof=0` e coerente con l'impostazione descrittiva dell'intero package."
-msgstr "The default `ddof=0` is consistent with the descriptive convention used throughout the package."
+msgid ""
+"Il valore predefinito `ddof=0` e coerente con l'impostazione descrittiva "
+"dell'intero pacchetto."
+msgstr ""
+"The default `ddof=0` is consistent with the descriptive convention used "
+"throughout the package."
 
 #: ../../source/moduli/stats_utils/variance/panoramica.md:37
 msgid "La versione pesata usa la media pesata interna, non `numpy.var`."
 msgstr "The weighted version uses the internal weighted mean, not `numpy.var`."
-

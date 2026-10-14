@@ -1,18 +1,18 @@
 # fit_utils.py
 
-`fit_utils.py` implements MesPy's linear fitting function and its immutable result object.
+`fit_utils.py` implementa la funzione di fit lineare di MesPy e il suo oggetto risultato immutabile.
 
-## Public interface
+## Interfaccia pubblica
 
-- [`lin_fit`](lin-fit.md): OLS, absolute WLS, and optional horizontal uncertainty propagation selected explicitly through `x_error_method`.
-- [`LinearFitResult`](linear-fit-result.md): fitted parameters, uncertainties, physical residuals, diagnostics, prediction, and TOML export.
-- `XErrorMethod`: the type alias `Literal["none", "iterate"]` for horizontal uncertainty treatment.
+- [`lin_fit`](lin-fit.md): minimi quadrati ordinari (OLS), minimi quadrati pesati (WLS) con incertezze assolute e propagazione facoltativa delle incertezze orizzontali selezionata esplicitamente tramite `x_error_method`.
+- [`LinearFitResult`](linear-fit-result.md): parametri stimati, incertezze, residui in unità fisiche, informazioni diagnostiche, previsioni ed esportazione TOML.
+- `XErrorMethod`: l'alias di tipo `Literal["none", "iterate"]` per il trattamento delle incertezze orizzontali.
 
-## Implementation
+## Implementazione
 
-The module validates finite real input vectors, positive vertical uncertainties, and optional non-negative horizontal uncertainties. Centered and scaled coordinates preserve numerical accuracy for fitting and prediction. Optional effective-variance iteration has fixed convergence settings; `fit_method`, `tol`, and `max_iter` are no longer public input arguments.
+Il modulo valida vettori reali finiti in ingresso, incertezze verticali positive e incertezze orizzontali facoltative non negative. Le coordinate centrate e riscalate preservano l'accuratezza numerica del fit e delle previsioni. L'iterazione facoltativa della varianza efficace ha impostazioni di convergenza fisse; `fit_method`, `tol` e `max_iter` non sono più argomenti pubblici in ingresso.
 
-Plotting uses the shared [style context](../../checks/plot_utils/style-context.md), with `"mespy"` as the default style. Export writes TOML and, when plotting is enabled, PDF files from an extension-free base path. The [function reference](lin-fit.md) describes validation, iteration, plotting, and export in detail.
+La creazione dei grafici usa il [contesto di stile](../../checks/plot_utils/style-context.md) condiviso, con `"mespy"` come stile predefinito. L'esportazione scrive file TOML e, quando la creazione dei grafici è attiva, PDF a partire da un percorso base senza estensione. Il [riferimento della funzione](lin-fit.md) descrive in dettaglio validazione, iterazione, grafici ed esportazione.
 
 ```{toctree}
 :hidden:

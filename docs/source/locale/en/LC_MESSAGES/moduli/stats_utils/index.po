@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 13:45+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -24,8 +24,8 @@ msgstr "stats_utils.py"
 
 #: ../../source/moduli/stats_utils/index.md:3
 msgid ""
-"`stats_utils.py` raccoglie le statistiche descrittive di base del package e "
-"i validatori interni riusati anche da altri moduli."
+"`stats_utils.py` raccoglie le statistiche descrittive di base del pacchetto "
+"e i validatori interni riusati anche da altri moduli."
 msgstr ""
 "`stats_utils.py` collects the package basic descriptive statistics and the "
 "internal validators reused by other modules as well."
@@ -48,9 +48,9 @@ msgstr "Types defined in the module: `FloatVector = NDArray[np.float64]`"
 
 #: ../../source/moduli/stats_utils/index.md:11
 msgid ""
-"Helper interni: [`_as_float_vector`](../../checks/stats_utils/as-float-"
-"vector.md), [`_validate_weights`](../../checks/stats_utils/validate-"
-"weights.md)"
+"Funzioni di supporto interne: [`_as_float_vector`](../../checks/stats_utils"
+"/as-float-vector.md), [`_validate_weights`](../../checks/stats_utils"
+"/validate-weights.md)"
 msgstr ""
 "Internal helpers: [`_as_float_vector`](../../checks/stats_utils/as-float-"
 "vector.md), [`_validate_weights`](../../checks/stats_utils/validate-"
@@ -61,27 +61,27 @@ msgid "Cosa espone"
 msgstr "What it exports"
 
 #: ../../source/moduli/stats_utils/index.md:17
-#: ../../source/moduli/stats_utils/index.md:38
+#: ../../source/moduli/stats_utils/index.md:36
 msgid "[`median`](median.md)"
 msgstr "[`median`](median.md)"
 
 #: ../../source/moduli/stats_utils/index.md:18
-#: ../../source/moduli/stats_utils/index.md:39
+#: ../../source/moduli/stats_utils/index.md:37
 msgid "[`weighted_mean`](weighted-mean.md)"
 msgstr "[`weighted_mean`](weighted-mean.md)"
 
 #: ../../source/moduli/stats_utils/index.md:19
-#: ../../source/moduli/stats_utils/index.md:40
+#: ../../source/moduli/stats_utils/index.md:38
 msgid "[`variance`](variance.md)"
 msgstr "[`variance`](variance.md)"
 
 #: ../../source/moduli/stats_utils/index.md:20
-#: ../../source/moduli/stats_utils/index.md:41
+#: ../../source/moduli/stats_utils/index.md:39
 msgid "[`covariance`](covariance.md)"
 msgstr "[`covariance`](covariance.md)"
 
 #: ../../source/moduli/stats_utils/index.md:21
-#: ../../source/moduli/stats_utils/index.md:42
+#: ../../source/moduli/stats_utils/index.md:40
 msgid "[`standard_deviation`](standard-deviation.md)"
 msgstr "[`standard_deviation`](standard-deviation.md)"
 
@@ -90,11 +90,13 @@ msgid "Di cosa si occupa"
 msgstr "What it does"
 
 #: ../../source/moduli/stats_utils/index.md:25
-msgid "convertire input array-like in vettori `float64` monodimensionali"
+msgid ""
+"convertire dati in ingresso assimilabili ad array in vettori `float64` "
+"monodimensionali"
 msgstr "convert array-like inputs into one-dimensional `float64` vectors"
 
 #: ../../source/moduli/stats_utils/index.md:26
-msgid "intercettare input vuoti o non finiti"
+msgid "intercettare dati in ingresso vuoti o non finiti"
 msgstr "catch empty or non-finite inputs"
 
 #: ../../source/moduli/stats_utils/index.md:27
@@ -111,15 +113,15 @@ msgstr "Internal relations"
 
 #: ../../source/moduli/stats_utils/index.md:32
 msgid ""
-"Gli helper di questo modulo non servono solo alle funzioni statistiche. "
-"`_as_float_vector` viene importata anche da "
+"Le funzioni di supporto di questo modulo non servono solo alle funzioni "
+"statistiche. `_as_float_vector` viene importata anche da "
 "[`plot_utils`](../plot_utils/index.md); [`fit_utils`](../fit_utils/index.md)"
-" usa invece la propria validazione degli input del fit."
+" usa invece la propria validazione dei dati in ingresso del fit."
 msgstr ""
 "The helpers in this module also support other modules. `_as_float_vector` is"
 " imported by [`plot_utils`](../plot_utils/index.md); "
 "[`fit_utils`](../fit_utils/index.md) uses its own fit input validation."
 
-#: ../../source/moduli/stats_utils/index.md:36
+#: ../../source/moduli/stats_utils/index.md:34
 msgid "Pagine di dettaglio"
 msgstr "Detailed pages"

@@ -1,6 +1,6 @@
-# Controlli e helper interni
+# Controlli interni e funzioni di supporto
 
-Questa sezione documenta le funzioni private usate da `mespy` per validare input e centralizzare piccoli passaggi di calcolo. Sono helper importanti per capire il comportamento del package, ma non fanno parte dell'API pubblica.
+Questa sezione documenta le funzioni private usate da `mespy` per validare dati in ingresso e centralizzare piccoli passaggi di calcolo. Sono funzioni di supporto importanti per capire il comportamento del pacchetto, ma non fanno parte dell'API pubblica.
 
 ## Perche esiste questa sezione
 
@@ -27,7 +27,7 @@ Questa sezione documenta le funzioni private usate da `mespy` per validare input
 
 ## Nota importante
 
-Il fatto che queste funzioni siano documentate non significa che siano stabili come interfaccia pubblica. Sono descritte per chiarezza progettuale e per facilitare la manutenzione del package.
+Il fatto che queste funzioni siano documentate non significa che siano stabili come interfaccia pubblica. Sono descritte per chiarezza progettuale e per facilitare la manutenzione del pacchetto.
 
 ```{toctree}
 :hidden:

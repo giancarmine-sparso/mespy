@@ -1,47 +1,47 @@
 # LinearFitResult
 
-The immutable result object returned by [`lin_fit`](lin-fit.md). Its numerical fields describe one fit; its optional Matplotlib figure can still be edited and saved.
+L'oggetto risultato immutabile restituito da [`lin_fit`](lin-fit.md). I suoi campi numerici descrivono un singolo fit; la figura Matplotlib facoltativa può comunque essere modificata e salvata.
 
-## Public attributes
+## Attributi pubblici
 
-| Attribute | Meaning |
+| Attributo | Significato |
 | --- | --- |
-| `slope`, `intercept` | The fitted slope and intercept. |
-| `slope_std`, `intercept_std` | Their standard uncertainties. |
-| `covariance` | Covariance between slope and intercept. |
-| `correlation` | Parameter correlation, or `None` when undefined. |
-| `residuals` | Read-only physical residuals, `y - (slope*x + intercept)`. |
-| `residual_std` | Square root of the residual sum of squares divided by `dof`, or `None` if `dof=0`. |
-| `estimated_sigma` | Common vertical dispersion estimated in OLS; equals `residual_std` in OLS and is `None` in WLS. |
-| `chi2` | Weighted residual criterion, or `None` in OLS. Iterative WLS uses effective variances. |
-| `reduced_chi2` | `chi2 / dof`, or `None` when undefined. |
-| `p_value` | Upper-tail chi-square probability, or `None` in OLS or with zero degrees of freedom. Approximate in iterative WLS. |
-| `dof` | Number of observations minus two. |
-| `fit_method` | `"ols"` or `"wls"`. |
-| `x_error_method` | `"none"` or `"iterate"`; a keyword-only field defaulting to `"none"`. |
-| `figure` | Matplotlib figure, or `None` when `plot=False`. |
+| `slope`, `intercept` | Pendenza e intercetta stimate dal fit. |
+| `slope_std`, `intercept_std` | Le loro incertezze tipo. |
+| `covariance` | Covarianza tra pendenza e intercetta. |
+| `correlation` | Correlazione dei parametri, oppure `None` quando non definita. |
+| `residuals` | Residui in unità fisiche di sola lettura, `y - (slope*x + intercept)`. |
+| `residual_std` | Radice quadrata della somma dei quadrati dei residui divisa per `dof`, oppure `None` se `dof=0`. |
+| `estimated_sigma` | Dispersione verticale comune stimata nei minimi quadrati ordinari (OLS); uguale a `residual_std` in OLS e a `None` nei minimi quadrati pesati (WLS). |
+| `chi2` | Criterio pesato dei residui, oppure `None` in OLS. WLS iterativo usa le varianze efficaci. |
+| `reduced_chi2` | `chi2 / dof`, oppure `None` quando non definito. |
+| `p_value` | Probabilità nella coda superiore del chi quadro, oppure `None` in OLS o con zero gradi di libertà. Approssimata in WLS iterativo. |
+| `dof` | Numero di osservazioni meno due. |
+| `fit_method` | `"ols"` o `"wls"`. |
+| `x_error_method` | `"none"` o `"iterate"`; un campo da passare solo per nome, con valore predefinito `"none"`. |
+| `figure` | Figura Matplotlib, oppure `None` quando `plot=False`. |
 
-For `x_error_method="iterate"`, parameter covariance, the band, and the interpretation of chi-squared and p-value belong to the historical effective-variance approximation. They are not validated York/ODR results. `fit_method` remains `"wls"` and `estimated_sigma` remains `None`.
+Per `x_error_method="iterate"`, la covarianza dei parametri, la banda e l'interpretazione del chi quadro e del valore p appartengono all'approssimazione storica della varianza efficace. Non sono risultati York/ODR validati. `fit_method` rimane `"wls"` e `estimated_sigma` rimane `None`.
 
-`normalize_residuals` changes only the plot; `residuals` always keep the units of `y`. Changes to fitted fields through `dataclasses.replace()` are rejected when they would disagree with the retained fit. You may modify `result.figure` and save it separately; this does not update an earlier automatic PDF export.
+`normalize_residuals` modifica soltanto il grafico; `residuals` conserva sempre le unità di `y`. Le modifiche ai campi stimati tramite `dataclasses.replace()` vengono rifiutate quando sarebbero incoerenti con il fit conservato. Puoi modificare `result.figure` e salvarla separatamente; questo non aggiorna una precedente esportazione PDF automatica.
 
-## Prediction
+## Previsione
 
 ```python
 result = lin_fit(x, y, sigma_y, plot=False)
 predicted = result.predict([1.0, 2.0, 3.0])
 ```
 
-`predict()` accepts a finite real scalar or one-dimensional vector. It uses the retained local representation to preserve accuracy near large coordinate offsets.
+`predict()` accetta uno scalare reale finito o un vettore monodimensionale. Usa la rappresentazione locale conservata per preservare l'accuratezza in prossimità di grandi traslazioni delle coordinate.
 
-## TOML export
+## Esportazione TOML
 
 ```python
 result.to_toml("fit_results.toml")
 ```
 
-The destination directory must already exist. A missing extension becomes `.toml`; an existing destination is replaced atomically. The method returns the written `Path`.
+La directory di destinazione deve già esistere. Un'estensione mancante diventa `.toml`; una destinazione esistente viene sostituita atomicamente. Il metodo restituisce il `Path` del file scritto.
 
-The document contains `[mespy]`, `[fit]`, `[diagnostics]`, and `[residuals]`, plus `[data]` and `[plot]` for results produced by `lin_fit`. Input uncertainties are stored in their original form after scalar expansion, and floating-point results keep full precision. Undefined diagnostics are omitted. Figure edits and the full Matplotlib configuration are not serialized.
+Il documento contiene `[mespy]`, `[fit]`, `[diagnostics]` e `[residuals]`, oltre a `[data]` e `[plot]` per i risultati prodotti da `lin_fit`. Le incertezze in ingresso vengono conservate nella loro forma originale dopo l'espansione degli scalari e i risultati in virgola mobile mantengono la piena precisione. Le informazioni diagnostiche non definite vengono omesse. Le modifiche alla figura e la configurazione Matplotlib completa non vengono serializzate.
 
-Without `sigma_x`, exports retain schema 2. With `sigma_x`, schema 3 also stores `[data].sigma_x` and `[fit].x_error_method`, including `"none"` when horizontal bars were only displayed. Manually constructed iterative results use schema 3 and record the method without inventing input data.
+Senza `sigma_x`, le esportazioni mantengono lo schema 2. Con `sigma_x`, lo schema 3 memorizza anche `[data].sigma_x` e `[fit].x_error_method`, compreso `"none"` quando sono state soltanto visualizzate barre orizzontali. I risultati iterativi costruiti manualmente usano lo schema 3 e registrano il metodo senza inventare dati in ingresso.

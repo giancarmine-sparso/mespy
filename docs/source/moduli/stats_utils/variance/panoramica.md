@@ -33,5 +33,5 @@ print(variance(x, ddof=1))  # correzione di Bessel
 
 ## Note
 
-- Il default `ddof=0` e coerente con l'impostazione descrittiva dell'intero package.
+- Il valore predefinito `ddof=0` e coerente con l'impostazione descrittiva dell'intero pacchetto.
 - La versione pesata usa la media pesata interna, non `numpy.var`.

@@ -8,9 +8,9 @@ _display_new_figures(existing_nums: set[int]) -> None
 
 ## Che problema risolve
 
-Mostra esplicitamente in IPython/Jupyter le figure create dopo un certo snapshot iniziale, evitando che restino nascoste dentro un context manager di stile.
+Mostra esplicitamente in IPython/Jupyter le figure create dopo un certo stato iniziale, evitando che restino nascoste dentro un gestore di contesto di stile.
 
-## Contratto sugli input
+## Contratto sui dati in ingresso
 
 - `existing_nums` deve contenere i numeri di figura presenti prima di entrare nel blocco monitorato.
 - La funzione confronta questo insieme con `plt.get_fignums()` per individuare solo le figure nuove.
@@ -22,8 +22,8 @@ Mostra esplicitamente in IPython/Jupyter le figure create dopo un certo snapshot
 
 ## Come fallisce
 
-- In uso normale non alza eccezioni specifiche del package.
-- Se il supporto di display non e disponibile, la funzione si comporta come un no-op.
+- In uso normale non alza eccezioni specifiche del pacchetto.
+- Se il supporto di visualizzazione non e disponibile, la funzione si comporta come un'operazione senza effetti.
 
 ## Perche resta privata
 

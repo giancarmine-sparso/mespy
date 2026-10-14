@@ -1,8 +1,8 @@
 # Funzionamento
 
-Questa pagina descrive il flusso interno di `variance` e l'ordine con cui vengono applicate validazione degli input, scelta tra ramo non pesato e ramo pesato, controllo del denominatore e calcolo finale degli scarti quadratici. A differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere la firma, ma mostrare come la funzione costruisce davvero la varianza.
+Questa pagina descrive il flusso interno di `variance` e l'ordine con cui vengono applicate validazione dei dati in ingresso, scelta tra ramo non pesato e ramo pesato, controllo del denominatore e calcolo finale degli scarti quadratici. A differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere la firma, ma mostrare come la funzione costruisce davvero la varianza.
 
-I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. Gli helper privati vengono citati solo per chiarire il flusso; i dettagli completi sono documentati in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) e [`_validate_weights`](../../../checks/stats_utils/validate-weights.md).
+I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. Le funzioni di supporto private vengono citate solo per chiarire il flusso; i dettagli completi sono documentati in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) e [`_validate_weights`](../../../checks/stats_utils/validate-weights.md).
 
 ## Sequenza di esecuzione
 
@@ -96,7 +96,7 @@ Il parametro `ddof` non modifica solo l'interpretazione statistica del risultato
 - Nel caso pesato richiede `sum(w) - ddof > 0`.
 - Se una di queste condizioni fallisce, la funzione alza `ValueError` prima di effettuare la divisione finale.
 
-Il default `ddof=0` e coerente con l'impostazione descrittiva del package: la funzione calcola per default una varianza di popolazione, non la versione con correzione di Bessel.
+Il valore predefinito `ddof=0` e coerente con l'impostazione descrittiva del pacchetto: la funzione calcola per impostazione predefinita una varianza di popolazione, non la versione con correzione di Bessel.
 
 ## Interazioni importanti tra parametri
 
@@ -105,7 +105,7 @@ Alcuni aspetti del comportamento meritano di essere resi espliciti.
 - `w=None` non significa "pesi tutti uguali" implementati a mano: significa proprio usare il ramo non pesato basato su `np.mean(values)`.
 - Se i pesi sono tutti uguali e `ddof=0`, il valore ottenuto coincide con una varianza calcolata con pesi uniformi, ma il denominatore nel ramo pesato resta `sum(w)`, non `len(x)`.
 - La funzione accetta `ddof` anche come `float`, quindi la correzione non e limitata a interi.
-- Gli errori legati a input vuoti, non monodimensionali o non finiti vengono sempre intercettati all'inizio da [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), mentre gli errori specifici del ramo pesato passano da [`_validate_weights`](../../../checks/stats_utils/validate-weights.md).
+- Gli errori legati a dati in ingresso vuoti, non monodimensionali o non finiti vengono sempre intercettati all'inizio da [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), mentre gli errori specifici del ramo pesato passano da [`_validate_weights`](../../../checks/stats_utils/validate-weights.md).
 
 ## Esempio commentato
 

@@ -7,9 +7,9 @@ Disegnare un istogramma di un campione sperimentale, con opzioni per evidenziare
 ## Parametri
 
 - `x`: dati da istogrammare.
-- `stat`: `"count"` (default), `"probability"` o `"density"`; secondo argomento posizionale o per keyword.
+- `stat`: `"count"` (valore predefinito), `"probability"` o `"density"`; secondo argomento posizionale o per nome.
 - `ddof`: parametro passato a `standard_deviation` per la banda.
-- `style`: `None` usa gli `rcParams` correnti; i nomi degli stili inclusi nel package vengono risolti automaticamente; qualunque altra stringa viene passata a Matplotlib come nome stile.
+- `style`: `None` usa gli `rcParams` correnti; i nomi degli stili inclusi nel pacchetto vengono risolti automaticamente; qualunque altra stringa viene passata a Matplotlib come nome stile.
 - `bins`: numero di bin, algoritmo automatico o array dei bordi.
 - `bin_width`: larghezza fissa dei bin. Non puo essere usata insieme a `bins` diverso da `"auto"`.
 - `hist_range`: coppia `(xmin, xmax)` usata come range dell'istogramma.
@@ -19,8 +19,8 @@ Disegnare un istogramma di un campione sperimentale, con opzioni per evidenziare
 - `xlim`, `ylim`: limiti espliciti degli assi.
 - `ax`: asse matplotlib esistente da riusare.
 - `figsize`, `dpi`, `save_path`: parametri di creazione e salvataggio della figura. `figsize` e `dpi` vengono passati alla creazione della figura solo quando esplicitati.
-- `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`: override puntuali di titolo e legenda. Se lasciati a `None`, la funzione usa lo stile attivo.
-- `bar_color`, `edgecolor`: override puntuali dei colori delle barre. Se lasciati a `None`, la funzione usa i valori forniti da stile o `rcParams`.
+- `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`: impostazioni puntuali che prevalgono sullo stile di titolo e legenda. Se lasciati a `None`, la funzione usa lo stile attivo.
+- `bar_color`, `edgecolor`: impostazioni puntuali che prevalgono sullo stile dei colori delle barre. Se lasciati a `None`, la funzione usa i valori forniti da stile o `rcParams`.
 - `mean_color`, `band_color`, `hist_alpha`, `band_alpha`, `grid_alpha`, `mean_symbol`, `band_symbol`: controllano linea della media, banda `+- 1 sigma`, trasparenze e simboli in legenda. `mean_color=None`, `band_color=None` e `grid_alpha=None` lasciano decidere allo stile attivo.
 
 ## Normalizzazione e significato fisico
@@ -35,7 +35,7 @@ Indicando con $n_i$ il conteggio nel bin $i$, con $N=\sum_i n_i$ il numero di os
 
 Le formule valgono anche con bin di ampiezza diversa. In modalità `density`, l'area di ogni barra rappresenta la frequenza relativa nell'intervallo; l'altezza può essere maggiore di 1.
 
-Se nessuna osservazione cade nei bin, tutte le barre hanno altezza zero: non si applica la normalizzazione e non si effettuano divisioni per zero. Un input `x` vuoto continua invece a generare `ValueError`.
+Se nessuna osservazione cade nei bin, tutte le barre hanno altezza zero: non si applica la normalizzazione e non si effettuano divisioni per zero. Un vettore `x` vuoto in ingresso continua invece a generare `ValueError`.
 
 Media e deviazione standard usano sempre l'intero campione, indipendentemente da `stat` e dalle osservazioni escluse dai bin. `ddof` continua a influire solo sulla deviazione standard.
 
@@ -83,7 +83,7 @@ histogram(x, stat="density", bins=edges)
 
 ## Note
 
-- Lo stile viene applicato tramite [`_style_context`](../../../checks/plot_utils/style-context.md), lo stesso helper usato anche da [`lin_fit`](../../fit_utils/lin-fit.md).
+- Lo stile viene applicato tramite [`_style_context`](../../../checks/plot_utils/style-context.md), la stessa funzione di supporto usata anche da [`lin_fit`](../../fit_utils/lin-fit.md).
 - Se `ax` e `None`, la funzione crea una nuova figura con `plt.subplots`.
 - Se passi `ax`, la figura restituita e `ax.get_figure()`.
 - La validazione dei limiti, delle dimensioni e di `decimals` passa per [`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-limits.md), [`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md) e [`_validate_decimals`](../../../checks/plot_utils/validate-decimals.md).

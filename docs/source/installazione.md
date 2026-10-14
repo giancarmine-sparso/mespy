@@ -12,7 +12,7 @@ cd mespy
 make setup
 ```
 
-`make setup` crea `.venv` e installa il package in editable mode con le dipendenze di sviluppo.
+`make setup` crea `.venv` e installa il pacchetto in modalità modificabile con le dipendenze di sviluppo.
 
 ## Con uv
 
@@ -33,8 +33,8 @@ python -m pip install -e ".[dev]"
 
 ## Cosa viene installato
 
-- dipendenze runtime: `numpy`, `pandas`, `matplotlib`, `scipy`, `tomli-w`
-- tool di sviluppo: `pytest`, `sphinx`, `pydata-sphinx-theme`, `myst-nb`, `sphinx-intl`, `build`, `twine`
-- il package locale in editable mode, grazie a `-e`
+- dipendenze per l'esecuzione: `numpy`, `pandas`, `matplotlib`, `scipy`, `tomli-w`
+- strumenti di sviluppo: `pytest`, `sphinx`, `pydata-sphinx-theme`, `myst-nb`, `sphinx-intl`, `build`, `twine`
+- il pacchetto locale in modalità modificabile, grazie a `-e`
 
 Dopo l'installazione puoi lanciare i test con `make test` e costruire la documentazione con `make docs`.

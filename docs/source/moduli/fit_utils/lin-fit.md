@@ -1,18 +1,18 @@
 (lin-fit-reference)=
 # `mespy.lin_fit`
 
-Fit a straight line to paired observations, with optional absolute uncertainties on `y` and independent uncertainties on `x`. The function returns fitted parameters, their standard uncertainties, residuals, and diagnostics in a `LinearFitResult`. By default it also creates a two-panel Matplotlib figure; file export is opt-in.
+Adatta una retta a osservazioni appaiate, con incertezze assolute facoltative su `y` e incertezze indipendenti su `x`. La funzione restituisce i parametri stimati, le loro incertezze tipo, i residui e le informazioni diagnostiche in un `LinearFitResult`. Per impostazione predefinita crea anche una figura Matplotlib con due pannelli; l'esportazione su file deve essere richiesta esplicitamente.
 
-The fitted mean is
+La media stimata dal fit è
 
 $$
 \hat y(x) = m x + q,
 $$
 
-where `slope` is $m$ and `intercept` is $q$. By default, the calculation treats `x` as exact and the vertical measurement errors as independent; optional `sigma_x` only adds horizontal error bars. Select `x_error_method="iterate"` explicitly to propagate independent horizontal uncertainties through the effective-variance approximation described below. With no `sigma_y`, the uncertainty estimates assume one common vertical variance. With `sigma_y`, each supplied value is an absolute standard uncertainty for its observation.
+dove `slope` è $m$ e `intercept` è $q$. Per impostazione predefinita, il calcolo considera `x` esatto e gli errori di misura verticali indipendenti; il parametro facoltativo `sigma_x` aggiunge soltanto barre di errore orizzontali. Seleziona esplicitamente `x_error_method="iterate"` per propagare le incertezze orizzontali indipendenti mediante l'approssimazione della varianza efficace descritta sotto. In assenza di `sigma_y`, le stime delle incertezze presuppongono un'unica varianza verticale comune. Con `sigma_y`, ogni valore fornito è un'incertezza tipo assoluta per la rispettiva osservazione.
 
 (lin-fit-signature)=
-## Function signature
+## Firma della funzione
 
 ```python
 def lin_fit(
@@ -32,263 +32,263 @@ def lin_fit(
 ) -> LinearFitResult:
 ```
 
-Import the function with `from mespy import lin_fit`. Here `ArrayLike` comes from `numpy.typing`, `Path` from `pathlib`, and `LinearFitResult` and `XErrorMethod` from `mespy.fit_utils`. `XErrorMethod` is `Literal["none", "iterate"]`. Only `x`, `y`, and `sigma_y` may be passed positionally; all remaining arguments are keyword-only.
+Importa la funzione con `from mespy import lin_fit`. Qui `ArrayLike` proviene da `numpy.typing`, `Path` da `pathlib`, e `LinearFitResult` e `XErrorMethod` da `mespy.fit_utils`. `XErrorMethod` è `Literal["none", "iterate"]`. Solo `x`, `y` e `sigma_y` possono essere passati come argomenti posizionali; tutti gli altri argomenti devono essere passati per nome.
 
 (lin-fit-parameters)=
-## Parameters
+## Parametri
 
-`x` — `ArrayLike`, required
-: Independent coordinates, as a non-empty one-dimensional real numeric vector. At least two values must be distinct **after conversion to `float64`**. Repeated coordinates are allowed; input order need not be sorted. Distinctness is checked by exact equality, without an absolute tolerance.
+`x` — `ArrayLike`, obbligatorio
+: Coordinate indipendenti, come vettore numerico reale monodimensionale non vuoto. Almeno due valori devono essere distinti **dopo la conversione a `float64`**. Sono ammesse coordinate ripetute; i dati in ingresso non devono necessariamente essere ordinati. La distinzione è verificata mediante uguaglianza esatta, senza tolleranza assoluta.
 
-`y` — `ArrayLike`, required
-: Measured ordinates, as a non-empty one-dimensional real numeric vector with the same length as `x`. At least **three observations** are required when `sigma_y=None`, or **two observations** when uncertainties are supplied.
+`y` — `ArrayLike`, obbligatorio
+: Ordinate misurate, come vettore numerico reale monodimensionale non vuoto della stessa lunghezza di `x`. Sono richieste almeno **tre osservazioni** quando `sigma_y=None`, oppure **due osservazioni** quando vengono fornite le incertezze.
 
-`sigma_y` — `ArrayLike | None`, default `None`
-: Absolute standard uncertainties on `y`, in the same units as `y`. Accepts a strictly positive finite real scalar (including a zero-dimensional numeric array) or a one-dimensional vector of the same length as `x`. A scalar is expanded to a constant vector. A one-element vector is not broadcast to a longer sample. `None` selects ordinary least squares (OLS); supplying uncertainties selects absolute weighted least squares (WLS). This argument specifies standard uncertainties, not variances or weights.
+`sigma_y` — `ArrayLike | None`, valore predefinito `None`
+: Incertezze tipo assolute su `y`, nelle stesse unità di `y`. Accetta uno scalare reale finito strettamente positivo (compreso un array numerico a zero dimensioni) o un vettore monodimensionale della stessa lunghezza di `x`. Uno scalare viene espanso in un vettore costante. Un vettore di un solo elemento non viene esteso automaticamente a un campione più lungo. `None` seleziona i minimi quadrati ordinari (OLS); fornire le incertezze seleziona i minimi quadrati pesati (WLS) con incertezze assolute. Questo argomento specifica incertezze tipo, non varianze o pesi.
 
-`sigma_x` — `ArrayLike | None`, default `None`
-: Independent standard uncertainties on `x`, in units of `x`. Accepts a finite non-negative real scalar or a one-dimensional vector of the same length as `x`; a scalar is expanded. Zero denotes an exact coordinate. With `x_error_method="none"`, these only supply horizontal bars and do not alter parameters, covariance, or diagnostics. With `"iterate"`, both `sigma_x` and `sigma_y` are required.
+`sigma_x` — `ArrayLike | None`, valore predefinito `None`
+: Incertezze tipo indipendenti su `x`, nelle unità di `x`. Accetta uno scalare reale finito non negativo o un vettore monodimensionale della stessa lunghezza di `x`; uno scalare viene espanso. Zero indica una coordinata esatta. Con `x_error_method="none"`, queste incertezze forniscono soltanto barre orizzontali e non modificano parametri, covarianza o informazioni diagnostiche. Con `"iterate"`, sono richiesti sia `sigma_x` sia `sigma_y`.
 
-`x_error_method` — `XErrorMethod`, default `"none"`
-: `"none"` calculates OLS or absolute WLS treating `x` as exact. `"iterate"` explicitly selects iteratively reweighted WLS with effective vertical uncertainties. Other strings raise `ValueError`; non-string values raise `TypeError`. See [Horizontal uncertainty propagation](#lin-fit-x-errors).
+`x_error_method` — `XErrorMethod`, valore predefinito `"none"`
+: `"none"` calcola OLS o WLS con incertezze assolute considerando `x` esatto. `"iterate"` seleziona esplicitamente WLS con ripesatura iterativa e incertezze verticali efficaci. Altre stringhe sollevano `ValueError`; valori che non sono stringhe sollevano `TypeError`. Vedi [Propagazione delle incertezze orizzontali](#lin-fit-x-errors).
 
-`xlabel` — `str`, default `"x"`
-: Label of the shared horizontal axis, placed on the residual panel. Use `""` for no label. `None` is not accepted. Validated even when `plot=False` and retained in TOML plot metadata.
+`xlabel` — `str`, valore predefinito `"x"`
+: Etichetta dell'asse orizzontale condiviso, posta nel pannello dei residui. Usa `""` per non mostrare un'etichetta. `None` non è accettato. Viene validata anche quando `plot=False` e conservata nei metadati del grafico in TOML.
 
-`ylabel` — `str`, default `"y"`
-: Vertical label of the data-and-fit panel. Use `""` for no label. `None` is not accepted. The residual panel has its own automatically generated label. Validated even when `plot=False` and retained in TOML plot metadata.
+`ylabel` — `str`, valore predefinito `"y"`
+: Etichetta verticale del pannello con dati e fit. Usa `""` per non mostrare un'etichetta. `None` non è accettato. Il pannello dei residui ha una propria etichetta generata automaticamente. Viene validata anche quando `plot=False` e conservata nei metadati del grafico in TOML.
 
-`title` — `str | None`, default `None`
-: Title of the upper panel. `None` leaves the title unset and omits it from TOML; an empty string is accepted and retained. Validated even when `plot=False`.
+`title` — `str | None`, valore predefinito `None`
+: Titolo del pannello superiore. `None` lascia il titolo non impostato e lo omette dal TOML; una stringa vuota è accettata e conservata. Viene validato anche quando `plot=False`.
 
-`style` — `str | None`, default `"mespy"`
-: Temporary Matplotlib style used to create the figure and render an automatic PDF. Accepts a registered style name (including MesPy's `"report"`, `"mespy"`, and `"column"`), a Matplotlib style name, or a string path to a `.mplstyle` file. `None` keeps the currently active configuration. With `plot=False`, the style is not resolved or applied. See [Style integration](#lin-fit-style).
+`style` — `str | None`, valore predefinito `"mespy"`
+: Stile Matplotlib temporaneo usato per creare la figura e generare automaticamente un PDF. Accetta il nome di uno stile registrato (compresi `"report"`, `"mespy"` e `"column"` di MesPy), il nome di uno stile Matplotlib oppure un percorso, come stringa, a un file `.mplstyle`. `None` mantiene la configurazione attualmente attiva. Con `plot=False`, lo stile non viene risolto né applicato. Vedi [Integrazione dello stile](#lin-fit-style).
 
-`output` — `str | Path | None`, default `None`
-: File **base path**, such as `"results/spring"`, to which `.toml` and, when `plot=True`, `.pdf` are appended. Accepts relative or absolute paths. Missing parent directories are created. `None` disables automatic file export. See [File export](#lin-fit-export) for path validation, overwrite behavior, and failure conditions.
+`output` — `str | Path | None`, valore predefinito `None`
+: **Percorso base** dei file, per esempio `"results/spring"`, a cui vengono aggiunte le estensioni `.toml` e, quando `plot=True`, `.pdf`. Accetta percorsi relativi o assoluti. Le directory superiori mancanti vengono create. `None` disabilita l'esportazione automatica su file. Vedi [Esportazione su file](#lin-fit-export) per la validazione dei percorsi, il comportamento di sovrascrittura e le condizioni di errore.
 
-`plot` — `bool`, default `True`
-: Create the two-panel figure. `False` returns `figure=None`, does not import `matplotlib.pyplot`, and skips style resolution and all drawing. It also suppresses automatic PDF generation, but does not suppress TOML export. Only Python `bool` or NumPy `bool_` values are accepted; numbers and truthy strings are rejected.
+`plot` — `bool`, valore predefinito `True`
+: Crea la figura con due pannelli. `False` restituisce `figure=None`, non importa `matplotlib.pyplot` e salta la risoluzione dello stile e tutte le operazioni di disegno. Impedisce anche la generazione automatica del PDF, ma non l'esportazione TOML. Sono accettati soltanto valori Python `bool` o NumPy `bool_`; numeri e stringhe che risultano vere in un contesto booleano vengono rifiutati.
 
-`normalize_residuals` — `bool`, default `False`
-: Normalize residuals in the **lower plot panel only**, using `sigma_y` in y-only WLS, final effective uncertainties in iterative WLS, or the estimated dispersion in OLS. Does not change fitting, diagnostics, or returned residuals. Has no plotting effect when `plot=False`, but is still validated and recorded in TOML. Accepts Python `bool` or NumPy `bool_`, not numbers or truthy strings. An OLS fit with zero estimated dispersion cannot be plotted with this option enabled.
+`normalize_residuals` — `bool`, valore predefinito `False`
+: Normalizza i residui **soltanto nel pannello inferiore del grafico**, usando `sigma_y` in WLS con sole incertezze su y, le incertezze efficaci finali in WLS iterativo, oppure la dispersione stimata in OLS. Non modifica il fit, le informazioni diagnostiche o i residui restituiti. Non ha effetti grafici quando `plot=False`, ma viene comunque validato e registrato nel TOML. Accetta valori Python `bool` o NumPy `bool_`, non numeri o stringhe che risultano vere in un contesto booleano. Un fit OLS con dispersione stimata nulla non può essere rappresentato con questa opzione attiva.
 
-### Numeric input contract
+### Contratto sui dati numerici in ingresso
 
-Numeric lists, tuples, NumPy arrays, and other array-like objects whose NumPy representation has integer, unsigned integer, or floating-point dtype are accepted. Numeric pandas Series also satisfy this contract. Inputs are copied to independent `float64` arrays and are not modified.
+Sono accettati liste numeriche, tuple, array NumPy e altri oggetti assimilabili ad array la cui rappresentazione NumPy ha un tipo di dati intero, intero senza segno o in virgola mobile. Anche le Series numeriche di pandas soddisfano questo contratto. I dati in ingresso vengono copiati in array `float64` indipendenti e non vengono modificati.
 
-All values must remain finite in `float64`. Scalars and multidimensional arrays are invalid for `x` and `y`; no flattening, row filtering, or missing-value removal is performed. Masked arrays, complex values (even with zero imaginary part), strings, object-dtype arrays, and boolean data are rejected. Boolean entries mixed into numeric Python lists or tuples are also rejected. Generators must first be materialized into a supported numeric vector.
+Tutti i valori devono rimanere finiti in `float64`. Scalari e array multidimensionali non sono validi per `x` e `y`; non vengono eseguiti appiattimento, filtraggio delle righe o rimozione dei valori mancanti. Sono rifiutati array con maschera, valori complessi (anche con parte immaginaria nulla), stringhe, array con tipo di dati oggetto e dati booleani. Sono rifiutati anche elementi booleani mescolati a valori numerici in liste o tuple Python. I generatori devono prima essere materializzati in un vettore numerico supportato.
 
 (lin-fit-returns)=
-## Returns
+## Valore restituito
 
-A [`LinearFitResult`](linear-fit-result.md), a frozen result object with the following public interface. Its fields cannot be reassigned; the Matplotlib figure itself remains editable. Residuals are a read-only `float64` array in the original observation order.
+Un [`LinearFitResult`](linear-fit-result.md), un oggetto risultato immutabile con la seguente interfaccia pubblica. I suoi campi non possono essere riassegnati; la figura Matplotlib rimane modificabile. I residui sono un array `float64` di sola lettura nell'ordine originale delle osservazioni.
 
-| Attribute | Type | Meaning |
+| Attributo | Tipo | Significato |
 | --- | --- | --- |
-| `slope`, `intercept` | `float` | Fitted $m$ and $q$. |
-| `slope_std`, `intercept_std` | `float` | Standard uncertainties of the fitted parameters. |
-| `covariance` | `float` | Covariance between **slope and intercept**, not a covariance matrix. |
-| `correlation` | `float` or `None` | Parameter correlation, `covariance / (slope_std * intercept_std)`, when both standard uncertainties are positive; otherwise `None`. This is not a data correlation or goodness-of-fit measure. |
-| `residuals` | `NDArray[np.float64]` | Physical vertical residuals, $r_i=y_i-\hat y(x_i)$, in units of `y`. |
-| `residual_std` | `float` or `None` | $\sqrt{\sum_i r_i^2/(N-2)}$ when `dof > 0`; otherwise `None`. |
-| `estimated_sigma` | `float` or `None` | Read-only property equal to `residual_std` for OLS; `None` for WLS. |
-| `chi2`, `reduced_chi2`, `p_value` | `float` or `None` | Weighted diagnostics, with availability described [below](#lin-fit-diagnostics). |
-| `dof` | `int` | Residual degrees of freedom, $N-2$. |
-| `fit_method` | `Literal["ols", "wls"]` | Method selected from the presence or absence of `sigma_y`. |
-| `x_error_method` | `XErrorMethod` | `"none"` or `"iterate"`, identifying horizontal uncertainty treatment. |
-| `figure` | `Figure` or `None` | Generated Matplotlib figure; `None` when `plot=False`. |
+| `slope`, `intercept` | `float` | $m$ e $q$ stimati dal fit. |
+| `slope_std`, `intercept_std` | `float` | Incertezze tipo dei parametri stimati. |
+| `covariance` | `float` | Covarianza tra **pendenza e intercetta**, non una matrice di covarianza. |
+| `correlation` | `float` o `None` | Correlazione dei parametri, `covariance / (slope_std * intercept_std)`, quando entrambe le incertezze tipo sono positive; altrimenti `None`. Non è una correlazione dei dati né una misura della bontà del fit. |
+| `residuals` | `NDArray[np.float64]` | Residui verticali in unità fisiche, $r_i=y_i-\hat y(x_i)$, nelle unità di `y`. |
+| `residual_std` | `float` o `None` | $\sqrt{\sum_i r_i^2/(N-2)}$ quando `dof > 0`; altrimenti `None`. |
+| `estimated_sigma` | `float` o `None` | Proprietà di sola lettura uguale a `residual_std` per OLS; `None` per WLS. |
+| `chi2`, `reduced_chi2`, `p_value` | `float` o `None` | Informazioni diagnostiche pesate, la cui disponibilità è descritta [sotto](#lin-fit-diagnostics). |
+| `dof` | `int` | Gradi di libertà residui, $N-2$. |
+| `fit_method` | `Literal["ols", "wls"]` | Metodo selezionato in base alla presenza o all'assenza di `sigma_y`. |
+| `x_error_method` | `XErrorMethod` | `"none"` o `"iterate"`, che identifica il trattamento delle incertezze orizzontali. |
+| `figure` | `Figure` o `None` | Figura Matplotlib generata; `None` quando `plot=False`. |
 
-`result.predict(x_new)` evaluates the fitted mean. A finite real scalar returns a Python `float`; a one-dimensional vector returns an independent `float64` array. Empty vectors are accepted. The same numeric type and finiteness restrictions apply as for the fit inputs. Prediction uses the retained local coordinate representation, which avoids loss of accuracy from directly combining a large `slope*x` with an opposing intercept.
+`result.predict(x_new)` valuta la media stimata dal fit. Uno scalare reale finito restituisce un `float` Python; un vettore monodimensionale restituisce un array `float64` indipendente. Sono accettati vettori vuoti. Si applicano le stesse restrizioni sui tipi numerici e sulla finitezza previste per i dati in ingresso del fit. La previsione usa la rappresentazione in coordinate locali conservata, che evita la perdita di accuratezza dovuta alla combinazione diretta di un grande `slope*x` con un'intercetta di segno opposto.
 
-`result.to_toml(path)` exports the same numerical document as automatic TOML export and returns its written `Path`. See [Manual TOML export](#lin-fit-manual-export). The dedicated [result reference](linear-fit-result.md) provides additional object-level usage.
+`result.to_toml(path)` esporta lo stesso documento numerico dell'esportazione TOML automatica e restituisce il `Path` del file scritto. Vedi [Esportazione TOML manuale](#lin-fit-manual-export). Il [riferimento dedicato al risultato](linear-fit-result.md) descrive ulteriori modalità di utilizzo dell'oggetto.
 
 (lin-fit-behavior)=
-## Fitting behavior
+## Comportamento del fit
 
-### Without uncertainties: OLS
+### Senza incertezze: OLS
 
-When `sigma_y=None`, the function minimizes the unweighted residual sum of squares, $\mathrm{RSS}=\sum_i r_i^2$, and sets `fit_method="ols"`. It emits a `UserWarning` explaining that dispersion is estimated from the residuals and chi-squared diagnostics are unavailable.
+Quando `sigma_y=None`, la funzione minimizza la somma non pesata dei quadrati dei residui, $\mathrm{RSS}=\sum_i r_i^2$, e imposta `fit_method="ols"`. Emette un `UserWarning` che spiega che la dispersione viene stimata dai residui e che le informazioni diagnostiche basate sul chi quadro non sono disponibili.
 
-The common vertical dispersion is estimated as
+La dispersione verticale comune viene stimata come
 
 $$
 s = \sqrt{\frac{\mathrm{RSS}}{N-2}}.
 $$
 
-This value is returned as both `residual_std` and `estimated_sigma`. The parameter covariance corresponds to $s^2(X^\mathsf{T}X)^{-1}$, where the design matrix $X$ has columns `x` and ones; its diagonal supplies the squared parameter uncertainties. These uncertainty estimates assume independent errors with one common variance and an appropriate linear mean model. The function does not test these assumptions.
+Questo valore viene restituito sia come `residual_std` sia come `estimated_sigma`. La covarianza dei parametri corrisponde a $s^2(X^\mathsf{T}X)^{-1}$, dove la matrice del modello $X$ ha come colonne `x` e un vettore di uno; la sua diagonale fornisce i quadrati delle incertezze dei parametri. Queste stime delle incertezze presuppongono errori indipendenti con un'unica varianza comune e un modello lineare appropriato per la media. La funzione non verifica tali ipotesi.
 
-At least three observations are needed to estimate dispersion. If the implementation exactly reproduces all observations on a straight line, residuals, estimated dispersion, parameter uncertainties, and covariance are zero; `correlation` is `None`. Exact-line detection uses equality checks rather than a tolerance. Zero dispersion prevents normalized residual plotting, but still permits ordinary plotting and `plot=False` calls.
+Per stimare la dispersione sono necessarie almeno tre osservazioni. Se l'implementazione riproduce esattamente tutte le osservazioni su una retta, residui, dispersione stimata, incertezze dei parametri e covarianza sono nulli; `correlation` è `None`. Il riconoscimento di una retta esatta usa verifiche di uguaglianza anziché una tolleranza. La dispersione nulla impedisce la rappresentazione dei residui normalizzati, ma consente comunque i grafici ordinari e le chiamate con `plot=False`.
 
-### With uncertainties: absolute WLS
+### Con incertezze: WLS con incertezze assolute
 
-When `sigma_y` is supplied, the function minimizes
+Quando viene fornito `sigma_y`, la funzione minimizza
 
 $$
 \chi^2 = \sum_i \left(\frac{r_i}{\sigma_{y,i}}\right)^2
 $$
 
-and sets `fit_method="wls"`. The weights are proportional to $1/\sigma_{y,i}^2$. Parameter covariance corresponds to $(X^\mathsf{T}WX)^{-1}$ with $W=\operatorname{diag}(1/\sigma_{y,i}^2)$: the supplied **absolute** uncertainty scale is retained. Covariance is **not multiplied by reduced chi-squared** or by the measured residual dispersion.
+e imposta `fit_method="wls"`. I pesi sono proporzionali a $1/\sigma_{y,i}^2$. La covarianza dei parametri corrisponde a $(X^\mathsf{T}WX)^{-1}$ con $W=\operatorname{diag}(1/\sigma_{y,i}^2)$: viene mantenuta la scala **assoluta** delle incertezze fornite. La covarianza **non viene moltiplicata per il chi quadro ridotto** né per la dispersione misurata dei residui.
 
-A constant `sigma_y` gives the same best-fit line as an unweighted fit, but uses the supplied scale for parameter uncertainties. Multiplying every uncertainty by a positive factor $a$ leaves the line and physical residuals unchanged, multiplies parameter standard uncertainties by $a$ and covariance by $a^2$, and divides chi-squared by $a^2$.
+Un `sigma_y` costante produce la stessa retta ottimale di un fit non pesato, ma usa la scala fornita per le incertezze dei parametri. Moltiplicare ogni incertezza per un fattore positivo $a$ lascia invariati la retta e i residui in unità fisiche, moltiplica le incertezze tipo dei parametri per $a$ e la covarianza per $a^2$, e divide il chi quadro per $a^2$.
 
-Two observations with distinct coordinates are sufficient. Parameter uncertainties remain defined even for an exactly fitted line because they come from the supplied measurement uncertainties.
+Sono sufficienti due osservazioni con coordinate distinte. Le incertezze dei parametri rimangono definite anche per una retta che riproduce esattamente i dati, perché derivano dalle incertezze di misura fornite.
 
 (lin-fit-x-errors)=
-### Horizontal uncertainty propagation
+### Propagazione delle incertezze orizzontali
 
-Supplying `sigma_x` alone does not change the calculation. With `x_error_method="none"`, it adds horizontal error bars while OLS or WLS still treats the coordinates as exact.
+Fornire soltanto `sigma_x` non modifica il calcolo. Con `x_error_method="none"`, aggiunge barre di errore orizzontali mentre OLS o WLS continua a considerare esatte le coordinate.
 
-With `x_error_method="iterate"`, both uncertainty inputs are required. A y-only WLS fit supplies the initial slope. Each update solves WLS with
+Con `x_error_method="iterate"`, sono richiesti entrambi gli argomenti delle incertezze. Un fit WLS con sole incertezze su y fornisce la pendenza iniziale. Ogni aggiornamento risolve WLS con
 
 $$
 \sigma_{\mathrm{eff},i}=\sqrt{\sigma_{y_i}^{2}+m^{2}\sigma_{x_i}^{2}}.
 $$
 
-The implementation scales terms before multiplication and evaluates the combination with `hypot`. Convergence requires a relative slope change of at most `1e-10`, normalized by the larger magnitude of the previous and updated slopes; two zero slopes are converged. At most 100 updates are attempted. Nonconvergence raises `RuntimeError` before plotting or export. These limits are fixed implementation settings, not public arguments.
+L'implementazione riscala i termini prima della moltiplicazione e valuta la combinazione con `hypot`. La convergenza richiede una variazione relativa della pendenza al massimo pari a `1e-10`, normalizzata rispetto al maggiore tra i moduli della pendenza precedente e di quella aggiornata; due pendenze nulle sono considerate convergenti. Vengono tentati al massimo 100 aggiornamenti. La mancata convergenza solleva `RuntimeError` prima della creazione di grafici o dell'esportazione. Questi limiti sono impostazioni fisse dell'implementazione, non argomenti pubblici.
 
-At termination, effective weights are recomputed from the returned slope. The intercept is recalculated as the weighted mean of `y - slope*x` in local coordinates. Residuals, covariance, and the uncertainty band use this final state.
+Al termine, i pesi efficaci vengono ricalcolati dalla pendenza restituita. L'intercetta viene ricalcolata come media pesata di `y - slope*x` in coordinate locali. Residui, covarianza e banda di incertezza usano questo stato finale.
 
-This is the historical iteratively reweighted WLS approximation, not York/ODR. Each update holds slope-dependent weights fixed, so convergence does not guarantee a minimum of the effective criterion. Covariance and the mean band use frozen final weights. Chi-squared and its historical p-value have an approximate statistical interpretation in this mode. `fit_method` remains `"wls"` and `estimated_sigma` remains `None`.
+Si tratta dell'approssimazione storica WLS con ripesatura iterativa, non del metodo York/ODR. Ogni aggiornamento mantiene fissi i pesi dipendenti dalla pendenza, quindi la convergenza non garantisce un minimo del criterio efficace. La covarianza e la banda della media usano i pesi finali mantenuti fissi. Il chi quadro e il relativo valore p storico hanno un'interpretazione statistica approssimata in questa modalità. `fit_method` rimane `"wls"` e `estimated_sigma` rimane `None`.
 
-### Numerical evaluation
+### Valutazione numerica
 
-The implementation solves centered and binary-scaled weighted moments, retaining local coordinates for residuals and prediction. OLS and y-only WLS do not iterate; optional horizontal propagation repeats this WLS solver. Finite, distinct input values are necessary but do not guarantee that all requested numerical quantities are representable: extreme scales can raise `FloatingPointError`, including when uncertainty normalization would reduce a positive weight to zero.
+L'implementazione risolve i momenti pesati centrati e riscalati mediante potenze di due, conservando le coordinate locali per residui e previsioni. OLS e WLS con sole incertezze su y non eseguono iterazioni; la propagazione orizzontale facoltativa ripete questo risolutore WLS. Valori in ingresso finiti e distinti sono necessari, ma non garantiscono che tutte le grandezze numeriche richieste siano rappresentabili: scale estreme possono sollevare `FloatingPointError`, anche quando la normalizzazione delle incertezze ridurrebbe a zero un peso positivo.
 
 (lin-fit-diagnostics)=
-## Statistical diagnostics
+## Diagnostica statistica
 
-| Quantity | OLS | Absolute WLS |
+| Grandezza | OLS | WLS con incertezze assolute |
 | --- | --- | --- |
-| `dof` | $N-2$, at least 1 | $N-2$, possibly 0 |
-| `residual_std` | Estimated common dispersion $s$ | Descriptive unweighted residual scale; `None` at zero degrees of freedom |
-| `estimated_sigma` | Same as `residual_std` | Always `None` |
-| `chi2` | `None` | Weighted residual criterion, including when `dof=0` |
-| `reduced_chi2` | `None` | `chi2 / dof` if `dof > 0`; otherwise `None` |
-| `p_value` | `None` | Upper-tail chi-squared probability if `dof > 0`; otherwise `None` |
+| `dof` | $N-2$, almeno 1 | $N-2$, eventualmente 0 |
+| `residual_std` | Dispersione comune stimata $s$ | Scala descrittiva non pesata dei residui; `None` con zero gradi di libertà |
+| `estimated_sigma` | Uguale a `residual_std` | Sempre `None` |
+| `chi2` | `None` | Criterio pesato dei residui, anche quando `dof=0` |
+| `reduced_chi2` | `None` | `chi2 / dof` se `dof > 0`; altrimenti `None` |
+| `p_value` | `None` | Probabilità nella coda superiore del chi quadro se `dof > 0`; altrimenti `None` |
 
-In WLS, `residual_std` is still calculated from **unweighted physical residuals**. It does not estimate or replace the supplied measurement uncertainties and does not enter parameter covariance.
+In WLS, `residual_std` viene comunque calcolato dai **residui non pesati in unità fisiche**. Non stima né sostituisce le incertezze di misura fornite e non entra nella covarianza dei parametri.
 
-Iterative WLS calculates the weighted criterion using the final effective uncertainties; its covariance, mean band, chi-squared, and p-value have the approximate interpretation described in [Horizontal uncertainty propagation](#lin-fit-x-errors).
+WLS iterativo calcola il criterio pesato usando le incertezze efficaci finali; la covarianza, la banda della media, il chi quadro e il valore p hanno l'interpretazione approssimata descritta in [Propagazione delle incertezze orizzontali](#lin-fit-x-errors).
 
-For positive degrees of freedom, `p_value` is calculated with `scipy.stats.chi2.sf(chi2, dof)`. Its goodness-of-fit interpretation requires independent Gaussian vertical errors, correct absolute standard uncertainties, exact `x`, and a correct linear mean model. Under those assumptions, the minimized criterion has a chi-squared distribution with $N-2$ degrees of freedom and reduced chi-squared has expectation 1. A small upper-tail p-value indicates unusually large weighted residuals under that model; it is not the probability that the model is true.
+Con gradi di libertà positivi, `p_value` viene calcolato con `scipy.stats.chi2.sf(chi2, dof)`. La sua interpretazione come misura della bontà del fit richiede errori verticali gaussiani indipendenti, incertezze tipo assolute corrette, `x` esatto e un modello lineare corretto per la media. Sotto queste ipotesi, il criterio minimizzato segue una distribuzione chi quadro con $N-2$ gradi di libertà e il chi quadro ridotto ha valore atteso 1. Un piccolo valore p nella coda superiore indica residui pesati insolitamente grandi sotto quel modello; non è la probabilità che il modello sia vero.
 
-With supplied positive uncertainties, WLS diagnostics are **numerically defined** even if those statistical assumptions are not justified; a chi-squared test interpretation then does not follow. With two WLS observations, `chi2` is computed but there are no residual degrees of freedom for a goodness-of-fit test, so `reduced_chi2`, `p_value`, and `residual_std` are unavailable. In OLS the three chi-squared fields are **unavailable (`None`)**, rather than placeholder zeros or diagnostics formed from the fitted dispersion.
+Con incertezze positive fornite, le informazioni diagnostiche WLS sono **definite numericamente** anche se quelle ipotesi statistiche non sono giustificate; in tal caso non ne consegue un'interpretazione come test del chi quadro. Con due osservazioni WLS, `chi2` viene calcolato, ma non ci sono gradi di libertà residui per un test di bontà del fit, quindi `reduced_chi2`, `p_value` e `residual_std` non sono disponibili. In OLS i tre campi del chi quadro sono **non disponibili (`None`)**, anziché zeri segnaposto o informazioni diagnostiche costruite dalla dispersione stimata.
 
 (lin-fit-plotting)=
-## Plotting and residuals
+## Grafici e residui
 
-`plot=True` is the default. The generated figure has two vertically stacked axes sharing `x`, with a 3:1 height ratio:
+`plot=True` è il valore predefinito. La figura generata ha due assi sovrapposti verticalmente che condividono `x`, con un rapporto tra le altezze di 3:1:
 
-- **Upper panel:** observations, the fitted mean over the observed `x` range, and a band extending one standard uncertainty above and below that mean. Vertical error bars use original `sigma_y` when supplied; horizontal bars use original `sigma_x` when supplied.
-- **Lower panel:** residuals versus `x` with a dashed zero reference. By default these are physical residuals in units of `y`. WLS residual markers carry vertical uncertainty bars from `sigma_y`, or final effective uncertainties in iterative WLS. Horizontal bars retain the original `sigma_x`; OLS has no vertical bars.
+- **Pannello superiore:** osservazioni, media stimata dal fit sull'intervallo di `x` osservato e una banda che si estende di un'incertezza tipo sopra e sotto tale media. Le barre di errore verticali usano il `sigma_y` originale, se fornito; le barre orizzontali usano il `sigma_x` originale, se fornito.
+- **Pannello inferiore:** residui in funzione di `x` con una linea tratteggiata di riferimento a zero. Per impostazione predefinita sono residui in unità fisiche, nelle unità di `y`. I marcatori dei residui WLS hanno barre di incertezza verticali da `sigma_y`, oppure dalle incertezze efficaci finali in WLS iterativo. Le barre orizzontali conservano il `sigma_x` originale; OLS non ha barre verticali.
 
-The mean band includes parameter covariance. Its half-width corresponds to
+La banda della media include la covarianza dei parametri. La sua semiampiezza corrisponde a
 
 $$
 \sigma_{\hat y}(x)=\sqrt{x^2\,\text{slope\_std}^2
 +2x\,\text{covariance}+\text{intercept\_std}^2},
 $$
 
-evaluated in local coordinates for numerical stability. It is a **one-standard-uncertainty band for the fitted mean**, not a prediction interval for new observations or a fixed-confidence interval.
+valutata in coordinate locali per la stabilità numerica. È una **banda di un'incertezza tipo per la media stimata dal fit**, non un intervallo di previsione per nuove osservazioni né un intervallo a livello di confidenza fissato.
 
 (lin-fit-normalization)=
-### Residual normalization
+### Normalizzazione dei residui
 
-Set `normalize_residuals=True` to change the lower panel:
+Imposta `normalize_residuals=True` per modificare il pannello inferiore:
 
-| Fit | Plotted residual | Plotted vertical error bar |
+| Fit | Residuo rappresentato | Barra di errore verticale rappresentata |
 | --- | --- | --- |
-| WLS | $r_i/\sigma_{y,i}$ | Unit half-length |
-| Iterative WLS | $r_i/\sigma_{\mathrm{eff},i}$ | Unit half-length |
-| OLS | $r_i/s$ | None |
+| WLS | $r_i/\sigma_{y,i}$ | Semilunghezza unitaria |
+| WLS iterativo | $r_i/\sigma_{\mathrm{eff},i}$ | Semilunghezza unitaria |
+| OLS | $r_i/s$ | Nessuna |
 
-Here $s$ is `result.estimated_sigma`. The labels become `Residuals / σ_y` (with mathematical typesetting) or `Residuals / s`; otherwise the label is `Residuals`. These are simple scaled residuals, not leverage-adjusted or studentized residuals. The WLS bars reference observation uncertainties; they are not the standard uncertainties of the fitted residuals. Returned `residuals` and exported residual values always stay in physical units.
+Qui $s$ è `result.estimated_sigma`. Le etichette diventano `Residuals / σ_y` (con composizione matematica) o `Residuals / s`; altrimenti l'etichetta è `Residuals`. Sono semplici residui riscalati, non residui corretti per la leva statistica o studentizzati. Le barre WLS si riferiscono alle incertezze delle osservazioni; non sono le incertezze tipo dei residui del fit. I `residuals` restituiti e i valori dei residui esportati rimangono sempre in unità fisiche.
 
-Iterative WLS uses the label `Residuals / σ_eff`. Horizontal bars remain in units of `x` in every mode and are never normalized.
+WLS iterativo usa l'etichetta `Residuals / σ_eff`. Le barre orizzontali rimangono nelle unità di `x` in ogni modalità e non vengono mai normalizzate.
 
-For OLS with `s=0`, `plot=True` together with `normalize_residuals=True` raises `ValueError` before any figure or export directory is created. With `plot=False`, normalization is not performed and this combination is accepted.
+Per OLS con `s=0`, `plot=True` insieme a `normalize_residuals=True` solleva `ValueError` prima che venga creata qualsiasi figura o directory di esportazione. Con `plot=False`, la normalizzazione non viene eseguita e questa combinazione è accettata.
 
 (lin-fit-style)=
-### Style integration
+### Integrazione dello stile
 
-The default `style="mespy"` uses MesPy's registered notebook style. Other registered styles (including `"report"` and `"column"`), standard Matplotlib styles, and `.mplstyle` file paths are supported. `style=None` preserves the active settings. Each plotting call uses a temporary style context and restores the previous Matplotlib configuration on exit.
+Il valore predefinito `style="mespy"` usa lo stile per notebook registrato da MesPy. Sono supportati altri stili registrati (compresi `"report"` e `"column"`), stili Matplotlib standard e percorsi a file `.mplstyle`. `style=None` conserva le impostazioni attive. Ogni chiamata che genera un grafico usa un contesto di stile temporaneo e ripristina la configurazione Matplotlib precedente all'uscita.
 
-The style controls figure size, DPI, fonts, grid, line widths, marker sizes, error-bar caps, layout, and `savefig.*` settings. The data use the first color in the active color cycle; the fitted line, mean band, and residual zero line use the second color, falling back to the first if only one is available. The two-panel composition, band opacity (0.20), and dashed zero line are set by the plotting implementation.
+Lo stile controlla dimensioni della figura, DPI, caratteri, griglia, spessori delle linee, dimensioni dei marcatori, estremità delle barre di errore, disposizione e impostazioni `savefig.*`. I dati usano il primo colore del ciclo di colori attivo; la retta del fit, la banda della media e la linea a zero dei residui usano il secondo colore, ripiegando sul primo se ne è disponibile soltanto uno. La composizione a due pannelli, l'opacità della banda (0.20) e la linea tratteggiata a zero sono stabilite dall'implementazione del grafico.
 
-In an IPython/Jupyter kernel, figures created by the plotting context are explicitly displayed and closed from pyplot's registry to avoid duplicate inline output. The returned figure object remains usable. In a regular script, use `matplotlib.pyplot.show()` when an interactive display is desired.
+In un kernel IPython/Jupyter, le figure create dal contesto grafico vengono visualizzate esplicitamente e chiuse nel registro di pyplot per evitare duplicazioni della visualizzazione nel notebook. L'oggetto figura restituito rimane utilizzabile. In uno script ordinario, usa `matplotlib.pyplot.show()` quando desideri una visualizzazione interattiva.
 
 (lin-fit-figure)=
-### Figure access and customization
+### Accesso alla figura e personalizzazione
 
-Access the supported Matplotlib interface through `result.figure`; `result.figure.axes[0]` is the fit axis and `result.figure.axes[1]` is the residual axis. You can edit their labels, limits, legend, and artists, or save the figure with `result.figure.savefig(...)`. Guard against `figure=None` if plotting may be disabled.
+Accedi all'interfaccia Matplotlib supportata tramite `result.figure`; `result.figure.axes[0]` è l'asse del fit e `result.figure.axes[1]` è l'asse dei residui. Puoi modificarne etichette, limiti, legenda e oggetti grafici, oppure salvare la figura con `result.figure.savefig(...)`. Gestisci il caso `figure=None` se la creazione del grafico può essere disabilitata.
 
-Customize creation-time appearance through a style file or an active Matplotlib context with `style=None`. Post-fit edits do not update a PDF already exported by `output`; save the edited figure separately. Figure edits also do not change the original plot options stored in TOML.
+Personalizza l'aspetto al momento della creazione tramite un file di stile o un contesto Matplotlib attivo con `style=None`. Le modifiche successive al fit non aggiornano un PDF già esportato da `output`; salva separatamente la figura modificata. Le modifiche alla figura non cambiano neppure le opzioni originali del grafico conservate nel TOML.
 
 (lin-fit-export)=
-## File export
+## Esportazione su file
 
-Automatic export uses a **base path**, not a filename with a format extension:
+L'esportazione automatica usa un **percorso base**, non un nome di file con un'estensione di formato:
 
-| Arguments | Automatic artifacts |
+| Argomenti | File generati automaticamente |
 | --- | --- |
-| `output=None`, either `plot` value | None |
-| `output="results/spring"`, `plot=True` | `results/spring.pdf` and `results/spring.toml` |
-| `output="results/spring"`, `plot=False` | `results/spring.toml` only |
+| `output=None`, qualunque valore di `plot` | Nessuno |
+| `output="results/spring"`, `plot=True` | `results/spring.pdf` e `results/spring.toml` |
+| `output="results/spring"`, `plot=False` | Solo `results/spring.toml` |
 
-Relative paths are resolved from the current working directory. Missing parents are created automatically. Dots that are part of a base name are preserved: `"results/run.v2"` produces `run.v2.toml` and, if plotted, `run.v2.pdf`.
+I percorsi relativi vengono risolti dalla directory di lavoro corrente. Le directory superiori mancanti vengono create automaticamente. I punti che fanno parte del nome base vengono conservati: `"results/run.v2"` produce `run.v2.toml` e, se viene generato il grafico, `run.v2.pdf`.
 
-### Path validation and replacement
+### Validazione dei percorsi e sostituzione
 
-`output` must be a `str` or `pathlib.Path`. Empty strings, directory paths, strings ending with the platform's directory separator, final `.` or `..` components, embedded NUL characters, and base names ending in a dot are invalid.
+`output` deve essere uno `str` o un `pathlib.Path`. Non sono validi stringhe vuote, percorsi di directory, stringhe che terminano con il separatore di directory della piattaforma, componenti finali `.` o `..`, caratteri NUL incorporati e nomi base che terminano con un punto.
 
-The final suffix is rejected, case-insensitively, if it is one of the recognized file extensions below. Supply a base instead of, for example, `"spring.pdf"` or `"spring.toml"`.
+Il suffisso finale viene rifiutato, senza distinzione tra maiuscole e minuscole, se è una delle estensioni di file riconosciute elencate sotto. Fornisci un percorso base invece, per esempio, di `"spring.pdf"` o `"spring.toml"`.
 
 `.pdf`, `.toml`, `.png`, `.svg`, `.svgz`, `.eps`, `.ps`, `.pgf`, `.jpg`, `.jpeg`, `.tif`, `.tiff`, `.webp`, `.raw`, `.rgba`, `.csv`, `.tsv`, `.txt`, `.dat`, `.json`, `.xlsx`, `.ods`, `.gz`, `.bz2`, `.xz`, `.zip`, `.tar`.
 
-Both requested artifacts are prepared in a temporary directory on the destination filesystem before any final replacement. Existing files are overwritten automatically. Each replacement is atomic, but **the PDF/TOML pair is not a transaction**: PDF is replaced first, and a failure replacing TOML can leave a new PDF alongside the previous TOML. When `plot=False`, any existing PDF at that base is left untouched.
+Entrambi i file richiesti vengono preparati in una directory temporanea sul file system di destinazione prima di qualsiasi sostituzione finale. I file esistenti vengono sovrascritti automaticamente. Ogni sostituzione è atomica, ma **la coppia PDF/TOML non è una transazione**: il PDF viene sostituito per primo e un errore nella sostituzione del TOML può lasciare un nuovo PDF accanto al TOML precedente. Quando `plot=False`, un eventuale PDF esistente con quel percorso base rimane intatto.
 
-The automatic PDF is rendered within the selected style context and honors its `savefig.*` settings. Rendering or style errors propagate to the caller. Export I/O failures raise `OSError` (or its corresponding subclass), preserving the error number and identifying the requested final destination. Staging files are cleaned up, and newly created directories are removed on failure when they are empty; existing content is not removed.
+Il PDF automatico viene generato nel contesto dello stile selezionato e ne rispetta le impostazioni `savefig.*`. Gli errori di generazione o di stile si propagano al chiamante. Gli errori di I/O durante l'esportazione sollevano `OSError` (o la sottoclasse corrispondente), conservando il numero di errore e identificando la destinazione finale richiesta. I file temporanei di preparazione vengono eliminati e, in caso di errore, le directory appena create vengono rimosse se vuote; il contenuto preesistente non viene rimosso.
 
 (lin-fit-toml)=
-### TOML contents
+### Contenuto TOML
 
-Automatic TOML documents use **schema version 2** without `sigma_x`. With `sigma_x`, **schema version 3** also stores `[data].sigma_x` after scalar expansion and `[fit].x_error_method`, including `"none"` when horizontal bars were only displayed. Both schemas include:
+I documenti TOML automatici usano la **versione 2 dello schema** in assenza di `sigma_x`. Con `sigma_x`, la **versione 3 dello schema** memorizza anche `[data].sigma_x` dopo l'espansione degli scalari e `[fit].x_error_method`, compreso `"none"` quando sono state soltanto visualizzate barre orizzontali. Entrambi gli schemi includono:
 
-| Table | Contents |
+| Tabella | Contenuto |
 | --- | --- |
-| `[mespy]` | `schema_version`, `mespy_version`, and `result_type="linear_fit"`. |
-| `[data]` | Original copied `x` and `y`; `sigma_y` when supplied, after scalar expansion. |
-| `[fit]` | Method, slope, intercept, their standard uncertainties, covariance, and correlation when defined. |
-| `[diagnostics]` | Degrees of freedom and each defined diagnostic, including `estimated_sigma` in OLS. |
-| `[residuals]` | Physical residual array under `values`. |
-| `[plot]` | Original `enabled`, `normalize_residuals`, `xlabel`, and `ylabel` options; `style` and `title` when not `None`. |
+| `[mespy]` | `schema_version`, `mespy_version` e `result_type="linear_fit"`. |
+| `[data]` | Copie originali di `x` e `y`; `sigma_y`, se fornito, dopo l'espansione degli scalari. |
+| `[fit]` | Metodo, pendenza, intercetta, le loro incertezze tipo, covarianza e correlazione quando definita. |
+| `[diagnostics]` | Gradi di libertà e ogni informazione diagnostica definita, compreso `estimated_sigma` in OLS. |
+| `[residuals]` | Array dei residui in unità fisiche nella chiave `values`. |
+| `[plot]` | Opzioni originali `enabled`, `normalize_residuals`, `xlabel` e `ylabel`; `style` e `title` quando diversi da `None`. |
 
-Floats are serialized without presentation rounding. Undefined fields are omitted rather than stored as nulls. The stored data allow the numerical fit to be rerun. Figure objects, later figure edits, and the full Matplotlib configuration are not serialized; a style file's contents are not embedded.
+I numeri in virgola mobile vengono serializzati senza arrotondamenti di presentazione. I campi non definiti vengono omessi anziché memorizzati come valori nulli. I dati conservati consentono di ripetere il fit numerico. Gli oggetti figura, le successive modifiche alla figura e la configurazione Matplotlib completa non vengono serializzati; il contenuto di un file di stile non viene incorporato.
 
 (lin-fit-manual-export)=
-### Manual TOML export
+### Esportazione TOML manuale
 
-`result.to_toml(path: str | Path) -> Path` writes the same schema-2 document separately. A missing suffix becomes `.toml`; an existing suffix is preserved. It atomically overwrites an existing file and returns the destination `Path`.
+`result.to_toml(path: str | Path) -> Path` scrive separatamente lo stesso documento con schema 2. Un suffisso mancante diventa `.toml`; un suffisso esistente viene conservato. Sovrascrive atomicamente un file esistente e restituisce il `Path` di destinazione.
 
-Unlike `output`, this method **does not create missing parent directories** and does not generate a PDF. It writes the retained fit data and original plotting options, even if the input arrays or figure have since been edited.
+A differenza di `output`, questo metodo **non crea le directory superiori mancanti** e non genera un PDF. Scrive i dati del fit conservati e le opzioni originali del grafico, anche se gli array in ingresso o la figura sono stati modificati nel frattempo.
 
 (lin-fit-errors)=
-## Warnings and exceptions
+## Avvisi ed eccezioni
 
-| Category | Trigger |
+| Categoria | Condizione che la attiva |
 | --- | --- |
-| `UserWarning` | A successfully computed OLS fit emits a warning that `sigma_y` was not supplied, dispersion is estimated from residuals, and chi-squared diagnostics are unavailable. This also occurs with `plot=False`. |
-| `TypeError` | Masked, complex, boolean, string, or object-dtype numeric inputs; incompatible flag or label types; an `output` value other than `str`, `Path`, or `None`; unsupported keywords. |
-| `ValueError` | Irregular numeric arrays, failed `float64` conversion or nonfinite values; empty or incorrectly shaped vectors; mismatched lengths; insufficient observations; constant `x` after conversion; nonpositive `sigma_y` or negative `sigma_x`; invalid `x_error_method` or missing uncertainties for iteration; invalid output base paths; normalized plotting of zero-dispersion OLS residuals. |
-| `RuntimeError` | Horizontal uncertainty iteration fails to converge within 100 updates; raised before any plotting or export. |
-| `FloatingPointError` | Numerical rank deficiency, a normalized positive WLS weight becoming zero, or computed quantities such as parameters, covariance, residuals, predictions, or plot-band values not representable in `float64`. |
-| `OSError` and subclasses | Export directory creation, staging, writing, or replacement fails; an invalid or missing Matplotlib style name/file is also reported by Matplotlib as `OSError` when plotting is enabled. |
+| `UserWarning` | Un fit OLS calcolato correttamente emette un avviso che indica che `sigma_y` non è stato fornito, la dispersione è stimata dai residui e le informazioni diagnostiche basate sul chi quadro non sono disponibili. Questo avviene anche con `plot=False`. |
+| `TypeError` | Dati numerici in ingresso con maschera, complessi, booleani, stringhe o con tipo di dati oggetto; tipi incompatibili per opzioni booleane o etichette; un valore di `output` diverso da `str`, `Path` o `None`; argomenti per nome non supportati. |
+| `ValueError` | Array numerici irregolari, conversione a `float64` fallita o valori non finiti; vettori vuoti o con forma errata; lunghezze diverse; osservazioni insufficienti; `x` costante dopo la conversione; `sigma_y` non positivo o `sigma_x` negativo; `x_error_method` non valido o incertezze mancanti per l'iterazione; percorsi base di esportazione non validi; rappresentazione normalizzata dei residui OLS con dispersione nulla. |
+| `RuntimeError` | L'iterazione delle incertezze orizzontali non converge entro 100 aggiornamenti; sollevata prima di qualsiasi creazione di grafici o esportazione. |
+| `FloatingPointError` | Deficienza numerica di rango, un peso WLS positivo normalizzato che diventa zero, oppure grandezze calcolate, come parametri, covarianza, residui, previsioni o valori della banda grafica, non rappresentabili in `float64`. |
+| `OSError` e sottoclassi | Errori nella creazione delle directory di esportazione, nella preparazione temporanea, nella scrittura o nella sostituzione; anche un nome o file di stile Matplotlib non valido o mancante viene segnalato da Matplotlib come `OSError` quando la creazione del grafico è attiva. |
 
-The plotting backend's drawing and rendering exceptions propagate; the function closes its newly created figure on failure and restores the style context. `plot=False` avoids these plotting failure conditions. Data, flags, labels, and output validation still apply.
+Le eccezioni di disegno e generazione del sistema grafico si propagano; in caso di errore, la funzione chiude la figura appena creata e ripristina il contesto dello stile. `plot=False` evita queste condizioni di errore grafiche. Restano valide le verifiche di dati, opzioni booleane, etichette e destinazione di esportazione.
 
 (lin-fit-example)=
-## Minimal usage
+## Utilizzo minimo
 
 ```python
 from mespy import lin_fit
@@ -305,12 +305,12 @@ print(result.slope, result.slope_std)
 print(result.predict(1.5))
 ```
 
-This performs absolute WLS, creates the fit-and-residual figure, and writes `results/linear_fit.pdf` and `results/linear_fit.toml`, creating `results/` if needed. For a numerical-only call, use `plot=False`; leave `output=None` to avoid writing files.
+Questo esegue WLS con incertezze assolute, crea la figura con fit e residui e scrive `results/linear_fit.pdf` e `results/linear_fit.toml`, creando `results/` se necessario. Per una chiamata esclusivamente numerica, usa `plot=False`; lascia `output=None` per evitare di scrivere file.
 
 (lin-fit-see-also)=
-## See also
+## Vedi anche
 
-- [`LinearFitResult`](linear-fit-result.md) — result-object reference.
-- [Linear fit Examples](../../examples/linear-fit.ipynb) — worked fitting examples.
-- [Plot styling](../../examples/plot-style.ipynb) — Matplotlib styles and figure customization.
-- [Basic workflow](../../examples/basic-workflow.ipynb) — an end-to-end measurement workflow.
+- [`LinearFitResult`](linear-fit-result.md) — riferimento dell'oggetto risultato.
+- [Esempi di fit lineare](../../examples/linear-fit.ipynb) — esempi svolti di fit.
+- [Stile dei grafici](../../examples/plot-style.ipynb) — stili Matplotlib e personalizzazione delle figure.
+- [Flusso di lavoro di base](../../examples/basic-workflow.ipynb) — un percorso completo di analisi delle misure.

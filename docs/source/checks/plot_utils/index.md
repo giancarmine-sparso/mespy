@@ -1,6 +1,6 @@
-# Helper di `plot_utils`
+# Funzioni di supporto di `plot_utils`
 
-Questa sottosezione documenta i controlli privati e i piccoli helper usati da `plot_utils` per validare input, applicare stili Matplotlib e gestire il display delle figure nei notebook.
+Questa sottosezione documenta i controlli privati e le piccole funzioni di supporto usate da `plot_utils` per validare dati in ingresso, applicare stili Matplotlib e gestire la visualizzazione delle figure nei notebook.
 
 ## Pagine disponibili
 

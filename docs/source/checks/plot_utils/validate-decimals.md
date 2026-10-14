@@ -8,9 +8,9 @@ _validate_decimals(decimals: int) -> int
 
 ## Che problema risolve
 
-Verifica che la precisione usata per etichette e legende resti leggibile e coerente tra le funzioni di plotting del package.
+Verifica che la precisione usata per etichette e legende resti leggibile e coerente tra le funzioni di visualizzazione grafica del pacchetto.
 
-## Contratto sugli input
+## Contratto sui dati in ingresso
 
 - `decimals` deve essere un intero vero oppure uno `np.integer`.
 - I booleani vengono rifiutati esplicitamente.
@@ -29,4 +29,4 @@ Verifica che la precisione usata per etichette e legende resti leggibile e coere
 
 ## Perche resta privata
 
-E una regola di validazione orientata alla presentazione, condivisa internamente dalle API di plotting ma non pensata come utilita pubblica autonoma.
+E una regola di validazione orientata alla presentazione, condivisa internamente dalle API di visualizzazione grafica ma non pensata come utilita pubblica autonoma.

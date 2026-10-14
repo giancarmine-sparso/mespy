@@ -13,9 +13,9 @@ _as_float_vector(
 
 ## Che problema risolve
 
-Normalizza un input numerico in un array `float64` monodimensionale e finito. E il check di base su cui si appoggiano piu moduli del package.
+Normalizza un insieme di dati numerici in ingresso in un array `float64` monodimensionale e finito. E il controllo di base su cui si appoggiano piu moduli del pacchetto.
 
-## Contratto sugli input
+## Contratto sui dati in ingresso
 
 - `values` deve poter essere convertito da `numpy.asarray(..., dtype=float)`.
 - Il risultato deve essere monodimensionale.
@@ -30,10 +30,10 @@ Normalizza un input numerico in un array `float64` monodimensionale e finito. E 
 
 ## Come fallisce
 
-- `ValueError` se l'input non e monodimensionale
-- `ValueError` se l'input e vuoto quando non ammesso
+- `ValueError` se i dati in ingresso non sono monodimensionali
+- `ValueError` se i dati in ingresso sono vuoti quando non ammesso
 - `ValueError` se sono presenti `NaN` o infiniti
 
 ## Perche resta privata
 
-E un dettaglio infrastrutturale condiviso. Documentarla aiuta a capire il package, ma esporla come API pubblica vincolerebbe inutilmente l'implementazione interna.
+E un dettaglio infrastrutturale condiviso. Documentarla aiuta a capire il pacchetto, ma esporla come API pubblica vincolerebbe inutilmente l'implementazione interna.

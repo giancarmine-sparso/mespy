@@ -13,7 +13,7 @@ L'implementazione segue questa sequenza:
 3. Applica `np.sqrt(...)` al valore restituito.
 4. Converte il risultato in `float` Python.
 
-## Wrapper minimale sopra `variance`
+## Interfaccia minimale per `variance`
 
 ```python
 def standard_deviation(

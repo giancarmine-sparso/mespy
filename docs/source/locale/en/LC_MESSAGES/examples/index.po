@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 11:47+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -25,15 +25,16 @@ msgstr "Examples"
 #: ../../source/examples/index.md:7
 msgid ""
 "Impara MesPy con esempi pratici ed eseguibili di analisi dei dati "
-"sperimentali. Se è la prima volta, parti da Workflow base."
+"sperimentali. Se è la prima volta, parti da Flusso di lavoro di base."
 msgstr ""
 "Learn MesPy through practical, runnable examples of experimental data "
 "analysis. If you are new here, start with Basic workflow."
 
 #: ../../source/examples/index.md:9
 msgid ""
-"[Workflow base](basic-workflow.ipynb): due chiamate essenziali; histogram "
-"salva il grafico in PDF, lin_fit salva grafico e risultati in PDF e TOML."
+"[Flusso di lavoro di base](basic-workflow.ipynb): due chiamate essenziali; "
+"histogram salva il grafico in PDF, lin_fit salva grafico e risultati in PDF "
+"e TOML."
 msgstr ""
 "[Basic workflow](basic-workflow.ipynb): two essential calls; histogram saves"
 " the plot as PDF, lin_fit saves the plot and the results as PDF and TOML."
@@ -57,9 +58,8 @@ msgstr ""
 
 #: ../../source/examples/index.md:12
 msgid ""
-"[Linear fit](linear-fit.ipynb): fit measurements with uncertainties, read "
-"the results and residuals, and choose whether to propagate uncertainties on "
-"x."
+"[Fit lineare](linear-fit.ipynb): adatta una retta a misure con incertezze, "
+"leggi i risultati e i residui e scegli se propagare le incertezze su x."
 msgstr ""
 "[Linear fit](linear-fit.ipynb): fit measurements with uncertainties, read "
 "the results and residuals, and choose whether to propagate uncertainties on "

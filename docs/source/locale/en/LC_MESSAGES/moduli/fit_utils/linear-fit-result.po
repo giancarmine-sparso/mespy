@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 11:33+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -24,24 +24,24 @@ msgstr "LinearFitResult"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:3
 msgid ""
-"The immutable result object returned by [`lin_fit`](lin-fit.md). Its "
-"numerical fields describe one fit; its optional Matplotlib figure can still "
-"be edited and saved."
+"L'oggetto risultato immutabile restituito da [`lin_fit`](lin-fit.md). I suoi"
+" campi numerici descrivono un singolo fit; la figura Matplotlib facoltativa "
+"può comunque essere modificata e salvata."
 msgstr ""
 "The immutable result object returned by [`lin_fit`](lin-fit.md). Its "
 "numerical fields describe one fit; its optional Matplotlib figure can still "
 "be edited and saved."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:5
-msgid "Public attributes"
+msgid "Attributi pubblici"
 msgstr "Public attributes"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
-msgid "Attribute"
+msgid "Attributo"
 msgstr "Attribute"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
-msgid "Meaning"
+msgid "Significato"
 msgstr "Meaning"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
@@ -49,7 +49,7 @@ msgid "`slope`, `intercept`"
 msgstr "`slope`, `intercept`"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
-msgid "The fitted slope and intercept."
+msgid "Pendenza e intercetta stimate dal fit."
 msgstr "The fitted slope and intercept."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
@@ -57,7 +57,7 @@ msgid "`slope_std`, `intercept_std`"
 msgstr "`slope_std`, `intercept_std`"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
-msgid "Their standard uncertainties."
+msgid "Le loro incertezze tipo."
 msgstr "Their standard uncertainties."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
@@ -65,7 +65,7 @@ msgid "`covariance`"
 msgstr "`covariance`"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
-msgid "Covariance between slope and intercept."
+msgid "Covarianza tra pendenza e intercetta."
 msgstr "Covariance between slope and intercept."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
@@ -73,7 +73,7 @@ msgid "`correlation`"
 msgstr "`correlation`"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
-msgid "Parameter correlation, or `None` when undefined."
+msgid "Correlazione dei parametri, oppure `None` quando non definita."
 msgstr "Parameter correlation, or `None` when undefined."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
@@ -81,7 +81,7 @@ msgid "`residuals`"
 msgstr "`residuals`"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
-msgid "Read-only physical residuals, `y - (slope*x + intercept)`."
+msgid "Residui in unità fisiche di sola lettura, `y - (slope*x + intercept)`."
 msgstr "Read-only physical residuals, `y - (slope*x + intercept)`."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
@@ -90,8 +90,8 @@ msgstr "`residual_std`"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
 msgid ""
-"Square root of the residual sum of squares divided by `dof`, or `None` if "
-"`dof=0`."
+"Radice quadrata della somma dei quadrati dei residui divisa per `dof`, "
+"oppure `None` se `dof=0`."
 msgstr ""
 "Square root of the residual sum of squares divided by `dof`, or `None` if "
 "`dof=0`."
@@ -102,8 +102,8 @@ msgstr "`estimated_sigma`"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
 msgid ""
-"Common vertical dispersion estimated in OLS; equals `residual_std` in OLS "
-"and is `None` in WLS."
+"Dispersione verticale comune stimata nei minimi quadrati ordinari (OLS); "
+"uguale a `residual_std` in OLS e a `None` nei minimi quadrati pesati (WLS)."
 msgstr ""
 "Common vertical dispersion estimated in OLS; equals `residual_std` in OLS "
 "and is `None` in WLS."
@@ -114,8 +114,8 @@ msgstr "`chi2`"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
 msgid ""
-"Weighted residual criterion, or `None` in OLS. Iterative WLS uses effective "
-"variances."
+"Criterio pesato dei residui, oppure `None` in OLS. WLS iterativo usa le "
+"varianze efficaci."
 msgstr ""
 "Weighted residual criterion, or `None` in OLS. Iterative WLS uses effective "
 "variances."
@@ -125,7 +125,7 @@ msgid "`reduced_chi2`"
 msgstr "`reduced_chi2`"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
-msgid "`chi2 / dof`, or `None` when undefined."
+msgid "`chi2 / dof`, oppure `None` quando non definito."
 msgstr "`chi2 / dof`, or `None` when undefined."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
@@ -134,8 +134,8 @@ msgstr "`p_value`"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
 msgid ""
-"Upper-tail chi-square probability, or `None` in OLS or with zero degrees of "
-"freedom. Approximate in iterative WLS."
+"Probabilità nella coda superiore del chi quadro, oppure `None` in OLS o con "
+"zero gradi di libertà. Approssimata in WLS iterativo."
 msgstr ""
 "Upper-tail chi-square probability, or `None` in OLS or with zero degrees of "
 "freedom. Approximate in iterative WLS."
@@ -145,7 +145,7 @@ msgid "`dof`"
 msgstr "`dof`"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
-msgid "Number of observations minus two."
+msgid "Numero di osservazioni meno due."
 msgstr "Number of observations minus two."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
@@ -153,7 +153,7 @@ msgid "`fit_method`"
 msgstr "`fit_method`"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
-msgid "`\"ols\"` or `\"wls\"`."
+msgid "`\"ols\"` o `\"wls\"`."
 msgstr "`\"ols\"` or `\"wls\"`."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
@@ -161,7 +161,9 @@ msgid "`x_error_method`"
 msgstr "`x_error_method`"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
-msgid "`\"none\"` or `\"iterate\"`; a keyword-only field defaulting to `\"none\"`."
+msgid ""
+"`\"none\"` o `\"iterate\"`; un campo da passare solo per nome, con valore "
+"predefinito `\"none\"`."
 msgstr "`\"none\"` or `\"iterate\"`; a keyword-only field defaulting to `\"none\"`."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
@@ -169,15 +171,16 @@ msgid "`figure`"
 msgstr "`figure`"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md
-msgid "Matplotlib figure, or `None` when `plot=False`."
+msgid "Figura Matplotlib, oppure `None` quando `plot=False`."
 msgstr "Matplotlib figure, or `None` when `plot=False`."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:24
 msgid ""
-"For `x_error_method=\"iterate\"`, parameter covariance, the band, and the "
-"interpretation of chi-squared and p-value belong to the historical "
-"effective-variance approximation. They are not validated York/ODR results. "
-"`fit_method` remains `\"wls\"` and `estimated_sigma` remains `None`."
+"Per `x_error_method=\"iterate\"`, la covarianza dei parametri, la banda e "
+"l'interpretazione del chi quadro e del valore p appartengono "
+"all'approssimazione storica della varianza efficace. Non sono risultati "
+"York/ODR validati. `fit_method` rimane `\"wls\"` e `estimated_sigma` rimane "
+"`None`."
 msgstr ""
 "For `x_error_method=\"iterate\"`, parameter covariance, the band, and the "
 "interpretation of chi-squared and p-value belong to the historical "
@@ -186,11 +189,11 @@ msgstr ""
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:26
 msgid ""
-"`normalize_residuals` changes only the plot; `residuals` always keep the "
-"units of `y`. Changes to fitted fields through `dataclasses.replace()` are "
-"rejected when they would disagree with the retained fit. You may modify "
-"`result.figure` and save it separately; this does not update an earlier "
-"automatic PDF export."
+"`normalize_residuals` modifica soltanto il grafico; `residuals` conserva "
+"sempre le unità di `y`. Le modifiche ai campi stimati tramite "
+"`dataclasses.replace()` vengono rifiutate quando sarebbero incoerenti con il"
+" fit conservato. Puoi modificare `result.figure` e salvarla separatamente; "
+"questo non aggiorna una precedente esportazione PDF automatica."
 msgstr ""
 "`normalize_residuals` changes only the plot; `residuals` always keep the "
 "units of `y`. Changes to fitted fields through `dataclasses.replace()` are "
@@ -199,28 +202,28 @@ msgstr ""
 "automatic PDF export."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:28
-msgid "Prediction"
+msgid "Previsione"
 msgstr "Prediction"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:35
 msgid ""
-"`predict()` accepts a finite real scalar or one-dimensional vector. It uses "
-"the retained local representation to preserve accuracy near large coordinate"
-" offsets."
+"`predict()` accetta uno scalare reale finito o un vettore monodimensionale. "
+"Usa la rappresentazione locale conservata per preservare l'accuratezza in "
+"prossimità di grandi traslazioni delle coordinate."
 msgstr ""
 "`predict()` accepts a finite real scalar or one-dimensional vector. It uses "
 "the retained local representation to preserve accuracy near large coordinate"
 " offsets."
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:37
-msgid "TOML export"
+msgid "Esportazione TOML"
 msgstr "TOML export"
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:43
 msgid ""
-"The destination directory must already exist. A missing extension becomes "
-"`.toml`; an existing destination is replaced atomically. The method returns "
-"the written `Path`."
+"La directory di destinazione deve già esistere. Un'estensione mancante "
+"diventa `.toml`; una destinazione esistente viene sostituita atomicamente. "
+"Il metodo restituisce il `Path` del file scritto."
 msgstr ""
 "The destination directory must already exist. A missing extension becomes "
 "`.toml`; an existing destination is replaced atomically. The method returns "
@@ -228,12 +231,13 @@ msgstr ""
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:45
 msgid ""
-"The document contains `[mespy]`, `[fit]`, `[diagnostics]`, and "
-"`[residuals]`, plus `[data]` and `[plot]` for results produced by `lin_fit`."
-" Input uncertainties are stored in their original form after scalar "
-"expansion, and floating-point results keep full precision. Undefined "
-"diagnostics are omitted. Figure edits and the full Matplotlib configuration "
-"are not serialized."
+"Il documento contiene `[mespy]`, `[fit]`, `[diagnostics]` e `[residuals]`, "
+"oltre a `[data]` e `[plot]` per i risultati prodotti da `lin_fit`. Le "
+"incertezze in ingresso vengono conservate nella loro forma originale dopo "
+"l'espansione degli scalari e i risultati in virgola mobile mantengono la "
+"piena precisione. Le informazioni diagnostiche non definite vengono omesse. "
+"Le modifiche alla figura e la configurazione Matplotlib completa non vengono"
+" serializzate."
 msgstr ""
 "The document contains `[mespy]`, `[fit]`, `[diagnostics]`, and "
 "`[residuals]`, plus `[data]` and `[plot]` for results produced by `lin_fit`."
@@ -244,10 +248,11 @@ msgstr ""
 
 #: ../../source/moduli/fit_utils/linear-fit-result.md:47
 msgid ""
-"Without `sigma_x`, exports retain schema 2. With `sigma_x`, schema 3 also "
-"stores `[data].sigma_x` and `[fit].x_error_method`, including `\"none\"` "
-"when horizontal bars were only displayed. Manually constructed iterative "
-"results use schema 3 and record the method without inventing input data."
+"Senza `sigma_x`, le esportazioni mantengono lo schema 2. Con `sigma_x`, lo "
+"schema 3 memorizza anche `[data].sigma_x` e `[fit].x_error_method`, compreso"
+" `\"none\"` quando sono state soltanto visualizzate barre orizzontali. I "
+"risultati iterativi costruiti manualmente usano lo schema 3 e registrano il "
+"metodo senza inventare dati in ingresso."
 msgstr ""
 "Without `sigma_x`, exports retain schema 2. With `sigma_x`, schema 3 also "
 "stores `[data].sigma_x` and `[fit].x_error_method`, including `\"none\"` "

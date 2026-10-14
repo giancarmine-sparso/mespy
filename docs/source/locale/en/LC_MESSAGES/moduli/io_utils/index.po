@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -24,9 +24,9 @@ msgstr "io_utils.py"
 
 #: ../../source/moduli/io_utils/index.md:3
 msgid ""
-"`io_utils.py` si occupa del caricamento dei file CSV e concentra in un "
-"solo punto le scelte di validazione legate a colonne mancanti, rinomina "
-"dei campi e gestione dei valori `NaN`."
+"`io_utils.py` si occupa del caricamento dei file CSV e concentra in un solo "
+"punto le scelte di validazione legate a colonne mancanti, rinomina dei campi"
+" e gestione dei valori `NaN`."
 msgstr ""
 "`io_utils.py` handles CSV file loading and centralizes the validation "
 "choices related to missing columns, field renaming, and `NaN` handling."
@@ -37,11 +37,11 @@ msgstr "Main imports"
 
 #: ../../source/moduli/io_utils/index.md:7
 msgid ""
-"Standard library: `collections.abc.Collection`, "
-"`collections.abc.Mapping`, `pathlib.Path`, `typing.Literal`"
+"Libreria standard: `collections.abc.Collection`, `collections.abc.Mapping`, "
+"`pathlib.Path`, `typing.Literal`"
 msgstr ""
-"Standard library: `collections.abc.Collection`, "
-"`collections.abc.Mapping`, `pathlib.Path`, `typing.Literal`"
+"Standard library: `collections.abc.Collection`, `collections.abc.Mapping`, "
+"`pathlib.Path`, `typing.Literal`"
 
 #: ../../source/moduli/io_utils/index.md:9
 msgid "Librerie esterne: `pandas as pd`"
@@ -52,8 +52,8 @@ msgid ""
 "Tipi definiti nel modulo: `MissingPolicy = Literal[\"error\", \"drop\", "
 "\"allow\"]`"
 msgstr ""
-"Types defined in the module: `MissingPolicy = Literal[\"error\", "
-"\"drop\", \"allow\"]`"
+"Types defined in the module: `MissingPolicy = Literal[\"error\", \"drop\", "
+"\"allow\"]`"
 
 #: ../../source/moduli/io_utils/index.md:14
 msgid "Cosa espone"
@@ -61,11 +61,11 @@ msgstr "What it exports"
 
 #: ../../source/moduli/io_utils/index.md:16
 msgid ""
-"[`load_csv`](load-csv.md): wrapper di `pandas.read_csv` con un contratto "
-"piu piccolo e prevedibile."
+"[`load_csv`](load-csv.md): interfaccia semplificata di `pandas.read_csv` con"
+" un contratto piu piccolo e prevedibile."
 msgstr ""
-"[`load_csv`](load-csv.md): wrapper di `pandas.read_csv` con un contratto "
-"piu piccolo e prevedibile."
+"[`load_csv`](load-csv.md): wrapper di `pandas.read_csv` con un contratto piu"
+" piccolo e prevedibile."
 
 #: ../../source/moduli/io_utils/index.md:18
 msgid "Responsabilita del modulo"
@@ -92,7 +92,7 @@ msgid "scegliere in modo esplicito la policy sui valori mancanti"
 msgstr "choose the missing-value policy explicitly"
 
 #: ../../source/moduli/io_utils/index.md:26
-msgid "Relazioni con il resto del package"
+msgid "Relazioni con il resto del pacchetto"
 msgstr "Relations with the rest of the package"
 
 #: ../../source/moduli/io_utils/index.md:28
@@ -103,8 +103,8 @@ msgid ""
 "[`plot_utils`](../plot_utils/index.md) e "
 "[`fit_utils`](../fit_utils/index.md)."
 msgstr ""
-"`io_utils.py` is the entry point for turning on-disk data into a "
-"`DataFrame` that can then be passed to the functions in "
+"`io_utils.py` is the entry point for turning on-disk data into a `DataFrame`"
+" that can then be passed to the functions in "
 "[`stats_utils`](../stats_utils/index.md), "
 "[`plot_utils`](../plot_utils/index.md), and "
 "[`fit_utils`](../fit_utils/index.md)."

@@ -54,7 +54,7 @@ return df
 
 L'ordine dei passaggi e parte del contratto pratico della funzione.
 
-- `path` e l'unico parametro posizionale: tutti gli altri sono keyword-only.
+- `path` e l'unico parametro posizionale: tutti gli altri sono da passare solo per nome.
 - La validazione di `missing` avviene prima di leggere il file. Se la policy non e supportata, la funzione fallisce subito.
 - `required_columns` viene controllato dopo `rename_columns`. Questo permette di chiedere colonne con il nome finale, non con il nome originale del file.
 - `comment` e `skip_initial_space` non introducono logica aggiuntiva: sono passthrough controllati verso `pandas.read_csv`.
@@ -66,7 +66,7 @@ Questo ordine rende il comportamento facile da prevedere nei notebook e negli sc
 
 La gestione dei `NaN` e esplicita e dipende interamente dal parametro `missing`.
 
-- `missing="error"`: e il default. Dopo il caricamento, la funzione controlla l'intero `DataFrame` con `df.isna().any().any()`. Se trova almeno un valore mancante, solleva `ValueError`.
+- `missing="error"`: e il valore predefinito. Dopo il caricamento, la funzione controlla l'intero `DataFrame` con `df.isna().any().any()`. Se trova almeno un valore mancante, solleva `ValueError`.
 - `missing="drop"`: il caricamento non fallisce per la presenza di `NaN`. Le righe incomplete vengono eliminate con `DataFrame.dropna()`, e il `DataFrame` restituito puo quindi avere meno righe del file originale.
 - `missing="allow"`: la funzione non rimuove nulla e non solleva errori per i `NaN`. I valori mancanti restano nel `DataFrame` e vengono gestiti eventualmente a valle.
 
@@ -127,4 +127,4 @@ In questo esempio:
 - il controllo su `required_columns` verifica i nomi finali `n`, `lunghezza` e `sigma`
 - eventuali righe con valori mancanti vengono rimosse prima della restituzione
 
-Il risultato finale e un `DataFrame` gia pronto per essere passato alle funzioni di analisi e plotting del package.
+Il risultato finale e un `DataFrame` gia pronto per essere passato alle funzioni di analisi e visualizzazione grafica del pacchetto.

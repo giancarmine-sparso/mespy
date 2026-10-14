@@ -2,37 +2,37 @@
      overview aligned with its function-first hierarchy; retain module toctrees. -->
 
 (moduli)=
-# API Reference
+# Riferimento API
 
-Explore MesPy's core plotting and fitting functions, along with the utilities and result objects that support experimental data analysis.
+Esplora le funzioni principali di MesPy per grafici e fit, insieme alle funzioni di utilità e agli oggetti risultato per l'analisi dei dati sperimentali.
 
 (moduli-disponibili)=
-## Core functions
+## Funzioni principali
 
-- [`histogram`](plot_utils/histogram.md): visualize experimental measurements, their distribution, and descriptive statistics.
-- [`lin_fit`](fit_utils/lin-fit.md): fit a straight line to experimental data, estimate parameter uncertainties, and inspect residuals.
+- [`histogram`](plot_utils/histogram.md): visualizza le misure sperimentali, la loro distribuzione e le statistiche descrittive.
+- [`lin_fit`](fit_utils/lin-fit.md): adatta una retta ai dati sperimentali, stima le incertezze dei parametri ed esamina i residui.
 
-## Additional utilities
+## Altre funzioni di utilità
 
-### Data loading
+### Caricamento dei dati
 
-- [`load_csv`](io_utils/load-csv.md): load a CSV into a DataFrame with checks on columns and missing values.
+- [`load_csv`](io_utils/load-csv.md): carica un CSV in un DataFrame con controlli sulle colonne e sui valori mancanti.
 
-### Descriptive statistics
+### Statistica descrittiva
 
-- [`median`](stats_utils/median.md): compute the median of a numeric sample.
-- [`weighted_mean`](stats_utils/weighted-mean.md): compute the arithmetic or weighted mean of a sample.
-- [`variance`](stats_utils/variance.md): compute variance with optional weights and a ddof correction.
-- [`covariance`](stats_utils/covariance.md): estimate covariance between two variables with optional weights.
-- [`standard_deviation`](stats_utils/standard-deviation.md): compute standard deviation as the square root of variance.
+- [`median`](stats_utils/median.md): calcola la mediana di un campione numerico.
+- [`weighted_mean`](stats_utils/weighted-mean.md): calcola la media aritmetica o pesata di un campione.
+- [`variance`](stats_utils/variance.md): calcola la varianza con pesi facoltativi e una correzione `ddof`.
+- [`covariance`](stats_utils/covariance.md): stima la covarianza tra due variabili con pesi facoltativi.
+- [`standard_deviation`](stats_utils/standard-deviation.md): calcola la deviazione standard come radice quadrata della varianza.
 
-### Fit results
+### Risultati del fit
 
-- [`LinearFitResult`](fit_utils/linear-fit-result.md): fit parameters, uncertainties, residuals and diagnostics.
+- [`LinearFitResult`](fit_utils/linear-fit-result.md): parametri del fit, incertezze, residui e informazioni diagnostiche.
 
-Module documentation: [`io_utils.py`](io_utils/index.md), [`stats_utils.py`](stats_utils/index.md), [`plot_utils.py`](plot_utils/index.md), [`fit_utils.py`](fit_utils/index.md).
+Documentazione dei moduli: [`io_utils.py`](io_utils/index.md), [`stats_utils.py`](stats_utils/index.md), [`plot_utils.py`](plot_utils/index.md), [`fit_utils.py`](fit_utils/index.md).
 
-Looking for practical examples? Explore the [Examples](../examples/index.md).
+Cerchi esempi pratici? Esplora gli [Esempi](../examples/index.md).
 
 ```{toctree}
 :hidden:

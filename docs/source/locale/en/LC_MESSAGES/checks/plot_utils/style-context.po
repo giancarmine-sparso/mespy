@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-12 15:36+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -32,15 +32,14 @@ msgstr "What problem it solves"
 
 #: ../../source/checks/plot_utils/style-context.md:11
 msgid ""
-"Applica uno stile Matplotlib temporaneo e rende coerente il comportamento"
-" delle figure create da `mespy`, soprattutto nei notebook "
-"IPython/Jupyter."
+"Applica uno stile Matplotlib temporaneo e rende coerente il comportamento "
+"delle figure create da `mespy`, soprattutto nei notebook IPython/Jupyter."
 msgstr ""
 "Applies a temporary Matplotlib style and keeps the behaviour of figures "
 "created by `mespy` consistent, especially in IPython/Jupyter notebooks."
 
 #: ../../source/checks/plot_utils/style-context.md:13
-msgid "Contratto sugli input"
+msgid "Contratto sui dati in ingresso"
 msgstr "Input contract"
 
 #: ../../source/checks/plot_utils/style-context.md:15
@@ -48,11 +47,11 @@ msgid ""
 "`style=None` non aggiunge uno stile extra e lascia validi gli `rcParams` "
 "correnti."
 msgstr ""
-"`style=None` does not add any extra style and leaves the current "
-"`rcParams` in effect."
+"`style=None` does not add any extra style and leaves the current `rcParams` "
+"in effect."
 
 #: ../../source/checks/plot_utils/style-context.md:16
-msgid "`style=\"mespy\"` carica il file di stile incluso nel package."
+msgid "`style=\"mespy\"` carica il file di stile incluso nel pacchetto."
 msgstr "`style=\"mespy\"` loads the style file bundled with the package."
 
 #: ../../source/checks/plot_utils/style-context.md:17
@@ -61,13 +60,12 @@ msgstr "Any other string is passed to Matplotlib as a style name."
 
 #: ../../source/checks/plot_utils/style-context.md:19
 msgid ""
-"Nelle funzioni pubbliche lo stile passa prima da [`_resolve_style"
-"`](resolve-style.md), così anche gli altri stili bundled possono essere "
-"richiamati con il nome breve."
+"Nelle funzioni pubbliche lo stile passa prima da [`_resolve_style`](resolve-"
+"style.md), così anche gli altri stili inclusi possono essere richiamati con "
+"il nome breve."
 msgstr ""
-"In public functions the style first goes through [`_resolve_style"
-"`](resolve-style.md), so other bundled styles can also be called with the"
-" short name."
+"In public functions the style first goes through [`_resolve_style`](resolve-"
+"style.md), so other bundled styles can also be called with the short name."
 
 #: ../../source/checks/plot_utils/style-context.md:21
 msgid "Dove viene usata"
@@ -87,20 +85,19 @@ msgstr "How it fails"
 
 #: ../../source/checks/plot_utils/style-context.md:28
 msgid ""
-"Se Matplotlib non riesce a caricare lo stile richiesto, propaga l'errore "
-"del backend di stile sottostante."
+"Se Matplotlib non riesce a caricare lo stile richiesto, propaga l'errore del"
+" sistema di stile sottostante."
 msgstr ""
 "If Matplotlib cannot load the requested style, it propagates the error "
 "raised by the underlying style backend."
 
 #: ../../source/checks/plot_utils/style-context.md:29
 msgid ""
-"In ambiente notebook, alla fine del blocco mostra le nuove figure create "
-"e poi le chiude per evitare il doppio display automatico."
+"In ambiente notebook, alla fine del blocco mostra le nuove figure create e "
+"poi le chiude per evitare la doppia visualizzazione automatica."
 msgstr ""
-"In notebook environments, at the end of the block it shows the new "
-"figures that were created and then closes them to avoid double automatic "
-"display."
+"In notebook environments, at the end of the block it shows the new figures "
+"that were created and then closes them to avoid double automatic display."
 
 #: ../../source/checks/plot_utils/style-context.md:31
 msgid "Perche resta privata"
@@ -108,10 +105,10 @@ msgstr "Why it remains private"
 
 #: ../../source/checks/plot_utils/style-context.md:33
 msgid ""
-"E un dettaglio infrastrutturale condiviso dalle funzioni di plotting. "
-"Documentarlo chiarisce il comportamento del package, ma non e pensato "
-"come interfaccia pubblica stabile."
+"E un dettaglio infrastrutturale condiviso dalle funzioni di visualizzazione "
+"grafica. Documentarlo chiarisce il comportamento del pacchetto, ma non e "
+"pensato come interfaccia pubblica stabile."
 msgstr ""
 "It is an infrastructural detail shared by the plotting functions. "
-"Documenting it clarifies the package behaviour, but it is not intended as"
-" a stable public interface."
+"Documenting it clarifies the package behaviour, but it is not intended as a "
+"stable public interface."

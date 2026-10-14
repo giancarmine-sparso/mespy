@@ -16,7 +16,7 @@ Un `float` con la deviazione standard.
 
 ## Errori ed eccezioni
 
-Eredita gli stessi errori di [`variance`](../variance.md), perche la funzione e un semplice wrapper sopra quel calcolo.
+Eredita gli stessi errori di [`variance`](../variance.md), perche la funzione è una semplice interfaccia semplificata sopra quel calcolo.
 
 ## Esempio
 

@@ -46,19 +46,19 @@ histogram(
 ```
 
 `histogram` disegna un istogramma di un campione numerico e puo aggiungere media, banda `+- 1 sigma`, legenda, griglia e salvataggio della figura.
-`stat` sceglie conteggi (`"count"`, default), frequenze relative (`"probability"`) o densità di frequenza (`"density"`). Può essere passato come secondo argomento posizionale oppure per keyword.
-Di default applica lo stile Matplotlib `mespy`; passa `style=None` per usare gli `rcParams` correnti oppure il nome di un altro stile per delegare a Matplotlib.
+`stat` sceglie conteggi (`"count"`, valore predefinito), frequenze relative (`"probability"`) o densità di frequenza (`"density"`). Può essere passato come secondo argomento posizionale oppure per nome.
+Per impostazione predefinita applica lo stile Matplotlib `mespy`; passa `style=None` per usare gli `rcParams` correnti oppure il nome di un altro stile per delegare a Matplotlib.
 
-I parametri `figsize`, `dpi`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, `bar_color`, `mean_color`, `band_color`, `edgecolor` e `grid_alpha` possono ereditare lo stile attivo quando lasciati a `None`. I parametri `hist_alpha`, `band_alpha`, `mean_symbol` e `band_symbol` restano invece override espliciti della singola chiamata.
+I parametri `figsize`, `dpi`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, `bar_color`, `mean_color`, `band_color`, `edgecolor` e `grid_alpha` possono ereditare lo stile attivo quando lasciati a `None`. I parametri `hist_alpha`, `band_alpha`, `mean_symbol` e `band_symbol` restano invece impostazioni esplicite della singola chiamata che prevalgono sullo stile.
 
 (hist-parameters)=
 ## Parametri per scopo
 
-I 37 parametri sono raggruppati in base a che cosa controllano. I default indicati come "stile" vengono letti dallo stile Matplotlib attivo durante la chiamata, che per default è `mespy`.
+I 37 parametri sono raggruppati in base a che cosa controllano. I valori predefiniti indicati come "stile" vengono letti dallo stile Matplotlib attivo durante la chiamata, che per impostazione predefinita è `mespy`.
 
 **Dati e rappresentazione**
 
-| Parametro | Default | Effetto |
+| Parametro | Valore predefinito | Effetto |
 | --- | --- | --- |
 | `x` | obbligatorio | Campione numerico: lista, array NumPy o colonna pandas. Deve essere monodimensionale, non vuoto e con soli valori finiti. |
 | `stat` | `"count"` | Altezza delle barre: conteggi $n_i$, frequenze relative $n_i/N$ o densità $n_i/(N\,\Delta x_i)$. |
@@ -66,7 +66,7 @@ I 37 parametri sono raggruppati in base a che cosa controllano. I default indica
 
 **Bin**
 
-| Parametro | Default | Effetto |
+| Parametro | Valore predefinito | Effetto |
 | --- | --- | --- |
 | `bins` | `"auto"` | Numero di bin (`10`), regola automatica di NumPy (`"auto"`, `"fd"`, `"sturges"`, `"sqrt"`, ...) o array esplicito dei bordi. |
 | `bin_width` | `None` | Larghezza fissa dei bin; i bordi vengono allineati a multipli interi di `bin_width`. Alternativo a `bins`. |
@@ -74,7 +74,7 @@ I 37 parametri sono raggruppati in base a che cosa controllano. I default indica
 
 **Media e banda**
 
-| Parametro | Default | Effetto |
+| Parametro | Valore predefinito | Effetto |
 | --- | --- | --- |
 | `show_mean` | `True` | Disegna la linea tratteggiata sulla media. |
 | `show_band` | `True` | Disegna la banda $\bar{x} \pm \sigma$. |
@@ -84,7 +84,7 @@ I 37 parametri sono raggruppati in base a che cosa controllano. I default indica
 
 **Testi e legenda**
 
-| Parametro | Default | Effetto |
+| Parametro | Valore predefinito | Effetto |
 | --- | --- | --- |
 | `label` | `"Dati"` | Nome delle barre in legenda. |
 | `xlabel` | `"Valore"` | Etichetta dell'asse $x$: grandezza e unità. |
@@ -98,7 +98,7 @@ I 37 parametri sono raggruppati in base a che cosa controllano. I default indica
 
 **Assi e griglia**
 
-| Parametro | Default | Effetto |
+| Parametro | Valore predefinito | Effetto |
 | --- | --- | --- |
 | `show_bin_ticks` | `True` | Usa i bordi dei bin come tacche dell'asse $x$. |
 | `tick_rotation` | `0` | Rotazione in gradi delle etichette dell'asse $x$. |
@@ -109,7 +109,7 @@ I 37 parametri sono raggruppati in base a che cosa controllano. I default indica
 
 **Figura, stile e salvataggio**
 
-| Parametro | Default | Effetto |
+| Parametro | Valore predefinito | Effetto |
 | --- | --- | --- |
 | `style` | `"mespy"` | Stile applicato solo durante la chiamata. `None` usa le impostazioni correnti; accetta anche `"report"`, `"column"` o il nome di uno stile Matplotlib. |
 | `ax` | `None` | Asse su cui disegnare. Con `None` viene creata una nuova figura. |
@@ -119,7 +119,7 @@ I 37 parametri sono raggruppati in base a che cosa controllano. I default indica
 
 **Colori e trasparenze**
 
-| Parametro | Default | Effetto |
+| Parametro | Valore predefinito | Effetto |
 | --- | --- | --- |
 | `bar_color` | stile | Colore di riempimento delle barre. |
 | `edgecolor` | stile | Colore del bordo delle barre (bianco nello stile `mespy`). |

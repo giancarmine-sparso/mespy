@@ -4,7 +4,7 @@
 
 ## Import principali
 
-- Standard library:
+- Libreria standard:
   `collections.abc.Collection`, `collections.abc.Mapping`, `pathlib.Path`, `typing.Literal`
 - Librerie esterne:
   `pandas as pd`
@@ -13,7 +13,7 @@
 
 ## Cosa espone
 
-- [`load_csv`](load-csv.md): wrapper di `pandas.read_csv` con un contratto piu piccolo e prevedibile.
+- [`load_csv`](load-csv.md): interfaccia semplificata di `pandas.read_csv` con un contratto piu piccolo e prevedibile.
 
 ## Responsabilita del modulo
 
@@ -23,7 +23,7 @@
 - verificare eventuali colonne obbligatorie
 - scegliere in modo esplicito la policy sui valori mancanti
 
-## Relazioni con il resto del package
+## Relazioni con il resto del pacchetto
 
 `io_utils.py` e il punto di ingresso per trasformare dati su disco in un `DataFrame` da passare poi alle funzioni di [`stats_utils`](../stats_utils/index.md), [`plot_utils`](../plot_utils/index.md) e [`fit_utils`](../fit_utils/index.md).
 

@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 13:41+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -19,15 +19,15 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 
 #: ../../source/checks/index.md:1
-msgid "Controlli e helper interni"
+msgid "Controlli interni e funzioni di supporto"
 msgstr "Internal checks and helpers"
 
 #: ../../source/checks/index.md:3
 msgid ""
 "Questa sezione documenta le funzioni private usate da `mespy` per validare "
-"input e centralizzare piccoli passaggi di calcolo. Sono helper importanti "
-"per capire il comportamento del package, ma non fanno parte dell'API "
-"pubblica."
+"dati in ingresso e centralizzare piccoli passaggi di calcolo. Sono funzioni "
+"di supporto importanti per capire il comportamento del pacchetto, ma non "
+"fanno parte dell'API pubblica."
 msgstr ""
 "This section documents the private functions used by `mespy` to validate "
 "inputs and centralize small calculation steps. They are important helpers "
@@ -106,7 +106,7 @@ msgstr "Important note"
 msgid ""
 "Il fatto che queste funzioni siano documentate non significa che siano "
 "stabili come interfaccia pubblica. Sono descritte per chiarezza progettuale "
-"e per facilitare la manutenzione del package."
+"e per facilitare la manutenzione del pacchetto."
 msgstr ""
 "The fact that these functions are documented does not mean they are stable "
 "public interfaces. They are described for design clarity and to make "

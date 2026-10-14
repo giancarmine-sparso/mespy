@@ -2,7 +2,7 @@
 
 Questa pagina descrive il flusso interno di `histogram` e l'ordine con cui vengono applicate validazioni, scelta dei bin e aggiunte grafiche. A differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere la lista dei parametri, ma mostrare come la funzione costruisce davvero l'istogramma.
 
-I frammenti seguenti sono estratti dal codice attuale di `src/mespy/plot_utils.py`. Gli helper privati vengono citati solo per chiarire il flusso; i dettagli completi sono documentati in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), [`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-limits.md), [`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md), [`_validate_decimals`](../../../checks/plot_utils/validate-decimals.md), [`_style_context`](../../../checks/plot_utils/style-context.md) e [`standard_deviation`](../../stats_utils/standard-deviation.md).
+I frammenti seguenti sono estratti dal codice attuale di `src/mespy/plot_utils.py`. Le funzioni di supporto private vengono citate solo per chiarire il flusso; i dettagli completi sono documentati in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), [`_validate_axis_limits`](../../../checks/plot_utils/validate-axis-limits.md), [`_validate_figsize`](../../../checks/plot_utils/validate-figsize.md), [`_validate_decimals`](../../../checks/plot_utils/validate-decimals.md), [`_style_context`](../../../checks/plot_utils/style-context.md) e [`standard_deviation`](../../stats_utils/standard-deviation.md).
 
 ## Sequenza di esecuzione
 
@@ -21,9 +21,9 @@ L'implementazione segue questa sequenza:
 11. Calcola media aritmetica e deviazione standard del campione.
 12. Se attivi, aggiunge la linea della media e la banda `+- 1 sigma`.
 13. Imposta etichette, titolo, griglia, legenda, limiti assi, eventuale salvataggio e infine restituisce `(fig, ax)`.
-14. In ambiente IPython/Jupyter, `_style_context` mostra esplicitamente le nuove figure prima di uscire dal context manager.
+14. In ambiente IPython/Jupyter, `_style_context` mostra esplicitamente le nuove figure prima di uscire dal gestore di contesto.
 
-## Validazione input, stile e setup figura
+## Validazione dei dati in ingresso, stile e preparazione della figura
 
 ```python
 values = _as_float_vector("x", x)
@@ -71,11 +71,11 @@ Questo primo blocco fissa il contratto di ingresso della funzione.
 - `x` non viene passato direttamente a Matplotlib: prima viene normalizzato in `values`, che deve essere un array numerico monodimensionale, non vuoto e senza valori non finiti.
 - `stat` viene validato prima di creare la figura; valori diversi dalle tre stringhe supportate generano un `ValueError` informativo.
 - `decimals` viene validato subito e resta disponibile sia per i tick dell'asse x sia per le label testuali di media e banda.
-- `_resolve_style(style)` permette di usare i nomi brevi degli stili inclusi nel package; `_style_context(...)` centralizza poi tre casi distinti: `style=None` usa gli `rcParams` correnti, `style="mespy"` carica il file `mespy.mplstyle`, ogni altra stringa viene passata a `plt.style.context(...)`.
+- `_resolve_style(style)` permette di usare i nomi brevi degli stili inclusi nel pacchetto; `_style_context(...)` centralizza poi tre casi distinti: `style=None` usa gli `rcParams` correnti, `style="mespy"` carica il file `mespy.mplstyle`, ogni altra stringa viene passata a `plt.style.context(...)`.
 - `xlim` e `ylim` vengono controllati prima di qualunque disegno. Se sono presenti, devono essere coppie valide di numeri finiti.
 - `figsize` e `dpi` vengono passati a `plt.subplots(...)` solo quando sono esplicitati. Se l'utente passa `ax`, la funzione non crea una nuova figura e riusa `ax.get_figure()`.
 - `constrained_layout=True` fa parte del comportamento standard quando `histogram` crea da sola la figura.
-- In notebook IPython/Jupyter, lo stesso context manager gestisce anche il display esplicito delle nuove figure per evitare interazioni scomode con `plt.style.context(...)`.
+- In notebook IPython/Jupyter, lo stesso gestore di contesto gestisce anche la visualizzazione esplicita delle nuove figure per evitare interazioni scomode con `plt.style.context(...)`.
 
 ## Range e costruzione dei bin
 
@@ -111,7 +111,7 @@ if bin_width is not None:
 
 Qui la funzione decide il dominio numerico su cui costruire l'istogramma.
 
-- Se `hist_range` e presente, viene validato con lo stesso helper dei limiti degli assi, ma con un controllo aggiuntivo: deve valere strettamente `xmin < xmax`.
+- Se `hist_range` e presente, viene validato con la stessa funzione di supporto dei limiti degli assi, ma con un controllo aggiuntivo: deve valere strettamente `xmin < xmax`.
 - Se `hist_range` non e presente, `xmin` e `xmax` vengono ricavati direttamente dai dati validati in `values`.
 - `bin_width` non modifica solo la larghezza dei bin: cambia proprio la strategia di costruzione, perche i bordi vengono generati esplicitamente con `np.arange(...)`.
 - Il calcolo di `start` e `stop` usa `floor` e `ceil`, quindi i bin vengono allineati a multipli interi di `bin_width` che coprano tutto l'intervallo considerato. Le osservazioni in questa eventuale estensione del range restano incluse anche nel denominatore delle modalità normalizzate.
@@ -173,7 +173,7 @@ Questo e il punto in cui il grafico viene davvero disegnato.
 - Il ramo `"count"` mantiene la chiamata originale a `ax.hist(..., density=False)`.
 - Nei rami normalizzati, `N = counts.sum()` conta solo le osservazioni incluse nei bin; con `N > 0` le altezze diventano `counts / N` e, per `"density"`, vengono divise anche per le singole ampiezze. Con `N == 0` rimangono nulle.
 - `ax.bar(..., align="edge", width=np.diff(bin_edges))` allinea ogni barra al bordo sinistro e rispetta ampiezze disuguali. Matplotlib gestisce l'autoscaling sulle altezze finali, senza doppia normalizzazione.
-- `bar_color` ed `edgecolor` non hanno un default hardcoded nella funzione: vengono inoltrati a Matplotlib solo se l'utente li passa. Altrimenti decide lo stile attivo.
+- `bar_color` ed `edgecolor` non hanno un valore predefinito fissato nel codice nella funzione: vengono inoltrati a Matplotlib solo se l'utente li passa. Altrimenti decide lo stile attivo.
 - I `bin_edges` restituiti da Matplotlib (`"count"`) o NumPy (modalità normalizzate) sono la sorgente dei tick quando `show_bin_ticks=True`.
 - Le etichette dei bordi vengono formattate direttamente dai `bin_edges` usati per disegnare le barre.
 - `decimals` controlla la rappresentazione testuale dei bordi tramite `fmt = f".{decimals}f"`, ma la stessa formattazione verra riusata anche per media e banda.
@@ -261,7 +261,7 @@ L'ultima parte aggiunge gli elementi statistici e completa la configurazione del
 - `mean_color` e `band_color` sovrascrivono lo stile solo quando non sono `None`; altrimenti la funzione usa i colori del ciclo attivo.
 - La legenda della media usa `mean_symbol`, mentre quella della banda usa `band_symbol`.
 - Se `ylabel` è `None`, la funzione sceglie `"Conteggi"`, `"Frequenza relativa"` o `"Densità di frequenza"` in base a `stat`; rispetta sempre un valore esplicito.
-- Titolo e legenda ricevono keyword aggiuntive solo quando l'utente le ha valorizzate; in tutti gli altri casi resta valida la configurazione dello stile attivo.
+- Titolo e legenda ricevono argomenti per nome aggiuntivi solo quando l'utente le ha valorizzate; in tutti gli altri casi resta valida la configurazione dello stile attivo.
 - La griglia segue tre rami distinti: `show_grid=False` la spegne esplicitamente, `show_grid=True` con `grid_alpha is None` la lascia allo stile attivo, `show_grid=True` con `grid_alpha` esplicito applica una griglia sull'asse `y` con quell'opacita.
 - Il salvataggio avviene alla fine con `bbox_inches="tight"`; il `dpi` viene passato a `savefig(...)` solo se l'utente lo ha richiesto.
 - Il formato del file segue l'estensione di `save_path`; se il percorso non ha estensione, viene aggiunto `.pdf`.
@@ -270,10 +270,10 @@ L'ultima parte aggiunge gli elementi statistici e completa la configurazione del
 
 Alcune combinazioni di parametri definiscono il comportamento pratico piu importante della funzione.
 
-- `bin_width` e `bins` sono mutualmente esclusivi, salvo il caso default in cui `bins == "auto"`.
+- `bin_width` e `bins` sono mutualmente esclusivi, salvo il caso predefinito in cui `bins == "auto"`.
 - Con bordi espliciti, sono i bordi a determinare le osservazioni incluse: `hist_range` non applica un filtro aggiuntivo.
 - `hist_range` ha due ruoli diversi: se `bin_width` e assente, viene passato a `ax.hist(..., range=...)`; se `bin_width` e presente, viene usato per determinare `xmin` e `xmax` da cui costruire i bordi dei bin.
-- `style=None` usa gli `rcParams` correnti; `style="mespy"`, `style="report"` e gli altri stili inclusi vengono risolti dal package; qualunque altra stringa passa direttamente da Matplotlib.
+- `style=None` usa gli `rcParams` correnti; `style="mespy"`, `style="report"` e gli altri stili inclusi vengono risolti dal pacchetto; qualunque altra stringa passa direttamente da Matplotlib.
 - `bar_color`, `mean_color`, `band_color`, `edgecolor`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc` e `grid_alpha` sovrascrivono lo stile solo quando non sono `None`.
 - `show_bin_ticks=True` usa gli stessi bordi del grafico, restituiti da Matplotlib o NumPy in base alla modalità.
 - `ddof` influisce solo sul calcolo di `sigma` e quindi sulla banda `+- 1 sigma`; non cambia i conteggi dell'istogramma.
@@ -281,7 +281,7 @@ Alcune combinazioni di parametri definiscono il comportamento pratico piu import
 - `figsize` ha effetto solo quando `ax is None`; `dpi` puo invece influire sia sulla creazione della figura sia sul salvataggio, ma sempre solo se esplicitato.
 - `show_grid` non attiva una griglia completa sul piano, ma solo una griglia orizzontale legata all'asse `y` quando la funzione interviene direttamente.
 - `save_path` salva sempre la figura finale, anche quando `ax` e stato passato dall'esterno e la figura non e stata creata dentro `histogram`.
-- Nei notebook, `_style_context` mostra solo le figure nuove create nel blocco e poi le chiude, per evitare il doppio display automatico.
+- Nei notebook, `_style_context` mostra solo le figure nuove create nel blocco e poi le chiude, per evitare la doppia visualizzazione automatica.
 
 ## Esempio commentato
 
@@ -303,6 +303,6 @@ In questo esempio:
 
 - `hist_range` definisce l'intervallo numerico da cui ricavare `xmin` e `xmax`
 - `bin_width=0.5` forza la costruzione esplicita dei bordi dei bin e quindi esclude l'uso di `bins` diverso da `"auto"`
-- `style="mespy"` chiede esplicitamente lo stile del package per quella sola chiamata
+- `style="mespy"` chiede esplicitamente lo stile del pacchetto per quella sola chiamata
 - la linea della media e la banda `+- 1 sigma` vengono aggiunte dopo il disegno dell'istogramma
 - i tick dell'asse x, se attivi, vengono mostrati usando i bordi dei bin formattati con 2 decimali

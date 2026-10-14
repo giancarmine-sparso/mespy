@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: MesPy 1.1.8\n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-12 15:36+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -42,15 +41,15 @@ msgstr ""
 #: ../../source/checks/plot_utils/resolve-style.md:13
 msgid ""
 "Questo permette a funzioni come `histogram` e `lin_fit` di accettare "
-"`style=\"mespy\"`, `style=\"report\"` o `style=\"column\"` senza "
-"richiedere all'utente il percorso del file di stile."
+"`style=\"mespy\"`, `style=\"report\"` o `style=\"column\"` senza richiedere "
+"all'utente il percorso del file di stile."
 msgstr ""
 "This allows functions like `histogram` and `lin_fit` to accept "
 "`style=\"mespy\"`, `style=\"report\"` or `style=\"column\"` without "
 "prompting the user for the path to the style file."
 
 #: ../../source/checks/plot_utils/resolve-style.md:15
-msgid "Contratto sugli input"
+msgid "Contratto sui dati in ingresso"
 msgstr "Input contract"
 
 #: ../../source/checks/plot_utils/resolve-style.md:17
@@ -60,16 +59,16 @@ msgstr "If `mespy/stylelib/{style}.mplstyle` exists, returns the path of the fil
 
 #: ../../source/checks/plot_utils/resolve-style.md:18
 msgid ""
-"Se lo stile non corrisponde a un file incluso nel package, restituisce il"
-" valore ricevuto."
+"Se lo stile non corrisponde a un file incluso nel pacchetto, restituisce il "
+"valore ricevuto."
 msgstr ""
 "If the style does not match a file included in the package, returns the "
 "received value."
 
 #: ../../source/checks/plot_utils/resolve-style.md:19
 msgid ""
-"`style=None` resta `None`, così `_style_context` può lasciare invariati "
-"gli `rcParams` correnti."
+"`style=None` resta `None`, così `_style_context` può lasciare invariati gli "
+"`rcParams` correnti."
 msgstr ""
 "`style=None` remains `None`, so `_style_context` can leave the current "
 "`rcParams` unchanged."
@@ -80,8 +79,8 @@ msgstr "Where it is used"
 
 #: ../../source/checks/plot_utils/resolve-style.md:23
 msgid ""
-"in [`histogram`](../../moduli/plot_utils/histogram.md), prima di entrare "
-"in `_style_context`"
+"in [`histogram`](../../moduli/plot_utils/histogram.md), prima di entrare in "
+"`_style_context`"
 msgstr ""
 "in [`histogram`](../../moduli/plot_utils/histogram.md), before entering "
 "`_style_context`"
@@ -100,15 +99,14 @@ msgstr "How it fails"
 
 #: ../../source/checks/plot_utils/resolve-style.md:28
 msgid ""
-"La risoluzione e intenzionalmente permissiva: se il lookup nelle risorse "
-"del package non riesce, la funzione restituisce lo stile originale. "
+"La risoluzione e intenzionalmente permissiva: se la ricerca nelle risorse "
+"del pacchetto non riesce, la funzione restituisce lo stile originale. "
 "L'eventuale errore viene quindi lasciato a Matplotlib quando "
 "`_style_context` prova ad applicare quello stile."
 msgstr ""
-"The resolution is intentionally permissive: if the lookup into the "
-"package resources fails, the function returns the original style. Any "
-"error is then left to Matplotlib when `_style_context` tries to apply "
-"that style."
+"The resolution is intentionally permissive: if the lookup into the package "
+"resources fails, the function returns the original style. Any error is then "
+"left to Matplotlib when `_style_context` tries to apply that style."
 
 #: ../../source/checks/plot_utils/resolve-style.md:30
 msgid "Perche resta privata"
@@ -116,10 +114,10 @@ msgstr "Because it remains private"
 
 #: ../../source/checks/plot_utils/resolve-style.md:32
 msgid ""
-"E un helper infrastrutturale del sistema di stile. Documentarlo chiarisce"
-" perche gli stili bundled funzionano con nomi brevi, ma non e pensato "
-"come API pubblica autonoma."
+"È una funzione di supporto infrastrutturale del sistema di stile. "
+"Documentarla chiarisce perché gli stili inclusi funzionano con nomi brevi, "
+"ma non è pensata come API pubblica autonoma."
 msgstr ""
 "And a style system infrastructure helper. Documenting it clarifies why "
-"bundled styles work with short names, but it is not intended as a "
-"standalone public API."
+"bundled styles work with short names, but it is not intended as a standalone"
+" public API."

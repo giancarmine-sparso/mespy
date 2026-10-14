@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, Giancarmine Sparso
-# This file is distributed under the same license as the mespy package.
+# This file is distributed under the same license as the MesPy package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-12 15:36+0200\n"
+"POT-Creation-Date: 2026-10-14 17:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -24,14 +24,14 @@ msgstr "plot_utils.py"
 
 #: ../../source/moduli/plot_utils/index.md:3
 msgid ""
-"`plot_utils.py` raccoglie gli strumenti di visualizzazione del package. "
-"Ospita `histogram` e un piccolo gruppo di helper privati condivisi anche "
-"con `fit_utils` per validazione, gestione dello stile e comportamento "
-"coerente nei notebook."
+"`plot_utils.py` raccoglie gli strumenti di visualizzazione del pacchetto. "
+"Ospita `histogram` e un piccolo gruppo di funzioni di supporto private "
+"condivise anche con `fit_utils` per validazione, gestione dello stile e "
+"comportamento coerente nei notebook."
 msgstr ""
 "`plot_utils.py` gathers the package's visualization tools. It hosts "
-"`histogram` and a small group of private helpers shared with `fit_utils` "
-"for validation, style management, and consistent behaviour in notebooks."
+"`histogram` and a small group of private helpers shared with `fit_utils` for"
+" validation, style management, and consistent behaviour in notebooks."
 
 #: ../../source/moduli/plot_utils/index.md:5
 msgid "Import principali"
@@ -39,7 +39,7 @@ msgstr "Main imports"
 
 #: ../../source/moduli/plot_utils/index.md:7
 msgid ""
-"Standard library: `contextlib.contextmanager`, "
+"Libreria standard: `contextlib.contextmanager`, "
 "`importlib.resources.as_file`, `importlib.resources.files`, "
 "`typing.TYPE_CHECKING`"
 msgstr ""
@@ -82,8 +82,8 @@ msgstr "What it does"
 
 #: ../../source/moduli/plot_utils/index.md:26
 msgid ""
-"validare input numerici, limiti degli assi, `figsize` e precisione "
-"testuale"
+"validare dati in ingresso numerici, limiti degli assi, `figsize` e "
+"precisione testuale"
 msgstr "validate numeric inputs, axis limits, `figsize`, and textual precision"
 
 #: ../../source/moduli/plot_utils/index.md:27
@@ -95,7 +95,9 @@ msgstr ""
 "Matplotlib style"
 
 #: ../../source/moduli/plot_utils/index.md:28
-msgid "gestire il display delle figure create dentro notebook IPython/Jupyter"
+msgid ""
+"gestire la visualizzazione delle figure create dentro notebook "
+"IPython/Jupyter"
 msgstr "manage the display of figures created inside IPython/Jupyter notebooks"
 
 #: ../../source/moduli/plot_utils/index.md:29
@@ -107,7 +109,7 @@ msgid "mostrare opzionalmente media, banda a una sigma, legenda e griglia"
 msgstr "optionally show the mean, a one-sigma band, legend, and grid"
 
 #: ../../source/moduli/plot_utils/index.md:32
-msgid "Helper collegati"
+msgid "Funzioni di supporto collegate"
 msgstr "Related helpers"
 
 #: ../../source/moduli/plot_utils/index.md:34
@@ -145,44 +147,3 @@ msgstr "[`_as_float_vector`](../../checks/stats_utils/as-float-vector.md)"
 #: ../../source/moduli/plot_utils/index.md:43
 msgid "Pagina di dettaglio"
 msgstr "Detailed page"
-
-#~ msgid ""
-#~ "`plot_utils.py` raccoglie gli strumenti di "
-#~ "visualizzazione del package. Al momento "
-#~ "il modulo espone una funzione pubblica,"
-#~ " `histogram`, e definisce alcuni helper "
-#~ "privati per validare limiti degli assi"
-#~ " e dimensioni della figura."
-#~ msgstr ""
-#~ "`plot_utils.py` collects the package "
-#~ "visualization tools. At the moment the"
-#~ " module exposes one public function, "
-#~ "`histogram`, and defines a few private"
-#~ " helpers to validate axis limits and"
-#~ " figure size."
-
-#~ msgid "Standard library: `typing.TYPE_CHECKING`"
-#~ msgstr ""
-
-#~ msgid "Costanti definite nel modulo"
-#~ msgstr "Constants defined in the module"
-
-#~ msgid "`C_BAR`: colore delle barre dell'istogramma"
-#~ msgstr "`C_BAR`: color used for histogram bars"
-
-#~ msgid "`C_MEAN`: colore della linea della media"
-#~ msgstr "`C_MEAN`: color used for the mean line"
-
-#~ msgid ""
-#~ "`C_BAND_A` e `C_BAND_B`: colori della "
-#~ "palette usata anche da `fit_utils`"
-#~ msgstr ""
-#~ "`C_BAND_A` and `C_BAND_B`: colors from "
-#~ "the palette also used by `fit_utils`"
-
-#~ msgid "validare input numerici per l'istogramma"
-#~ msgstr "validate numeric inputs for the histogram"
-
-#~ msgid "validare `xlim`, `ylim`, `hist_range` e `figsize`"
-#~ msgstr "validate `xlim`, `ylim`, `hist_range`, and `figsize`"
-
