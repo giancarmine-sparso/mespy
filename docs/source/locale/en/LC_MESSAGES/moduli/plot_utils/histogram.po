@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 08:36+0200\n"
+"POT-Creation-Date: 2026-10-13 19:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,23 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:56
+#: ../../source/moduli/plot_utils/histogram.md:58
 msgid "Panoramica"
 msgstr "Overview"
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:56
+#: ../../source/moduli/plot_utils/histogram.md:58
 msgid "Funzionamento"
 msgstr "Implementation"
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:1
+#: ../../source/moduli/plot_utils/histogram.md:1
 msgid "histogram"
 msgstr "histogram"
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:3
+#: ../../source/moduli/plot_utils/histogram.md:3
 msgid "Firma"
 msgstr "Signature"
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:48
+#: ../../source/moduli/plot_utils/histogram.md:48
 msgid ""
 "`histogram` disegna un istogramma di un campione numerico e puo aggiungere media, "
 "banda `+- 1 sigma`, legenda, griglia e salvataggio della figura. `stat` sceglie "
@@ -51,7 +51,7 @@ msgstr ""
 " default it applies the `mespy` Matplotlib style; pass `style=None` to use the "
 "current `rcParams`, or another style name to delegate to Matplotlib."
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:52
+#: ../../source/moduli/plot_utils/histogram.md:52
 msgid ""
 "I parametri `figsize`, `dpi`, `title_fontsize`, `title_pad`, `legend_fontsize`, "
 "`legend_loc`, `bar_color`, `mean_color`, `band_color`, `edgecolor` e `grid_alpha` "
@@ -65,7 +65,16 @@ msgstr ""
 "`band_alpha`, `mean_symbol`, and `band_symbol` parameters remain explicit per-call "
 "overrides instead."
 
-#: ../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:54
+#: ../../source/moduli/plot_utils/histogram.md:54
+msgid ""
+"Per una guida passo passo, con undici esempi eseguiti e il significato statistico di "
+"ogni opzione, vedi [Istogramma](../../examples/histogram.ipynb) nella sezione Esempi."
+msgstr ""
+"For a step-by-step guide, with eleven executed examples and the statistical meaning "
+"of every option, see [Histogram](../../examples/histogram.ipynb) in the Examples "
+"section."
+
+#: ../../source/moduli/plot_utils/histogram.md:56
 msgid ""
 "Questa pagina resta il punto di ingresso rapido. I dettagli completi sono in "
 "[Panoramica](histogram/panoramica.md), mentre "
@@ -74,22 +83,3 @@ msgstr ""
 "This page remains the quick entry point. Full details are in "
 "[Overview](histogram/panoramica.md), while [How it works](histogram/funzionamento.md)"
 " is set up as a dedicated subpage."
-
-#~ msgid ""
-#~ "`histogram` disegna un istogramma di un "
-#~ "campione numerico e puo aggiungere media, "
-#~ "banda `+- 1 sigma`, legenda, griglia e "
-#~ "salvataggio della figura. Di default applica "
-#~ "lo stile Matplotlib `mespy`; passa `style=None` "
-#~ "per usare gli `rcParams` correnti oppure il"
-#~ " nome di un altro stile per delegare "
-#~ "a Matplotlib."
-#~ msgstr ""
-#~ "`histogram` draws a histogram for a numeric"
-#~ " sample and can add the mean, a `+-"
-#~ " 1 sigma` band, legend, grid, and figure"
-#~ " saving. By default it applies the `mespy`"
-#~ " Matplotlib style; pass `style=None` to use "
-#~ "the current `rcParams`, or the name of "
-#~ "another style to delegate to Matplotlib."
-

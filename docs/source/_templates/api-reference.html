@@ -1,0 +1,99 @@
+{# Overview only. Names, destinations and supporting entries come from the
+   existing module toctrees; the core functions are ordered in conf.py. #}
+{% extends "layout.html" %}
+
+{% block htmltitle %}<title>API Reference — MesPy</title>{% endblock %}
+{% block extrahead %}
+  {{ super() }}
+  <meta name="description" content="Explore MesPy's core plotting and fitting functions, along with the utilities and result objects that support experimental data analysis.">
+{% endblock %}
+{% block body_tag %}
+<body class="mespy-home mespy-api" data-default-mode="{{ default_mode | default('auto', true) }}">
+  <a class="mh-skip" href="#main-content">Skip to content</a>
+{% endblock %}
+
+{% block content %}
+{%- set categories = {
+  'moduli/io_utils/index': {'label': 'Data loading', 'anchor': 'api-module-1'},
+  'moduli/stats_utils/index': {'label': 'Descriptive statistics', 'anchor': 'api-module-2'},
+  'moduli/fit_utils/index': {'label': 'Fit results', 'anchor': 'api-module-4'},
+} %}
+{%- set descriptions = {
+  'histogram': 'Visualize experimental measurements, their distribution, and descriptive statistics.',
+  'lin_fit': 'Fit a straight line to experimental data, estimate parameter uncertainties, and inspect residuals.',
+  'load_csv': 'Load a CSV into a DataFrame with checks on columns and missing values.',
+  'median': 'Compute the median of a numeric sample.',
+  'weighted_mean': 'Compute the arithmetic or weighted mean of a sample.',
+  'variance': 'Compute variance with optional weights and a ddof correction.',
+  'covariance': 'Estimate covariance between two variables with optional weights.',
+  'standard_deviation': 'Compute standard deviation as the square root of variance.',
+  'LinearFitResult': 'Fit parameters, uncertainties, residuals and diagnostics.',
+} %}
+
+{% include "components/mespy-header.html" %}
+{% include "components/section-nav.html" %}
+
+<main id="main-content" lang="en">
+  <section class="mh-shell api-hero" id="moduli" aria-labelledby="api-title">
+    <div id="api-reference">
+      <p class="mh-eyebrow"><span class="mh-status" aria-hidden="true"></span> MesPy / API Reference</p>
+      <h1 id="api-title">API <span class="mh-accent">Reference</span></h1>
+      <p class="mh-lead">Explore MesPy's core plotting and fitting functions, along with the utilities and result objects that support experimental data analysis.</p>
+    </div>
+    <p class="api-hero-note">Each entry links to documentation of signatures, parameters and return values.</p>
+  </section>
+
+  <div class="mh-shell api-catalog" id="moduli-disponibili">
+    <section class="api-section" id="core-functions" aria-labelledby="api-core-title">
+      <div class="api-section-heading">
+        <p class="mh-eyebrow"><span class="mh-accent">01</span> / Plotting &amp; fitting</p>
+        <h2 id="api-core-title">Core functions</h2>
+      </div>
+      <ul class="api-core-entries">
+        {%- for entry in api_core %}
+        <li class="api-core-item" id="{{ entry.doc.rsplit('/', 1)[-1] }}">
+          {# Preserve the previous visualization module heading anchor. #}
+          {%- if entry.title == 'histogram' %}<span id="api-module-3" aria-hidden="true"></span>{% endif %}
+          <a class="api-entry api-core-entry" href="{{ entry.href }}">
+            <h3 class="api-entry-name"><code>{{ entry.title }}</code><span aria-hidden="true">↗</span></h3>
+            <p class="api-entry-description">{{ descriptions[entry.title] }}</p>
+          </a>
+          <p class="api-origin"><a href="{{ entry.module.href }}"><code>{{ entry.module.title }}</code> <span aria-hidden="true">↗</span></a></p>
+        </li>
+        {%- endfor %}
+      </ul>
+    </section>
+
+    <section class="api-section api-utilities" id="additional-utilities" aria-labelledby="api-utilities-title">
+      <div class="api-section-heading">
+        <p class="mh-eyebrow"><span class="mh-accent">02</span> / Supporting tools</p>
+        <h2 id="api-utilities-title">Additional utilities</h2>
+      </div>
+      <div class="api-utility-groups">
+        {%- for module in api_utilities %}
+        {%- set category = categories.get(module.doc, {}) %}
+        <section class="api-utility-group" aria-labelledby="{{ category.anchor | default('api-group-' ~ loop.index) }}">
+          <h3 id="{{ category.anchor | default('api-group-' ~ loop.index) }}">{{ category.label | default(module.title) }}</h3>
+          <p class="api-origin"><a href="{{ module.href }}"><code>{{ module.title }}</code> <span aria-hidden="true">↗</span></a></p>
+          <ul class="api-entries">
+            {%- for entry in module.entries %}
+            <li>
+              <a class="api-entry" href="{{ entry.href }}">
+                <span class="api-entry-name"><code>{{ entry.title }}</code><span aria-hidden="true">↗</span></span>
+                {%- if entry.title in descriptions %}<span class="api-entry-description">{{ descriptions[entry.title] }}</span>{% endif %}
+              </a>
+            </li>
+            {%- endfor %}
+          </ul>
+        </section>
+        {%- endfor %}
+      </div>
+    </section>
+    <p class="api-aside">Looking for practical examples? <a class="mh-text-link" href="{{ pathto('examples/index') }}">Examples <span aria-hidden="true">↗</span></a></p>
+  </div>
+</main>
+
+{% include "components/mespy-footer.html" %}
+{{ self.scripts_end() }}
+{% endblock %}
+{% block footer %}{% endblock %}

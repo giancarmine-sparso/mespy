@@ -1,7 +1,10 @@
+import ast
 import re
 import runpy
 import tomllib
 from pathlib import Path
+
+import pytest
 
 from babel.messages.pofile import read_po
 from jinja2 import Environment, nodes
@@ -10,6 +13,26 @@ from jinja2 import Environment, nodes
 ROOT = Path(__file__).resolve().parents[1]
 DOCS_SOURCE = ROOT / "docs" / "source"
 EN_CATALOGS = DOCS_SOURCE / "locale" / "en" / "LC_MESSAGES"
+
+
+@pytest.mark.parametrize("module,function,page", [
+    ("fit_utils", "lin_fit", "moduli/fit_utils/lin-fit.md"),
+    ("plot_utils", "histogram", "moduli/plot_utils/histogram.md"),
+])
+def test_core_reference_signature_matches_current_source(module, function, page):
+    source = ast.parse((ROOT / "src/mespy" / f"{module}.py").read_text())
+    implementation = next(
+        node for node in source.body
+        if isinstance(node, ast.FunctionDef) and node.name == function
+    )
+    code = re.search(
+        r"```python\n(.*?)\n```", (DOCS_SOURCE / page).read_text(), re.DOTALL
+    ).group(1).strip()
+    if not code.startswith("def "):
+        code = "def " + code
+    reference = ast.parse(code.rstrip(":") + ":\n    pass\n").body[0]
+    assert ast.dump(reference.args) == ast.dump(implementation.args)
+    assert ast.dump(reference.returns) == ast.dump(implementation.returns)
 
 
 def test_sphinx_version_matches_project_metadata():
@@ -89,7 +112,7 @@ def test_homepage_initial_example_runs_with_public_lin_fit():
     assert document["fit"]["slope_std"] == expected.slope_std
     assert document["diagnostics"]["chi2"] == expected.chi2
     np.testing.assert_allclose(document["residuals"]["values"], expected.residuals)
-    assert document["plot"]["style"] == "report"
+    assert document["plot"]["style"] == "mespy"
     assert '<svg' in response["svg"] and 'Residuals' in response["svg"]
     assert not plt.get_fignums()
 

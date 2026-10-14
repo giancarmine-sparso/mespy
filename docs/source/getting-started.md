@@ -1,43 +1,49 @@
-# Guida rapida
+<!-- The HTML page is rendered by _templates/get-started.html (see conf.py).
+     This file supplies the title, the search index and non-HTML builds:
+     keep its commands in sync with the template. -->
 
-Questa guida presenta il percorso piu semplice per usare `mespy`: caricare un file, fare qualche statistica di base, creare un grafico e, se serve, eseguire un fit lineare.
+# Inizia qui
 
-Se vuoi studiare il codice delle funzioni e il significato matematico dei risultati, vai direttamente alla sezione [Moduli](moduli/index.md).
-Ogni modulo raccoglie la panoramica concettuale e le pagine dedicate alle singole funzioni pubbliche.
+Installa MesPy, verifica che funzioni e scegli da dove continuare. Tutto quello che serve per iniziare, in pochi passi. MesPy richiede Python 3.12 o successivo.
 
-## Moduli principali
+## Scegli il tuo ambiente
 
-- [`io_utils`](moduli/io_utils/index.md) gestisce il caricamento dei CSV.
-- [`stats_utils`](moduli/stats_utils/index.md) raccoglie le funzioni statistiche.
-- [`plot_utils`](moduli/plot_utils/index.md) contiene gli strumenti di visualizzazione.
-- [`fit_utils`](moduli/fit_utils/index.md) contiene il fit lineare e il tipo di risultato.
-
-## Primo flusso di lavoro
+Su Google Colab o in un notebook Jupyter, esegui in una cella di codice:
 
 ```python
-from mespy import histogram, load_csv, variance
-
-df = load_csv(
-    "docs/source/examples/data/test_misure.csv",
-    rename_columns={"misura_n": "n", "lunghezza_mm": "lunghezza", "sigma_mm": "sigma"},
-    required_columns=["n", "lunghezza", "sigma"],
-    missing="drop",
-)
-
-var_l = variance(df["lunghezza"])
-fig, ax = histogram(df["lunghezza"], title=f"Varianza = {var_l:.3f} mm^2")
+%pip install mespy
 ```
 
-## Come navigare la docs
+`%pip` installa MesPy nell'ambiente del kernel attivo; se poi l'import non funziona, riavvia il kernel.
 
-- Parti dalla pagina madre del modulo per vedere scopo, import e collegamenti interni.
-- Apri poi la pagina della funzione per firma, parametri, ritorno, errori ed esempi.
-- Se vuoi capire i check sugli input, consulta [Controlli e helper interni](checks/index.md).
+Con uv, consigliato per i progetti locali, aggiungi MesPy a un progetto creato con `uv init`:
 
-## Esempi
+```bash
+uv add mespy
+```
 
-- [Workflow base](examples/basic-workflow.md)
-- [Istogramma](examples/histogram.ipynb)
-- [Fit lineare](examples/linear-fit.ipynb)
-- [Stile dei grafici](examples/plot-style.ipynb)
-- [Statistiche](examples/stats-utils.ipynb)
+Per provarlo senza creare un progetto, apri una sessione Python temporanea:
+
+```bash
+uv run --with mespy python
+```
+
+Con pip, preferibilmente in un ambiente virtuale:
+
+```bash
+python -m pip install mespy
+```
+
+## Verifica che tutto funzioni
+
+```python
+import mespy
+
+print("MesPy è pronto.")
+```
+
+## Continua a esplorare
+
+- [Esempi](examples/index.md): flussi di analisi pratici e notebook.
+- [Riferimento API](moduli/index.md): funzioni, parametri e valori restituiti.
+- [Installazione per lo sviluppo](installazione.md): per chi vuole contribuire a MesPy.

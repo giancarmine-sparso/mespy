@@ -51,6 +51,8 @@ Di default applica lo stile Matplotlib `mespy`; passa `style=None` per usare gli
 
 I parametri `figsize`, `dpi`, `title_fontsize`, `title_pad`, `legend_fontsize`, `legend_loc`, `bar_color`, `mean_color`, `band_color`, `edgecolor` e `grid_alpha` possono ereditare lo stile attivo quando lasciati a `None`. I parametri `hist_alpha`, `band_alpha`, `mean_symbol` e `band_symbol` restano invece override espliciti della singola chiamata.
 
+Per una guida passo passo, con undici esempi eseguiti e il significato statistico di ogni opzione, vedi [Istogramma](../../examples/histogram.ipynb) nella sezione Esempi.
+
 Questa pagina resta il punto di ingresso rapido. I dettagli completi sono in [Panoramica](histogram/panoramica.md), mentre [Funzionamento](histogram/funzionamento.md) e predisposta come sottopagina dedicata.
 
 ```{toctree}

@@ -1,6 +1,18 @@
-# Installazione
+# Installazione per lo sviluppo
 
-`MesPy` richiede Python `3.12` o superiore. I comandi seguenti assumono che tu sia gia nella directory del progetto e che il virtualenv locale sia `.venv`, in coerenza con i target `make` del repository.
+Per installare MesPy e usarlo nelle tue analisi segui [Inizia qui](getting-started.md): trovi i comandi per uv, Google Colab, Jupyter e pip.
+
+Questa pagina serve a chi vuole modificare MesPy o contribuire al progetto. MesPy richiede Python `3.12` o superiore. I comandi seguenti assumono che tu sia nella directory del repository e che il virtualenv locale sia `.venv`, in coerenza con i target `make` del repository.
+
+## Con make
+
+```bash
+git clone https://github.com/giancarmine-sparso/mespy
+cd mespy
+make setup
+```
+
+`make setup` crea `.venv` e installa il package in editable mode con le dipendenze di sviluppo.
 
 ## Con uv
 
@@ -19,43 +31,10 @@ python -m pip install --upgrade pip
 python -m pip install -e ".[dev]"
 ```
 
-## Da jupyter-notebook
-
-Eseguire in una cella di codice
-
-```bash
-%pip install mespy
-```
-
-successivamente eliminare la cella.
-
-## Su Colab
-
-Eseguire in una cella di codice:
-
-```bash
-!pip install mespy
-```
-
-successivamente eliminare la cella.
-
-## Verifica rapida
-
-Dopo l'installazione puoi controllare che l'import funzioni con un test minimo.
-
-```bash
-python -c "from mespy import load_csv, weighted_mean; print('mespy ok')"
-```
-
-Se vuoi solo il package locale senza tool di sviluppo, sostituisci `".[dev]"` con `.`. In quel caso non sono garantiti i target `make test` e `make docs`, perche richiedono le dipendenze di sviluppo.
-
-
 ## Cosa viene installato
 
-- dipendenze runtime: `numpy`, `pandas`, `matplotlib`
-- tool di sviluppo: `pytest`, `sphinx`, `pydata-sphinx-theme`, `myst-nb`, `build`, `twine`
-- package locale in editable mode quando usi `-e`
+- dipendenze runtime: `numpy`, `pandas`, `matplotlib`, `scipy`, `tomli-w`
+- tool di sviluppo: `pytest`, `sphinx`, `pydata-sphinx-theme`, `myst-nb`, `sphinx-intl`, `build`, `twine`
+- il package locale in editable mode, grazie a `-e`
 
-## Passo successivo
-
-Dopo l'installazione puoi continuare con la [Guida rapida](getting-started.md) oppure aprire gli [Esempi](examples/index.md).
+Dopo l'installazione puoi lanciare i test con `make test` e costruire la documentazione con `make docs`.

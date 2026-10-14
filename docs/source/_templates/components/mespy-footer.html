@@ -1,0 +1,4 @@
+<footer class="mh-footer"><div class="mh-shell">
+  <div class="mh-footer-main"><a class="mh-brand" href="{{ pathto('index') }}"><img src="{{ pathto('_static/mespy-logo-horizontal-dark.svg', 1) }}" alt="MesPy" width="120" height="32"></a><p>{{ home('La curiosità è tua. Gli strumenti sono qui.') }}</p><nav aria-label="{{ home('Link utili') }}"><a href="{{ pathto('getting-started') if pagename != 'getting-started' else '' }}#setup">{{ home('Installazione') }}</a><a href="{{ pathto('moduli/index') }}">{{ home('Documentazione') }}</a><a href="{{ pathto('examples/index') }}">{{ home('Esempi') }}</a><a href="{{ theme_github_url }}">GitHub ↗</a></nav></div>
+  <div class="mh-footer-meta"><span>© {{ copyright }} <span aria-hidden="true">/</span> {{ home('Licenza MIT') }}</span><span>{{ home('Costruito con Sphinx e PyData') }} <span class="mh-footer-pixel" aria-hidden="true">■</span></span></div>
+</div></footer>

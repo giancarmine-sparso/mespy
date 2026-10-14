@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 05:52+0200\n"
+"POT-Creation-Date: 2026-10-14 11:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -16,65 +16,635 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../source/examples/linear-fit.ipynb:10002
-msgid "Fit lineare"
+msgid "Linear fit"
 msgstr "Linear fit"
 
 #: ../../source/examples/linear-fit.ipynb:10004
 msgid ""
-"Questo notebook mostra due usi tipici di `mp.lin_fit` con un dataset placebo incluso nella "
-"cartella `examples`."
+"Fit a straight line to your measurements, read its parameters, and inspect "
+"the residuals with `mespy.lin_fit()`."
 msgstr ""
-"This notebook shows two typical uses of `mp.lin_fit` with a placeholder dataset included in the "
-"`examples` folder."
+"Fit a straight line to your measurements, read its parameters, and inspect "
+"the residuals with `mespy.lin_fit()`."
 
-#: ../../source/examples/linear-fit.ipynb:20002
-msgid "Import"
-msgstr "Imports"
+#: ../../source/examples/linear-fit.ipynb:10007
+msgid "What does lin_fit do?"
+msgstr "What does lin_fit do?"
+
+#: ../../source/examples/linear-fit.ipynb:10009
+msgid "`lin_fit()` fits the model"
+msgstr "`lin_fit()` fits the model"
+
+#: ../../source/examples/linear-fit.ipynb:10011
+msgid ""
+"\n"
+"y = mx + q\n"
+msgstr ""
+"\n"
+"y = mx + q\n"
+
+#: ../../source/examples/linear-fit.ipynb:10015
+msgid ""
+"It estimates the slope $m$, the intercept $q$, and their standard "
+"uncertainties."
+msgstr ""
+"It estimates the slope $m$, the intercept $q$, and their standard "
+"uncertainties."
+
+#: ../../source/examples/linear-fit.ipynb:10017
+msgid ""
+"**By default, the calculation treats `x` as exact.** Pass measurement "
+"uncertainties on `y` through `sigma_y`. To propagate uncertainties on `x`, "
+"supply `sigma_x` and explicitly choose `x_error_method=\"iterate\"`, as "
+"shown below."
+msgstr ""
+"**By default, the calculation treats `x` as exact.** Pass measurement "
+"uncertainties on `y` through `sigma_y`. To propagate uncertainties on `x`, "
+"supply `sigma_x` and explicitly choose `x_error_method=\"iterate\"`, as "
+"shown below."
+
+#: ../../source/examples/linear-fit.ipynb:20003
+msgid "Basic linear fit"
+msgstr "Basic linear fit"
+
+#: ../../source/examples/linear-fit.ipynb:20005
+#, python-brace-format
+msgid ""
+"Save {download}`linear.csv <data/linear.csv>` in your project's `data/` "
+"folder. It contains example position measurements at different times:"
+msgstr ""
+"Save {download}`linear.csv <data/linear.csv>` in your project's `data/` "
+"folder. It contains example position measurements at different times:"
+
+#: ../../source/examples/linear-fit.ipynb:20011
+msgid "`x`: time in seconds, the independent variable."
+msgstr "`x`: time in seconds, the independent variable."
+
+#: ../../source/examples/linear-fit.ipynb:20012
+msgid "`y`: measured position in metres."
+msgstr "`y`: measured position in metres."
+
+#: ../../source/examples/linear-fit.ipynb:20013
+msgid ""
+"`sigma_y`: the standard uncertainty of each position, in metres. Values must"
+" be positive."
+msgstr ""
+"`sigma_y`: the standard uncertainty of each position, in metres. Values must"
+" be positive."
+
+#: ../../source/examples/linear-fit.ipynb:20015
+msgid "Run the code from your project folder:"
+msgstr "Run the code from your project folder:"
+
+#: ../../source/examples/linear-fit.ipynb:30002
+msgid ""
+"Top: position measurements, fitted line, and uncertainty band. Bottom: "
+"residuals in metres, with measurement uncertainty bars."
+msgstr ""
+"Top: position measurements, fitted line, and uncertainty band. Bottom: "
+"residuals in metres, with measurement uncertainty bars."
 
 #: ../../source/examples/linear-fit.ipynb:40002
-msgid "Fit lineare con sole incertezze su y"
-msgstr "Linear fit with uncertainties on y only"
+msgid ""
+"This is **weighted least squares (WLS)**: points with smaller uncertainties "
+"receive more weight. The function returns a `LinearFitResult` object, stored"
+" as `result`."
+msgstr ""
+"This is **weighted least squares (WLS)**: points with smaller uncertainties "
+"receive more weight. The function returns a `LinearFitResult` object, stored"
+" as `result`."
 
 #: ../../source/examples/linear-fit.ipynb:40004
 msgid ""
-"Il primo esempio usa lo stesso dataset ma considera solo le incertezze su `y`, ignorando la "
-"colonna `sigma_tempo_s`."
+"`output` sets the destination and base filename, **without an extension**. "
+"MesPy creates missing folders. With plotting enabled, as it is by default, "
+"it writes:"
 msgstr ""
-"The first example uses the same dataset but considers only the uncertainties on `y`, ignoring the"
-" `sigma_tempo_s` column."
+"`output` sets the destination and base filename, **without an extension**. "
+"MesPy creates missing folders. With plotting enabled, as it is by default, "
+"it writes:"
 
-#: ../../source/examples/linear-fit.ipynb:60002
-msgid "Esempio con sigma_x"
-msgstr "Example with sigma_x"
-
-#: ../../source/examples/linear-fit.ipynb:60004
+#: ../../source/examples/linear-fit.ipynb:40012
 msgid ""
-"Se fornisci anche l'incertezza su `x`, `lin_fit` usa la varianza efficace e aggiorna "
-"iterativamente i pesi del fit."
+"The **PDF** contains the fit figure. The **TOML** is a text file containing "
+"the inputs, fit parameters, available diagnostics, and physical residuals."
 msgstr ""
-"If you also provide the uncertainty on `x`, `lin_fit` uses the effective variance and updates the"
-" fit weights iteratively."
+"The **PDF** contains the fit figure. The **TOML** is a text file containing "
+"the inputs, fit parameters, available diagnostics, and physical residuals."
+
+#: ../../source/examples/linear-fit.ipynb:40015
+msgid "Understanding the results"
+msgstr "Understanding the results"
+
+#: ../../source/examples/linear-fit.ipynb:40018
+msgid "The figure"
+msgstr "The figure"
+
+#: ../../source/examples/linear-fit.ipynb:40020
+msgid ""
+"The upper panel shows the measurements, their standard uncertainty bars, and"
+" the fitted line. The shaded band spans **one standard uncertainty of the "
+"predicted mean** on either side. It describes uncertainty in the line, "
+"rather than a range expected to contain future measurements."
+msgstr ""
+"The upper panel shows the measurements, their standard uncertainty bars, and"
+" the fitted line. The shaded band spans **one standard uncertainty of the "
+"predicted mean** on either side. It describes uncertainty in the line, "
+"rather than a range expected to contain future measurements."
+
+#: ../../source/examples/linear-fit.ipynb:40022
+msgid "The lower panel shows residuals:"
+msgstr "The lower panel shows residuals:"
+
+#: ../../source/examples/linear-fit.ipynb:40024
+msgid ""
+"\n"
+"r_i = y_i - (mx_i + q)\n"
+msgstr ""
+"\n"
+"r_i = y_i - (mx_i + q)\n"
+
+#: ../../source/examples/linear-fit.ipynb:40028
+msgid ""
+"A residual is the vertical distance from a measurement to the line. Positive"
+" values lie above it; negative values lie below it. Look for scatter around "
+"zero. A curved pattern, for example, can suggest that a straight line misses"
+" a trend."
+msgstr ""
+"A residual is the vertical distance from a measurement to the line. Positive"
+" values lie above it; negative values lie below it. Look for scatter around "
+"zero. A curved pattern, for example, can suggest that a straight line misses"
+" a trend."
+
+#: ../../source/examples/linear-fit.ipynb:40030
+msgid ""
+"Residuals are **not normalized by default**: they keep the units of `y`. "
+"Read them as `result.residuals`; access the Matplotlib figure as "
+"`result.figure`."
+msgstr ""
+"Residuals are **not normalized by default**: they keep the units of `y`. "
+"Read them as `result.residuals`; access the Matplotlib figure as "
+"`result.figure`."
+
+#: ../../source/examples/linear-fit.ipynb:40033
+msgid "The numerical results"
+msgstr "The numerical results"
+
+#: ../../source/examples/linear-fit.ipynb:40035
+msgid "Read the main attributes:"
+msgstr "Read the main attributes:"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "Attribute"
+msgstr "Attribute"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "Meaning"
+msgstr "Meaning"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "`slope`, `slope_std`"
+msgstr "`slope`, `slope_std`"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "Slope $m$ and its standard uncertainty; here both have units of m/s."
+msgstr "Slope $m$ and its standard uncertainty; here both have units of m/s."
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "`intercept`, `intercept_std`"
+msgstr "`intercept`, `intercept_std`"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "Position $q$ at $x=0$ and its standard uncertainty, in metres."
+msgstr "Position $q$ at $x=0$ and its standard uncertainty, in metres."
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "`chi2`"
+msgstr "`chi2`"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "Sum of squared residuals divided by their respective variances."
+msgstr "Sum of squared residuals divided by their respective variances."
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "`reduced_chi2`"
+msgstr "`reduced_chi2`"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "`chi2 / dof`, when `dof` is positive."
+msgstr "`chi2 / dof`, when `dof` is positive."
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "`p_value`"
+msgstr "`p_value`"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid ""
+"Under the model and error assumptions, the probability of chi-squared at "
+"least as large as observed."
+msgstr ""
+"Under the model and error assumptions, the probability of chi-squared at "
+"least as large as observed."
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "`dof`"
+msgstr "`dof`"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "Number of measurements minus the two fitted parameters."
+msgstr "Number of measurements minus the two fitted parameters."
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "`fit_method`"
+msgstr "`fit_method`"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "`\"wls\"` with `sigma_y`, or `\"ols\"` without it."
+msgstr "`\"wls\"` with `sigma_y`, or `\"ols\"` without it."
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "`x_error_method`"
+msgstr "`x_error_method`"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid ""
+"`\"none\"` or `\"iterate\"`: how horizontal uncertainties enter the "
+"calculation."
+msgstr ""
+"`\"none\"` or `\"iterate\"`: how horizontal uncertainties enter the "
+"calculation."
+
+#: ../../source/examples/linear-fit.ipynb:60013
+msgid ""
+"**Parameter uncertainties differ from measurement uncertainties.** "
+"`slope_std` and `intercept_std` describe how precisely the line is "
+"determined. `sigma_y` describes individual measurements. WLS uses the "
+"supplied absolute uncertainties without rescaling parameter uncertainties by"
+" reduced chi-squared."
+msgstr ""
+"**Parameter uncertainties differ from measurement uncertainties.** "
+"`slope_std` and `intercept_std` describe how precisely the line is "
+"determined. `sigma_y` describes individual measurements. WLS uses the "
+"supplied absolute uncertainties without rescaling parameter uncertainties by"
+" reduced chi-squared."
+
+#: ../../source/examples/linear-fit.ipynb:60015
+msgid ""
+"Interpreting chi-squared and p-value assumes independent Gaussian "
+"measurement errors, reliable uncertainties, and an appropriate model. "
+"Reduced chi-squared near one is consistent with the assumed scatter. Large "
+"values can suggest a poor model or underestimated uncertainties; very small "
+"values can suggest overestimated uncertainties. A p-value is **not the "
+"probability that the model is correct**. Inspect the residuals too."
+msgstr ""
+"Interpreting chi-squared and p-value assumes independent Gaussian "
+"measurement errors, reliable uncertainties, and an appropriate model. "
+"Reduced chi-squared near one is consistent with the assumed scatter. Large "
+"values can suggest a poor model or underestimated uncertainties; very small "
+"values can suggest overestimated uncertainties. A p-value is **not the "
+"probability that the model is correct**. Inspect the residuals too."
+
+#: ../../source/examples/linear-fit.ipynb:60017
+msgid ""
+"With only two weighted points, `dof=0`: `chi2` is available, but "
+"`residual_std`, `reduced_chi2`, and `p_value` are `None`."
+msgstr ""
+"With only two weighted points, `dof=0`: `chi2` is available, but "
+"`residual_std`, `reduced_chi2`, and `p_value` are `None`."
+
+#: ../../source/examples/linear-fit.ipynb:60019
+msgid ""
+"`result.residual_std` describes residual scatter in the units of `y`, using "
+"`dof` in the denominator of the variance. In WLS it is descriptive, and "
+"`result.estimated_sigma` is `None`."
+msgstr ""
+"`result.residual_std` describes residual scatter in the units of `y`, using "
+"`dof` in the denominator of the variance. In WLS it is descriptive, and "
+"`result.estimated_sigma` is `None`."
+
+#: ../../source/examples/linear-fit.ipynb:60022
+msgid "Uncertainties on x"
+msgstr "Uncertainties on x"
+
+#: ../../source/examples/linear-fit.ipynb:60024
+msgid ""
+"Suppose each time measurement also has a standard uncertainty of **0.05 "
+"seconds**. `sigma_x` accepts this single value or one value per measurement."
+" Values must be finite and non-negative; zero means no horizontal "
+"uncertainty."
+msgstr ""
+"Suppose each time measurement also has a standard uncertainty of **0.05 "
+"seconds**. `sigma_x` accepts this single value or one value per measurement."
+" Values must be finite and non-negative; zero means no horizontal "
+"uncertainty."
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "Effect of supplying `sigma_x`"
+msgstr "Effect of supplying `sigma_x`"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "`\"none\"` (default)"
+msgstr "`\"none\"` (default)"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "Draw horizontal bars; keep the existing OLS/WLS calculation."
+msgstr "Draw horizontal bars; keep the existing OLS/WLS calculation."
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "`\"iterate\"`"
+msgstr "`\"iterate\"`"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid ""
+"Propagate horizontal uncertainties through iterative reweighting; requires "
+"both `sigma_x` and `sigma_y`."
+msgstr ""
+"Propagate horizontal uncertainties through iterative reweighting; requires "
+"both `sigma_x` and `sigma_y`."
+
+#: ../../source/examples/linear-fit.ipynb:60032
+msgid "Display horizontal bars"
+msgstr "Display horizontal bars"
+
+#: ../../source/examples/linear-fit.ipynb:60034
+msgid ""
+"Choose `\"none\"` to display the uncertainties without including them in the"
+" calculation:"
+msgstr ""
+"Choose `\"none\"` to display the uncertainties without including them in the"
+" calculation:"
 
 #: ../../source/examples/linear-fit.ipynb:80002
-msgid "Pagine collegate"
-msgstr "Related pages"
-
-#: ../../source/examples/linear-fit.ipynb:80004
-msgid "[`load_csv`](../moduli/io_utils/load-csv.md)"
-msgstr "[`load_csv`](../moduli/io_utils/load-csv.md)"
+msgid ""
+"The horizontal bars appear in both panels. The fitted parameters, their "
+"uncertainties, and diagnostics remain the same as in the basic example."
+msgstr ""
+"The horizontal bars appear in both panels. The fitted parameters, their "
+"uncertainties, and diagnostics remain the same as in the basic example."
 
 #: ../../source/examples/linear-fit.ipynb:80005
-msgid "[`lin_fit`](../moduli/fit_utils/lin-fit.md)"
-msgstr "[`lin_fit`](../moduli/fit_utils/lin-fit.md)"
-
-#: ../../source/examples/linear-fit.ipynb:80006
-msgid "[`LinearFitResult`](../moduli/fit_utils/linear-fit-result.md)"
-msgstr "[`LinearFitResult`](../moduli/fit_utils/linear-fit-result.md)"
+msgid "Propagate horizontal uncertainties"
+msgstr "Propagate horizontal uncertainties"
 
 #: ../../source/examples/linear-fit.ipynb:80007
-msgid "[`_fit_coefficients`](../checks/fit_utils/fit-coefficients.md)"
-msgstr "[`_fit_coefficients`](../checks/fit_utils/fit-coefficients.md)"
+msgid "Select `\"iterate\"` to include `sigma_x` in the calculation:"
+msgstr "Select `\"iterate\"` to include `sigma_x` in the calculation:"
 
+#: ../../source/examples/linear-fit.ipynb:100002
+msgid ""
+"Here every point has the same `sigma_y` and the same `sigma_x`. Propagation "
+"therefore leaves the slope and intercept unchanged, but increases their "
+"standard uncertainties. Compare the slope uncertainty:"
+msgstr ""
+"Here every point has the same `sigma_y` and the same `sigma_x`. Propagation "
+"therefore leaves the slope and intercept unchanged, but increases their "
+"standard uncertainties. Compare the slope uncertainty:"
+
+#: ../../source/examples/linear-fit.ipynb:120002
+msgid ""
+"MesPy starts with the y-only fit, then repeatedly updates the effective "
+"variances:"
+msgstr ""
+"MesPy starts with the y-only fit, then repeatedly updates the effective "
+"variances:"
+
+#: ../../source/examples/linear-fit.ipynb:120004
+msgid ""
+"\n"
+"\\sigma_{\\mathrm{eff},i}^{2} = \\sigma_{y_i}^{2} + m^{2}\\sigma_{x_i}^{2}\n"
+msgstr ""
+"\n"
+"\\sigma_{\\mathrm{eff},i}^{2} = \\sigma_{y_i}^{2} + m^{2}\\sigma_{x_i}^{2}\n"
+
+#: ../../source/examples/linear-fit.ipynb:120008
+msgid ""
+"It refits using these variances until the relative slope change is at most "
+"`1e-10`. If it does not converge within 100 iterations, it raises "
+"`RuntimeError` before creating figures or files."
+msgstr ""
+"It refits using these variances until the relative slope change is at most "
+"`1e-10`. If it does not converge within 100 iterations, it raises "
+"`RuntimeError` before creating figures or files."
+
+#: ../../source/examples/linear-fit.ipynb:120010
+msgid ""
+"This is an **approximate iterative method**. Its parameter covariance, "
+"uncertainty band, and chi-square p-value have an approximate interpretation."
+" Convergence does not guarantee a minimum of the effective criterion."
+msgstr ""
+"This is an **approximate iterative method**. Its parameter covariance, "
+"uncertainty band, and chi-square p-value have an approximate interpretation."
+" Convergence does not guarantee a minimum of the effective criterion."
+
+#: ../../source/examples/linear-fit.ipynb:120012
+msgid ""
+"`result_with_x.fit_method` is still `\"wls\"`; "
+"`result_with_x.x_error_method` is `\"iterate\"`. The files are "
+"`linear_fit_x.pdf` and `linear_fit_x.toml`."
+msgstr ""
+"`result_with_x.fit_method` is still `\"wls\"`; "
+"`result_with_x.x_error_method` is `\"iterate\"`. The files are "
+"`linear_fit_x.pdf` and `linear_fit_x.toml`."
+
+#: ../../source/examples/linear-fit.ipynb:120014
+msgid ""
+"Whenever `sigma_x` is supplied, TOML uses schema 3 and retains its original "
+"values and the selected `x_error_method`, including `\"none\"`. Calls "
+"without `sigma_x` retain schema 2."
+msgstr ""
+"Whenever `sigma_x` is supplied, TOML uses schema 3 and retains its original "
+"values and the selected `x_error_method`, including `\"none\"`. Calls "
+"without `sigma_x` retain schema 2."
+
+#: ../../source/examples/linear-fit.ipynb:120017
+msgid "What if sigma_y is not provided?"
+msgstr "What if sigma_y is not provided?"
+
+#: ../../source/examples/linear-fit.ipynb:140002
+msgid ""
+"MesPy performs **ordinary least squares (OLS)**: all observations receive "
+"equal weight. It emits a `UserWarning` and estimates a common vertical "
+"dispersion from the residuals."
+msgstr ""
+"MesPy performs **ordinary least squares (OLS)**: all observations receive "
+"equal weight. It emits a `UserWarning` and estimates a common vertical "
+"dispersion from the residuals."
+
+#: ../../source/examples/linear-fit.ipynb:140004
+msgid ""
+"`unweighted_result.fit_method` is `\"ols\"`. `fit_method` is a result "
+"attribute, not a function argument."
+msgstr ""
+"`unweighted_result.fit_method` is `\"ols\"`. `fit_method` is a result "
+"attribute, not a function argument."
+
+#: ../../source/examples/linear-fit.ipynb:140005
+msgid ""
+"`unweighted_result.estimated_sigma` equals `unweighted_result.residual_std`."
+" This estimate supplies the parameter uncertainties. OLS needs at least "
+"three measurements."
+msgstr ""
+"`unweighted_result.estimated_sigma` equals `unweighted_result.residual_std`."
+" This estimate supplies the parameter uncertainties. OLS needs at least "
+"three measurements."
+
+#: ../../source/examples/linear-fit.ipynb:140006
+msgid "Slope, intercept, their uncertainties, residuals, and `dof` remain available."
+msgstr "Slope, intercept, their uncertainties, residuals, and `dof` remain available."
+
+#: ../../source/examples/linear-fit.ipynb:140007
+msgid "`chi2`, `reduced_chi2`, and `p_value` are `None` and are omitted from TOML."
+msgstr "`chi2`, `reduced_chi2`, and `p_value` are `None` and are omitted from TOML."
+
+#: ../../source/examples/linear-fit.ipynb:140009
+msgid ""
+"Without `sigma_x`, the figure has no measurement uncertainty bars. You may "
+"supply `sigma_x` for horizontal bars with `x_error_method=\"none\"`; "
+"propagation with `\"iterate\"` requires `sigma_y` too."
+msgstr ""
+"Without `sigma_x`, the figure has no measurement uncertainty bars. You may "
+"supply `sigma_x` for horizontal bars with `x_error_method=\"none\"`; "
+"propagation with `\"iterate\"` requires `sigma_y` too."
+
+#: ../../source/examples/linear-fit.ipynb:140011
+msgid ""
+"**Omitting `sigma_y` is not equivalent to setting `sigma_y=1`.** The latter "
+"declares a known standard uncertainty of one `y` unit per measurement. It "
+"gives equal weights but uses WLS parameter uncertainties and diagnostics, "
+"even when the fitted line is the same."
+msgstr ""
+"**Omitting `sigma_y` is not equivalent to setting `sigma_y=1`.** The latter "
+"declares a known standard uncertainty of one `y` unit per measurement. It "
+"gives equal weights but uses WLS parameter uncertainties and diagnostics, "
+"even when the fitted line is the same."
+
+#: ../../source/examples/linear-fit.ipynb:140013
+msgid ""
+"Supply measurement uncertainties when they are available and scientifically "
+"justified."
+msgstr ""
+"Supply measurement uncertainties when they are available and scientifically "
+"justified."
+
+#: ../../source/examples/linear-fit.ipynb:140016
+msgid "Normalized residuals"
+msgstr "Normalized residuals"
+
+#: ../../source/examples/linear-fit.ipynb:140018
+msgid ""
+"The default is **`normalize_residuals=False`**. Request normalization "
+"explicitly:"
+msgstr ""
+"The default is **`normalize_residuals=False`**. Request normalization "
+"explicitly:"
+
+#: ../../source/examples/linear-fit.ipynb:160002
+msgid "For this y-only weighted fit, the lower panel displays"
+msgstr "For this y-only weighted fit, the lower panel displays"
+
+#: ../../source/examples/linear-fit.ipynb:160004
+msgid ""
+"\n"
+"r_i^{\\mathrm{norm}} = \\frac{y_i - (mx_i + q)}{\\sigma_{y_i}}\n"
+msgstr ""
+"\n"
+"r_i^{\\mathrm{norm}} = \\frac{y_i - (mx_i + q)}{\\sigma_{y_i}}\n"
+
+#: ../../source/examples/linear-fit.ipynb:160008
+msgid ""
+"These dimensionless values express deviations in units of each measurement's"
+" standard uncertainty, making measurements with different uncertainties "
+"easier to compare."
+msgstr ""
+"These dimensionless values express deviations in units of each measurement's"
+" standard uncertainty, making measurements with different uncertainties "
+"easier to compare."
+
+#: ../../source/examples/linear-fit.ipynb:160010
+msgid "The denominator depends on the selected fit:"
+msgstr "The denominator depends on the selected fit:"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "Fit"
+msgstr "Fit"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "Divide physical residuals by"
+msgstr "Divide physical residuals by"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "WLS with `x_error_method=\"none\"`"
+msgstr "WLS with `x_error_method=\"none\"`"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "The supplied `sigma_y`."
+msgstr "The supplied `sigma_y`."
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "WLS with `x_error_method=\"iterate\"`"
+msgstr "WLS with `x_error_method=\"iterate\"`"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "The final effective uncertainty `sqrt(sigma_y**2 + slope**2 * sigma_x**2)`."
+msgstr "The final effective uncertainty `sqrt(sigma_y**2 + slope**2 * sigma_x**2)`."
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "OLS"
+msgstr "OLS"
+
+#: ../../source/examples/linear-fit.ipynb:20007
+msgid "The common dispersion `estimated_sigma`, estimated from the same residuals."
+msgstr "The common dispersion `estimated_sigma`, estimated from the same residuals."
+
+#: ../../source/examples/linear-fit.ipynb:160018
+msgid ""
+"To normalize the iterative fit, also include `sigma_x=0.05` and "
+"`x_error_method=\"iterate\"` in the call above. In either WLS mode, the "
+"displayed vertical uncertainty bars then have a half-length of one. "
+"Horizontal bars keep their original `x` units."
+msgstr ""
+"To normalize the iterative fit, also include `sigma_x=0.05` and "
+"`x_error_method=\"iterate\"` in the call above. In either WLS mode, the "
+"displayed vertical uncertainty bars then have a half-length of one. "
+"Horizontal bars keep their original `x` units."
+
+#: ../../source/examples/linear-fit.ipynb:160020
+msgid ""
+"OLS normalization does not provide known measurement uncertainties or chi-"
+"squared diagnostics. Zero OLS dispersion cannot be normalized for plotting "
+"and raises `ValueError`."
+msgstr ""
+"OLS normalization does not provide known measurement uncertainties or chi-"
+"squared diagnostics. Zero OLS dispersion cannot be normalized for plotting "
+"and raises `ValueError`."
+
+#: ../../source/examples/linear-fit.ipynb:160022
+msgid ""
+"**Normalization changes only the residual visualization.** It does not "
+"change fitted parameters, their uncertainties, or the method. "
+"`normalized_result.residuals` and residuals saved in TOML always remain "
+"physical."
+msgstr ""
+"**Normalization changes only the residual visualization.** It does not "
+"change fitted parameters, their uncertainties, or the method. "
+"`normalized_result.residuals` and residuals saved in TOML always remain "
+"physical."
+
+#: ../../source/examples/linear-fit.ipynb:160025
+msgid "Related pages"
+msgstr "Related pages"
+
+#: ../../source/examples/linear-fit.ipynb:160027
+msgid "[Basic workflow](basic-workflow.ipynb)"
+msgstr "[Basic workflow](basic-workflow.ipynb)"
+
+#: ../../source/examples/linear-fit.ipynb:160028
+msgid "[Plot styling](plot-style.ipynb)"
+msgstr "[Plot styling](plot-style.ipynb)"
+
+#: ../../source/examples/linear-fit.ipynb:160029
+msgid "[`lin_fit` API reference](../moduli/fit_utils/lin-fit.md)"
+msgstr "[`lin_fit` API reference](../moduli/fit_utils/lin-fit.md)"

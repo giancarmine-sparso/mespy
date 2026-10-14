@@ -18,29 +18,7 @@
 {% endblock %}
 
 {% block content %}
-{# These hooks keep PyData's bundled search and back-to-top scripts working. #}
-<div id="pst-scroll-pixel-helper"></div>
-<dialog id="pst-search-dialog">{% include "components/search-field.html" %}</dialog>
-<button id="pst-back-to-top" class="mh-back-to-top" type="button" aria-label="{{ home('Torna su') }}"><span aria-hidden="true">↑</span></button>
-<header class="mh-header bd-header">
-  <div class="mh-shell mh-nav">
-    <a class="mh-brand" href="{{ pathto('index') }}" aria-label="MesPy home">
-      <img src="{{ pathto('_static/mespy-logo-horizontal-dark.svg', 1) }}" alt="MesPy" width="145" height="39">
-    </a>
-    <button class="mh-menu-toggle" type="button" aria-expanded="false" aria-controls="mh-navigation" hidden>
-      {{ home('Menu') }} <span aria-hidden="true">＋</span>
-    </button>
-    <nav class="mh-nav-links" id="mh-navigation" aria-label="{{ home('Navigazione principale') }}">
-      <a href="{{ pathto('installazione') }}">{{ home('Inizia qui') }}</a>
-      <a href="{{ pathto('examples/index') }}">{{ home('Esempi') }}</a>
-      <a href="{{ pathto('moduli/index') }}">{{ home('Riferimento API') }}</a>
-      <span class="mh-nav-disabled" role="link" aria-disabled="true" tabindex="0" aria-label="{{ home('Per agenti AI') }}" aria-describedby="mh-agents-status">{{ home('Per agenti AI') }} <span class="mh-nav-soon" id="mh-agents-status">{{ home('In arrivo') }}</span></span>
-      <a href="#behind-the-scenes">{{ home('Come funziona') }}</a>
-      <a class="mh-github" href="{{ theme_github_url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ home('GitHub (nuova scheda)') }}">{{ home('GitHub') }} <span aria-hidden="true">↗</span></a>
-    </nav>
-    <div class="mh-language">{% include "components/language-switcher.html" %}</div>
-  </div>
-</header>
+{% include "components/mespy-header.html" %}
 
 <main id="main-content">
   <section class="mh-hero mh-shell" aria-labelledby="hero-title">
@@ -50,7 +28,7 @@
       <p class="mh-lead">{{ home('Una toolbox Python per chi muove i primi passi nella fisica sperimentale.') }}</p>
       <p class="mh-hero-note">{{ home('Visualizza le misure, esplora le distribuzioni e trova le relazioni tra i dati. MesPy ti aiuta a interpretare i risultati e le loro incertezze, senza riscrivere ogni volta lo stesso codice di analisi.') }}</p>
       <div class="mh-actions">
-        <a class="mh-button mh-button-primary" href="{{ pathto('installazione') }}">{{ home('Inizia qui') }} <span aria-hidden="true">↗</span></a>
+        <a class="mh-button mh-button-primary" href="{{ pathto('getting-started') }}">{{ home('Inizia qui') }} <span aria-hidden="true">↗</span></a>
         <a class="mh-button mh-button-secondary" href="#features">{{ home('Scopri le funzioni') }} <span aria-hidden="true">↓</span></a>
       </div>
       <p class="mh-hero-meta">Python ≥ 3.12 <span aria-hidden="true">/</span> {{ home('Open source') }} <span aria-hidden="true">/</span> {{ home('Fatto per imparare') }}</p>
@@ -133,16 +111,13 @@
   </section>
 
   <section class="mh-section mh-shell mh-start" id="get-started" aria-labelledby="start-title" data-reveal>
-    <div><p class="mh-eyebrow">{{ home('Dal primo import al primo risultato') }}</p><h2 id="start-title">{{ home('Il prossimo esperimento') }}<br>{{ home('inizia qui.') }}</h2><p>{{ home('Installa MesPy e porta i tuoi dati. Al resto, un passo alla volta.') }}</p><a class="mh-button mh-button-primary" href="{{ pathto('installazione') }}">{{ home('Guida all’installazione') }} <span aria-hidden="true">↗</span></a></div>
+    <div><p class="mh-eyebrow">{{ home('Dal primo import al primo risultato') }}</p><h2 id="start-title">{{ home('Il prossimo esperimento') }}<br>{{ home('inizia qui.') }}</h2><p>{{ home('Installa MesPy e porta i tuoi dati. Al resto, un passo alla volta.') }}</p><a class="mh-button mh-button-primary" href="{{ pathto('getting-started') }}#setup">{{ home('Guida all’installazione') }} <span aria-hidden="true">↗</span></a></div>
     {% include "components/homepage-editor.html" %}
     {% include "components/homepage-demo-results.html" %}
   </section>
 </main>
 
-<footer class="mh-footer"><div class="mh-shell">
-  <div class="mh-footer-main"><a class="mh-brand" href="{{ pathto('index') }}"><img src="{{ pathto('_static/mespy-logo-horizontal-dark.svg', 1) }}" alt="MesPy" width="120" height="32"></a><p>{{ home('La curiosità è tua. Gli strumenti sono qui.') }}</p><nav aria-label="{{ home('Link utili') }}"><a href="{{ pathto('installazione') }}">{{ home('Installazione') }}</a><a href="{{ pathto('moduli/index') }}">{{ home('Documentazione') }}</a><a href="{{ pathto('examples/index') }}">{{ home('Esempi') }}</a><a href="{{ theme_github_url }}">GitHub ↗</a></nav></div>
-  <div class="mh-footer-meta"><span>© {{ copyright }} <span aria-hidden="true">/</span> {{ home('Licenza MIT') }}</span><span>{{ home('Costruito con Sphinx e PyData') }} <span class="mh-footer-pixel" aria-hidden="true">■</span></span></div>
-</div></footer>
+{% include "components/mespy-footer.html" %}
 {{ self.scripts_end() }}
 {% endblock %}
 

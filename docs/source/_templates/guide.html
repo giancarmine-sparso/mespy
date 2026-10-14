@@ -1,0 +1,36 @@
+{# Long tutorial pages (GUIDE_PAGES in conf.py) in the landing-page chrome:
+   same header, footer, tokens and "homepage" UI catalog as homepage.html and
+   get-started.html. The page body is the rendered notebook/Markdown source.
+   Two navigation levels: the section strip (sibling pages of the section) and
+   the guide navigator (this page's parts and numbered examples). #}
+{% extends "layout.html" %}
+
+{% block body_tag %}
+<body class="mespy-home mespy-guide" data-default-mode="{{ default_mode }}">
+  <a class="mh-skip" href="#main-content">{{ home('Vai al contenuto') }}</a>
+{% endblock %}
+
+{% block content %}
+{% include "components/mespy-header.html" %}
+
+{% include "components/section-nav.html" %}
+
+<div class="mh-shell gd-layout">
+  <aside class="gd-aside">
+    {% include "components/guide-nav.html" %}
+    {% if guide_station %}<div class="gd-station gd-station--{{ guide_station }}" data-guide-station="{{ guide_station }}" aria-hidden="true"></div>{% endif %}
+  </aside>
+  <main id="main-content" class="gd-main">
+    {% include "components/guide-nav-mobile.html" %}
+    {% if guide_eyebrow %}<p class="mh-eyebrow gd-eyebrow"><span class="mh-status" aria-hidden="true"></span> {{ guide_eyebrow }}</p>{% endif %}
+    <article class="gd-article">
+      {{ body }}
+    </article>
+  </main>
+</div>
+
+{% include "components/mespy-footer.html" %}
+{{ self.scripts_end() }}
+{% endblock %}
+
+{% block footer %}{% endblock %}

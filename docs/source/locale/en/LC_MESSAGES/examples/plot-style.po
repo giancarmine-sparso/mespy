@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 20:19+0200\n"
+"POT-Creation-Date: 2026-10-14 11:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -19,102 +19,230 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 
 #: ../../source/examples/plot-style.ipynb:10002
-msgid "Stile dei grafici"
+msgid "Plot styling"
 msgstr "Plot styling"
 
 #: ../../source/examples/plot-style.ipynb:10004
 msgid ""
-"Questo notebook mostra come usare lo stile `mespy` in modo globale o per "
-"singola chiamata, e come sovrascrivere i parametri estetici principali di"
-" `mp.histogram` e `mp.lin_fit`."
+"MesPy builds its plots with Matplotlib. Choose a style for the overall look,"
+" then adjust individual elements when you need more control."
 msgstr ""
-"This notebook shows how to use the `mespy` style globally or on a per-"
-"call basis, and how to override the main styling parameters of "
-"`mp.histogram` and `mp.lin_fit`."
+"MesPy builds its plots with Matplotlib. Choose a style for the overall look,"
+" then adjust individual elements when you need more control."
 
-#: ../../source/examples/plot-style.ipynb:20002
-msgid "Import"
-msgstr "Imports"
+#: ../../source/examples/plot-style.ipynb:20003
+msgid "Matplotlib styles"
+msgstr "Matplotlib styles"
 
-#: ../../source/examples/plot-style.ipynb:40002
-msgid "Stile globale `mespy`"
-msgstr "Global `mespy` style"
-
-#: ../../source/examples/plot-style.ipynb:40004
+#: ../../source/examples/plot-style.ipynb:20005
 msgid ""
-"Dopo `import mespy`, lo stile del package e registrato in Matplotlib e "
-"puo essere attivato anche a livello globale con "
-"`plt.style.use(\"mespy\")`. In questo caso puoi passare `style=None` alle"
-" funzioni di `mespy` per usare gli `rcParams` gia attivi senza "
-"riapplicare uno stile locale."
+"Both `histogram()` and `lin_fit()` accept a `style` argument. A style sets "
+"the overall appearance: fonts, colors, grids, and line properties."
 msgstr ""
-"After `import mespy`, the package style is registered in Matplotlib and "
-"can also be activated globally with `plt.style.use(\"mespy\")`. In that "
-"case, you can pass `style=None` to `mespy` functions so they use the "
-"already active `rcParams` without reapplying a local style."
+"Both `histogram()` and `lin_fit()` accept a `style` argument. A style sets "
+"the overall appearance: fonts, colors, grids, and line properties."
 
-#: ../../source/examples/plot-style.ipynb:60002
-msgid "Override mirati su `histogram`"
-msgstr "Targeted overrides for `histogram`"
+#: ../../source/examples/plot-style.ipynb:20007
+msgid "You can use:"
+msgstr "You can use:"
 
-#: ../../source/examples/plot-style.ipynb:60004
+#: ../../source/examples/plot-style.ipynb:20009
+msgid "Matplotlib styles such as `\"ggplot\"` or `\"dark_background\"`."
+msgstr "Matplotlib styles such as `\"ggplot\"` or `\"dark_background\"`."
+
+#: ../../source/examples/plot-style.ipynb:20010
 msgid ""
-"I parametri estetici passati alla funzione sovrascrivono solo quella "
-"chiamata. Qui cambiamo colori, opacita, posizione della legenda e "
-"formattazione del titolo senza toccare il resto del notebook."
+"MesPy's `\"mespy\"`, `\"report\"`, or `\"column\"` styles, registered when "
+"you import MesPy."
 msgstr ""
-"The styling parameters passed to the function override only that call. "
-"Here we change colours, opacity, legend placement, and title formatting "
-"without touching the rest of the notebook."
+"MesPy's `\"mespy\"`, `\"report\"`, or `\"column\"` styles, registered when "
+"you import MesPy."
 
-#: ../../source/examples/plot-style.ipynb:80002
-msgid "Override mirati su `lin_fit`"
-msgstr "Targeted overrides for `lin_fit`"
+#: ../../source/examples/plot-style.ipynb:20011
+msgid "A path to a custom `.mplstyle` file, supported by both functions."
+msgstr "A path to a custom `.mplstyle` file, supported by both functions."
 
-#: ../../source/examples/plot-style.ipynb:80004
+#: ../../source/examples/plot-style.ipynb:20012
+msgid "`style=None` to keep the currently active Matplotlib configuration."
+msgstr "`style=None` to keep the currently active Matplotlib configuration."
+
+#: ../../source/examples/plot-style.ipynb:20014
 msgid ""
-"Lo stesso schema vale per `lin_fit`: alcuni parametri possono essere "
-"lasciati allo stile attivo, altri possono essere ridefiniti solo per il "
-"grafico corrente."
+"**Both functions currently default to `style=\"mespy\"`.** A named style "
+"applies only during the call; it does not change the global configuration."
 msgstr ""
-"The same pattern applies to `lin_fit`: some parameters can be left to the"
-" active style, while others can be redefined only for the current plot."
+"**Both functions currently default to `style=\"mespy\"`.** A named style "
+"applies only during the call; it does not change the global configuration."
 
-#: ../../source/examples/plot-style.ipynb:100002
-msgid "Pagine collegate"
+#: ../../source/examples/plot-style.ipynb:20016
+msgid ""
+"Run the examples in order. These small measurements describe position `y` at"
+" time `x`; `sigma_y` gives the position uncertainties."
+msgstr ""
+"Run the examples in order. These small measurements describe position `y` at"
+" time `x`; `sigma_y` gives the position uncertainties."
+
+#: ../../source/examples/plot-style.ipynb:50002
+msgid ""
+"`style=None` is useful after setting a global Matplotlib style. It keeps "
+"that configuration while MesPy still supplies its own plot elements and "
+"labels."
+msgstr ""
+"`style=None` is useful after setting a global Matplotlib style. It keeps "
+"that configuration while MesPy still supplies its own plot elements and "
+"labels."
+
+#: ../../source/examples/plot-style.ipynb:50005
+msgid "Customizing a histogram"
+msgstr "Customizing a histogram"
+
+#: ../../source/examples/plot-style.ipynb:50008
+msgid "Use MesPy parameters"
+msgstr "Use MesPy parameters"
+
+#: ../../source/examples/plot-style.ipynb:50010
+msgid ""
+"Set `bins` to choose the number of bars. Use `xlabel`, `ylabel`, and `title`"
+" for the text, and `bar_color` for the bars. Explicit values override the "
+"style for that call. `show_mean` and `show_band` control the mean line and "
+"the shaded band."
+msgstr ""
+"Set `bins` to choose the number of bars. Use `xlabel`, `ylabel`, and `title`"
+" for the text, and `bar_color` for the bars. Explicit values override the "
+"style for that call. `show_mean` and `show_band` control the mean line and "
+"the shaded band."
+
+#: ../../source/examples/plot-style.ipynb:70003
+msgid "Continue editing with Matplotlib"
+msgstr "Continue editing with Matplotlib"
+
+#: ../../source/examples/plot-style.ipynb:70005
+msgid ""
+"`histogram()` returns a standard Matplotlib `Figure` and `Axes`. The figure "
+"is the whole image; the axes hold the plotted data, labels, and grid."
+msgstr ""
+"`histogram()` returns a standard Matplotlib `Figure` and `Axes`. The figure "
+"is the whole image; the axes hold the plotted data, labels, and grid."
+
+#: ../../source/examples/plot-style.ipynb:90002
+msgid ""
+"MesPy creates the statistical visualization; Matplotlib lets you finish it. "
+"Save **after** editing to include your changes."
+msgstr ""
+"MesPy creates the statistical visualization; Matplotlib lets you finish it. "
+"Save **after** editing to include your changes."
+
+#: ../../source/examples/plot-style.ipynb:90004
+msgid ""
+"The optional `save_path` argument saves during the `histogram()` call. It "
+"does not create missing folders, and later edits do not update that saved "
+"file automatically."
+msgstr ""
+"The optional `save_path` argument saves during the `histogram()` call. It "
+"does not create missing folders, and later edits do not update that saved "
+"file automatically."
+
+#: ../../source/examples/plot-style.ipynb:90007
+msgid "Customizing a linear fit"
+msgstr "Customizing a linear fit"
+
+#: ../../source/examples/plot-style.ipynb:90009
+msgid ""
+"`lin_fit()` accepts `xlabel`, `ylabel`, and `title` directly. It also has "
+"`normalize_residuals` to change how the lower panel displays residuals. "
+"Choose fonts, colors, grid settings, figure size, and line widths through "
+"`style`."
+msgstr ""
+"`lin_fit()` accepts `xlabel`, `ylabel`, and `title` directly. It also has "
+"`normalize_residuals` to change how the lower panel displays residuals. "
+"Choose fonts, colors, grid settings, figure size, and line widths through "
+"`style`."
+
+#: ../../source/examples/plot-style.ipynb:90012
+msgid "Use a custom style"
+msgstr "Use a custom style"
+
+#: ../../source/examples/plot-style.ipynb:90014
+#, python-brace-format
+msgid ""
+"For a reusable look, save this file as {download}`styles/lab.mplstyle "
+"<styles/lab.mplstyle>` in your project:"
+msgstr ""
+"For a reusable look, save this file as {download}`styles/lab.mplstyle "
+"<styles/lab.mplstyle>` in your project:"
+
+#: ../../source/examples/plot-style.ipynb:90020
+msgid ""
+"The first color is used for the data; the second is used for the fitted line"
+" and its band. Pass the file path to `style`:"
+msgstr ""
+"The first color is used for the data; the second is used for the fitted line"
+" and its band. Pass the file path to `style`:"
+
+#: ../../source/examples/plot-style.ipynb:110002
+msgid ""
+"`output` is a base path **without an extension**. MesPy creates the folder "
+"if needed and writes `styled_fit.pdf` and `styled_fit.toml`. The PDF is "
+"saved while the style is active, including any `savefig.*` settings in that "
+"style."
+msgstr ""
+"`output` is a base path **without an extension**. MesPy creates the folder "
+"if needed and writes `styled_fit.pdf` and `styled_fit.toml`. The PDF is "
+"saved while the style is active, including any `savefig.*` settings in that "
+"style."
+
+#: ../../source/examples/plot-style.ipynb:110004
+msgid ""
+"Choose your style and labels **before calling `lin_fit()`** to include them "
+"in the automatic export. Appearance options such as `bar_color` or "
+"`title_fontsize` belong to `histogram()`; `lin_fit()` does not accept them."
+msgstr ""
+"Choose your style and labels **before calling `lin_fit()`** to include them "
+"in the automatic export. Appearance options such as `bar_color` or "
+"`title_fontsize` belong to `histogram()`; `lin_fit()` does not accept them."
+
+#: ../../source/examples/plot-style.ipynb:110007
+msgid "Edit the returned figure"
+msgstr "Edit the returned figure"
+
+#: ../../source/examples/plot-style.ipynb:110009
+msgid ""
+"`lin_fit()` returns a `LinearFitResult`, rather than a `(fig, ax)` pair. "
+"With the default `plot=True`, `result.figure` is a Matplotlib figure you can"
+" edit and save. With `plot=False`, it is `None`."
+msgstr ""
+"`lin_fit()` returns a `LinearFitResult`, rather than a `(fig, ax)` pair. "
+"With the default `plot=True`, `result.figure` is a Matplotlib figure you can"
+" edit and save. With `plot=False`, it is `None`."
+
+#: ../../source/examples/plot-style.ipynb:110011
+msgid "Its two axes are the fit panel followed by the residuals panel:"
+msgstr "Its two axes are the fit panel followed by the residuals panel:"
+
+#: ../../source/examples/plot-style.ipynb:130002
+msgid ""
+"This writes a separate PDF with your edits. It does not update the "
+"previously exported `styled_fit.pdf` or the TOML file. The fit results stay "
+"the same."
+msgstr ""
+"This writes a separate PDF with your edits. It does not update the "
+"previously exported `styled_fit.pdf` or the TOML file. The fit results stay "
+"the same."
+
+#: ../../source/examples/plot-style.ipynb:130005
+msgid "Related pages"
 msgstr "Related pages"
 
-#: ../../source/examples/plot-style.ipynb:100004
-msgid "[`histogram`](../moduli/plot_utils/histogram.md)"
-msgstr "[`histogram`](../moduli/plot_utils/histogram.md)"
+#: ../../source/examples/plot-style.ipynb:130007
+msgid "[Histogram guide](histogram.ipynb) and [linear fit guide](linear-fit.ipynb)."
+msgstr "[Histogram guide](histogram.ipynb) and [linear fit guide](linear-fit.ipynb)."
 
-#: ../../source/examples/plot-style.ipynb:100005
-msgid "[`lin_fit`](../moduli/fit_utils/lin-fit.md)"
-msgstr "[`lin_fit`](../moduli/fit_utils/lin-fit.md)"
-
-#: ../../source/examples/plot-style.ipynb:100006
-msgid "[`_style_context`](../checks/plot_utils/style-context.md)"
-msgstr "[`_style_context`](../checks/plot_utils/style-context.md)"
-
-#: ../../source/examples/plot-style.ipynb:100007
-msgid "[`_validate_decimals`](../checks/plot_utils/validate-decimals.md)"
-msgstr "[`_validate_decimals`](../checks/plot_utils/validate-decimals.md)"
-
-#~ msgid "Confronto tra stili"
-#~ msgstr "Style comparison"
-
-#~ msgid ""
-#~ "Se vuoi scegliere lo stile per "
-#~ "singola chiamata, usa direttamente il "
-#~ "parametro `style`. Qui ripristiniamo gli "
-#~ "`rcParams` di default per vedere la "
-#~ "differenza tra `style=\"mespy\"`, `style=None` "
-#~ "e uno stile Matplotlib alternativo."
-#~ msgstr ""
-#~ "If you want to choose the style"
-#~ " per call, use the `style` parameter"
-#~ " directly. Here we restore the "
-#~ "default `rcParams` to show the "
-#~ "difference between `style=\"mespy\"`, `style=None`,"
-#~ " and an alternative Matplotlib style."
-
+#: ../../source/examples/plot-style.ipynb:130008
+msgid ""
+"API reference: [`histogram`](../moduli/plot_utils/histogram.md), "
+"[`lin_fit`](../moduli/fit_utils/lin-fit.md), and "
+"[`LinearFitResult`](../moduli/fit_utils/linear-fit-result.md)."
+msgstr ""
+"API reference: [`histogram`](../moduli/plot_utils/histogram.md), "
+"[`lin_fit`](../moduli/fit_utils/lin-fit.md), and "
+"[`LinearFitResult`](../moduli/fit_utils/linear-fit-result.md)."

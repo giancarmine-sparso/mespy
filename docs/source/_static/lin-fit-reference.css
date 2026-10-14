@@ -1,0 +1,42 @@
+/* A compact scientific reference within the shared landing/guide layout. */
+.mespy-guide .mx-reference > section {
+  margin-top: 56px;
+  padding-top: 32px;
+}
+.mespy-guide .mx-reference > section > h2 {
+  margin-bottom: 22px;
+  font-size: clamp(1.55rem, 2.1vw, 1.9rem);
+  letter-spacing: -.035em;
+}
+.mespy-guide .mx-reference > section > h2::before { margin-bottom: 12px; }
+.mespy-guide .mx-reference > section > section { margin-top: 36px; }
+.mespy-guide .mx-reference h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
+.mespy-guide .mx-reference h1 code.literal { color: var(--mh-ink); font-size: .9em; }
+.mespy-guide .mx-reference dl.simple { margin: 0; }
+.mespy-guide .mx-reference dl.simple > dt {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--mh-line);
+  color: var(--mh-ink);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.mespy-guide .mx-reference dl.simple > dt:first-child { margin-top: 0; padding-top: 0; border: 0; }
+.mespy-guide .mx-reference dl.simple > dd { margin: 10px 0 0; max-width: var(--gd-measure); }
+.mespy-guide .mx-reference dl.simple > dd p:last-child { margin-bottom: 0; }
+.mespy-guide .mx-reference table.table { min-width: 520px; }
+.mespy-guide .mx-reference table.table:has(thead th:nth-child(3):last-child) th:nth-child(1) { width: 10rem; }
+.mespy-guide .mx-reference table.table:has(thead th:nth-child(3):last-child) th:nth-child(2) { width: 8rem; }
+.mespy-guide .mx-reference p:has(> strong:only-child):has(+ .pst-scrollable-table-container) {
+  margin: 0 0 18px;
+  font: inherit;
+  text-transform: none;
+  letter-spacing: normal;
+}
+.mespy-guide .mx-reference p:has(> strong:only-child):has(+ .pst-scrollable-table-container) strong {
+  color: var(--mh-ink);
+  font-weight: 600;
+}
+@media (max-width: 600px) {
+  .mespy-guide .mx-reference > section { margin-top: 44px; padding-top: 28px; }
+}

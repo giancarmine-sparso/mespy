@@ -42,6 +42,7 @@ body.mespy-home #pst-back-to-top { left: auto; top: auto; transform: none; width
 .mespy-home .mh-nav-disabled { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; padding-block: 12px; color: var(--mh-muted); cursor: default; }
 .mespy-home .mh-nav-soon { font: .6rem/1.5 var(--mh-mono); color: var(--mh-amber); border: 1px solid #7d6442; border-radius: 2px; padding: 2px 4px; }
 .mespy-home .mh-nav-links a { white-space: nowrap; padding-block: 12px; }
+.mespy-home .mh-nav-links a[aria-current] { color: var(--mh-amber); }
 .mespy-home .mh-github { border-left: 1px solid var(--mh-line); padding-left: 28px; }
 .mespy-home .mh-language { flex: 0 0 auto; }
 .mespy-home .mh-language .version-switcher__container { display: flex; align-items: center; }
@@ -148,6 +149,20 @@ body.mespy-home #pst-back-to-top { left: auto; top: auto; transform: none; width
 .mespy-home .mh-footer-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font: .6rem/1.8 var(--mh-mono); color: var(--mh-muted); margin-top: 40px; }
 .mespy-home .mh-footer-meta span > span { padding-inline: 8px; }
 .mespy-home .mh-footer-pixel { color: var(--mh-amber); }
+
+/* Section strip (components/section-nav.html): a section's landing and its pages.
+   Used by guide.html and examples.html. */
+.mespy-home .gd-section { border-bottom: 1px solid var(--mh-line); }
+.mespy-home .gd-section-inner { display: flex; align-items: center; gap: 28px; min-height: 56px; overflow-x: auto; scrollbar-width: none; }
+.mespy-home .gd-section-inner::-webkit-scrollbar { display: none; }
+.mespy-home .gd-section-title { flex: none; font: .68rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); }
+.mespy-home .gd-section-title::after { content: "/"; margin-left: 28px; color: var(--mh-line); }
+.mespy-home .gd-section-pages { display: flex; gap: 26px; margin: 0; padding: 0; list-style: none; }
+.mespy-home .gd-section-pages a { display: block; padding-block: 16px; font-size: .85rem; color: var(--mh-muted); white-space: nowrap; box-shadow: inset 0 -2px 0 transparent; transition: color .2s, box-shadow .2s; }
+.mespy-home .gd-section-pages a:hover { color: var(--mh-ink); }
+.mespy-home .gd-section-pages a[aria-current="page"] { color: var(--mh-ink); box-shadow: inset 0 -2px 0 var(--mh-amber); }
+.mespy-home .gd-section-title[aria-current="page"] { color: var(--mh-ink); }
+.mespy-home .gd-section a:focus-visible { outline-offset: -4px; }
 
 .mespy-home .mh-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
@@ -315,10 +330,14 @@ body.mespy-home #pst-back-to-top:hover { background: var(--mh-amber); color: var
   .mespy-home .mh-footer-main { gap: 20px; }
   .mespy-home .mh-footer-main > p { flex-basis: 100%; }
   .mespy-home .mh-footer-main nav { gap: 18px; font-size: .7rem; }
+  .mespy-home .gd-section-inner { gap: 18px; min-height: 48px; }
+  .mespy-home .gd-section-title::after { margin-left: 18px; }
+  .mespy-home .gd-section-pages { gap: 18px; }
+  .mespy-home .gd-section-pages a { padding-block: 13px; font-size: .8rem; }
 }
 @media print {
   body.mespy-home { --mh-bg: white; --mh-panel: white; --mh-ink: #111; --mh-muted: #444; --mh-amber: #805000; --mh-blue: #155a91; }
-  .mespy-home .mh-header, .mespy-home .mh-footer, .mespy-home .mh-pixel, .mespy-home .mh-pixel-one { display: none; }
+  .mespy-home .mh-header, .mespy-home .mh-footer, .mespy-home .gd-section, .mespy-home .mh-pixel, .mespy-home .mh-pixel-one { display: none; }
   .mespy-home .mh-pending { opacity: 1; transform: none; }
   .mespy-home .mh-section, .mespy-home .mh-hero { padding-block: 24px; }
   .mespy-home .mh-feature { break-inside: avoid; }

@@ -1,22 +1,22 @@
+<!-- The HTML page is rendered by _templates/examples.html (see conf.py):
+     one card per page of the toctree below. This file supplies the title,
+     the search index and non-HTML builds: keep it in sync with the cards. -->
+
 # Esempi
 
-Questa sezione raccoglie notebook brevi, orientati all'uso del package. Gli esempi sono pensati come punto di partenza per notebook o script, non come riferimento formale dell'API.
+Impara MesPy con esempi pratici ed eseguibili di analisi dei dati sperimentali. Se è la prima volta, parti da Workflow base.
 
-## Esempi disponibili
-
-- [Workflow base](basic-workflow.md)
-- [Istogramma](histogram.ipynb)
-- [Fit lineare](linear-fit.ipynb)
-- [Stile dei grafici](plot-style.ipynb)
-- [Statistiche](stats-utils.ipynb)
+- [Workflow base](basic-workflow.ipynb): due chiamate essenziali; histogram salva il grafico in PDF, lin_fit salva grafico e risultati in PDF e TOML.
+- [Stile dei grafici](plot-style.ipynb): attiva lo stile mespy per tutto il notebook o per un solo grafico e personalizza colori, legenda e titoli.
+- [Istogramma](histogram.ipynb): scegli i bin, confronta conteggi, frequenze relative e densità e leggi media e deviazione standard sul grafico.
+- [Linear fit](linear-fit.ipynb): fit measurements with uncertainties, read the results and residuals, and choose whether to propagate uncertainties on x.
 
 ```{toctree}
 :hidden:
 :maxdepth: 1
 
 basic-workflow
+plot-style
 histogram
 linear-fit
-plot-style
-stats-utils
 ```

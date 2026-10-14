@@ -44,7 +44,7 @@ comandi.md
 # Documentazione generata
 docs/build/
 site/
-docs/source/locale/**/LC_MESSAGES/*.mo
+docs/source/locale/**/*.mo
 
 # Arduino
 *.hex
@@ -65,3 +65,8 @@ htmlcov/
 
 # Distribuzione
 *.egg
+
+# Files written by documentation notebooks while they run
+docs/source/examples/risultati/
+docs/source/examples/results/
+docs/source/examples/histogram.pdf

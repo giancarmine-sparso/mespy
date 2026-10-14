@@ -1,7 +1,9 @@
 from pathlib import Path
 import tomllib
 
+from docutils import nodes
 from sphinx.locale import get_translation
+from sphinx.transforms import SphinxTransform
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
@@ -47,6 +49,47 @@ html_title = "MesPy"
 html_favicon = "../../assets/brand/mespy-favicon.svg"
 
 html_permalinks = False
+
+# Long tutorial pages rendered with the landing-page chrome (guide.html,
+# components/guide-nav*.html, guide.css, guide.js). "numbered" (optional) is
+# the label of the section whose subsections are numbered examples; "eyebrow"
+# follows the section name above the page title; "station" (optional) names
+# the pixel-art scene drawn under the navigator (GUIDE_STATIONS).
+GUIDE_PAGES = {
+    "moduli/fit_utils/lin-fit": {
+        "eyebrow": "API Reference / mespy.lin_fit", "reference": True,
+    },
+    "examples/basic-workflow": {
+        "numbered": "bw-steps", "eyebrow": "mespy.histogram · mespy.lin_fit",
+        "station": "duck",
+    },
+    "examples/histogram": {"numbered": "hist-examples", "eyebrow": "mespy.histogram"},
+    "examples/plot-style": {
+        "eyebrow": "mespy.histogram · mespy.lin_fit", "station": "painter",
+    },
+    "examples/linear-fit": {"eyebrow": "mespy.lin_fit", "station": "capybara"},
+}
+
+# Sidebar scenes: stylesheets and scripts, in load order. The shared layout of
+# the [data-guide-station] block lives in guide.css.
+GUIDE_STATIONS = {
+    # The duck at a retro control station (Basic workflow).
+    "duck": {
+        "css": ["homepage-duck.css", "guide-duck-station.css"],
+        "js": ["homepage-pixel.js", "homepage-duck-frames.js", "guide-duck-station.js"],
+    },
+    # The duck on a suspended platform, rolling the page background onto a
+    # bare patch of the page (Plot styling).
+    "painter": {
+        "css": ["homepage-duck.css", "guide-painter-station.css"],
+        "js": ["homepage-pixel.js", "homepage-duck-frames.js", "guide-painter-station.js"],
+    },
+    # A capybara sliding down the fitted line and climbing back up (Linear fit).
+    "capybara": {
+        "css": ["guide-capybara-station.css"],
+        "js": ["homepage-pixel.js", "guide-capybara-station.js"],
+    },
+}
 
 html_theme_options = {
     "logo": {
@@ -122,11 +165,202 @@ def add_language_switcher_context(app, pagename, templatename, context, doctree)
 
 
 def setup(app):
-    # Only the landing page uses this template and UI translation catalog.
+    # UI translation catalog for the landing-style templates (homepage, Get started, Examples).
     app.add_message_catalog("homepage", Path(__file__).parent / "locale")
     app.connect("html-page-context", add_language_switcher_context)
     app.connect("html-page-context", add_homepage_context)
+    app.connect("html-page-context", add_get_started_context)
+    app.connect("html-page-context", add_examples_context)
+    app.connect("html-page-context", add_api_reference_context)
+    app.connect("doctree-resolved", mark_guide_doctree)
+    app.connect("html-page-context", add_guide_context)
     app.connect("build-finished", bundle_homepage_runtime)
+    app.add_transform(EnglishLinearFitReference)
+
+
+class EnglishLinearFitReference(SphinxTransform):
+    """Keep the rebuilt English reference independent of legacy catalogs."""
+
+    default_priority = 19  # Before Sphinx's Locale transform (priority 20).
+
+    def apply(self, **kwargs):
+        if self.env.current_document.docname == "moduli/fit_utils/lin-fit":
+            for node in self.document.findall(nodes.TextElement):
+                if not isinstance(node, nodes.Inline):
+                    node["translatable"] = False
+
+
+def _is_example_number(node) -> bool:
+    return isinstance(node, nodes.inline) and "mx-guide-num" in node["classes"]
+
+
+def _section_title(section) -> str:
+    """Title text of a section, without the example number added below."""
+    return "".join(
+        child.astext() for child in section[0].children if not _is_example_number(child)
+    ).strip()
+
+
+def _anchor(section, doctree) -> str:
+    """The section's explicit label, stable across languages, else its slug."""
+    explicit = [i for i in section["ids"] if doctree.nametypes.get(i)]
+    return (explicit or section["ids"])[0]
+
+
+def _child_sections(node):
+    return [child for child in node.children if isinstance(child, nodes.section)]
+
+
+def mark_guide_doctree(app, doctree, docname):
+    """Number the examples of a guide page and give its figures alt text.
+
+    Runs after translation, so the numbers and the alt text (taken from the
+    figure caption) are correct in every language.
+    """
+    if docname not in GUIDE_PAGES or app.builder.format != "html":
+        return
+    page = next(iter(doctree.findall(nodes.section)), None)
+    if page is None:
+        return
+    page["classes"].append("mx-guide")
+    if GUIDE_PAGES[docname].get("reference"):
+        page["classes"].append("mx-reference")
+    numbered = GUIDE_PAGES[docname].get("numbered")
+    for group in _child_sections(page):
+        if numbered is None or numbered not in group["ids"]:
+            continue
+        for number, example in enumerate(_child_sections(group), start=1):
+            example["classes"].append("mx-guide-example")
+            example[0].insert(0, nodes.inline("", f"{number:02d}", classes=["mx-guide-num"]))
+    for figure in doctree.findall(nodes.figure):
+        captions = [child for child in figure.children if isinstance(child, nodes.caption)]
+        if captions:
+            for image in figure.findall(nodes.image):
+                image["alt"] = captions[0].astext()
+
+
+def _guide_section(app, pagename, english, parent=None):
+    """The pages listed by the toctree of *parent*, by default the toctree
+    that contains *pagename*."""
+    env = app.env
+    if parent is None:
+        parent = next((doc for doc, children in env.toctree_includes.items() if pagename in children), None)
+    if parent is None:
+        return None
+    pages = [
+        {
+            "doc": doc,
+            "title": env.titles[doc].astext(),
+            "href": app.builder.get_relative_uri(pagename, doc) or "#",
+            "current": doc == pagename,
+        }
+        for doc in env.toctree_includes[parent]
+    ]
+    return {
+        "title": env.titles[parent].astext(),
+        "href": app.builder.get_relative_uri(pagename, parent) or "#",
+        "current": parent == pagename,
+        "label": "Section navigation" if english else "Navigazione della sezione",
+        "pages": pages,
+    }
+
+
+def add_guide_context(app, pagename, templatename, context, doctree):
+    """Render a guide page in the landing chrome; H2 sections are the
+    navigator's groups, H3 sections its entries."""
+    if pagename not in GUIDE_PAGES or doctree is None:
+        return None
+    page = next(iter(doctree.findall(nodes.section)), None)
+    if page is None:
+        return None
+    groups = []
+    for group in _child_sections(page):
+        entries = []
+        for entry in _child_sections(group):
+            number = next((n.astext() for n in entry[0].children if _is_example_number(n)), "")
+            entries.append({"id": _anchor(entry, doctree), "title": _section_title(entry), "num": number})
+        groups.append({"id": _anchor(group, doctree), "title": _section_title(group), "entries": entries})
+    english = (app.config.language or language).startswith("en")
+    context["guide_nav"] = groups
+    reference = GUIDE_PAGES[pagename].get("reference", False)
+    context["guide_nav_title"] = "On this page" if reference else ("In this guide" if english else "In questa guida")
+    context["guide_nav_label"] = "Reference sections" if reference else ("Guide sections" if english else "Sezioni della guida")
+    context["guide_section"] = section = _guide_section(app, pagename, english)
+    eyebrow = GUIDE_PAGES[pagename].get("eyebrow")
+    context["guide_eyebrow"] = eyebrow if reference else " / ".join(filter(None, [section and section["title"], eyebrow]))
+    if reference:
+        context["guide_section"] = {
+            "title": "API Reference",
+            "href": app.builder.get_relative_uri(pagename, "moduli/index"),
+            "label": "API navigation", "lang": "en",
+            "pages": [
+                {"title": "lin_fit", "href": "#lin-fit-reference", "current": True},
+                {"title": "LinearFitResult", "href": app.builder.get_relative_uri(pagename, "moduli/fit_utils/linear-fit-result")},
+            ],
+        }
+    context["home"] = get_translation("homepage")
+    app.add_css_file("homepage.css")
+    app.add_css_file("guide.css")
+    if reference:
+        app.add_css_file("lin-fit-reference.css")
+    app.add_js_file("homepage.js", loading_method="defer")
+    app.add_js_file("guide.js", loading_method="defer")
+    context["guide_station"] = station = GUIDE_PAGES[pagename].get("station")
+    if station:
+        for css in GUIDE_STATIONS[station]["css"]:
+            app.add_css_file(css)
+        for js in GUIDE_STATIONS[station]["js"]:
+            app.add_js_file(js, loading_method="defer")
+    return "guide.html"
+
+
+def add_examples_context(app, pagename, templatename, context, doctree):
+    """Render examples/index.md as a landing: one card per page of its toctree."""
+    if pagename != "examples/index":
+        return None
+    english = (app.config.language or language).startswith("en")
+    context["home"] = get_translation("homepage")
+    context["guide_section"] = _guide_section(app, pagename, english, parent=pagename)
+    app.add_css_file("homepage.css")
+    app.add_css_file("examples.css")
+    app.add_js_file("homepage.js", loading_method="defer")
+    return "examples.html"
+
+
+def add_api_reference_context(app, pagename, templatename, context, doctree):
+    """Prioritize core functions while keeping every module-toctree entry."""
+    if pagename != "moduli/index":
+        return None
+    english = (app.config.language or language).startswith("en")
+    context["home"] = get_translation("homepage")
+    section = _guide_section(app, pagename, english, parent=pagename)
+    modules = [
+        {**page, "entries": _guide_section(app, pagename, english, parent=page["doc"])["pages"]}
+        for page in section["pages"]
+    ]
+    entries = {
+        entry["doc"]: {**entry, "module": module}
+        for module in modules for entry in module["entries"]
+    }
+    core_docs = ("moduli/plot_utils/histogram", "moduli/fit_utils/lin-fit")
+    context["api_core"] = [entries[doc] for doc in core_docs]
+    context["api_utilities"] = [
+        {**module, "entries": [entry for entry in module["entries"] if entry["doc"] not in core_docs]}
+        for module in modules
+        if any(entry["doc"] not in core_docs for entry in module["entries"])
+    ]
+    context["guide_section"] = {
+        "title": "API Reference", "href": "#api-title", "current": True,
+        "label": "API navigation", "lang": "en",
+        "pages": [
+            {"title": entry["title"], "href": f"#{entry['doc'].rsplit('/', 1)[-1]}"}
+            for entry in context["api_core"]
+        ] + [{"title": "Additional utilities", "href": "#additional-utilities"}],
+    }
+    app.add_css_file("homepage.css")
+    app.add_css_file("api-reference.css")
+    app.add_js_file("homepage.js", loading_method="defer")
+    return "api-reference.html"
 
 
 def add_homepage_context(app, pagename, templatename, context, doctree):
@@ -141,7 +375,38 @@ def add_homepage_context(app, pagename, templatename, context, doctree):
     app.add_css_file("homepage.css")
     app.add_js_file("homepage.js", loading_method="defer")
     app.add_js_file("homepage-fit.js", loading_method="defer")
+    app.add_css_file("homepage-duck.css")
+    app.add_js_file("homepage-pixel.js", loading_method="defer")
+    app.add_js_file("homepage-duck-frames.js", loading_method="defer")
+    app.add_js_file("homepage-duck.js", loading_method="defer")
+    app.add_css_file("homepage-cat.css")
+    app.add_js_file("homepage-cat-frames.js", loading_method="defer")
+    app.add_js_file("homepage-cat.js", loading_method="defer")
     return "homepage.html"
+
+
+def _highlight_python(code: str) -> str:
+    return highlight(
+        code, get_lexer_by_name("python"),
+        HtmlFormatter(nowrap=True, classprefix="mh-syntax-"),
+    ).rstrip("\n")
+
+
+def add_get_started_context(app, pagename, templatename, context, doctree):
+    """Render getting-started.md with the landing page's look and catalog."""
+    if pagename != "getting-started":
+        return None
+    home = get_translation("homepage")
+    context["home"] = home
+    context["gs_ready"] = home("MesPy è pronto.")
+    context["gs_verify_html"] = _highlight_python(
+        f'import mespy\n\nprint("{context["gs_ready"]}")'
+    )
+    app.add_css_file("homepage.css")
+    app.add_css_file("get-started.css")
+    app.add_js_file("homepage.js", loading_method="defer")
+    app.add_js_file("get-started.js", loading_method="defer")
+    return "get-started.html"
 
 
 def bundle_homepage_runtime(app, exception):

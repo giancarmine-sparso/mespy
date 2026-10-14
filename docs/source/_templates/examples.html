@@ -1,0 +1,128 @@
+{# Examples landing (examples/index.md, add_examples_context in conf.py).
+   Same chrome, tokens and "homepage" UI catalog as get-started.html: home()
+   strings live in locale/en/LC_MESSAGES/homepage.po. One card per page of
+   the section's toctree, in toctree order; titles come from the pages
+   themselves, the rest from `cards` below (keyed by docname). #}
+{% extends "layout.html" %}
+
+{% block htmltitle %}<title>{{ home('Esempi') }} — MesPy</title>{% endblock %}
+
+{% block extrahead %}
+  {{ super() }}
+  <meta name="description" content="{{ home('Esempi pratici ed eseguibili di analisi dei dati sperimentali con MesPy: workflow base, istogrammi, fit lineari e stile dei grafici.') }}">
+{% endblock %}
+
+{% block body_tag %}
+<body class="mespy-home mespy-examples" data-default-mode="{{ default_mode }}">
+  <a class="mh-skip" href="#main-content">{{ home('Vai al contenuto') }}</a>
+{% endblock %}
+
+{% block content %}
+{# 40×40 glyphs drawn with the landing's square markers: blue for data,
+   amber for what MesPy adds. #}
+{% macro icon(name) -%}
+<svg class="ex-icon" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" focusable="false">
+  {%- if name == 'workflow' %}
+  <path class="ex-icon-line" d="M9 20h22"/>
+  <rect class="ex-icon-data" x="3" y="16" width="8" height="8"/>
+  <rect class="ex-icon-ink" x="16" y="16" width="8" height="8"/>
+  <rect class="ex-icon-accent" x="29" y="16" width="8" height="8"/>
+  {%- elif name == 'histogram' %}
+  <path class="ex-icon-axis" d="M4 35h32"/>
+  <rect class="ex-icon-data" x="6" y="27" width="5" height="8"/>
+  <rect class="ex-icon-data" x="12" y="17" width="5" height="18"/>
+  <rect class="ex-icon-data" x="18" y="9" width="5" height="26"/>
+  <rect class="ex-icon-data" x="24" y="19" width="5" height="16"/>
+  <rect class="ex-icon-data" x="30" y="29" width="5" height="6"/>
+  <path class="ex-icon-dash" d="M20.5 4v31"/>
+  {%- elif name == 'fit' %}
+  <path class="ex-icon-axis" d="M4 4v31h32"/>
+  <path class="ex-icon-fit" d="M8 31L35 8"/>
+  <rect class="ex-icon-data" x="9" y="24" width="4" height="4"/>
+  <rect class="ex-icon-data" x="16" y="22" width="4" height="4"/>
+  <rect class="ex-icon-data" x="22" y="14" width="4" height="4"/>
+  <rect class="ex-icon-data" x="29" y="11" width="4" height="4"/>
+  {%- elif name == 'style' %}
+  <path class="ex-icon-line" d="M4 10h32M4 20h32M4 30h32"/>
+  <rect class="ex-icon-accent" x="22" y="7" width="6" height="6"/>
+  <rect class="ex-icon-data" x="9" y="17" width="6" height="6"/>
+  <rect class="ex-icon-ink" x="27" y="27" width="6" height="6"/>
+  {%- endif %}
+</svg>
+{%- endmacro %}
+
+{%- set cards = {
+  'examples/basic-workflow': {
+    'icon': 'workflow', 'step': home('Primi passi'), 'start': true,
+    'text': home('Due chiamate essenziali: histogram salva il grafico in PDF, lin_fit salva grafico e risultati in PDF e TOML.'),
+    'api': 'histogram · lin_fit',
+  },
+  'examples/histogram': {
+    'icon': 'histogram', 'step': home('Distribuzioni'), 'kind': home('Guida completa'),
+    'text': home('Dalle misure alla distribuzione: scegli i bin, confronta conteggi, frequenze relative e densità e leggi media e deviazione standard sul grafico.'),
+    'api': 'histogram',
+  },
+  'examples/linear-fit': {
+    'icon': 'fit', 'step': home('Relazioni'), 'kind': home('Notebook'),
+    'text': home('Fit measurements with uncertainties, read the results and residuals, and choose whether to propagate uncertainties on x.'),
+    'api': 'lin_fit',
+  },
+  'examples/plot-style': {
+    'icon': 'style', 'step': home('Presentazione'), 'kind': home('Notebook'),
+    'text': home('Attiva lo stile mespy per tutto il notebook o per un solo grafico e personalizza colori, legenda e titoli di histogram e lin_fit.'),
+    'api': 'style="mespy"',
+  },
+} %}
+
+{% include "components/mespy-header.html" %}
+{% include "components/section-nav.html" %}
+
+<main id="main-content">
+  <section class="mh-shell ex-hero" aria-labelledby="ex-title">
+    <div>
+      <p class="mh-eyebrow"><span class="mh-status" aria-hidden="true"></span> {{ guide_section.pages | length }} {{ home('percorsi guidati') }}</p>
+      <h1 id="ex-title">{{ home('Impara MesPy') }} <span class="mh-accent">{{ home('con gli esempi.') }}</span></h1>
+      <p class="mh-lead">{{ home('Esempi pratici ed eseguibili di analisi dei dati sperimentali: leggi il codice, eseguilo e adattalo alle tue misure.') }}</p>
+    </div>
+    <p class="ex-hero-note">{{ home('Prima volta? Parti da Workflow base: in pochi passi vedi l’intero percorso. Gli altri esempi approfondiscono uno strumento alla volta e si leggono in qualsiasi ordine.') }}</p>
+  </section>
+
+  <section class="mh-shell ex-catalog" aria-labelledby="ex-catalog-title">
+    <h2 class="mh-sr-only" id="ex-catalog-title">{{ home('Esempi disponibili') }}</h2>
+    <ol class="ex-cards">
+      {%- for page in guide_section.pages %}
+      {%- set card = cards.get(page.doc, {}) %}
+      <li class="ex-card{% if card.start %} ex-card-start{% endif %}">
+        <div class="mh-feature-top">
+          <span>{{ '%02d' % loop.index }}{% if card.step %} / {{ card.step }}{% endif %}</span>
+          {%- if card.start %}
+          <span class="mh-badge">{{ home('Inizia da qui') }}</span>
+          {%- elif card.kind %}
+          <span>{{ card.kind }}</span>
+          {%- endif %}
+        </div>
+        <div class="ex-card-body">
+          <div class="ex-card-head">
+            {%- if card.icon %}{{ icon(card.icon) }}{% endif %}
+            <h3><a class="ex-card-link" href="{{ page.href }}">{{ page.title }}</a></h3>
+          </div>
+          {%- if card.text %}
+          <p>{{ card.text }}</p>
+          {%- endif %}
+          <div class="ex-card-foot">
+            {%- if card.api %}<code>{{ card.api }}</code>{% endif %}
+            <span class="ex-card-cta" aria-hidden="true">{{ home('Apri l’esempio') }} <span>↗</span></span>
+          </div>
+        </div>
+      </li>
+      {%- endfor %}
+    </ol>
+    <p class="ex-aside">{{ home('Cerchi firme e parametri?') }} <a class="mh-text-link" href="{{ pathto('moduli/index') }}">{{ home('Apri il riferimento API') }} <span aria-hidden="true">↗</span></a></p>
+  </section>
+</main>
+
+{% include "components/mespy-footer.html" %}
+{{ self.scripts_end() }}
+{% endblock %}
+
+{% block footer %}{% endblock %}

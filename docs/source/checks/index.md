@@ -25,14 +25,6 @@ Questa sezione documenta le funzioni private usate da `mespy` per validare input
 - [`_display_new_figures`](plot_utils/display-new-figures.md)
 - [`_style_context`](plot_utils/style-context.md)
 
-### fit_utils
-
-- [`_validate_positive_vector`](fit_utils/validate-positive-vector.md)
-- [`_validate_positive_scalar`](fit_utils/validate-positive-scalar.md)
-- [`_validate_max_iter`](fit_utils/validate-max-iter.md)
-- [`_validate_fit_method`](fit_utils/validate-fit-method.md)
-- [`_fit_coefficients`](fit_utils/fit-coefficients.md)
-
 ## Nota importante
 
 Il fatto che queste funzioni siano documentate non significa che siano stabili come interfaccia pubblica. Sono descritte per chiarezza progettuale e per facilitare la manutenzione del package.
@@ -43,5 +35,4 @@ Il fatto che queste funzioni siano documentate non significa che siano stabili c
 
 stats_utils/index
 plot_utils/index
-fit_utils/index
 ```

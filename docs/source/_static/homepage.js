@@ -1,4 +1,5 @@
-/* Homepage enhancement: one-shot reveals and an event-driven scroll response. */
+/* Landing-style pages: compact menu, one-shot reveals and an event-driven
+   scroll response for the homepage hero (absent on Get started). */
 (() => {
 
   function init() {
@@ -60,7 +61,7 @@
       if (frame) cancelAnimationFrame(frame);
       frame = 0;
       heroVisible = false;
-      art.style.removeProperty('--mh-scroll-shift');
+      art?.style.removeProperty('--mh-scroll-shift');
       revealTargets.forEach((target) => target.classList.remove('mh-pending', 'mh-in-view'));
       if (reducedMotion.matches || !('IntersectionObserver' in window)) return;
 
@@ -76,6 +77,7 @@
         target.classList.add('mh-pending');
         revealObserver.observe(target);
       });
+      if (!hero || !art) return;
       heroObserver = new IntersectionObserver(([entry]) => {
         heroVisible = entry.isIntersecting;
         if (heroVisible) onScroll();

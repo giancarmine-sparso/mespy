@@ -44,9 +44,9 @@ def test_edited_inputs_update_figure_and_toml_from_one_public_api_call(monkeypat
         np.testing.assert_array_equal(points.get_xdata(), document["data"]["x"])
         np.testing.assert_array_equal(points.get_ydata(), document["data"]["y"])
         np.testing.assert_allclose(residual.lines[0].get_ydata(), document["residuals"]["values"])
-        assert main.yaxis.label.get_fontfamily() == ["serif"]
+        assert main.yaxis.label.get_fontfamily() == ["sans-serif"]
         assert main.get_facecolor() == (1, 1, 1, 1)
-        assert document["plot"]["style"] == "report"
+        assert document["plot"]["style"] == "mespy"
     assert tomllib.loads(second["toml"])["fit"]["slope"] == pytest.approx(2)
     assert not list(tmp_path.iterdir())
     assert not plt.get_fignums()

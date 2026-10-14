@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mespy \n"
+"Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 19:48+0200\n"
+"POT-Creation-Date: 2026-10-14 11:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,41 +18,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../source/examples/index.md:1
+#: ../../source/examples/index.md:5
 msgid "Esempi"
 msgstr "Examples"
 
-#: ../../source/examples/index.md:3
-msgid ""
-"Questa sezione raccoglie notebook brevi, orientati all'uso del package. "
-"Gli esempi sono pensati come punto di partenza per notebook o script, non"
-" come riferimento formale dell'API."
-msgstr ""
-"This section collects short notebooks focused on using the package. The "
-"examples are designed as a starting point for notebooks or scripts, not "
-"as formal API reference."
-
-#: ../../source/examples/index.md:5
-msgid "Esempi disponibili"
-msgstr "Available examples"
-
 #: ../../source/examples/index.md:7
-msgid "[Workflow base](basic-workflow.md)"
-msgstr "[Basic workflow](basic-workflow.md)"
-
-#: ../../source/examples/index.md:8
-msgid "[Istogramma](histogram.ipynb)"
-msgstr "[Histogram](histogram.ipynb)"
+msgid ""
+"Impara MesPy con esempi pratici ed eseguibili di analisi dei dati "
+"sperimentali. Se è la prima volta, parti da Workflow base."
+msgstr ""
+"Learn MesPy through practical, runnable examples of experimental data "
+"analysis. If you are new here, start with Basic workflow."
 
 #: ../../source/examples/index.md:9
-msgid "[Fit lineare](linear-fit.ipynb)"
-msgstr "[Linear fit](linear-fit.ipynb)"
+msgid ""
+"[Workflow base](basic-workflow.ipynb): due chiamate essenziali; histogram "
+"salva il grafico in PDF, lin_fit salva grafico e risultati in PDF e TOML."
+msgstr ""
+"[Basic workflow](basic-workflow.ipynb): two essential calls; histogram saves"
+" the plot as PDF, lin_fit saves the plot and the results as PDF and TOML."
 
 #: ../../source/examples/index.md:10
-msgid "[Stile dei grafici](plot-style.ipynb)"
-msgstr "[Plot styling](plot-style.ipynb)"
+msgid ""
+"[Stile dei grafici](plot-style.ipynb): attiva lo stile mespy per tutto il "
+"notebook o per un solo grafico e personalizza colori, legenda e titoli."
+msgstr ""
+"[Plot styling](plot-style.ipynb): apply the mespy style to a whole notebook "
+"or to a single plot, and customize the colors, legend and titles."
 
 #: ../../source/examples/index.md:11
-msgid "[Statistiche](stats-utils.ipynb)"
-msgstr "[Statistics](stats-utils.ipynb)"
+msgid ""
+"[Istogramma](histogram.ipynb): scegli i bin, confronta conteggi, frequenze "
+"relative e densità e leggi media e deviazione standard sul grafico."
+msgstr ""
+"[Histogram](histogram.ipynb): choose the bins, compare counts, relative "
+"frequencies and density, and read the mean and standard deviation on the "
+"plot."
 
+#: ../../source/examples/index.md:12
+msgid ""
+"[Linear fit](linear-fit.ipynb): fit measurements with uncertainties, read "
+"the results and residuals, and choose whether to propagate uncertainties on "
+"x."
+msgstr ""
+"[Linear fit](linear-fit.ipynb): fit measurements with uncertainties, read "
+"the results and residuals, and choose whether to propagate uncertainties on "
+"x."

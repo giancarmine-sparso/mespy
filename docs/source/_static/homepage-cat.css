@@ -1,0 +1,33 @@
+/* Homepage cat mascot. Loaded only by the landing page, next to homepage.css. */
+.mespy-home {
+  /* A brown long-haired tabby. Deliberate exception to the site-tokens-only
+     rule: a real cat's coat, the same in both themes. */
+  --mh-cat-ear: #8C694C;
+  --mh-cat-ear-inner: #D6B48C;
+  --mh-cat-tabby: #714D2C;      /* stripes, top of the head */
+  --mh-cat-dark: #34241A;       /* dark stripes, tail tip, open mouth */
+  --mh-cat-gold: #B8844C;       /* base coat */
+  --mh-cat-light: #CFA272;      /* tufts, belly */
+  --mh-cat-cream: #E8D0B0;      /* muzzle, chest */
+  --mh-cat-eye-closed: #4A3322;
+  --mh-cat-eye: #1E1610;
+  --mh-cat-nose: #AA6E5A;       /* also the tongue */
+  --mh-cat-harness: #7656A8;    /* optional, see SHOW_HARNESS */
+  /* The sleep "z" stays in the data blue, apart from the coat. */
+  --mh-cat-z: var(--mh-blue);
+}
+/* The cat sticks out above the card's top edge: let the card show it. */
+.mespy-home .mh-fit-editor.mh-has-cat { overflow: visible; }
+.mespy-home .mh-cat-perch { position: relative; }
+.mespy-home .mh-cat {
+  position: absolute;
+  top: var(--mh-cat-top, 0px);
+  right: var(--mh-cat-right, 0px);
+  line-height: 0;
+  /* Decorative: never takes a click from the Run button or anything else. */
+  pointer-events: none;
+}
+.mespy-home .mh-cat svg { display: block; }
+@media print, (forced-colors: active) {
+  .mespy-home .mh-cat { display: none; }
+}

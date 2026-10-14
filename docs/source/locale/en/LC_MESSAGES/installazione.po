@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mespy \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-10 10:08+0200\n"
+"POT-Creation-Date: 2026-10-13 17:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -19,97 +19,128 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 
 #: ../../source/installazione.md:1
-msgid "Installazione"
-msgstr "Installation"
+msgid "Installazione per lo sviluppo"
+msgstr "Development setup"
 
 #: ../../source/installazione.md:3
 msgid ""
-"`MesPy` richiede Python `3.12` o superiore. I comandi seguenti assumono "
-"che tu sia gia nella directory del progetto e che il virtualenv locale "
-"sia `.venv`, in coerenza con i target `make` del repository."
+"Per installare MesPy e usarlo nelle tue analisi segui [Inizia qui"
+"](getting-started.md): trovi i comandi per uv, Google Colab, Jupyter e "
+"pip."
 msgstr ""
-"`MesPy` requires Python `3.12` or newer. The following commands assume "
-"that you are already in the project directory and that the local virtual "
-"environment is `.venv`, in line with the repository `make` targets."
+"To install MesPy and use it in your analyses, follow [Get started"
+"](getting-started.md): it has the commands for uv, Google Colab, Jupyter "
+"and pip."
 
 #: ../../source/installazione.md:5
+msgid ""
+"Questa pagina serve a chi vuole modificare MesPy o contribuire al "
+"progetto. MesPy richiede Python `3.12` o superiore. I comandi seguenti "
+"assumono che tu sia nella directory del repository e che il virtualenv "
+"locale sia `.venv`, in coerenza con i target `make` del repository."
+msgstr ""
+"This page is for anyone who wants to modify MesPy or contribute to the "
+"project. MesPy requires Python `3.12` or newer. The commands below assume"
+" you are in the repository directory and that the local virtualenv is "
+"`.venv`, consistent with the repository's `make` targets."
+
+#: ../../source/installazione.md:7
+msgid "Con make"
+msgstr "With make"
+
+#: ../../source/installazione.md:15
+msgid ""
+"`make setup` crea `.venv` e installa il package in editable mode con le "
+"dipendenze di sviluppo."
+msgstr ""
+"`make setup` creates `.venv` and installs the package in editable mode "
+"with the development dependencies."
+
+#: ../../source/installazione.md:17
 msgid "Con uv"
 msgstr "With uv"
 
-#: ../../source/installazione.md:13
+#: ../../source/installazione.md:25
 msgid "Con pip"
 msgstr "With pip"
 
-#: ../../source/installazione.md:22
-msgid "Da jupyter-notebook"
-msgstr "From Jupyter Notebook"
-
-#: ../../source/installazione.md:24
-msgid "Eseguire in una cella di codice"
-msgstr "Run in a code cell"
-
-#: ../../source/installazione.md:30 ../../source/installazione.md:40
-msgid "successivamente eliminare la cella."
-msgstr "then remove the cell."
-
-#: ../../source/installazione.md:32
-msgid "Su Colab"
-msgstr "On Colab"
-
 #: ../../source/installazione.md:34
-msgid "Eseguire in una cella di codice:"
-msgstr "Run in a code cell:"
-
-#: ../../source/installazione.md:42
-msgid "Verifica rapida"
-msgstr "Quick check"
-
-#: ../../source/installazione.md:44
-msgid ""
-"Dopo l'installazione puoi controllare che l'import funzioni con un test "
-"minimo."
-msgstr ""
-"After installation you can verify that the import works with a minimal "
-"test."
-
-#: ../../source/installazione.md:50
-msgid ""
-"Se vuoi solo il package locale senza tool di sviluppo, sostituisci "
-"`\".[dev]\"` con `.`. In quel caso non sono garantiti i target `make "
-"test` e `make docs`, perche richiedono le dipendenze di sviluppo."
-msgstr ""
-"If you only want the local package without development tools, replace "
-"`\".[dev]\"` with `.`. In that case `make test` and `make docs` are not "
-"guaranteed, because they require the development dependencies."
-
-#: ../../source/installazione.md:53
 msgid "Cosa viene installato"
 msgstr "What gets installed"
 
-#: ../../source/installazione.md:55
-msgid "dipendenze runtime: `numpy`, `pandas`, `matplotlib`"
-msgstr "runtime dependencies: `numpy`, `pandas`, `matplotlib`"
+#: ../../source/installazione.md:36
+msgid "dipendenze runtime: `numpy`, `pandas`, `matplotlib`, `scipy`, `tomli-w`"
+msgstr "runtime dependencies: `numpy`, `pandas`, `matplotlib`, `scipy`, `tomli-w`"
 
-#: ../../source/installazione.md:56
+#: ../../source/installazione.md:37
 msgid ""
 "tool di sviluppo: `pytest`, `sphinx`, `pydata-sphinx-theme`, `myst-nb`, "
-"`build`, `twine`"
+"`sphinx-intl`, `build`, `twine`"
 msgstr ""
 "development tools: `pytest`, `sphinx`, `pydata-sphinx-theme`, `myst-nb`, "
-"`build`, `twine`"
+"`sphinx-intl`, `build`, `twine`"
 
-#: ../../source/installazione.md:57
-msgid "package locale in editable mode quando usi `-e`"
-msgstr "local package in editable mode when you use `-e`"
+#: ../../source/installazione.md:38
+msgid "il package locale in editable mode, grazie a `-e`"
+msgstr "the local package in editable mode, thanks to `-e`"
 
-#: ../../source/installazione.md:59
-msgid "Passo successivo"
-msgstr "Next step"
-
-#: ../../source/installazione.md:61
+#: ../../source/installazione.md:40
 msgid ""
-"Dopo l'installazione puoi continuare con la [Guida rapida](getting-"
-"started.md) oppure aprire gli [Esempi](examples/index.md)."
+"Dopo l'installazione puoi lanciare i test con `make test` e costruire la "
+"documentazione con `make docs`."
 msgstr ""
-"After installation you can continue with the [Quick start](getting-"
-"started.md) or open the [Examples](examples/index.md)."
+"After installing, run the tests with `make test` and build the "
+"documentation with `make docs`."
+
+#~ msgid "Da jupyter-notebook"
+#~ msgstr "From Jupyter Notebook"
+
+#~ msgid "Eseguire in una cella di codice"
+#~ msgstr "Run in a code cell"
+
+#~ msgid "successivamente eliminare la cella."
+#~ msgstr "then remove the cell."
+
+#~ msgid "Su Colab"
+#~ msgstr "On Colab"
+
+#~ msgid "Eseguire in una cella di codice:"
+#~ msgstr "Run in a code cell:"
+
+#~ msgid "Verifica rapida"
+#~ msgstr "Quick check"
+
+#~ msgid ""
+#~ "Dopo l'installazione puoi controllare che "
+#~ "l'import funzioni con un test minimo."
+#~ msgstr ""
+#~ "After installation you can verify that"
+#~ " the import works with a minimal "
+#~ "test."
+
+#~ msgid ""
+#~ "Se vuoi solo il package locale "
+#~ "senza tool di sviluppo, sostituisci "
+#~ "`\".[dev]\"` con `.`. In quel caso "
+#~ "non sono garantiti i target `make "
+#~ "test` e `make docs`, perche richiedono"
+#~ " le dipendenze di sviluppo."
+#~ msgstr ""
+#~ "If you only want the local package"
+#~ " without development tools, replace "
+#~ "`\".[dev]\"` with `.`. In that case "
+#~ "`make test` and `make docs` are "
+#~ "not guaranteed, because they require the"
+#~ " development dependencies."
+
+#~ msgid "Passo successivo"
+#~ msgstr "Next step"
+
+#~ msgid ""
+#~ "Dopo l'installazione puoi continuare con "
+#~ "la [Guida rapida](getting-started.md) oppure"
+#~ " aprire gli [Esempi](examples/index.md)."
+#~ msgstr ""
+#~ "After installation you can continue with"
+#~ " the [Quick start](getting-started.md) or"
+#~ " open the [Examples](examples/index.md)."

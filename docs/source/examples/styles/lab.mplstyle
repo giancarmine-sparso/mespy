@@ -1,0 +1,6 @@
+font.size: 11
+figure.figsize: 7, 5
+axes.grid: True
+grid.alpha: 0.25
+lines.linewidth: 1.5
+axes.prop_cycle: cycler('color', ['teal', 'darkorange'])
