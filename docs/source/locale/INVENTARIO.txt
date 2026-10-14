@@ -1,0 +1,508 @@
+# Inventario i18n iniziale
+
+Lingua sorgente: italiano (`language = "it"`). Cataloghi: gettext per pagina, traduzioni inglesi in `locale/en/LC_MESSAGES`; nessun catalogo italiano perché la build italiana usa le sorgenti.
+
+| Pagina/catalogo inglese | Non tradotte | Fuzzy |
+| --- | ---: | ---: |
+| `checks/index.po` | 0 | 0 |
+| `checks/plot_utils/display-new-figures.po` | 0 | 0 |
+| `checks/plot_utils/in-ipython.po` | 0 | 0 |
+| `checks/plot_utils/index.po` | 0 | 0 |
+| `checks/plot_utils/resolve-style.po` | 0 | 0 |
+| `checks/plot_utils/style-context.po` | 0 | 0 |
+| `checks/plot_utils/validate-axis-limits.po` | 0 | 0 |
+| `checks/plot_utils/validate-decimals.po` | 0 | 0 |
+| `checks/plot_utils/validate-figsize.po` | 0 | 0 |
+| `checks/stats_utils/as-float-vector.po` | 0 | 0 |
+| `checks/stats_utils/index.po` | 0 | 0 |
+| `checks/stats_utils/validate-weights.po` | 0 | 0 |
+| `examples/basic-workflow.po` | 0 | 0 |
+| `examples/histogram.po` | 0 | 0 |
+| `examples/index.po` | 0 | 0 |
+| `examples/linear-fit.po` | 0 | 0 |
+| `examples/plot-style.po` | 0 | 0 |
+| `getting-started.po` | 0 | 0 |
+| `homepage.po` | 0 | 0 |
+| `index.po` | 0 | 0 |
+| `installazione.po` | 0 | 0 |
+| `moduli/fit_utils/index.po` | 0 | 0 |
+| `moduli/fit_utils/lin-fit.po` | 0 | 0 |
+| `moduli/fit_utils/linear-fit-result.po` | 0 | 0 |
+| `moduli/index.po` | 0 | 0 |
+| `moduli/io_utils/index.po` | 0 | 0 |
+| `moduli/io_utils/load-csv/funzionamento.po` | 0 | 0 |
+| `moduli/io_utils/load-csv/panoramica.po` | 0 | 0 |
+| `moduli/io_utils/load-csv.po` | 0 | 0 |
+| `moduli/plot_utils/histogram/funzionamento.po` | 0 | 0 |
+| `moduli/plot_utils/histogram/panoramica.po` | 0 | 0 |
+| `moduli/plot_utils/histogram.po` | 0 | 0 |
+| `moduli/plot_utils/index.po` | 0 | 0 |
+| `moduli/stats_utils/covariance/funzionamento.po` | 0 | 0 |
+| `moduli/stats_utils/covariance/panoramica.po` | 0 | 0 |
+| `moduli/stats_utils/covariance.po` | 0 | 0 |
+| `moduli/stats_utils/index.po` | 0 | 0 |
+| `moduli/stats_utils/median/funzionamento.po` | 0 | 0 |
+| `moduli/stats_utils/median/panoramica.po` | 0 | 0 |
+| `moduli/stats_utils/median.po` | 0 | 0 |
+| `moduli/stats_utils/standard-deviation/funzionamento.po` | 0 | 0 |
+| `moduli/stats_utils/standard-deviation/panoramica.po` | 0 | 0 |
+| `moduli/stats_utils/standard-deviation.po` | 0 | 0 |
+| `moduli/stats_utils/variance/funzionamento.po` | 0 | 0 |
+| `moduli/stats_utils/variance/panoramica.po` | 0 | 0 |
+| `moduli/stats_utils/variance.po` | 0 | 0 |
+| `moduli/stats_utils/weighted-mean/funzionamento.po` | 0 | 0 |
+| `moduli/stats_utils/weighted-mean/panoramica.po` | 0 | 0 |
+| `moduli/stats_utils/weighted-mean.po` | 0 | 0 |
+
+## Lacune italiane non rilevate dalle sole statistiche dei PO
+
+`lin-fit` era escluso dalla trasformazione Locale e da gettext: 0 messaggi nel POT originario. Dopo la rimozione del blocco si estraggono 204 messaggi (inclusi formule e identificatori, che si mantengono).
+
+Le seguenti pagine usavano prosa inglese come sorgente; i PO inglesi ripetevano il msgid. Sono riportate le stringhe sorgente da localizzare, inclusi termini tecnici che rimangono invariati quando sono identificatori.
+
+### moduli/index
+
+- API Reference
+- Explore MesPy's core plotting and fitting functions, along with the utilities and result objects that support experimental data analysis.
+- Core functions
+- [`histogram`](plot_utils/histogram.md): visualize experimental measurements, their distribution, and descriptive statistics.
+- [`lin_fit`](fit_utils/lin-fit.md): fit a straight line to experimental data, estimate parameter uncertainties, and inspect residuals.
+- Additional utilities
+- Data loading
+- [`load_csv`](io_utils/load-csv.md): load a CSV into a DataFrame with checks on columns and missing values.
+- Descriptive statistics
+- [`median`](stats_utils/median.md): compute the median of a numeric sample.
+- [`weighted_mean`](stats_utils/weighted-mean.md): compute the arithmetic or weighted mean of a sample.
+- [`variance`](stats_utils/variance.md): compute variance with optional weights and a ddof correction.
+- [`covariance`](stats_utils/covariance.md): estimate covariance between two variables with optional weights.
+- [`standard_deviation`](stats_utils/standard-deviation.md): compute standard deviation as the square root of variance.
+- Fit results
+- [`LinearFitResult`](fit_utils/linear-fit-result.md): fit parameters, uncertainties, residuals and diagnostics.
+- Module documentation: [`io_utils.py`](io_utils/index.md), [`stats_utils.py`](stats_utils/index.md), [`plot_utils.py`](plot_utils/index.md), [`fit_utils.py`](fit_utils/index.md).
+- Looking for practical examples? Explore the [Examples](../examples/index.md).
+
+### moduli/fit_utils/index
+
+- fit_utils.py
+- `fit_utils.py` implements MesPy's linear fitting function and its immutable result object.
+- Public interface
+- [`lin_fit`](lin-fit.md): OLS, absolute WLS, and optional horizontal uncertainty propagation selected explicitly through `x_error_method`.
+- [`LinearFitResult`](linear-fit-result.md): fitted parameters, uncertainties, physical residuals, diagnostics, prediction, and TOML export.
+- `XErrorMethod`: the type alias `Literal["none", "iterate"]` for horizontal uncertainty treatment.
+- Implementation
+- The module validates finite real input vectors, positive vertical uncertainties, and optional non-negative horizontal uncertainties. Centered and scaled coordinates preserve numerical accuracy for fitting and prediction. Optional effective-variance iteration has fixed convergence settings; `fit_method`, `tol`, and `max_iter` are no longer public input arguments.
+- Plotting uses the shared [style context](../../checks/plot_utils/style-context.md), with `"mespy"` as the default style. Export writes TOML and, when plotting is enabled, PDF files from an extension-free base path. The [function reference](lin-fit.md) describes validation, iteration, plotting, and export in detail.
+
+### moduli/fit_utils/lin-fit
+
+- `mespy.lin_fit`
+- Fit a straight line to paired observations, with optional absolute uncertainties on `y` and independent uncertainties on `x`. The function returns fitted parameters, their standard uncertainties, residuals, and diagnostics in a `LinearFitResult`. By default it also creates a two-panel Matplotlib figure; file export is opt-in.
+- The fitted mean is
+- where `slope` is $m$ and `intercept` is $q$. By default, the calculation treats `x` as exact and the vertical measurement errors as independent; optional `sigma_x` only adds horizontal error bars. Select `x_error_method="iterate"` explicitly to propagate independent horizontal uncertainties through the effective-variance approximation described below. With no `sigma_y`, the uncertainty estimates assume one common vertical variance. With `sigma_y`, each supplied value is an absolute standard uncertainty for its observation.
+- Function signature
+- Import the function with `from mespy import lin_fit`. Here `ArrayLike` comes from `numpy.typing`, `Path` from `pathlib`, and `LinearFitResult` and `XErrorMethod` from `mespy.fit_utils`. `XErrorMethod` is `Literal["none", "iterate"]`. Only `x`, `y`, and `sigma_y` may be passed positionally; all remaining arguments are keyword-only.
+- Parameters
+- `x` — `ArrayLike`, required
+- Independent coordinates, as a non-empty one-dimensional real numeric vector. At least two values must be distinct **after conversion to `float64`**. Repeated coordinates are allowed; input order need not be sorted. Distinctness is checked by exact equality, without an absolute tolerance.
+- `y` — `ArrayLike`, required
+- Measured ordinates, as a non-empty one-dimensional real numeric vector with the same length as `x`. At least **three observations** are required when `sigma_y=None`, or **two observations** when uncertainties are supplied.
+- `sigma_y` — `ArrayLike | None`, default `None`
+- Absolute standard uncertainties on `y`, in the same units as `y`. Accepts a strictly positive finite real scalar (including a zero-dimensional numeric array) or a one-dimensional vector of the same length as `x`. A scalar is expanded to a constant vector. A one-element vector is not broadcast to a longer sample. `None` selects ordinary least squares (OLS); supplying uncertainties selects absolute weighted least squares (WLS). This argument specifies standard uncertainties, not variances or weights.
+- `sigma_x` — `ArrayLike | None`, default `None`
+- Independent standard uncertainties on `x`, in units of `x`. Accepts a finite non-negative real scalar or a one-dimensional vector of the same length as `x`; a scalar is expanded. Zero denotes an exact coordinate. With `x_error_method="none"`, these only supply horizontal bars and do not alter parameters, covariance, or diagnostics. With `"iterate"`, both `sigma_x` and `sigma_y` are required.
+- `x_error_method` — `XErrorMethod`, default `"none"`
+- `"none"` calculates OLS or absolute WLS treating `x` as exact. `"iterate"` explicitly selects iteratively reweighted WLS with effective vertical uncertainties. Other strings raise `ValueError`; non-string values raise `TypeError`. See [Horizontal uncertainty propagation](#lin-fit-x-errors).
+- `xlabel` — `str`, default `"x"`
+- Label of the shared horizontal axis, placed on the residual panel. Use `""` for no label. `None` is not accepted. Validated even when `plot=False` and retained in TOML plot metadata.
+- `ylabel` — `str`, default `"y"`
+- Vertical label of the data-and-fit panel. Use `""` for no label. `None` is not accepted. The residual panel has its own automatically generated label. Validated even when `plot=False` and retained in TOML plot metadata.
+- `title` — `str | None`, default `None`
+- Title of the upper panel. `None` leaves the title unset and omits it from TOML; an empty string is accepted and retained. Validated even when `plot=False`.
+- `style` — `str | None`, default `"mespy"`
+- Temporary Matplotlib style used to create the figure and render an automatic PDF. Accepts a registered style name (including MesPy's `"report"`, `"mespy"`, and `"column"`), a Matplotlib style name, or a string path to a `.mplstyle` file. `None` keeps the currently active configuration. With `plot=False`, the style is not resolved or applied. See [Style integration](#lin-fit-style).
+- `output` — `str | Path | None`, default `None`
+- File **base path**, such as `"results/spring"`, to which `.toml` and, when `plot=True`, `.pdf` are appended. Accepts relative or absolute paths. Missing parent directories are created. `None` disables automatic file export. See [File export](#lin-fit-export) for path validation, overwrite behavior, and failure conditions.
+- `plot` — `bool`, default `True`
+- Create the two-panel figure. `False` returns `figure=None`, does not import `matplotlib.pyplot`, and skips style resolution and all drawing. It also suppresses automatic PDF generation, but does not suppress TOML export. Only Python `bool` or NumPy `bool_` values are accepted; numbers and truthy strings are rejected.
+- `normalize_residuals` — `bool`, default `False`
+- Normalize residuals in the **lower plot panel only**, using `sigma_y` in y-only WLS, final effective uncertainties in iterative WLS, or the estimated dispersion in OLS. Does not change fitting, diagnostics, or returned residuals. Has no plotting effect when `plot=False`, but is still validated and recorded in TOML. Accepts Python `bool` or NumPy `bool_`, not numbers or truthy strings. An OLS fit with zero estimated dispersion cannot be plotted with this option enabled.
+- Numeric input contract
+- Numeric lists, tuples, NumPy arrays, and other array-like objects whose NumPy representation has integer, unsigned integer, or floating-point dtype are accepted. Numeric pandas Series also satisfy this contract. Inputs are copied to independent `float64` arrays and are not modified.
+- All values must remain finite in `float64`. Scalars and multidimensional arrays are invalid for `x` and `y`; no flattening, row filtering, or missing-value removal is performed. Masked arrays, complex values (even with zero imaginary part), strings, object-dtype arrays, and boolean data are rejected. Boolean entries mixed into numeric Python lists or tuples are also rejected. Generators must first be materialized into a supported numeric vector.
+- Returns
+- A [`LinearFitResult`](linear-fit-result.md), a frozen result object with the following public interface. Its fields cannot be reassigned; the Matplotlib figure itself remains editable. Residuals are a read-only `float64` array in the original observation order.
+- Attribute
+- Type
+- Meaning
+- `slope`, `intercept`
+- `float`
+- Fitted $m$ and $q$.
+- `slope_std`, `intercept_std`
+- Standard uncertainties of the fitted parameters.
+- `covariance`
+- Covariance between **slope and intercept**, not a covariance matrix.
+- `correlation`
+- `float` or `None`
+- Parameter correlation, `covariance / (slope_std * intercept_std)`, when both standard uncertainties are positive; otherwise `None`. This is not a data correlation or goodness-of-fit measure.
+- `residuals`
+- `NDArray[np.float64]`
+- Physical vertical residuals, $r_i=y_i-\hat y(x_i)$, in units of `y`.
+- `residual_std`
+- $\sqrt{\sum_i r_i^2/(N-2)}$ when `dof > 0`; otherwise `None`.
+- `estimated_sigma`
+- Read-only property equal to `residual_std` for OLS; `None` for WLS.
+- `chi2`, `reduced_chi2`, `p_value`
+- Weighted diagnostics, with availability described [below](#lin-fit-diagnostics).
+- `dof`
+- `int`
+- Residual degrees of freedom, $N-2$.
+- `fit_method`
+- `Literal["ols", "wls"]`
+- Method selected from the presence or absence of `sigma_y`.
+- `x_error_method`
+- `XErrorMethod`
+- `"none"` or `"iterate"`, identifying horizontal uncertainty treatment.
+- `figure`
+- `Figure` or `None`
+- Generated Matplotlib figure; `None` when `plot=False`.
+- `result.predict(x_new)` evaluates the fitted mean. A finite real scalar returns a Python `float`; a one-dimensional vector returns an independent `float64` array. Empty vectors are accepted. The same numeric type and finiteness restrictions apply as for the fit inputs. Prediction uses the retained local coordinate representation, which avoids loss of accuracy from directly combining a large `slope*x` with an opposing intercept.
+- `result.to_toml(path)` exports the same numerical document as automatic TOML export and returns its written `Path`. See [Manual TOML export](#lin-fit-manual-export). The dedicated [result reference](linear-fit-result.md) provides additional object-level usage.
+- Fitting behavior
+- Without uncertainties: OLS
+- When `sigma_y=None`, the function minimizes the unweighted residual sum of squares, $\mathrm{RSS}=\sum_i r_i^2$, and sets `fit_method="ols"`. It emits a `UserWarning` explaining that dispersion is estimated from the residuals and chi-squared diagnostics are unavailable.
+- The common vertical dispersion is estimated as
+- This value is returned as both `residual_std` and `estimated_sigma`. The parameter covariance corresponds to $s^2(X^\mathsf{T}X)^{-1}$, where the design matrix $X$ has columns `x` and ones; its diagonal supplies the squared parameter uncertainties. These uncertainty estimates assume independent errors with one common variance and an appropriate linear mean model. The function does not test these assumptions.
+- At least three observations are needed to estimate dispersion. If the implementation exactly reproduces all observations on a straight line, residuals, estimated dispersion, parameter uncertainties, and covariance are zero; `correlation` is `None`. Exact-line detection uses equality checks rather than a tolerance. Zero dispersion prevents normalized residual plotting, but still permits ordinary plotting and `plot=False` calls.
+- With uncertainties: absolute WLS
+- When `sigma_y` is supplied, the function minimizes
+- and sets `fit_method="wls"`. The weights are proportional to $1/\sigma_{y,i}^2$. Parameter covariance corresponds to $(X^\mathsf{T}WX)^{-1}$ with $W=\operatorname{diag}(1/\sigma_{y,i}^2)$: the supplied **absolute** uncertainty scale is retained. Covariance is **not multiplied by reduced chi-squared** or by the measured residual dispersion.
+- A constant `sigma_y` gives the same best-fit line as an unweighted fit, but uses the supplied scale for parameter uncertainties. Multiplying every uncertainty by a positive factor $a$ leaves the line and physical residuals unchanged, multiplies parameter standard uncertainties by $a$ and covariance by $a^2$, and divides chi-squared by $a^2$.
+- Two observations with distinct coordinates are sufficient. Parameter uncertainties remain defined even for an exactly fitted line because they come from the supplied measurement uncertainties.
+- Horizontal uncertainty propagation
+- Supplying `sigma_x` alone does not change the calculation. With `x_error_method="none"`, it adds horizontal error bars while OLS or WLS still treats the coordinates as exact.
+- With `x_error_method="iterate"`, both uncertainty inputs are required. A y-only WLS fit supplies the initial slope. Each update solves WLS with
+- The implementation scales terms before multiplication and evaluates the combination with `hypot`. Convergence requires a relative slope change of at most `1e-10`, normalized by the larger magnitude of the previous and updated slopes; two zero slopes are converged. At most 100 updates are attempted. Nonconvergence raises `RuntimeError` before plotting or export. These limits are fixed implementation settings, not public arguments.
+- At termination, effective weights are recomputed from the returned slope. The intercept is recalculated as the weighted mean of `y - slope*x` in local coordinates. Residuals, covariance, and the uncertainty band use this final state.
+- This is the historical iteratively reweighted WLS approximation, not York/ODR. Each update holds slope-dependent weights fixed, so convergence does not guarantee a minimum of the effective criterion. Covariance and the mean band use frozen final weights. Chi-squared and its historical p-value have an approximate statistical interpretation in this mode. `fit_method` remains `"wls"` and `estimated_sigma` remains `None`.
+- Numerical evaluation
+- The implementation solves centered and binary-scaled weighted moments, retaining local coordinates for residuals and prediction. OLS and y-only WLS do not iterate; optional horizontal propagation repeats this WLS solver. Finite, distinct input values are necessary but do not guarantee that all requested numerical quantities are representable: extreme scales can raise `FloatingPointError`, including when uncertainty normalization would reduce a positive weight to zero.
+- Statistical diagnostics
+- Quantity
+- OLS
+- Absolute WLS
+- $N-2$, at least 1
+- $N-2$, possibly 0
+- Estimated common dispersion $s$
+- Descriptive unweighted residual scale; `None` at zero degrees of freedom
+- Same as `residual_std`
+- Always `None`
+- `chi2`
+- `None`
+- Weighted residual criterion, including when `dof=0`
+- `reduced_chi2`
+- `chi2 / dof` if `dof > 0`; otherwise `None`
+- `p_value`
+- Upper-tail chi-squared probability if `dof > 0`; otherwise `None`
+- In WLS, `residual_std` is still calculated from **unweighted physical residuals**. It does not estimate or replace the supplied measurement uncertainties and does not enter parameter covariance.
+- Iterative WLS calculates the weighted criterion using the final effective uncertainties; its covariance, mean band, chi-squared, and p-value have the approximate interpretation described in [Horizontal uncertainty propagation](#lin-fit-x-errors).
+- For positive degrees of freedom, `p_value` is calculated with `scipy.stats.chi2.sf(chi2, dof)`. Its goodness-of-fit interpretation requires independent Gaussian vertical errors, correct absolute standard uncertainties, exact `x`, and a correct linear mean model. Under those assumptions, the minimized criterion has a chi-squared distribution with $N-2$ degrees of freedom and reduced chi-squared has expectation 1. A small upper-tail p-value indicates unusually large weighted residuals under that model; it is not the probability that the model is true.
+- With supplied positive uncertainties, WLS diagnostics are **numerically defined** even if those statistical assumptions are not justified; a chi-squared test interpretation then does not follow. With two WLS observations, `chi2` is computed but there are no residual degrees of freedom for a goodness-of-fit test, so `reduced_chi2`, `p_value`, and `residual_std` are unavailable. In OLS the three chi-squared fields are **unavailable (`None`)**, rather than placeholder zeros or diagnostics formed from the fitted dispersion.
+- Plotting and residuals
+- `plot=True` is the default. The generated figure has two vertically stacked axes sharing `x`, with a 3:1 height ratio:
+- **Upper panel:** observations, the fitted mean over the observed `x` range, and a band extending one standard uncertainty above and below that mean. Vertical error bars use original `sigma_y` when supplied; horizontal bars use original `sigma_x` when supplied.
+- **Lower panel:** residuals versus `x` with a dashed zero reference. By default these are physical residuals in units of `y`. WLS residual markers carry vertical uncertainty bars from `sigma_y`, or final effective uncertainties in iterative WLS. Horizontal bars retain the original `sigma_x`; OLS has no vertical bars.
+- The mean band includes parameter covariance. Its half-width corresponds to
+- evaluated in local coordinates for numerical stability. It is a **one-standard-uncertainty band for the fitted mean**, not a prediction interval for new observations or a fixed-confidence interval.
+- Residual normalization
+- Set `normalize_residuals=True` to change the lower panel:
+- Fit
+- Plotted residual
+- Plotted vertical error bar
+- WLS
+- $r_i/\sigma_{y,i}$
+- Unit half-length
+- Iterative WLS
+- $r_i/\sigma_{\mathrm{eff},i}$
+- $r_i/s$
+- None
+- Here $s$ is `result.estimated_sigma`. The labels become `Residuals / σ_y` (with mathematical typesetting) or `Residuals / s`; otherwise the label is `Residuals`. These are simple scaled residuals, not leverage-adjusted or studentized residuals. The WLS bars reference observation uncertainties; they are not the standard uncertainties of the fitted residuals. Returned `residuals` and exported residual values always stay in physical units.
+- Iterative WLS uses the label `Residuals / σ_eff`. Horizontal bars remain in units of `x` in every mode and are never normalized.
+- For OLS with `s=0`, `plot=True` together with `normalize_residuals=True` raises `ValueError` before any figure or export directory is created. With `plot=False`, normalization is not performed and this combination is accepted.
+- Style integration
+- The default `style="mespy"` uses MesPy's registered notebook style. Other registered styles (including `"report"` and `"column"`), standard Matplotlib styles, and `.mplstyle` file paths are supported. `style=None` preserves the active settings. Each plotting call uses a temporary style context and restores the previous Matplotlib configuration on exit.
+- The style controls figure size, DPI, fonts, grid, line widths, marker sizes, error-bar caps, layout, and `savefig.*` settings. The data use the first color in the active color cycle; the fitted line, mean band, and residual zero line use the second color, falling back to the first if only one is available. The two-panel composition, band opacity (0.20), and dashed zero line are set by the plotting implementation.
+- In an IPython/Jupyter kernel, figures created by the plotting context are explicitly displayed and closed from pyplot's registry to avoid duplicate inline output. The returned figure object remains usable. In a regular script, use `matplotlib.pyplot.show()` when an interactive display is desired.
+- Figure access and customization
+- Access the supported Matplotlib interface through `result.figure`; `result.figure.axes[0]` is the fit axis and `result.figure.axes[1]` is the residual axis. You can edit their labels, limits, legend, and artists, or save the figure with `result.figure.savefig(...)`. Guard against `figure=None` if plotting may be disabled.
+- Customize creation-time appearance through a style file or an active Matplotlib context with `style=None`. Post-fit edits do not update a PDF already exported by `output`; save the edited figure separately. Figure edits also do not change the original plot options stored in TOML.
+- File export
+- Automatic export uses a **base path**, not a filename with a format extension:
+- Arguments
+- Automatic artifacts
+- `output=None`, either `plot` value
+- `output="results/spring"`, `plot=True`
+- `results/spring.pdf` and `results/spring.toml`
+- `output="results/spring"`, `plot=False`
+- `results/spring.toml` only
+- Relative paths are resolved from the current working directory. Missing parents are created automatically. Dots that are part of a base name are preserved: `"results/run.v2"` produces `run.v2.toml` and, if plotted, `run.v2.pdf`.
+- Path validation and replacement
+- `output` must be a `str` or `pathlib.Path`. Empty strings, directory paths, strings ending with the platform's directory separator, final `.` or `..` components, embedded NUL characters, and base names ending in a dot are invalid.
+- The final suffix is rejected, case-insensitively, if it is one of the recognized file extensions below. Supply a base instead of, for example, `"spring.pdf"` or `"spring.toml"`.
+- `.pdf`, `.toml`, `.png`, `.svg`, `.svgz`, `.eps`, `.ps`, `.pgf`, `.jpg`, `.jpeg`, `.tif`, `.tiff`, `.webp`, `.raw`, `.rgba`, `.csv`, `.tsv`, `.txt`, `.dat`, `.json`, `.xlsx`, `.ods`, `.gz`, `.bz2`, `.xz`, `.zip`, `.tar`.
+- Both requested artifacts are prepared in a temporary directory on the destination filesystem before any final replacement. Existing files are overwritten automatically. Each replacement is atomic, but **the PDF/TOML pair is not a transaction**: PDF is replaced first, and a failure replacing TOML can leave a new PDF alongside the previous TOML. When `plot=False`, any existing PDF at that base is left untouched.
+- The automatic PDF is rendered within the selected style context and honors its `savefig.*` settings. Rendering or style errors propagate to the caller. Export I/O failures raise `OSError` (or its corresponding subclass), preserving the error number and identifying the requested final destination. Staging files are cleaned up, and newly created directories are removed on failure when they are empty; existing content is not removed.
+- TOML contents
+- Automatic TOML documents use **schema version 2** without `sigma_x`. With `sigma_x`, **schema version 3** also stores `[data].sigma_x` after scalar expansion and `[fit].x_error_method`, including `"none"` when horizontal bars were only displayed. Both schemas include:
+- Table
+- Contents
+- `[mespy]`
+- `schema_version`, `mespy_version`, and `result_type="linear_fit"`.
+- `[data]`
+- Original copied `x` and `y`; `sigma_y` when supplied, after scalar expansion.
+- `[fit]`
+- Method, slope, intercept, their standard uncertainties, covariance, and correlation when defined.
+- `[diagnostics]`
+- Degrees of freedom and each defined diagnostic, including `estimated_sigma` in OLS.
+- `[residuals]`
+- Physical residual array under `values`.
+- `[plot]`
+- Original `enabled`, `normalize_residuals`, `xlabel`, and `ylabel` options; `style` and `title` when not `None`.
+- Floats are serialized without presentation rounding. Undefined fields are omitted rather than stored as nulls. The stored data allow the numerical fit to be rerun. Figure objects, later figure edits, and the full Matplotlib configuration are not serialized; a style file's contents are not embedded.
+- Manual TOML export
+- `result.to_toml(path: str | Path) -> Path` writes the same schema-2 document separately. A missing suffix becomes `.toml`; an existing suffix is preserved. It atomically overwrites an existing file and returns the destination `Path`.
+- Unlike `output`, this method **does not create missing parent directories** and does not generate a PDF. It writes the retained fit data and original plotting options, even if the input arrays or figure have since been edited.
+- Warnings and exceptions
+- Category
+- Trigger
+- `UserWarning`
+- A successfully computed OLS fit emits a warning that `sigma_y` was not supplied, dispersion is estimated from residuals, and chi-squared diagnostics are unavailable. This also occurs with `plot=False`.
+- `TypeError`
+- Masked, complex, boolean, string, or object-dtype numeric inputs; incompatible flag or label types; an `output` value other than `str`, `Path`, or `None`; unsupported keywords.
+- `ValueError`
+- Irregular numeric arrays, failed `float64` conversion or nonfinite values; empty or incorrectly shaped vectors; mismatched lengths; insufficient observations; constant `x` after conversion; nonpositive `sigma_y` or negative `sigma_x`; invalid `x_error_method` or missing uncertainties for iteration; invalid output base paths; normalized plotting of zero-dispersion OLS residuals.
+- `RuntimeError`
+- Horizontal uncertainty iteration fails to converge within 100 updates; raised before any plotting or export.
+- `FloatingPointError`
+- Numerical rank deficiency, a normalized positive WLS weight becoming zero, or computed quantities such as parameters, covariance, residuals, predictions, or plot-band values not representable in `float64`.
+- `OSError` and subclasses
+- Export directory creation, staging, writing, or replacement fails; an invalid or missing Matplotlib style name/file is also reported by Matplotlib as `OSError` when plotting is enabled.
+- The plotting backend's drawing and rendering exceptions propagate; the function closes its newly created figure on failure and restores the style context. `plot=False` avoids these plotting failure conditions. Data, flags, labels, and output validation still apply.
+- Minimal usage
+- This performs absolute WLS, creates the fit-and-residual figure, and writes `results/linear_fit.pdf` and `results/linear_fit.toml`, creating `results/` if needed. For a numerical-only call, use `plot=False`; leave `output=None` to avoid writing files.
+- See also
+- [`LinearFitResult`](linear-fit-result.md) — result-object reference.
+- [Linear fit Examples](../../examples/linear-fit.ipynb) — worked fitting examples.
+- [Plot styling](../../examples/plot-style.ipynb) — Matplotlib styles and figure customization.
+- [Basic workflow](../../examples/basic-workflow.ipynb) — an end-to-end measurement workflow.
+
+### moduli/fit_utils/linear-fit-result
+
+- LinearFitResult
+- The immutable result object returned by [`lin_fit`](lin-fit.md). Its numerical fields describe one fit; its optional Matplotlib figure can still be edited and saved.
+- Public attributes
+- Attribute
+- Meaning
+- `slope`, `intercept`
+- The fitted slope and intercept.
+- `slope_std`, `intercept_std`
+- Their standard uncertainties.
+- `covariance`
+- Covariance between slope and intercept.
+- `correlation`
+- Parameter correlation, or `None` when undefined.
+- `residuals`
+- Read-only physical residuals, `y - (slope*x + intercept)`.
+- `residual_std`
+- Square root of the residual sum of squares divided by `dof`, or `None` if `dof=0`.
+- `estimated_sigma`
+- Common vertical dispersion estimated in OLS; equals `residual_std` in OLS and is `None` in WLS.
+- `chi2`
+- Weighted residual criterion, or `None` in OLS. Iterative WLS uses effective variances.
+- `reduced_chi2`
+- `chi2 / dof`, or `None` when undefined.
+- `p_value`
+- Upper-tail chi-square probability, or `None` in OLS or with zero degrees of freedom. Approximate in iterative WLS.
+- `dof`
+- Number of observations minus two.
+- `fit_method`
+- `"ols"` or `"wls"`.
+- `x_error_method`
+- `"none"` or `"iterate"`; a keyword-only field defaulting to `"none"`.
+- `figure`
+- Matplotlib figure, or `None` when `plot=False`.
+- For `x_error_method="iterate"`, parameter covariance, the band, and the interpretation of chi-squared and p-value belong to the historical effective-variance approximation. They are not validated York/ODR results. `fit_method` remains `"wls"` and `estimated_sigma` remains `None`.
+- `normalize_residuals` changes only the plot; `residuals` always keep the units of `y`. Changes to fitted fields through `dataclasses.replace()` are rejected when they would disagree with the retained fit. You may modify `result.figure` and save it separately; this does not update an earlier automatic PDF export.
+- Prediction
+- `predict()` accepts a finite real scalar or one-dimensional vector. It uses the retained local representation to preserve accuracy near large coordinate offsets.
+- TOML export
+- The destination directory must already exist. A missing extension becomes `.toml`; an existing destination is replaced atomically. The method returns the written `Path`.
+- The document contains `[mespy]`, `[fit]`, `[diagnostics]`, and `[residuals]`, plus `[data]` and `[plot]` for results produced by `lin_fit`. Input uncertainties are stored in their original form after scalar expansion, and floating-point results keep full precision. Undefined diagnostics are omitted. Figure edits and the full Matplotlib configuration are not serialized.
+- Without `sigma_x`, exports retain schema 2. With `sigma_x`, schema 3 also stores `[data].sigma_x` and `[fit].x_error_method`, including `"none"` when horizontal bars were only displayed. Manually constructed iterative results use schema 3 and record the method without inventing input data.
+
+### examples/basic-workflow
+
+- Basic workflow
+- Load a CSV with pandas, then create a histogram with `mespy.histogram` and a linear fit with `mespy.lin_fit`. Find the PDF plots and TOML fit results in your chosen output folder.
+- Load your data
+- Save {download}`measurements.csv <data/measurements.csv>` in your project's `data/` folder. It has three columns: `x`, `y`, and `sigma_y`, the uncertainty on each `y` value.
+- Run the code from your project folder. pandas reads the CSV into a DataFrame named `df`:
+- Access any column with `df["column_name"]`. For example, `df["y"]` contains the measured values.
+- Create a histogram
+- `histogram` saves a PDF at `save_path`. The `results/` folder must already exist: `histogram` does not create missing folders, so create it before saving.
+- Perform a linear fit
+- Use the same DataFrame. Pass `sigma_y` to include the measurement uncertainties in the fit.
+- `output` sets the destination and base filename, **without an extension**. This call creates:
+- `linear_fit.pdf` — the fit plot.
+- `linear_fit.toml` — the numerical fit results.
+- Saved files
+- Your project now contains:
+- **Both functions save PDF plots.** `lin_fit` also saves numerical results in TOML, a text file you can open in any text editor.
+
+### examples/linear-fit
+
+- Linear fit
+- Fit a straight line to your measurements, read its parameters, and inspect the residuals with `mespy.lin_fit()`.
+- What does lin_fit do?
+- `lin_fit()` fits the model
+- It estimates the slope $m$, the intercept $q$, and their standard uncertainties.
+- **By default, the calculation treats `x` as exact.** Pass measurement uncertainties on `y` through `sigma_y`. To propagate uncertainties on `x`, supply `sigma_x` and explicitly choose `x_error_method="iterate"`, as shown below.
+- Basic linear fit
+- Save {download}`linear.csv <data/linear.csv>` in your project's `data/` folder. It contains example position measurements at different times:
+- `x`: time in seconds, the independent variable.
+- `y`: measured position in metres.
+- `sigma_y`: the standard uncertainty of each position, in metres. Values must be positive.
+- Run the code from your project folder:
+- Top: position measurements, fitted line, and uncertainty band. Bottom: residuals in metres, with measurement uncertainty bars.
+- This is **weighted least squares (WLS)**: points with smaller uncertainties receive more weight. The function returns a `LinearFitResult` object, stored as `result`.
+- `output` sets the destination and base filename, **without an extension**. MesPy creates missing folders. With plotting enabled, as it is by default, it writes:
+- The **PDF** contains the fit figure. The **TOML** is a text file containing the inputs, fit parameters, available diagnostics, and physical residuals.
+- Understanding the results
+- The figure
+- The upper panel shows the measurements, their standard uncertainty bars, and the fitted line. The shaded band spans **one standard uncertainty of the predicted mean** on either side. It describes uncertainty in the line, rather than a range expected to contain future measurements.
+- The lower panel shows residuals:
+- A residual is the vertical distance from a measurement to the line. Positive values lie above it; negative values lie below it. Look for scatter around zero. A curved pattern, for example, can suggest that a straight line misses a trend.
+- Residuals are **not normalized by default**: they keep the units of `y`. Read them as `result.residuals`; access the Matplotlib figure as `result.figure`.
+- The numerical results
+- Read the main attributes:
+- Attribute
+- Meaning
+- `slope`, `slope_std`
+- Slope $m$ and its standard uncertainty; here both have units of m/s.
+- `intercept`, `intercept_std`
+- Position $q$ at $x=0$ and its standard uncertainty, in metres.
+- `chi2`
+- Sum of squared residuals divided by their respective variances.
+- `reduced_chi2`
+- `chi2 / dof`, when `dof` is positive.
+- `p_value`
+- Under the model and error assumptions, the probability of chi-squared at least as large as observed.
+- `dof`
+- Number of measurements minus the two fitted parameters.
+- `fit_method`
+- `"wls"` with `sigma_y`, or `"ols"` without it.
+- `x_error_method`
+- `"none"` or `"iterate"`: how horizontal uncertainties enter the calculation.
+- **Parameter uncertainties differ from measurement uncertainties.** `slope_std` and `intercept_std` describe how precisely the line is determined. `sigma_y` describes individual measurements. WLS uses the supplied absolute uncertainties without rescaling parameter uncertainties by reduced chi-squared.
+- Interpreting chi-squared and p-value assumes independent Gaussian measurement errors, reliable uncertainties, and an appropriate model. Reduced chi-squared near one is consistent with the assumed scatter. Large values can suggest a poor model or underestimated uncertainties; very small values can suggest overestimated uncertainties. A p-value is **not the probability that the model is correct**. Inspect the residuals too.
+- With only two weighted points, `dof=0`: `chi2` is available, but `residual_std`, `reduced_chi2`, and `p_value` are `None`.
+- `result.residual_std` describes residual scatter in the units of `y`, using `dof` in the denominator of the variance. In WLS it is descriptive, and `result.estimated_sigma` is `None`.
+- Uncertainties on x
+- Suppose each time measurement also has a standard uncertainty of **0.05 seconds**. `sigma_x` accepts this single value or one value per measurement. Values must be finite and non-negative; zero means no horizontal uncertainty.
+- Effect of supplying `sigma_x`
+- `"none"` (default)
+- Draw horizontal bars; keep the existing OLS/WLS calculation.
+- `"iterate"`
+- Propagate horizontal uncertainties through iterative reweighting; requires both `sigma_x` and `sigma_y`.
+- Display horizontal bars
+- Choose `"none"` to display the uncertainties without including them in the calculation:
+- The horizontal bars appear in both panels. The fitted parameters, their uncertainties, and diagnostics remain the same as in the basic example.
+- Propagate horizontal uncertainties
+- Select `"iterate"` to include `sigma_x` in the calculation:
+- Here every point has the same `sigma_y` and the same `sigma_x`. Propagation therefore leaves the slope and intercept unchanged, but increases their standard uncertainties. Compare the slope uncertainty:
+- MesPy starts with the y-only fit, then repeatedly updates the effective variances:
+- It refits using these variances until the relative slope change is at most `1e-10`. If it does not converge within 100 iterations, it raises `RuntimeError` before creating figures or files.
+- This is an **approximate iterative method**. Its parameter covariance, uncertainty band, and chi-square p-value have an approximate interpretation. Convergence does not guarantee a minimum of the effective criterion.
+- `result_with_x.fit_method` is still `"wls"`; `result_with_x.x_error_method` is `"iterate"`. The files are `linear_fit_x.pdf` and `linear_fit_x.toml`.
+- Whenever `sigma_x` is supplied, TOML uses schema 3 and retains its original values and the selected `x_error_method`, including `"none"`. Calls without `sigma_x` retain schema 2.
+- What if sigma_y is not provided?
+- MesPy performs **ordinary least squares (OLS)**: all observations receive equal weight. It emits a `UserWarning` and estimates a common vertical dispersion from the residuals.
+- `unweighted_result.fit_method` is `"ols"`. `fit_method` is a result attribute, not a function argument.
+- `unweighted_result.estimated_sigma` equals `unweighted_result.residual_std`. This estimate supplies the parameter uncertainties. OLS needs at least three measurements.
+- Slope, intercept, their uncertainties, residuals, and `dof` remain available.
+- `chi2`, `reduced_chi2`, and `p_value` are `None` and are omitted from TOML.
+- Without `sigma_x`, the figure has no measurement uncertainty bars. You may supply `sigma_x` for horizontal bars with `x_error_method="none"`; propagation with `"iterate"` requires `sigma_y` too.
+- **Omitting `sigma_y` is not equivalent to setting `sigma_y=1`.** The latter declares a known standard uncertainty of one `y` unit per measurement. It gives equal weights but uses WLS parameter uncertainties and diagnostics, even when the fitted line is the same.
+- Supply measurement uncertainties when they are available and scientifically justified.
+- Normalized residuals
+- The default is **`normalize_residuals=False`**. Request normalization explicitly:
+- For this y-only weighted fit, the lower panel displays
+- These dimensionless values express deviations in units of each measurement's standard uncertainty, making measurements with different uncertainties easier to compare.
+- The denominator depends on the selected fit:
+- Fit
+- Divide physical residuals by
+- WLS with `x_error_method="none"`
+- The supplied `sigma_y`.
+- WLS with `x_error_method="iterate"`
+- The final effective uncertainty `sqrt(sigma_y**2 + slope**2 * sigma_x**2)`.
+- OLS
+- The common dispersion `estimated_sigma`, estimated from the same residuals.
+- To normalize the iterative fit, also include `sigma_x=0.05` and `x_error_method="iterate"` in the call above. In either WLS mode, the displayed vertical uncertainty bars then have a half-length of one. Horizontal bars keep their original `x` units.
+- OLS normalization does not provide known measurement uncertainties or chi-squared diagnostics. Zero OLS dispersion cannot be normalized for plotting and raises `ValueError`.
+- **Normalization changes only the residual visualization.** It does not change fitted parameters, their uncertainties, or the method. `normalized_result.residuals` and residuals saved in TOML always remain physical.
+- Related pages
+- [Basic workflow](basic-workflow.ipynb)
+- [Plot styling](plot-style.ipynb)
+- [`lin_fit` API reference](../moduli/fit_utils/lin-fit.md)
+
+### examples/plot-style
+
+- Plot styling
+- MesPy builds its plots with Matplotlib. Choose a style for the overall look, then adjust individual elements when you need more control.
+- Matplotlib styles
+- Both `histogram()` and `lin_fit()` accept a `style` argument. A style sets the overall appearance: fonts, colors, grids, and line properties.
+- You can use:
+- Matplotlib styles such as `"ggplot"` or `"dark_background"`.
+- MesPy's `"mespy"`, `"report"`, or `"column"` styles, registered when you import MesPy.
+- A path to a custom `.mplstyle` file, supported by both functions.
+- `style=None` to keep the currently active Matplotlib configuration.
+- **Both functions currently default to `style="mespy"`.** A named style applies only during the call; it does not change the global configuration.
+- Run the examples in order. These small measurements describe position `y` at time `x`; `sigma_y` gives the position uncertainties.
+- `style=None` is useful after setting a global Matplotlib style. It keeps that configuration while MesPy still supplies its own plot elements and labels.
+- Customizing a histogram
+- Use MesPy parameters
+- Set `bins` to choose the number of bars. Use `xlabel`, `ylabel`, and `title` for the text, and `bar_color` for the bars. Explicit values override the style for that call. `show_mean` and `show_band` control the mean line and the shaded band.
+- Continue editing with Matplotlib
+- `histogram()` returns a standard Matplotlib `Figure` and `Axes`. The figure is the whole image; the axes hold the plotted data, labels, and grid.
+- MesPy creates the statistical visualization; Matplotlib lets you finish it. Save **after** editing to include your changes.
+- The optional `save_path` argument saves during the `histogram()` call. It does not create missing folders, and later edits do not update that saved file automatically.
+- Customizing a linear fit
+- `lin_fit()` accepts `xlabel`, `ylabel`, and `title` directly. It also has `normalize_residuals` to change how the lower panel displays residuals. Choose fonts, colors, grid settings, figure size, and line widths through `style`.
+- Use a custom style
+- For a reusable look, save this file as {download}`styles/lab.mplstyle <styles/lab.mplstyle>` in your project:
+- The first color is used for the data; the second is used for the fitted line and its band. Pass the file path to `style`:
+- `output` is a base path **without an extension**. MesPy creates the folder if needed and writes `styled_fit.pdf` and `styled_fit.toml`. The PDF is saved while the style is active, including any `savefig.*` settings in that style.
+- Choose your style and labels **before calling `lin_fit()`** to include them in the automatic export. Appearance options such as `bar_color` or `title_fontsize` belong to `histogram()`; `lin_fit()` does not accept them.
+- Edit the returned figure
+- `lin_fit()` returns a `LinearFitResult`, rather than a `(fig, ax)` pair. With the default `plot=True`, `result.figure` is a Matplotlib figure you can edit and save. With `plot=False`, it is `None`.
+- Its two axes are the fit panel followed by the residuals panel:
+- This writes a separate PDF with your edits. It does not update the previously exported `styled_fit.pdf` or the TOML file. The fit results stay the same.
+- Related pages
+- [Histogram guide](histogram.ipynb) and [linear fit guide](linear-fit.ipynb).
+- API reference: [`histogram`](../moduli/plot_utils/histogram.md), [`lin_fit`](../moduli/fit_utils/lin-fit.md), and [`LinearFitResult`](../moduli/fit_utils/linear-fit-result.md).
+
+## Template, tema e didascalie
+
+- api-reference.html: titolo, descrizione, salto al contenuto, categorie, descrizioni delle funzioni, titoli di sezione e collegamento agli esempi erano testi inglesi fuori dai cataloghi.
+- conf.py: API Reference, API navigation, Additional utilities e On this page erano forzati in inglese nella navigazione del fit e dell'indice API.
+- mespy-header.html: aria-label “MesPy home” era un testo inglese fisso.
+- examples.html: la descrizione dell'esempio di fit era un msgid inglese nel dominio homepage.
+- PyData: language=it già impostato; On this page→In questa pagina, Search→Cerca, Light→Chiaro e Dark→Scuro già tradotti dal tema. Color mode e System Settings erano vuoti nel catalogo italiano distribuito: completati nel dominio homepage già esistente.
+- sphinx-copybutton: contiene già le traduzioni italiane; sceglie la lingua da html[lang], senza modifiche.
+- linear-fit.ipynb, metadati mystnb.figure.caption: “Top: position measurements, fitted line, and uncertainty band. Bottom: residuals in metres, with measurement uncertainty bars.”
+- histogram.ipynb, metadati mystnb.figure.caption: “Output di histogram(x) con tutte le opzioni di default: 40 valori simulati.”
+- getting-started.html: video inglese da 75 s; la pagina italiana usa ora due clip italiane da 29 s, dal generatore bilingue già presente.
+- llms-full.txt: la prosa rifletteva le sorgenti inglesi; “Source:” non era localizzato. llms.txt veniva copiato solo in inglese a ogni build.
+
+## Uniformazione delle pagine già italiane
+
+Sostituite le etichette Default, Standard library, Output e gli anglicismi workflow, helper, package, plotting, display, wrapper, keyword-only, editable mode e simili nella prosa, proteggendo codice e identificatori. Le pagine di io_utils, stats_utils, plot_utils e checks conservano contenuti, formule, gerarchia e blocchi di codice.

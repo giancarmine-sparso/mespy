@@ -1,0 +1,112 @@
+Verifica finale della build italiana
+===================================
+
+Branch: docs/it-translation. Commit suddivisi per ambito; nessun deploy.
+
+Build e cataloghi:
+- make docs: completato per en e it; tutti i comandi Sphinx usano -W.
+- gettext rigenerato in docs/build/gettext; PO inglesi aggiornati e compilati.
+- 1737 messaggi nei cataloghi inglesi, 0 non tradotti e 0 fuzzy.
+- 50 pagine HTML italiane controllate, incluse ricerca e indice generale;
+  html[lang] è it in tutte le pagine.
+- PYTHONPATH=src .venv/bin/python -m pytest tests/test_docs.py -q: 9 passed.
+- La reference lin_fit mostra “Firma della funzione” e “In questa pagina”
+  in italiano; la build inglese conserva “Function signature” e “On this page”.
+
+Ricerca dell'inglese residuo:
+Il testo HTML è stato estratto con BeautifulSoup, includendo didascalie e
+attributi aria-label, title, alt, placeholder e data-bs-title. Sono stati esclusi
+script, CSS, codice (pre/code/samp/kbd/textarea), formule e frammenti
+di template in _static, che non sono pagine del sito. La ricerca ignora
+maiuscole/minuscole e comprende the, return/returns, parameter/parameters,
+see also, function signature, API Reference, on this page, with, without, when,
+each, these, those, using, data loading, standard library, default,
+additional utilities, color mode, system settings, copy to clipboard, skip,
+snapshot, hardcoded, wrapper, keyword, backend, runtime e workflow.
+Risultato: 0 corrispondenze nella prosa e negli attributi delle 50 pagine.
+Questa ricerca è un controllo lessicale, affiancato alla revisione delle
+traduzioni: non è un rilevatore automatico completo della lingua.
+
+llms:
+- docs/build/html/it/llms-full.txt rigenerato dalle 30 pagine configurate.
+- docs/build/html/it/llms.txt usa l'indice italiano locale/llms-it.txt.
+- Stessa ricerca, esclusi blocchi di codice, codice in linea, formule e URL:
+  0 corrispondenze in entrambi i file.
+- Le tabelle di llms-full.txt conservano ora i delimitatori del codice in linea
+  e della matematica, evitando di mescolare identificatori e prosa.
+
+Contenuto rimasto intenzionalmente in inglese:
+- Codice Python, comandi, commenti nei blocchi, stringhe di esempio, nomi di
+  funzioni/parametri/tipi/eccezioni, percorsi, chiavi e valori letterali TOML.
+- Output del codice e immagini prodotte dagli stessi notebook, lasciati
+  invariati: per esempio Slope, Intercept, Chi-squared, Reduced chi-squared,
+  Degrees of freedom, Fit method e Residuals. Tradurli senza tradurre il codice
+  o modificare l'API produrrebbe esempi non corrispondenti all'esecuzione.
+- Nella prosa della reference, le etichette Residuals / σ_y, Residuals / σ_eff
+  e Residuals / s sono codice in linea che cita l'uscita effettiva della libreria.
+- Nei video italiani, i comandi e i log pip (Collecting mespy,
+  Installing collected packages, Successfully installed mespy-2.0.0).
+- Nomi propri e marchi; English nel selettore è l'autonimo della lingua inglese.
+- Fit, array, notebook, kernel e bin sono prestiti tecnici italiani consolidati;
+  le scelte sono documentate nel glossario.
+
+Conservazione delle informazioni:
+Confronto con la revisione iniziale ffd0a95: nessuna modifica ai blocchi di codice delle pagine,
+al codice o agli output dei notebook, alle formule LaTeX o alle destinazioni
+dei collegamenti. Nell'indice API, ddof è stato marcato come codice in linea.
+Le didascalie nei metadati mystnb.figure sono state tradotte; le immagini e i
+risultati numerici originali sono conservati.
+
+Video:
+Due clip italiane da 29 s, generate con il progetto Remotion bilingue esistente.
+Badge e istruzioni in italiano. Il controllo dell'import è allineato a “Inizia
+qui” e non richiede mespy.__version__, assente nell'API corrente. Render, controllo
+di TypeScript, controlli della timeline e campioni visivi del video verificati.
+ffprobe: entrambe H.264, 1920×1080, 30 fps, 29 s, senza audio.
+La pagina inglese mantiene il video originale da 75 s.
+
+Dubbi terminologici aperti: nessuno. Le scelte sono in GLOSSARIO.txt.
+
+Pagine con prosa, etichette o didascalie aggiornate:
+- checks/index.md
+- checks/plot_utils/display-new-figures.md
+- checks/plot_utils/in-ipython.md
+- checks/plot_utils/index.md
+- checks/plot_utils/resolve-style.md
+- checks/plot_utils/style-context.md
+- checks/plot_utils/validate-axis-limits.md
+- checks/plot_utils/validate-decimals.md
+- checks/plot_utils/validate-figsize.md
+- checks/stats_utils/as-float-vector.md
+- checks/stats_utils/index.md
+- checks/stats_utils/validate-weights.md
+- examples/basic-workflow.ipynb
+- examples/histogram.ipynb
+- examples/index.md
+- examples/linear-fit.ipynb
+- examples/plot-style.ipynb
+- index.md
+- installazione.md
+- moduli/fit_utils/index.md
+- moduli/fit_utils/lin-fit.md
+- moduli/fit_utils/linear-fit-result.md
+- moduli/index.md
+- moduli/io_utils/index.md
+- moduli/io_utils/load-csv/funzionamento.md
+- moduli/io_utils/load-csv/panoramica.md
+- moduli/plot_utils/histogram.md
+- moduli/plot_utils/histogram/funzionamento.md
+- moduli/plot_utils/histogram/panoramica.md
+- moduli/plot_utils/index.md
+- moduli/stats_utils/covariance.md
+- moduli/stats_utils/covariance/funzionamento.md
+- moduli/stats_utils/covariance/panoramica.md
+- moduli/stats_utils/index.md
+- moduli/stats_utils/median.md
+- moduli/stats_utils/median/funzionamento.md
+- moduli/stats_utils/median/panoramica.md
+- moduli/stats_utils/standard-deviation/funzionamento.md
+- moduli/stats_utils/standard-deviation/panoramica.md
+- moduli/stats_utils/variance/funzionamento.md
+- moduli/stats_utils/variance/panoramica.md
+- moduli/stats_utils/weighted-mean/funzionamento.md
