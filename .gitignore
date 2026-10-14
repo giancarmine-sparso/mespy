@@ -70,3 +70,7 @@ htmlcov/
 docs/source/examples/risultati/
 docs/source/examples/results/
 docs/source/examples/histogram.pdf
+
+# Audit locali
+AUDIT_*.md
+audit/
