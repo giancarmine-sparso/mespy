@@ -1154,7 +1154,7 @@ def test_schema2_omits_undefined_two_point_diagnostics_and_absent_title(tmp_path
         "normalize_residuals": False,
         "xlabel": "x",
         "ylabel": "y",
-        "style": "report",
+        "style": "mespy",
     }
 
 

@@ -986,7 +986,7 @@ def lin_fit(
     xlabel: str = "x",
     ylabel: str = "y",
     title: str | None = None,
-    style: str | None = "report",
+    style: str | None = "mespy",
     output: str | Path | None = None,
     plot: bool = True,
     normalize_residuals: bool = False,
@@ -1011,7 +1011,7 @@ def lin_fit(
     normalize_residuals affects only the lower plot panel, using sigma_y
     in WLS and estimated_sigma in OLS. An exact OLS line cannot be plotted
     with normalized residuals. xlabel, ylabel and title label the figure;
-    style selects a temporary Matplotlib style (default "report"), including
+    style selects a temporary Matplotlib style (default "mespy"), including
     registered styles, Matplotlib styles and .mplstyle files. None retains
     the active style. The style controls figure size, DPI, fonts, grid,
     line widths, marker sizes, cap sizes and layout. The band shows ± one

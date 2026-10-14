@@ -57,7 +57,7 @@ def test_lin_fit_target_signature():
         "xlabel": "x",
         "ylabel": "y",
         "title": None,
-        "style": "report",
+        "style": "mespy",
         "output": None,
         "plot": True,
         "normalize_residuals": False,
