@@ -96,6 +96,7 @@ html:has(body.mespy-guide) { scroll-padding-top: 24px; }
 .mespy-guide .gd-article div.cell > div.cell_input { border: 0; border-radius: 0; background: transparent; }
 .mespy-guide .gd-article div.cell > div.cell_input::before,
 .mespy-guide .gd-article section > div[class^="highlight-"]::before { content: "Python"; display: flex; align-items: center; min-height: 52px; padding: 0 24px; border-bottom: 1px solid var(--mh-line); font: .75rem/1.6 var(--mh-mono); color: var(--mh-ink); }
+.mespy-guide .gd-article section > .highlight-bash::before { content: "Shell"; }
 .mespy-guide #bw-data ~ .highlight-text::before { content: "CSV"; }
 .mespy-guide #bw-files ~ .highlight-text::before { content: "Project files"; }
 .mespy-guide #ps-fit-style ~ .highlight-text::before { content: "lab.mplstyle"; }

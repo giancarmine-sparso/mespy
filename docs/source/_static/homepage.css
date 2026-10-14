@@ -1,4 +1,4 @@
-/* Loaded only by homepage.html. Every selector is scoped to its body. */
+/* Shared landing-page tokens and components, scoped to body.mespy-home. */
 body.mespy-home {
   --mh-bg: #141718;
   --mh-panel: #1a1e20;

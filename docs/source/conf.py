@@ -50,14 +50,27 @@ html_favicon = "../../assets/brand/mespy-favicon.svg"
 
 html_permalinks = False
 
-# Long tutorial pages rendered with the landing-page chrome (guide.html,
+# Guide and reference pages rendered with the landing-page chrome (guide.html,
 # components/guide-nav*.html, guide.css, guide.js). "numbered" (optional) is
 # the label of the section whose subsections are numbered examples; "eyebrow"
 # follows the section name above the page title; "station" (optional) names
 # the pixel-art scene drawn under the navigator (GUIDE_STATIONS).
 GUIDE_PAGES = {
+    "installazione": {},
     "moduli/fit_utils/lin-fit": {
-        "eyebrow": "API Reference / mespy.lin_fit", "reference": True,
+        "eyebrow": "API Reference / mespy.lin_fit", "reference": "lin_fit",
+    },
+    "moduli/fit_utils/linear-fit-result": {
+        "eyebrow": "API Reference / mespy.LinearFitResult", "reference": "lin_fit",
+    },
+    "moduli/plot_utils/histogram": {
+        "eyebrow": "API Reference / mespy.histogram", "reference": "histogram",
+    },
+    "moduli/plot_utils/histogram/panoramica": {
+        "eyebrow": "API Reference / mespy.histogram", "reference": "histogram",
+    },
+    "moduli/plot_utils/histogram/funzionamento": {
+        "eyebrow": "API Reference / mespy.histogram", "reference": "histogram",
     },
     "examples/basic-workflow": {
         "numbered": "bw-steps", "eyebrow": "mespy.histogram · mespy.lin_fit",
@@ -69,6 +82,84 @@ GUIDE_PAGES = {
     },
     "examples/linear-fit": {"eyebrow": "mespy.lin_fit", "station": "capybara"},
 }
+
+# Reference families share the guide layout but have their own section strip.
+# The fitting reference intentionally retains its English UI in both builds;
+# other references use translated document titles and the current site language.
+REFERENCE_SECTIONS = {
+    "lin_fit": {
+        "language": "en",
+        "pages": [
+            {"doc": "moduli/fit_utils/lin-fit", "title": "lin_fit", "anchor": "lin-fit-reference"},
+            {"doc": "moduli/fit_utils/linear-fit-result", "title": "LinearFitResult"},
+        ],
+    },
+    "histogram": {
+        "pages": [
+            {"doc": "moduli/plot_utils/histogram"},
+            {"doc": "moduli/plot_utils/histogram/panoramica"},
+            {"doc": "moduli/plot_utils/histogram/funzionamento"},
+        ],
+    },
+    "modules": {
+        "pages": [
+            {"doc": "moduli/io_utils/index"},
+            {"doc": "moduli/stats_utils/index"},
+            {"doc": "moduli/plot_utils/index"},
+            {"doc": "moduli/fit_utils/index"},
+        ],
+    },
+}
+
+# Keep each utility's existing three-page hierarchy in the shared reference
+# layout. This explicit list leaves private helper documentation unchanged.
+UTILITY_REFERENCES = {
+    "moduli/io_utils/load-csv": "load_csv",
+    "moduli/stats_utils/median": "median",
+    "moduli/stats_utils/weighted-mean": "weighted_mean",
+    "moduli/stats_utils/variance": "variance",
+    "moduli/stats_utils/covariance": "covariance",
+    "moduli/stats_utils/standard-deviation": "standard_deviation",
+}
+for _doc, _name in UTILITY_REFERENCES.items():
+    REFERENCE_SECTIONS[_name] = {
+        "pages": [{"doc": _doc}, {"doc": f"{_doc}/panoramica"}, {"doc": f"{_doc}/funzionamento"}],
+    }
+    for _page in REFERENCE_SECTIONS[_name]["pages"]:
+        GUIDE_PAGES[_page["doc"]] = {
+            "eyebrow": f"API Reference / mespy.{_name}", "reference": _name,
+        }
+
+for _page in REFERENCE_SECTIONS["modules"]["pages"]:
+    _module = _page["doc"].split("/")[1]
+    GUIDE_PAGES[_page["doc"]] = {
+        "eyebrow": f"API Reference / mespy.{_module}", "reference": "modules",
+    }
+
+# Private references retain their own hierarchy and are not listed as public API.
+CHECK_REFERENCES = {
+    "stats_utils": ("as-float-vector", "validate-weights"),
+    "plot_utils": (
+        "validate-axis-limits", "validate-figsize", "validate-decimals",
+        "resolve-style", "in-ipython", "display-new-figures", "style-context",
+    ),
+}
+REFERENCE_SECTIONS["checks"] = {
+    "root": "checks/index",
+    "pages": [{"doc": f"checks/{module}/index"} for module in CHECK_REFERENCES],
+}
+GUIDE_PAGES["checks/index"] = {"reference": "checks"}
+for _module, _helpers in CHECK_REFERENCES.items():
+    _family = f"checks_{_module}"
+    REFERENCE_SECTIONS[_family] = {
+        "root": "checks/index",
+        "pages": [{"doc": f"checks/{_module}/index"}]
+        + [{"doc": f"checks/{_module}/{helper}"} for helper in _helpers],
+    }
+    for _page in REFERENCE_SECTIONS[_family]["pages"]:
+        GUIDE_PAGES[_page["doc"]] = {
+            "eyebrow": f"mespy.{_module}", "reference": _family,
+        }
 
 # Sidebar scenes: stylesheets and scripts, in load order. The shared layout of
 # the [data-guide-station] block lives in guide.css.
@@ -173,6 +264,9 @@ def set_search_bar_text(app, config):
 
 
 def setup(app):
+    # Include layout registries in Sphinx's HTML cache invalidation.
+    app.add_config_value("mespy_guide_pages", GUIDE_PAGES, "html")
+    app.add_config_value("mespy_reference_sections", REFERENCE_SECTIONS, "html")
     # UI translation catalog for the landing-style templates (homepage, Get started, Examples).
     app.add_message_catalog("homepage", Path(__file__).parent / "locale")
     app.connect("config-inited", set_search_bar_text)
@@ -183,6 +277,7 @@ def setup(app):
     app.connect("html-page-context", add_api_reference_context)
     app.connect("doctree-resolved", mark_guide_doctree)
     app.connect("html-page-context", add_guide_context)
+    app.connect("html-page-context", add_system_page_context)
     app.connect("build-finished", bundle_homepage_runtime)
     app.add_transform(EnglishLinearFitReference)
 
@@ -292,20 +387,36 @@ def add_guide_context(app, pagename, templatename, context, doctree):
     english = (app.config.language or language).startswith("en")
     context["guide_nav"] = groups
     reference = GUIDE_PAGES[pagename].get("reference", False)
-    context["guide_nav_title"] = "On this page" if reference else ("In this guide" if english else "In questa guida")
-    context["guide_nav_label"] = "Reference sections" if reference else ("Guide sections" if english else "Sezioni della guida")
+    context["guide_nav_title"] = "In this guide" if english else "In questa guida"
+    context["guide_nav_label"] = "Guide sections" if english else "Sezioni della guida"
     context["guide_section"] = section = _guide_section(app, pagename, english)
     eyebrow = GUIDE_PAGES[pagename].get("eyebrow")
     context["guide_eyebrow"] = eyebrow if reference else " / ".join(filter(None, [section and section["title"], eyebrow]))
     if reference:
+        reference_section = REFERENCE_SECTIONS[reference]
+        reference_language = reference_section.get("language", app.config.language or language)
+        reference_english = reference_language.startswith("en")
+        reference_root = reference_section.get("root", "moduli/index")
+        context["guide_nav_title"] = "On this page" if reference_english else "In questa pagina"
+        context["guide_nav_label"] = "Reference sections" if reference_english else "Sezioni della reference"
+        reference_pages = []
+        for item in reference_section["pages"]:
+            href = app.builder.get_relative_uri(pagename, item["doc"]) or ""
+            if item.get("anchor"):
+                href += f"#{item['anchor']}"
+            reference_pages.append({
+                "title": item.get("title") or app.env.titles[item["doc"]].astext(),
+                "href": href or "#",
+                "current": item["doc"] == pagename,
+            })
         context["guide_section"] = {
-            "title": "API Reference",
-            "href": app.builder.get_relative_uri(pagename, "moduli/index"),
-            "label": "API navigation", "lang": "en",
-            "pages": [
-                {"title": "lin_fit", "href": "#lin-fit-reference", "current": True},
-                {"title": "LinearFitResult", "href": app.builder.get_relative_uri(pagename, "moduli/fit_utils/linear-fit-result")},
-            ],
+            "title": app.env.titles[reference_root].astext(),
+            "href": app.builder.get_relative_uri(pagename, reference_root) or "#",
+            "current": reference_root == pagename,
+            "label": ("Section navigation" if reference_english else "Navigazione della sezione")
+            if reference_section.get("root") else ("API navigation" if reference_english else "Navigazione API"),
+            "lang": reference_language,
+            "pages": reference_pages,
         }
     context["home"] = get_translation("homepage")
     app.add_css_file("homepage.css")
@@ -321,6 +432,18 @@ def add_guide_context(app, pagename, templatename, context, doctree):
         for js in GUIDE_STATIONS[station]["js"]:
             app.add_js_file(js, loading_method="defer")
     return "guide.html"
+
+
+def add_system_page_context(app, pagename, templatename, context, doctree):
+    """Style generated pages while retaining Sphinx's search and index bodies."""
+    if pagename not in {"search", "genindex"}:
+        return None
+    context["home"] = get_translation("homepage")
+    app.add_css_file("homepage.css")
+    app.add_css_file("guide.css")
+    app.add_css_file("system-pages.css")
+    app.add_js_file("homepage.js", loading_method="defer")
+    return None
 
 
 def add_examples_context(app, pagename, templatename, context, doctree):

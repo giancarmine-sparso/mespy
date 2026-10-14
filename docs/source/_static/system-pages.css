@@ -1,0 +1,39 @@
+/* Generated Sphinx pages in the same chrome as the landing and references. */
+.mespy-system .sp-main { padding-block: 64px 112px; min-height: 55vh; }
+.mespy-system .sp-main > .gd-article { max-width: 860px; }
+.mespy-system .bd-search-container .bd-search {
+  gap: 16px;
+  padding: 16px 20px;
+  margin: 32px 0;
+  background: var(--mh-panel);
+  border: 1px solid var(--mh-line);
+  border-radius: 5px;
+}
+.mespy-system .bd-search-container .bd-search:focus-within { border-color: var(--mh-amber); }
+.mespy-system .bd-search-container .bd-search > i { color: var(--mh-amber); }
+.mespy-system .bd-search-container .bd-search input {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  color: var(--mh-ink);
+  font: 1rem/1.7 var(--mh-mono);
+}
+.mespy-system .bd-search-container .bd-search input::placeholder { color: var(--mh-muted); }
+.mespy-system #search-results > h2 { margin-top: 40px; font-size: 1.8rem; }
+.mespy-system #search-results .search-summary { color: var(--mh-muted); }
+.mespy-system #search-results ul.search { max-width: none; }
+.mespy-system #search-results ul.search > li { padding: 22px 0; border-top: 1px solid var(--mh-line); }
+.mespy-system #search-results ul.search > li::before { display: none; }
+.mespy-system #search-results ul.search > li > a { font-weight: 600; }
+.mespy-system #search-results .context { margin: 10px 0 0; }
+.mespy-system .highlighted { background: var(--mh-amber); color: var(--mh-bg); }
+.mespy-system .genindex-jumpbox { margin: 24px 0 40px; }
+.mespy-system .genindextable { margin-bottom: 40px; color: var(--mh-muted); }
+@media (max-width: 600px) {
+  .mespy-system .sp-main { padding-block: 40px 80px; }
+  .mespy-system .bd-search-container .bd-search { gap: 12px; padding: 14px; }
+  .mespy-system .bd-search-container .search-button__kbd-shortcut { display: none; }
+  .mespy-system .genindextable > tbody > tr > td { display: block; width: 100% !important; }
+}

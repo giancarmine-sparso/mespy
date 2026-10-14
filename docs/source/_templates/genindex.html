@@ -1,0 +1,14 @@
+{% extends "!genindex.html" %}
+
+{% block body_tag %}
+<body class="mespy-home mespy-guide mespy-system" data-default-mode="{{ default_mode }}">
+  <a class="mh-skip" href="#main-content">{{ home('Vai al contenuto') }}</a>
+{% endblock %}
+
+{% block content %}
+  {% set system_body = self.body() %}
+  {% include "components/system-page-content.html" %}
+  {{ self.scripts_end() }}
+{% endblock %}
+
+{% block footer %}{% endblock %}
