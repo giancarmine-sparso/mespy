@@ -305,6 +305,27 @@ def test_histogram_bin_width_validation_is_unchanged(stat):
     plt.close("all")
 
 
+@pytest.mark.parametrize("bins", [[0, 1, 2], np.array([0.0, 1.0, 2.0]), "fd"])
+def test_histogram_bin_width_rejects_any_explicit_bins(bins):
+    with pytest.raises(ValueError, match="mutually exclusive"):
+        histogram([0, 1], bins=bins, bin_width=0.5)
+    plt.close("all")
+
+
+def test_histogram_bin_width_edges_stop_at_the_covering_multiple():
+    width = 0.1
+    for i in range(1, 300):
+        xmax = i * width
+        fig, ax = histogram(
+            [0.0, xmax], bin_width=width, show_mean=False, show_band=False
+        )
+        edges = ax.get_xticks()
+        expected_last = np.ceil(xmax / width) * width
+        assert edges[-1] == pytest.approx(expected_last)
+        assert len(edges) == int(np.ceil(xmax / width)) + 1
+        plt.close(fig)
+
+
 @pytest.mark.parametrize("stat", STAT_MODES)
 def test_histogram_custom_ylabel_and_bar_styles(stat):
     fig, ax = histogram(

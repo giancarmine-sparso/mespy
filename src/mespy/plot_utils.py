@@ -439,14 +439,16 @@ def histogram(
             if bin_width <= 0:
                 raise ValueError("'bin_width' must be > 0.")
 
-            if bins != "auto":
+            if not (isinstance(bins, str) and bins == "auto"):
                 raise ValueError(
                     "'bins' and 'bin_width' are mutually exclusive. Use only one of them"
                 )
 
-            start = np.floor(xmin / bin_width) * bin_width
-            stop = np.ceil(xmax / bin_width) * bin_width
-            bins = np.arange(start, stop + bin_width, bin_width)
+            # Bordi come multipli interi k * bin_width: np.arange su float può
+            # aggiungere un bordo oltre ceil(xmax / bin_width) * bin_width.
+            first = np.floor(xmin / bin_width)
+            last = np.ceil(xmax / bin_width)
+            bins = np.arange(first, last + 1) * bin_width
 
         if stat == "count":
             hist_kwargs: dict = {
