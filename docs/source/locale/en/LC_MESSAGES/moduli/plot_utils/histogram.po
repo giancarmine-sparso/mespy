@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 17:31+0200\n"
+"POT-Creation-Date: 2026-10-14 18:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,26 +18,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../source/moduli/plot_utils/histogram.md:152
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:154
 msgid "Panoramica"
 msgstr "Overview"
 
-#: ../../source/moduli/plot_utils/histogram.md:152
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:154
 msgid "Funzionamento"
 msgstr "Implementation"
 
-#: ../../source/moduli/plot_utils/histogram.md:1
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:1
 msgid "histogram"
 msgstr "histogram"
 
-#: ../../source/moduli/plot_utils/histogram.md:3
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:3
+msgid ""
+"Queste pagine descrivono le sorgenti correnti del repository. La costruzione"
+" dei bordi con `bin_width` e il controllo della griglia differiscono dalla "
+"distribuzione 2.0.0 già pubblicata su PyPI. Per riprodurre il comportamento "
+"qui descritto, segui [Installazione per lo "
+"sviluppo](../../installazione.md)."
+msgstr ""
+"These pages describe the current repository sources. The construction of "
+"edges with `bin_width` and grid control differ from the 2.0.0 distribution "
+"already published on PyPI. To reproduce the behavior described here, follow "
+"[Development setup](../../installazione.md)."
+
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:5
 msgid "Firma"
 msgstr "Signature"
 
-#: ../../source/moduli/plot_utils/histogram.md:48
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:50
 msgid ""
-"`histogram` disegna un istogramma di un campione numerico e puo aggiungere "
-"media, banda `+- 1 sigma`, legenda, griglia e salvataggio della figura. "
+"`histogram` disegna un istogramma di un campione numerico e può aggiungere "
+"media, banda $\\pm 1\\sigma$, legenda, griglia e salvataggio della figura. "
 "`stat` sceglie conteggi (`\"count\"`, valore predefinito), frequenze "
 "relative (`\"probability\"`) o densità di frequenza (`\"density\"`). Può "
 "essere passato come secondo argomento posizionale oppure per nome. Per "
@@ -46,14 +59,14 @@ msgid ""
 "stile per delegare a Matplotlib."
 msgstr ""
 "`histogram` draws a histogram of a numeric sample and can add the mean, a "
-"`+- 1 sigma` band, legend, grid, and figure saving. `stat` selects counts "
-"(`\"count\"`, default), relative frequencies (`\"probability\"`), or "
+"$\\pm 1\\sigma$ band, legend, grid, and figure saving. `stat` selects counts"
+" (`\"count\"`, default), relative frequencies (`\"probability\"`), or "
 "frequency densities (`\"density\"`). It can be passed as the second "
 "positional argument or by keyword. By default it applies the `mespy` "
 "Matplotlib style; pass `style=None` to use the current `rcParams`, or "
 "another style name to delegate to Matplotlib."
 
-#: ../../source/moduli/plot_utils/histogram.md:52
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:54
 msgid ""
 "I parametri `figsize`, `dpi`, `title_fontsize`, `title_pad`, "
 "`legend_fontsize`, `legend_loc`, `bar_color`, `mean_color`, `band_color`, "
@@ -68,11 +81,11 @@ msgstr ""
 "`None`. The `hist_alpha`, `band_alpha`, `mean_symbol`, and `band_symbol` "
 "parameters remain explicit per-call overrides instead."
 
-#: ../../source/moduli/plot_utils/histogram.md:55
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:57
 msgid "Parametri per scopo"
 msgstr "Parameters by purpose"
 
-#: ../../source/moduli/plot_utils/histogram.md:57
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:59
 msgid ""
 "I 37 parametri sono raggruppati in base a che cosa controllano. I valori "
 "predefiniti indicati come \"stile\" vengono letti dallo stile Matplotlib "
@@ -82,31 +95,31 @@ msgstr ""
 "\"style\" are read from the Matplotlib style that is active during the call,"
 " which is `mespy` by default."
 
-#: ../../source/moduli/plot_utils/histogram.md:59
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:61
 msgid "**Dati e rappresentazione**"
 msgstr "**Data and representation**"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Parametro"
 msgstr "Parameter"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Valore predefinito"
 msgstr "Default"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Effetto"
 msgstr "Effect"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`x`"
 msgstr "`x`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "obbligatorio"
 msgstr "required"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid ""
 "Campione numerico: lista, array NumPy o colonna pandas. Deve essere "
 "monodimensionale, non vuoto e con soli valori finiti."
@@ -114,15 +127,15 @@ msgstr ""
 "Numeric sample: a list, a NumPy array or a pandas column. It must be one-"
 "dimensional, non-empty and contain only finite values."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`stat`"
 msgstr "`stat`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`\"count\"`"
 msgstr "`\"count\"`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid ""
 "Altezza delle barre: conteggi $n_i$, frequenze relative $n_i/N$ o densità "
 "$n_i/(N\\,\\Delta x_i)$."
@@ -130,15 +143,15 @@ msgstr ""
 "Bar height: counts $n_i$, relative frequencies $n_i/N$ or densities "
 "$n_i/(N\\,\\Delta x_i)$."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`ddof`"
 msgstr "`ddof`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`0`"
 msgstr "`0`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 #, python-brace-format
 msgid ""
 "Gradi di libertà sottratti nel calcolo di $\\sigma$: divide per $N - "
@@ -147,19 +160,19 @@ msgstr ""
 "Degrees of freedom subtracted when computing $\\sigma$: it divides by $N - "
 "\\mathrm{ddof}$. Use `ddof=1` for the sample standard deviation."
 
-#: ../../source/moduli/plot_utils/histogram.md:67
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:69
 msgid "**Bin**"
 msgstr "**Bins**"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`bins`"
 msgstr "`bins`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`\"auto\"`"
 msgstr "`\"auto\"`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid ""
 "Numero di bin (`10`), regola automatica di NumPy (`\"auto\"`, `\"fd\"`, "
 "`\"sturges\"`, `\"sqrt\"`, ...) o array esplicito dei bordi."
@@ -167,15 +180,15 @@ msgstr ""
 "Number of bins (`10`), a NumPy automatic rule (`\"auto\"`, `\"fd\"`, "
 "`\"sturges\"`, `\"sqrt\"`, ...) or an explicit array of edges."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`bin_width`"
 msgstr "`bin_width`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`None`"
 msgstr "`None`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid ""
 "Larghezza fissa dei bin; i bordi vengono allineati a multipli interi di "
 "`bin_width`. Alternativo a `bins`."
@@ -183,11 +196,11 @@ msgstr ""
 "Fixed bin width; the edges are aligned to integer multiples of `bin_width`. "
 "Alternative to `bins`."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`hist_range`"
 msgstr "`hist_range`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid ""
 "Coppia `(min, max)` dell'intervallo su cui costruire i bin. Con `None` si "
 "usa l'intervallo dei dati."
@@ -195,66 +208,66 @@ msgstr ""
 "Pair `(min, max)` of the interval on which the bins are built. With `None` "
 "the range of the data is used."
 
-#: ../../source/moduli/plot_utils/histogram.md:75
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:77
 msgid "**Media e banda**"
 msgstr "**Mean and band**"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`show_mean`"
 msgstr "`show_mean`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`True`"
 msgstr "`True`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Disegna la linea tratteggiata sulla media."
 msgstr "Draws the dashed line at the mean."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`show_band`"
 msgstr "`show_band`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 #, python-brace-format
 msgid "Disegna la banda $\\bar{x} \\pm \\sigma$."
 msgstr "Draws the $\\bar{x} \\pm \\sigma$ band."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`mean_symbol`"
 msgstr "`mean_symbol`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 #, python-brace-format
 msgid "`r\"\\bar{x}\"`"
 msgstr "`r\"\\bar{x}\"`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 #, python-brace-format
 msgid "Simbolo LaTeX della media in legenda, ad esempio `r\"\\bar{T}\"`."
 msgstr "LaTeX symbol of the mean in the legend, for example `r\"\\bar{T}\"`."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`band_symbol`"
 msgstr "`band_symbol`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`r\"\\pm \\sigma\"`"
 msgstr "`r\"\\pm \\sigma\"`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Simbolo LaTeX della banda in legenda, ad esempio `r\"\\pm s\"`."
 msgstr "LaTeX symbol of the band in the legend, for example `r\"\\pm s\"`."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`decimals`"
 msgstr "`decimals`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`3`"
 msgstr "`3`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid ""
 "Cifre decimali di media e $\\sigma$ in legenda e dei bordi sull'asse $x$; "
 "intero da 0 a 20."
@@ -262,39 +275,39 @@ msgstr ""
 "Decimal digits of the mean and $\\sigma$ in the legend and of the edges on "
 "the $x$ axis; an integer from 0 to 20."
 
-#: ../../source/moduli/plot_utils/histogram.md:85
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:87
 msgid "**Testi e legenda**"
 msgstr "**Text and legend**"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`label`"
 msgstr "`label`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`\"Dati\"`"
 msgstr "`\"Dati\"`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Nome delle barre in legenda."
 msgstr "Name of the bars in the legend."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`xlabel`"
 msgstr "`xlabel`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`\"Valore\"`"
 msgstr "`\"Valore\"`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Etichetta dell'asse $x$: grandezza e unità."
 msgstr "Label of the $x$ axis: quantity and unit."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`ylabel`"
 msgstr "`ylabel`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid ""
 "Etichetta dell'asse $y$. Con `None` diventa `\"Conteggi\"`, `\"Frequenza "
 "relativa\"` o `\"Densità di frequenza\"` secondo `stat`."
@@ -302,127 +315,131 @@ msgstr ""
 "Label of the $y$ axis. With `None` it becomes `\"Conteggi\"`, `\"Frequenza "
 "relativa\"` or `\"Densità di frequenza\"` depending on `stat`."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`title`"
 msgstr "`title`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`\"Istogramma\"`"
 msgstr "`\"Istogramma\"`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Titolo del grafico."
 msgstr "Plot title."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`title_fontsize`"
 msgstr "`title_fontsize`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "stile"
 msgstr "style"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Dimensione del titolo."
 msgstr "Title font size."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`title_pad`"
 msgstr "`title_pad`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Distanza in punti tra titolo e grafico."
 msgstr "Distance in points between the title and the plot."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`show_legend`"
 msgstr "`show_legend`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Mostra la legenda."
 msgstr "Shows the legend."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`legend_loc`"
 msgstr "`legend_loc`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Posizione della legenda, ad esempio `\"upper left\"`."
 msgstr "Legend position, for example `\"upper left\"`."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`legend_fontsize`"
 msgstr "`legend_fontsize`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Dimensione del testo della legenda."
 msgstr "Legend font size."
 
-#: ../../source/moduli/plot_utils/histogram.md:99
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:101
 msgid "**Assi e griglia**"
 msgstr "**Axes and grid**"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`show_bin_ticks`"
 msgstr "`show_bin_ticks`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Usa i bordi dei bin come tacche dell'asse $x$."
 msgstr "Uses the bin edges as ticks on the $x$ axis."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`tick_rotation`"
 msgstr "`tick_rotation`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Rotazione in gradi delle etichette dell'asse $x$."
 msgstr "Rotation in degrees of the $x$ tick labels."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`xlim`"
 msgstr "`xlim`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Limiti `(min, max)` dell'asse $x$: cambiano solo la porzione visibile."
 msgstr "`(min, max)` limits of the $x$ axis: they only change the visible region."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`ylim`"
 msgstr "`ylim`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Limiti `(min, max)` dell'asse $y$."
 msgstr "`(min, max)` limits of the $y$ axis."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`show_grid`"
 msgstr "`show_grid`"
 
-#: ../../source/moduli/plot_utils/histogram.md
-msgid "Con `False` spegne la griglia; con `True` la lascia allo stile."
-msgstr "`False` turns the grid off; `True` leaves it to the style."
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
+msgid ""
+"Con `True` attiva la griglia sugli assi e sui tick maggiori/minori scelti "
+"dallo stile; con `False` spegne tutte le linee della griglia."
+msgstr ""
+"With `True`, enables the grid on the axes and major/minor ticks selected by "
+"the style; with `False`, disables all grid lines."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`grid_alpha`"
 msgstr "`grid_alpha`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Se indicato, disegna la griglia orizzontale con questa opacità."
 msgstr "If given, draws the horizontal grid with this opacity."
 
-#: ../../source/moduli/plot_utils/histogram.md:110
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:112
 msgid "**Figura, stile e salvataggio**"
 msgstr "**Figure, style and saving**"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`style`"
 msgstr "`style`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`\"mespy\"`"
 msgstr "`\"mespy\"`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid ""
 "Stile applicato solo durante la chiamata. `None` usa le impostazioni "
 "correnti; accetta anche `\"report\"`, `\"column\"` o il nome di uno stile "
@@ -431,19 +448,19 @@ msgstr ""
 "Style applied during the call only. `None` uses the current settings; it "
 "also accepts `\"report\"`, `\"column\"` or the name of a Matplotlib style."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`ax`"
 msgstr "`ax`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Asse su cui disegnare. Con `None` viene creata una nuova figura."
 msgstr "Axes to draw on. With `None` a new figure is created."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`figsize`"
 msgstr "`figsize`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid ""
 "Dimensioni `(larghezza, altezza)` in pollici; usato solo se la figura viene "
 "creata dalla funzione."
@@ -451,19 +468,25 @@ msgstr ""
 "Size `(width, height)` in inches; used only when the function creates the "
 "figure."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`dpi`"
 msgstr "`dpi`"
 
-#: ../../source/moduli/plot_utils/histogram.md
-msgid "Risoluzione della nuova figura e del file salvato con `save_path`."
-msgstr "Resolution of the new figure and of the file saved with `save_path`."
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
+msgid ""
+"Se esplicito, imposta la risoluzione della nuova figura e del file salvato. "
+"Con `None`, la creazione usa `figure.dpi` dello stile; il salvataggio usa "
+"`savefig.dpi` del contesto esterno."
+msgstr ""
+"If explicit, sets the resolution of the new figure and saved file. With "
+"`None`, figure creation uses the style’s `figure.dpi`; saving uses "
+"`savefig.dpi` from the outer context."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`save_path`"
 msgstr "`save_path`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid ""
 "Percorso del file in cui salvare la figura; senza estensione viene aggiunto "
 "`.pdf`."
@@ -471,43 +494,53 @@ msgstr ""
 "Path of the file the figure is saved to; without an extension `.pdf` is "
 "added."
 
-#: ../../source/moduli/plot_utils/histogram.md:120
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:122
 msgid "**Colori e trasparenze**"
 msgstr "**Colours and transparency**"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`bar_color`"
 msgstr "`bar_color`"
 
-#: ../../source/moduli/plot_utils/histogram.md
-msgid "Colore di riempimento delle barre."
-msgstr "Fill colour of the bars."
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
+msgid "ciclo dell’asse"
+msgstr "axes color cycle"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
+msgid ""
+"Colore di riempimento delle barre. Con `None` usa il prossimo colore del "
+"ciclo dell’asse, inizializzato da `axes.prop_cycle` quando viene creato; non"
+" usa `patch.facecolor`."
+msgstr ""
+"Bar fill color. With `None`, uses the next color in the axes color cycle, "
+"initialized from `axes.prop_cycle` when the axes are created; it does not "
+"use `patch.facecolor`."
+
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`edgecolor`"
 msgstr "`edgecolor`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Colore del bordo delle barre (bianco nello stile `mespy`)."
 msgstr "Colour of the bar edges (white in the `mespy` style)."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`hist_alpha`"
 msgstr "`hist_alpha`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`0.85`"
 msgstr "`0.85`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Opacità delle barre, da 0 a 1."
 msgstr "Bar opacity, from 0 to 1."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`mean_color`"
 msgstr "`mean_color`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid ""
 "Colore della linea della media. Con `None` usa `\"C1\"`, il secondo colore "
 "del ciclo dello stile attivo."
@@ -515,11 +548,11 @@ msgstr ""
 "Colour of the mean line. With `None` it uses `\"C1\"`, the second colour of "
 "the active style's cycle."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`band_color`"
 msgstr "`band_color`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid ""
 "Colore della banda. Con `None` usa `\"C2\"`, il terzo colore del ciclo dello"
 " stile attivo."
@@ -527,23 +560,23 @@ msgstr ""
 "Colour of the band. With `None` it uses `\"C2\"`, the third colour of the "
 "active style's cycle."
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`band_alpha`"
 msgstr "`band_alpha`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "`0.15`"
 msgstr "`0.15`"
 
-#: ../../source/moduli/plot_utils/histogram.md
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md
 msgid "Opacità della banda, da 0 a 1."
 msgstr "Band opacity, from 0 to 1."
 
-#: ../../source/moduli/plot_utils/histogram.md:132
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:134
 msgid "Comportamenti da conoscere"
 msgstr "Behaviours worth knowing"
 
-#: ../../source/moduli/plot_utils/histogram.md:134
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:136
 msgid ""
 "Alcuni comportamenti non si deducono dalla firma ma cambiano il modo di "
 "leggere il grafico."
@@ -551,7 +584,7 @@ msgstr ""
 "Some behaviours cannot be read from the signature but change how you should "
 "read the plot."
 
-#: ../../source/moduli/plot_utils/histogram.md:136
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:138
 msgid ""
 "**Media e $\\sigma$ usano sempre tutto il campione.** Non dipendono da "
 "`stat`, da `bins` né da `hist_range`: anche le misure escluse dai bin "
@@ -561,7 +594,7 @@ msgstr ""
 "on `stat`, `bins` or `hist_range`: even the measurements left out of the "
 "bins contribute to the line and the band. With $N$ values,"
 
-#: ../../source/moduli/plot_utils/histogram.md:138
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:140
 msgid ""
 "\\bar{x} = \\frac{1}{N}\\sum_{j=1}^{N} x_j, \\qquad \\sigma = "
 "\\sqrt{\\frac{1}{N - \\mathrm{ddof}}\\sum_{j=1}^{N}\\left(x_j - "
@@ -571,7 +604,7 @@ msgstr ""
 "\\sqrt{\\frac{1}{N - \\mathrm{ddof}}\\sum_{j=1}^{N}\\left(x_j - "
 "\\bar{x}\\right)^2}."
 
-#: ../../source/moduli/plot_utils/histogram.md:139
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:141
 msgid ""
 "**I bin sono intervalli semiaperti.** Ogni bin è $[a, b)$: include il bordo "
 "sinistro ed esclude il destro. Solo l'ultimo è chiuso, $[a, b]$. Un valore "
@@ -583,7 +616,7 @@ msgstr ""
 "value that lies exactly on an edge goes into the bin on the right, and tiny "
 "rounding errors on the edge can move it into the bin on the left."
 
-#: ../../source/moduli/plot_utils/histogram.md:140
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:142
 msgid ""
 "**Le normalizzazioni contano solo le osservazioni nei bin.** In "
 "`\"probability\"` e `\"density\"`, $N = \\sum_i n_i$ è il numero di "
@@ -596,19 +629,21 @@ msgstr ""
 "observations actually inside the bins, which can be smaller than the sample "
 "size. If no observation falls into the bins, every height stays zero."
 
-#: ../../source/moduli/plot_utils/histogram.md:141
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:143
 msgid ""
 "**`bin_width` costruisce i bordi da solo.** Con $a$ e $b$ estremi dei dati "
-"(o di `hist_range`) e $w$ la larghezza, i bordi partono da $\\lfloor a/w "
-"\\rfloor\\, w$ e arrivano a $\\lceil b/w \\rceil\\, w$, con passo $w$. Per "
-"questo `bins` e `bin_width` non si possono usare insieme."
+"(o di `hist_range`) e $w$ la larghezza, i bordi sono i multipli interi "
+"$k\\,w$ da $\\lfloor a/w \\rfloor\\, w$ a $\\lceil b/w \\rceil\\, w$. Per "
+"questo `bin_width` non si può combinare con `bins`, salvo il valore "
+"predefinito `bins=\"auto\"`."
 msgstr ""
 "**`bin_width` builds the edges by itself.** With $a$ and $b$ the extremes of"
-" the data (or of `hist_range`) and $w$ the width, the edges start at "
-"$\\lfloor a/w \\rfloor\\, w$ and end at $\\lceil b/w \\rceil\\, w$, with "
-"step $w$. This is why `bins` and `bin_width` cannot be used together."
+" the data (or of `hist_range`) and $w$ the width, the edges are the integer "
+"multiples $k\\,w$ from $\\lfloor a/w \\rfloor\\, w$ to $\\lceil b/w "
+"\\rceil\\, w$. This is why `bin_width` cannot be combined with `bins`, "
+"except for the default `bins=\"auto\"`."
 
-#: ../../source/moduli/plot_utils/histogram.md:142
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:144
 msgid ""
 "**`hist_range` ha effetti diversi secondo `bins`.** Con un numero di bin o "
 "una regola automatica, delimita l'intervallo e i valori esterni non entrano "
@@ -622,7 +657,7 @@ msgstr ""
 "edges are in charge. With `bin_width` it provides the extremes from which "
 "the edges are built."
 
-#: ../../source/moduli/plot_utils/histogram.md:143
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:145
 msgid ""
 "**`xlim` e `ylim` cambiano solo la vista.** Non modificano bin, conteggi o "
 "normalizzazioni."
@@ -630,7 +665,7 @@ msgstr ""
 "**`xlim` and `ylim` only change the view.** They do not modify bins, counts "
 "or normalisations."
 
-#: ../../source/moduli/plot_utils/histogram.md:144
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:146
 msgid ""
 "**Lo stile è temporaneo.** Con `style=\"mespy\"` lo stile vale solo durante "
 "la chiamata e non modifica le impostazioni globali. Se passi `ax`, lo stile "
@@ -646,7 +681,7 @@ msgstr ""
 "panel plots it is convenient to activate the style for the whole session "
 "with `plt.style.use(\"mespy\")`, available after `import mespy`."
 
-#: ../../source/moduli/plot_utils/histogram.md:145
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:147
 msgid ""
 "**Nei notebook la figura viene mostrata subito.** In Jupyter, una figura "
 "creata da `histogram` viene mostrata e chiusa prima che la funzione termini:"
@@ -662,21 +697,26 @@ msgstr ""
 "`plt.subplots()` and pass them with `ax=`. In a script, on the other hand, "
 "call `plt.show()` to open the window."
 
-#: ../../source/moduli/plot_utils/histogram.md:146
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:148
 msgid ""
 "**Il salvataggio avviene alla fine.** Con `save_path` la figura viene "
 "salvata con `bbox_inches=\"tight\"` dopo che lo stile temporaneo è stato "
-"rimosso. Se non indichi `dpi`, un file raster come un PNG viene salvato con "
-"la risoluzione della figura, 100 dpi con lo stile `mespy`: per un PNG nitido"
-" passa ad esempio `dpi=300`."
+"rimosso. Senza un `dpi` esplicito, Matplotlib usa il valore di `savefig.dpi`"
+" del contesto esterno: se vale `\"figure\"`, usa la risoluzione della figura"
+" (100 dpi per una nuova figura con lo stile `mespy`); se è numerico, usa "
+"quel valore. Per esempio, con `savefig.dpi=233` una figura a 100 dpi viene "
+"salvata in PNG a 233 dpi. Per scegliere direttamente la risoluzione del file"
+" passa, ad esempio, `dpi=300`."
 msgstr ""
-"**Saving happens at the end.** With `save_path` the figure is saved with "
-"`bbox_inches=\"tight\"` after the temporary style has been removed. If you "
-"do not give `dpi`, a raster file such as a PNG is saved at the figure "
-"resolution, 100 dpi with the `mespy` style: for a sharp PNG pass, for "
-"example, `dpi=300`."
+"**Saving happens at the end.** With `save_path`, the figure is saved with "
+"`bbox_inches=\"tight\"` after the temporary style has been removed. Without "
+"an explicit `dpi`, Matplotlib uses `savefig.dpi` from the outer context: if "
+"it is `\"figure\"`, it uses the figure resolution (100 dpi for a new figure "
+"with the `mespy` style); if it is numeric, it uses that value. For example, "
+"with `savefig.dpi=233`, a 100 dpi figure is saved as a 233 dpi PNG. To "
+"select the file resolution directly, pass, for example, `dpi=300`."
 
-#: ../../source/moduli/plot_utils/histogram.md:148
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:150
 msgid ""
 "Per una guida passo passo, con undici esempi eseguiti e il significato "
 "statistico di ogni opzione, vedi "
@@ -686,13 +726,12 @@ msgstr ""
 "meaning of every option, see [Histogram](../../examples/histogram.ipynb) in "
 "the Examples section."
 
-#: ../../source/moduli/plot_utils/histogram.md:150
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/moduli/plot_utils/histogram.md:152
 msgid ""
-"Questa pagina resta il punto di ingresso rapido. I dettagli completi sono in"
-" [Panoramica](histogram/panoramica.md), mentre "
-"[Funzionamento](histogram/funzionamento.md) e predisposta come sottopagina "
-"dedicata."
+"[Panoramica](histogram/panoramica.md) riassume parametri, normalizzazioni, "
+"errori ed esempio d'uso; [Funzionamento](histogram/funzionamento.md) "
+"descrive passo per passo il flusso interno."
 msgstr ""
-"This page remains the quick entry point. Full details are in "
-"[Overview](histogram/panoramica.md), while [How it "
-"works](histogram/funzionamento.md) is set up as a dedicated subpage."
+"[Overview](histogram/panoramica.md) summarizes parameters, normalizations, "
+"errors and a usage example; [Implementation](histogram/funzionamento.md) "
+"walks through the internal flow step by step."

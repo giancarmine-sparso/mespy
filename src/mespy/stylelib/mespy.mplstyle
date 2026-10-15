@@ -45,7 +45,7 @@ legend.framealpha: 0.9
 # force_edgecolor vale per tutte le patch e collection senza edgecolor
 # esplicito: anche axvspan e fill_between ricevono il bordo bianco.
 # Il colore delle barre di hist() viene dal prop_cycle (C0), non da
-# patch.facecolor; patch.facecolor = C0 serve per le patch create a mano.
+# patch.facecolor; patch.facecolor serve per le patch create a mano.
 patch.facecolor: 4878CF
 patch.edgecolor: white
 patch.force_edgecolor: True

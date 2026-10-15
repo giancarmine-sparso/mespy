@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 17:31+0200\n"
+"POT-Creation-Date: 2026-10-14 18:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../source/examples/histogram.ipynb:20002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:20002
 msgid "Istogramma"
 msgstr "Histogram"
 
-#: ../../source/examples/histogram.ipynb:20004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:20004
 msgid ""
 "Una guida completa a `histogram`, la funzione di MesPy che trasforma una "
 "serie di misure in un istogramma pronto per una relazione di laboratorio. La"
@@ -36,7 +36,7 @@ msgstr ""
 " examples that were actually executed: every plot you see is the real output"
 " of the code above it."
 
-#: ../../source/examples/histogram.ipynb:20006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:20006
 msgid ""
 "Se cerchi solo l'elenco dei parametri, salta a [Riferimento "
 "API](../moduli/plot_utils/histogram.md). Se è la prima volta che costruisci "
@@ -48,15 +48,29 @@ msgstr ""
 "histogram, read the page from the top: each section builds on the concepts "
 "of the previous one."
 
-#: ../../source/examples/histogram.ipynb:30003
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:20008
+msgid ""
+"Questa guida segue le sorgenti correnti del repository. La costruzione dei "
+"bordi con `bin_width` e il controllo della griglia includono modifiche "
+"successive alla versione 2.0.0 pubblicata su PyPI. Per ottenere gli stessi "
+"risultati, installa le sorgenti come descritto in [Installazione per lo "
+"sviluppo](../installazione.md) ed esegui gli esempi dallo stesso checkout."
+msgstr ""
+"This guide follows the current repository sources. The construction of edges"
+" with `bin_width` and grid control include changes made after version 2.0.0 "
+"was published on PyPI. To obtain the same results, install the sources as "
+"described in [Development setup](../installazione.md) and run the examples "
+"from the same checkout."
+
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:30003
 msgid "Le basi"
 msgstr "The basics"
 
-#: ../../source/examples/histogram.ipynb:30006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:30006
 msgid "Dalle misure alla distribuzione"
 msgstr "From measurements to a distribution"
 
-#: ../../source/examples/histogram.ipynb:30008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:30008
 msgid ""
 "Quando ripeti più volte la stessa misura, ad esempio il periodo di un "
 "pendolo con una fotocellula, non ottieni sempre lo stesso numero. Ogni "
@@ -72,7 +86,7 @@ msgstr ""
 " does not immediately tell you where the measurements cluster, how spread "
 "out they are, or whether any of them is anomalous."
 
-#: ../../source/examples/histogram.ipynb:30010
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:30010
 msgid ""
 "Un istogramma risponde a queste domande. Si divide l'asse dei valori in "
 "intervalli consecutivi, chiamati **bin**, e si conta quante osservazioni "
@@ -88,7 +102,7 @@ msgstr ""
 "each interval. Each bar has a bin as its base and, as its height, a quantity"
 " related to the number $n_i$ of observations in bin $i$."
 
-#: ../../source/examples/histogram.ipynb:30012
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:30012
 msgid ""
 "Il passaggio da osservazioni a frequenze ha un prezzo e un vantaggio. Il "
 "prezzo: dentro un bin non distingui più un valore dall'altro, perché "
@@ -100,7 +114,7 @@ msgstr ""
 "histogram only remembers how many there are. The benefit: the overall shape "
 "of the data becomes visible. In experimental physics this lets you:"
 
-#: ../../source/examples/histogram.ipynb:30014
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:30014
 msgid ""
 "vedere dove si concentrano le misure e quanto sono disperse attorno al "
 "valore centrale;"
@@ -108,11 +122,11 @@ msgstr ""
 "see where the measurements cluster and how spread out they are around the "
 "central value;"
 
-#: ../../source/examples/histogram.ipynb:30015
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:30015
 msgid "riconoscere una distribuzione simmetrica, asimmetrica o con più picchi;"
 msgstr "recognise a symmetric, skewed or multi-peaked distribution;"
 
-#: ../../source/examples/histogram.ipynb:30016
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:30016
 msgid ""
 "individuare valori anomali o errori grossolani prima di calcolare medie e "
 "incertezze;"
@@ -120,7 +134,7 @@ msgstr ""
 "spot anomalous values or gross errors before computing means and "
 "uncertainties;"
 
-#: ../../source/examples/histogram.ipynb:30017
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:30017
 msgid ""
 "confrontare i dati con un modello teorico, ad esempio una gaussiana o una "
 "distribuzione di Poisson."
@@ -128,7 +142,7 @@ msgstr ""
 "compare the data with a theoretical model, such as a Gaussian or a Poisson "
 "distribution."
 
-#: ../../source/examples/histogram.ipynb:30019
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:30019
 msgid ""
 "Un istogramma è sempre una *stima* costruita su un campione finito. Due "
 "serie di misure dello stesso fenomeno producono istogrammi diversi, e lo "
@@ -140,11 +154,11 @@ msgstr ""
 " same sample changes appearance if you change the bins. The examples show "
 "this concretely."
 
-#: ../../source/examples/histogram.ipynb:40003
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:40003
 msgid "Che cosa fa `histogram`"
 msgstr "What `histogram` does"
 
-#: ../../source/examples/histogram.ipynb:40005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:40005
 msgid ""
 "`histogram(x)` riceve un campione numerico monodimensionale e disegna, in "
 "una sola chiamata:"
@@ -152,7 +166,7 @@ msgstr ""
 "`histogram(x)` takes a one-dimensional numeric sample and draws, in a single"
 " call:"
 
-#: ../../source/examples/histogram.ipynb:40007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:40007
 msgid ""
 "le **barre** dell'istogramma, in una di tre rappresentazioni scelte con "
 "`stat`: conteggi, frequenze relative o densità di frequenza;"
@@ -160,18 +174,18 @@ msgstr ""
 "the histogram **bars**, in one of three representations chosen with `stat`: "
 "counts, relative frequencies or frequency densities;"
 
-#: ../../source/examples/histogram.ipynb:40008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:40008
 #, python-brace-format
 msgid "una **linea tratteggiata** sulla media aritmetica $\\bar{x}$ del campione;"
 msgstr "a **dashed line** at the arithmetic mean $\\bar{x}$ of the sample;"
 
-#: ../../source/examples/histogram.ipynb:40009
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:40009
 msgid ""
 "una **banda trasparente** larga $\\pm 1$ deviazione standard attorno alla "
 "media;"
 msgstr "a **transparent band** $\\pm 1$ standard deviation wide around the mean;"
 
-#: ../../source/examples/histogram.ipynb:40010
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:40010
 msgid ""
 "una **legenda** con i valori numerici di media e deviazione standard, e i "
 "bordi dei bin come tacche sull'asse $x$."
@@ -179,7 +193,7 @@ msgstr ""
 "a **legend** with the numerical values of the mean and the standard "
 "deviation, and the bin edges as ticks on the $x$ axis."
 
-#: ../../source/examples/histogram.ipynb:40012
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:40012
 msgid ""
 "La funzione applica lo stile grafico `mespy` per la sola durata della "
 "chiamata e restituisce la coppia `(fig, ax)` di Matplotlib, così puoi "
@@ -189,7 +203,7 @@ msgstr ""
 "only and returns the Matplotlib pair `(fig, ax)`, so you can keep editing "
 "the plot with Matplotlib's own tools."
 
-#: ../../source/examples/histogram.ipynb:40014
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:40014
 msgid ""
 "È altrettanto importante sapere che cosa `histogram` **non** fa. Non "
 "restituisce i conteggi dei bin, non disegna curve teoriche, non esegue fit "
@@ -201,15 +215,15 @@ msgstr ""
 "fits or statistical tests, and does not compute the uncertainty of the mean."
 " When an example uses NumPy to check a result, the text says so."
 
-#: ../../source/examples/histogram.ipynb:50002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:50002
 msgid "<span id=\"uso-base-di-histogram\"></span> <span id=\"import\"></span>"
 msgstr "<span id=\"uso-base-di-histogram\"></span> <span id=\"import\"></span>"
 
-#: ../../source/examples/histogram.ipynb:50005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:50005
 msgid "Il primo istogramma"
 msgstr "Your first histogram"
 
-#: ../../source/examples/histogram.ipynb:50007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:50007
 msgid ""
 "Il minimo indispensabile è un array di numeri. Qui simuliamo 40 misure con "
 "un generatore di numeri casuali a **seme fisso** (`seed=1`): eseguendo il "
@@ -221,7 +235,7 @@ msgstr ""
 " code gives you exactly the same values, and therefore the same plot. Every "
 "other parameter keeps its default value."
 
-#: ../../source/examples/histogram.ipynb:60002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:60002
 msgid ""
 "Risultato di `histogram(x)` con tutte le opzioni predefinite: 40 valori "
 "simulati."
@@ -229,22 +243,22 @@ msgstr ""
 "Output of `histogram(x)` with every option at its default: 40 simulated "
 "values."
 
-#: ../../source/examples/histogram.ipynb:70002
-#: ../../source/examples/histogram.ipynb:110002
-#: ../../source/examples/histogram.ipynb:150002
-#: ../../source/examples/histogram.ipynb:190002
-#: ../../source/examples/histogram.ipynb:250002
-#: ../../source/examples/histogram.ipynb:290002
-#: ../../source/examples/histogram.ipynb:330002
-#: ../../source/examples/histogram.ipynb:370002
-#: ../../source/examples/histogram.ipynb:410002
-#: ../../source/examples/histogram.ipynb:450002
-#: ../../source/examples/histogram.ipynb:490002
-#: ../../source/examples/histogram.ipynb:530002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:70002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:110002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:150002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:190002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:250002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:290002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:330002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:370002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:410002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:450002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:490002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:530002
 msgid "Come leggere il grafico"
 msgstr "How to read the plot"
 
-#: ../../source/examples/histogram.ipynb:70004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:70004
 msgid ""
 "**Asse orizzontale.** Riporta i valori misurati. L'etichetta predefinita è "
 "`Valore`: la funzione non conosce la grandezza né la sua unità di misura, "
@@ -254,7 +268,7 @@ msgstr ""
 "`Valore` (Italian for \"value\"): the function does not know the quantity or"
 " its unit, so you have to state them with `xlabel`."
 
-#: ../../source/examples/histogram.ipynb:70005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:70005
 msgid ""
 "**Barre.** Ogni barra copre un bin. Le tacche sull'asse $x$ non sono tacche "
 "\"tonde\": sono proprio i bordi dei bin, scritti con tre decimali "
@@ -266,7 +280,7 @@ msgstr ""
 "decimals (`decimals=3`). The bin width, about $0.27$, was chosen "
 "automatically by `bins=\"auto\"`."
 
-#: ../../source/examples/histogram.ipynb:70006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:70006
 msgid ""
 "**Asse verticale.** Con il valore predefinito `stat=\"count\"` l'altezza di "
 "una barra è il numero $n_i$ di misure nel bin: ad esempio 12 misure cadono "
@@ -278,7 +292,7 @@ msgstr ""
 "fall between $9.986$ and $10.254$. The label `Conteggi` (\"counts\") is "
 "chosen automatically from `stat`."
 
-#: ../../source/examples/histogram.ipynb:70007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:70007
 #, python-brace-format
 msgid ""
 "**Linea tratteggiata.** È la media aritmetica di tutte le 40 misure, "
@@ -287,7 +301,7 @@ msgstr ""
 "**Dashed line.** It is the arithmetic mean of all 40 measurements, $\\bar{x}"
 " = 10.001$, also reported in the legend."
 
-#: ../../source/examples/histogram.ipynb:70008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:70008
 #, python-brace-format
 msgid ""
 "**Banda verde.** Si estende da $\\bar{x} - \\sigma$ a $\\bar{x} + \\sigma$, "
@@ -298,7 +312,7 @@ msgstr ""
 "\\sigma$, with $\\sigma = 0.465$. With the default `ddof=0`, $\\sigma$ is "
 "computed by dividing by $N$, not by $N-1$."
 
-#: ../../source/examples/histogram.ipynb:70009
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:70009
 msgid ""
 "**Testi predefiniti.** Titolo `Istogramma`, etichetta dei dati `Dati` e asse"
 " `Valore` sono segnaposto in italiano: nei grafici da consegnare vanno "
@@ -308,21 +322,21 @@ msgstr ""
 "axis label `Valore` are Italian placeholders: replace them in any plot you "
 "hand in."
 
-#: ../../source/examples/histogram.ipynb:70011
-#: ../../source/examples/histogram.ipynb:110008
-#: ../../source/examples/histogram.ipynb:150012
-#: ../../source/examples/histogram.ipynb:190010
-#: ../../source/examples/histogram.ipynb:250010
-#: ../../source/examples/histogram.ipynb:290010
-#: ../../source/examples/histogram.ipynb:330008
-#: ../../source/examples/histogram.ipynb:370008
-#: ../../source/examples/histogram.ipynb:410007
-#: ../../source/examples/histogram.ipynb:450008
-#: ../../source/examples/histogram.ipynb:490010
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:70011
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:110008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:150012
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:190010
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:250010
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:290010
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:330008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:370008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:410007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:450008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:490010
 msgid "Che cosa non si può concludere"
 msgstr "What you cannot conclude"
 
-#: ../../source/examples/histogram.ipynb:70013
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:70013
 msgid ""
 "I dati sono stati generati da una gaussiana con media $10$ e deviazione "
 "standard $0.5$, ma l'istogramma non lo \"dimostra\": con 40 misure la stessa"
@@ -337,22 +351,22 @@ msgstr ""
 "value $0.5$ is also normal: it is a fluctuation due to the finite size of "
 "the sample."
 
-#: ../../source/examples/histogram.ipynb:80002
-#: ../../source/examples/histogram.ipynb:120002
-#: ../../source/examples/histogram.ipynb:160002
-#: ../../source/examples/histogram.ipynb:200002
-#: ../../source/examples/histogram.ipynb:260002
-#: ../../source/examples/histogram.ipynb:300002
-#: ../../source/examples/histogram.ipynb:340002
-#: ../../source/examples/histogram.ipynb:380002
-#: ../../source/examples/histogram.ipynb:420002
-#: ../../source/examples/histogram.ipynb:460002
-#: ../../source/examples/histogram.ipynb:500002
-#: ../../source/examples/histogram.ipynb:550002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:80002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:120002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:160002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:260002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:300002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:340002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:380002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:420002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:460002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:500002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:550002
 msgid "Da ricordare"
 msgstr "Key takeaway"
 
-#: ../../source/examples/histogram.ipynb:80005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:80005
 msgid ""
 "Basta `histogram(x)` per vedere la forma dei dati, ma i testi predefiniti "
 "sono segnaposto: un grafico scientifico ha sempre grandezza e unità "
@@ -362,11 +376,11 @@ msgstr ""
 "texts are placeholders: a scientific plot always states the quantity and its"
 " unit on the $x$ axis."
 
-#: ../../source/examples/histogram.ipynb:90003
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:90003
 msgid "Esempi guidati"
 msgstr "Guided examples"
 
-#: ../../source/examples/histogram.ipynb:90005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:90005
 msgid ""
 "Gli esempi seguono un percorso: dalla lettura di un singolo istogramma alla "
 "scelta dei bin, dalle normalizzazioni fino ai problemi tipici dei dati "
@@ -380,7 +394,7 @@ msgstr ""
 " it as it is. The simulated data always use a fixed seed, so you get the "
 "same numbers and the same plots."
 
-#: ../../source/examples/histogram.ipynb:90007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:90007
 msgid ""
 "Le stringhe dentro i grafici usano simboli e codice invece di parole, così "
 "la stessa figura vale per la versione italiana e per quella inglese di "
@@ -392,11 +406,11 @@ msgstr ""
 " The automatic $y$ axis labels, such as `Conteggi`, remain in Italian "
 "because that is what `histogram` produces."
 
-#: ../../source/examples/histogram.ipynb:90010
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:90010
 msgid "Misure ripetute del periodo di un pendolo"
 msgstr "Repeated measurements of a pendulum period"
 
-#: ../../source/examples/histogram.ipynb:90012
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:90012
 #, python-brace-format
 msgid ""
 "Un pendolo semplice lungo circa mezzo metro oscilla con un periodo di circa "
@@ -411,7 +425,7 @@ msgstr ""
 "different. We simulate this experiment with Gaussian measurements with mean "
 "$1.420\\ \\mathrm{s}$ and standard deviation $0.010\\ \\mathrm{s}$."
 
-#: ../../source/examples/histogram.ipynb:90014
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:90014
 msgid ""
 "Rispetto al primo esempio diamo un nome alla grandezza e alla sua unità, "
 "scegliamo simboli coerenti per la legenda e usiamo `ddof=1`. Con `ddof=1` la"
@@ -425,11 +439,11 @@ msgstr ""
 "the estimate normally used when the mean is computed from the same data. For"
 " consistency the band is called $\\pm s$."
 
-#: ../../source/examples/histogram.ipynb:100002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:100002
 msgid "50 misure simulate del periodo, con grandezza, unità e simboli espliciti."
 msgstr "50 simulated period measurements, with explicit quantity, unit and symbols."
 
-#: ../../source/examples/histogram.ipynb:110004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:110004
 #, python-brace-format
 msgid ""
 "La distribuzione è a campana e quasi simmetrica attorno alla media $\\bar{T}"
@@ -444,7 +458,7 @@ msgstr ""
 "the centre. The green band covers the interval $\\bar{T} \\pm s$, with $s = "
 "0.008\\ \\mathrm{s}$."
 
-#: ../../source/examples/histogram.ipynb:110006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:110006
 #, python-format
 msgid ""
 "La riga stampata sotto il grafico, calcolata con NumPy e non da `histogram`,"
@@ -457,7 +471,7 @@ msgstr ""
 "distribution you expect about 68%: with only 50 measurements, a difference "
 "of a few percentage points is perfectly normal."
 
-#: ../../source/examples/histogram.ipynb:110010
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:110010
 #, python-brace-format
 msgid ""
 "La banda **non** è l'incertezza sul periodo. La deviazione standard $s$ "
@@ -478,7 +492,7 @@ msgstr ""
 "milliseconds late, shifts every measurement together and is invisible in the"
 " histogram."
 
-#: ../../source/examples/histogram.ipynb:120005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:120005
 #, python-brace-format
 msgid ""
 "La banda $\\pm s$ descrive la dispersione delle singole misure, non "
@@ -489,15 +503,15 @@ msgstr ""
 "uncertainty of the mean: the latter is $s/\\sqrt{N}$ and must be computed "
 "separately."
 
-#: ../../source/examples/histogram.ipynb:130002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:130002
 msgid "<span id=\"personalizzazione-bins\"></span>"
 msgstr "<span id=\"personalizzazione-bins\"></span>"
 
-#: ../../source/examples/histogram.ipynb:130004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:130004
 msgid "Quanti bin?"
 msgstr "How many bins?"
 
-#: ../../source/examples/histogram.ipynb:130006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:130006
 msgid ""
 "La scelta dei bin è la decisione più importante quando costruisci un "
 "istogramma, perché cambia ciò che il grafico lascia vedere. Prendiamo 200 "
@@ -509,7 +523,7 @@ msgstr ""
 " and draw them three times, changing only `bins`: 4 bins, the default "
 "automatic rule and 60 bins."
 
-#: ../../source/examples/histogram.ipynb:130008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:130008
 msgid ""
 "Per confrontare i pannelli creiamo una figura con tre assi e passiamo "
 "ciascun asse a `histogram` con `ax=`. Attiviamo lo stile `mespy` per tutta "
@@ -523,11 +537,11 @@ msgstr ""
 "leave room for the bars, and turn off the ticks on the bin edges, which "
 "would overlap with 60 bins."
 
-#: ../../source/examples/histogram.ipynb:140002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:140002
 msgid "Gli stessi 200 valori con 4 bin, con la regola automatica e con 60 bin."
 msgstr "The same 200 values with 4 bins, with the automatic rule and with 60 bins."
 
-#: ../../source/examples/histogram.ipynb:150004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:150004
 #, python-brace-format
 msgid ""
 "**4 bin (sinistra).** I bin sono troppo larghi: ognuno raccoglie misure "
@@ -540,7 +554,7 @@ msgstr ""
 "concentrated around $1.42\\ \\mathrm{s}$; the bell shape is lost and the "
 "tallest bar is not even centred on the mean."
 
-#: ../../source/examples/histogram.ipynb:150005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:150005
 msgid ""
 "**`\"auto\"` (centro).** NumPy ha scelto 13 bin, il numero stampato sotto il"
 " grafico. La forma a campana è chiara e le irregolarità tra bin vicini sono "
@@ -550,7 +564,7 @@ msgstr ""
 "plot. The bell shape is clear and the irregularities between neighbouring "
 "bins are small compared with the bar heights."
 
-#: ../../source/examples/histogram.ipynb:150006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:150006
 msgid ""
 "**60 bin (destra).** I bin sono così stretti che ognuno contiene poche "
 "misure. L'altezza delle barre salta da un bin all'altro e compaiono bin "
@@ -560,7 +574,7 @@ msgstr ""
 "measurements. The bar height jumps from one bin to the next and empty bins "
 "appear: this is statistical noise, not physical structure in the data."
 
-#: ../../source/examples/histogram.ipynb:150008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:150008
 msgid ""
 "Anche l'asse verticale cambia. Con `stat=\"count\"` l'altezza dipende dalla "
 "larghezza dei bin: un bin largo raccoglie più misure, quindi i conteggi "
@@ -574,7 +588,7 @@ msgstr ""
 " need the normalisations of the example [Counts, relative frequencies and "
 "densities](#hist-ex-stat)."
 
-#: ../../source/examples/histogram.ipynb:150010
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:150010
 msgid ""
 "La regola `\"auto\"` di NumPy sceglie la larghezza dei bin a partire dal "
 "numero di dati e dalla loro dispersione, prendendo il risultato migliore tra"
@@ -590,7 +604,7 @@ msgstr ""
 "by `numpy.histogram_bin_edges`, such as `\"fd\"`, `\"sturges\"` or "
 "`\"sqrt\"`."
 
-#: ../../source/examples/histogram.ipynb:150014
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:150014
 msgid ""
 "Nessuno dei tre pannelli è \"quello vero\". Picchi o buchi che compaiono "
 "solo con una certa scelta dei bin non vanno interpretati come proprietà "
@@ -600,7 +614,7 @@ msgstr ""
 " with a particular choice of bins should not be read as physical properties "
 "until they survive different reasonable choices."
 
-#: ../../source/examples/histogram.ipynb:160005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:160005
 msgid ""
 "Troppi pochi bin nascondono la forma, troppi la riempiono di rumore. Prova "
 "sempre più di una scelta prima di trarre conclusioni."
@@ -608,11 +622,11 @@ msgstr ""
 "Too few bins hide the shape, too many fill it with noise. Always try more "
 "than one choice before drawing conclusions."
 
-#: ../../source/examples/histogram.ipynb:170003
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:170003
 msgid "Larghezza e bordi dei bin"
 msgstr "Bin width and bin edges"
 
-#: ../../source/examples/histogram.ipynb:170005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:170005
 msgid ""
 "Spesso è più naturale scegliere la **larghezza** dei bin invece del loro "
 "numero, ad esempio un multiplo della risoluzione dello strumento o un valore"
@@ -624,7 +638,7 @@ msgstr ""
 " value. With `bin_width` the function builds the edges by itself, aligning "
 "them to integer multiples of the chosen width."
 
-#: ../../source/examples/histogram.ipynb:170007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:170007
 #, python-brace-format
 msgid ""
 "Qui usiamo bin larghi $5\\ \\mathrm{ms}$ sulle stesse 200 misure. Lasciamo "
@@ -639,11 +653,11 @@ msgstr ""
 " we print the minimum and maximum of the data and the edges that were used: "
 "since the ticks coincide with the edges, `ax.get_xticks()` returns them."
 
-#: ../../source/examples/histogram.ipynb:180002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:180002
 msgid "Bin larghi 0.005 s: i bordi sono multipli interi della larghezza."
 msgstr "Bins 0.005 s wide: the edges are integer multiples of the width."
 
-#: ../../source/examples/histogram.ipynb:190004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:190004
 #, python-brace-format
 msgid ""
 "I dati vanno da $1.3987$ a $1.4491\\ \\mathrm{s}$. La funzione ha "
@@ -658,7 +672,7 @@ msgstr ""
 "11 bins. The rotated ticks are exactly these edges, so you can read from the"
 " plot the interval covered by each bar."
 
-#: ../../source/examples/histogram.ipynb:190006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:190006
 #, python-brace-format
 msgid ""
 "Con bordi tondi l'istogramma è più facile da descrivere a parole: \"47 "
@@ -670,7 +684,7 @@ msgstr ""
 "its left edge and excludes its right edge, except the last one, which "
 "includes both."
 
-#: ../../source/examples/histogram.ipynb:190008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:190008
 msgid ""
 "Quando ti serve il pieno controllo, ad esempio per usare gli stessi bin in "
 "più grafici o per calcolare i conteggi con NumPy, passa direttamente l'array"
@@ -682,7 +696,7 @@ msgstr ""
 " `bins=np.linspace(1.395, 1.445, 11)` creates 10 bins $0.005$ wide between "
 "$1.395$ and $1.445$. This is what the next examples do."
 
-#: ../../source/examples/histogram.ipynb:190012
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:190012
 msgid ""
 "Una larghezza tonda non è automaticamente una larghezza adatta. Se è più "
 "piccola della risoluzione dello strumento, compaiono bin vuoti alternati a "
@@ -693,7 +707,7 @@ msgstr ""
 "the instrument resolution, empty bins alternate with full ones; the example "
 "[Real data with finite resolution](#hist-ex-real-data) shows what happens."
 
-#: ../../source/examples/histogram.ipynb:200005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200005
 msgid ""
 "`bin_width` dà bordi tondi e facili da leggere; un array esplicito di bordi "
 "dà il controllo completo ed è riutilizzabile in altri calcoli."
@@ -701,11 +715,11 @@ msgstr ""
 "`bin_width` gives round, easy-to-read edges; an explicit array of edges "
 "gives full control and can be reused in other computations."
 
-#: ../../source/examples/histogram.ipynb:210003
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:210003
 msgid "Conteggi, frequenze relative e densità"
 msgstr "Counts, relative frequencies and densities"
 
-#: ../../source/examples/histogram.ipynb:210005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:210005
 msgid ""
 "Il parametro `stat` decide che cosa rappresenta l'altezza di una barra. "
 "Chiamiamo $n_i$ il numero di osservazioni nel bin $i$, $\\Delta x_i$ la sua "
@@ -715,71 +729,71 @@ msgstr ""
 "be the number of observations in bin $i$, $\\Delta x_i$ its width and $N = "
 "\\sum_i n_i$ the number of observations inside the bins:"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "`stat`"
 msgstr "`stat`"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "Altezza $h_i$"
 msgstr "Height $h_i$"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "Unità"
 msgstr "Unit"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "Somma che vale 1"
 msgstr "Sum equal to 1"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "`\"count\"`"
 msgstr "`\"count\"`"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "$n_i$"
 msgstr "$n_i$"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "nessuna, è un numero di misure"
 msgstr "none, it is a number of measurements"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "nessuna: $\\sum_i h_i = N$"
 msgstr "none: $\\sum_i h_i = N$"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "`\"probability\"`"
 msgstr "`\"probability\"`"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "$n_i / N$"
 msgstr "$n_i / N$"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "adimensionale"
 msgstr "dimensionless"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "$\\sum_i h_i = 1$"
 msgstr "$\\sum_i h_i = 1$"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "`\"density\"`"
 msgstr "`\"density\"`"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "$n_i / (N\\,\\Delta x_i)$"
 msgstr "$n_i / (N\\,\\Delta x_i)$"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "inverso dell'unità di $x$"
 msgstr "inverse of the unit of $x$"
 
-#: ../../source/examples/histogram.ipynb:200002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:200002
 msgid "$\\sum_i h_i\\,\\Delta x_i = 1$"
 msgstr "$\\sum_i h_i\\,\\Delta x_i = 1$"
 
-#: ../../source/examples/histogram.ipynb:210013
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:210013
 msgid ""
 "Nella densità conta l'**area** delle barre: $h_i\\,\\Delta x_i = n_i/N$ è la"
 " frazione di misure nel bin $i$. Disegniamo le tre rappresentazioni con gli "
@@ -791,7 +805,7 @@ msgstr ""
 "representations with the same edges and write the formula of each one as the"
 " $y$ axis label."
 
-#: ../../source/examples/histogram.ipynb:220002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:220002
 msgid ""
 "Gli stessi dati e gli stessi bordi con `stat=\"count\"`, `\"probability\"` e"
 " `\"density\"`."
@@ -799,7 +813,7 @@ msgstr ""
 "The same data and the same edges with `stat=\"count\"`, `\"probability\"` "
 "and `\"density\"`."
 
-#: ../../source/examples/histogram.ipynb:230002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:230002
 msgid ""
 "La forma delle tre figure è identica: cambia solo la scala verticale. "
 "`histogram` non restituisce le altezze delle barre, ma possiamo ricalcolarle"
@@ -813,7 +827,7 @@ msgstr ""
 " the table. This cell continues the previous one and uses its variables `T` "
 "and `edges`."
 
-#: ../../source/examples/histogram.ipynb:250004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:250004
 msgid ""
 "**Sinistra, conteggi.** La barra più alta contiene 47 misure. È la "
 "rappresentazione più diretta, ma dipende sia dal numero di misure sia dalla "
@@ -823,7 +837,7 @@ msgstr ""
 "direct representation, but it depends both on the number of measurements and"
 " on the bin width."
 
-#: ../../source/examples/histogram.ipynb:250005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:250005
 #, python-format
 msgid ""
 "**Centro, frequenze relative.** La stessa barra vale circa $0.24$: contiene "
@@ -834,7 +848,7 @@ msgstr ""
 " of the measurements inside the bins. The heights are pure numbers and, as "
 "the second printed line confirms, they sum to 1."
 
-#: ../../source/examples/histogram.ipynb:250006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:250006
 msgid ""
 "**Destra, densità.** La barra più alta vale circa $47\\ \\mathrm{s^{-1}}$: è"
 " una densità per unità di periodo e può superare 1 senza alcun problema. "
@@ -846,7 +860,7 @@ msgstr ""
 "Multiplied by the width $0.005\\ \\mathrm{s}$ it gives $0.24$ again. The "
 "third printed line confirms that the total area is 1."
 
-#: ../../source/examples/histogram.ipynb:250008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:250008
 #, python-brace-format
 msgid ""
 "La prima riga stampata contiene un dettaglio importante: le misure sono 200,"
@@ -859,7 +873,7 @@ msgstr ""
 "\\mathrm{s}$, lies beyond the last edge, $1.445$. The normalisations divide "
 "by $N = 199$, while the mean line uses all 200 measurements."
 
-#: ../../source/examples/histogram.ipynb:250012
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:250012
 msgid ""
 "Una densità di $47\\ \\mathrm{s^{-1}}$ non è una probabilità, e la densità "
 "dell'istogramma non coincide con la densità di probabilità della "
@@ -871,7 +885,7 @@ msgstr ""
 "the data come from: it is an estimate of it, subject to statistical "
 "fluctuations and to the choice of bins."
 
-#: ../../source/examples/histogram.ipynb:260005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:260005
 msgid ""
 "Conteggi per descrivere il campione, frequenze relative per confrontare "
 "campioni di dimensione diversa, densità quando i bin hanno larghezze "
@@ -880,11 +894,11 @@ msgstr ""
 "Use counts to describe the sample, relative frequencies to compare samples "
 "of different size, densities when the bins have different widths."
 
-#: ../../source/examples/histogram.ipynb:270003
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:270003
 msgid "Bin di larghezza diversa"
 msgstr "Bins of different widths"
 
-#: ../../source/examples/histogram.ipynb:270005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:270005
 #, python-brace-format
 msgid ""
 "Un contatore Geiger registra eventi casuali, e il tempo $t$ che passa tra un"
@@ -897,7 +911,7 @@ msgstr ""
 "most frequent, long ones become rarer and rarer. We simulate 500 intervals "
 "with a mean time of $40\\ \\mathrm{ms}$."
 
-#: ../../source/examples/histogram.ipynb:270007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:270007
 #, python-brace-format
 msgid ""
 "Poiché la coda della distribuzione è lunga e povera di dati, è ragionevole "
@@ -910,7 +924,7 @@ msgstr ""
 " tail. We choose edges whose width doubles: $0, 20, 40, 80, 160, 320\\ "
 "\\mathrm{ms}$. We draw the same data as counts and as densities."
 
-#: ../../source/examples/histogram.ipynb:280002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:280002
 msgid ""
 "Tempi tra eventi successivi con bin la cui larghezza raddoppia: conteggi e "
 "densità."
@@ -918,7 +932,7 @@ msgstr ""
 "Times between successive events with bins whose width doubles: counts and "
 "densities."
 
-#: ../../source/examples/histogram.ipynb:290004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:290004
 #, python-brace-format
 msgid ""
 "A sinistra, in conteggi, i bin larghi sembrano importanti quanto quelli "
@@ -938,7 +952,7 @@ msgstr ""
 "distribution stays almost constant between 20 and $80\\ \\mathrm{ms}$, which"
 " is false."
 
-#: ../../source/examples/histogram.ipynb:290006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:290006
 #, python-brace-format
 msgid ""
 "A destra, in densità, ogni conteggio è diviso per la larghezza del proprio "
@@ -954,7 +968,7 @@ msgstr ""
 "time*, regardless of how you chose the bins. The last bin, between 160 and "
 "$320\\ \\mathrm{ms}$, has a density so low that it is barely visible."
 
-#: ../../source/examples/histogram.ipynb:290008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:290008
 #, python-brace-format
 msgid ""
 "La linea della media è a circa $40\\ \\mathrm{ms}$, vicina al tempo medio "
@@ -965,7 +979,7 @@ msgstr ""
 "in the simulation. In a skewed distribution like this one the mean does not "
 "coincide with the most frequent value, which is close to zero."
 
-#: ../../source/examples/histogram.ipynb:290012
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:290012
 msgid ""
 "Con bin di larghezza diversa l'altezza in conteggi o in frequenza relativa "
 "non è confrontabile da un bin all'altro. Anche in densità, i bin larghi "
@@ -977,7 +991,7 @@ msgstr ""
 " in the tail contain few measurements and their height has a large relative "
 "uncertainty."
 
-#: ../../source/examples/histogram.ipynb:300005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:300005
 msgid ""
 "Con bin di larghezza diversa usa sempre `stat=\"density\"`: è l'area delle "
 "barre, non l'altezza, a rappresentare la frazione di misure."
@@ -985,11 +999,11 @@ msgstr ""
 "With bins of different widths always use `stat=\"density\"`: it is the area "
 "of the bars, not their height, that represents the fraction of measurements."
 
-#: ../../source/examples/histogram.ipynb:310003
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:310003
 msgid "Distribuzioni diverse, stessa banda"
 msgstr "Different distributions, same band"
 
-#: ../../source/examples/histogram.ipynb:310005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:310005
 #, python-brace-format
 msgid ""
 "La banda $\\bar{x} \\pm s$ ha sempre lo stesso aspetto, ma il suo "
@@ -999,7 +1013,7 @@ msgstr ""
 "The $\\bar{x} \\pm s$ band always looks the same, but its meaning depends on"
 " the shape of the distribution. We compare three samples of 2000 values:"
 
-#: ../../source/examples/histogram.ipynb:310007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:310007
 msgid ""
 "una **distribuzione uniforme** tra $-0.5$ e $0.5$, come l'errore di "
 "arrotondamento di uno strumento digitale espresso in unità della sua "
@@ -1008,7 +1022,7 @@ msgstr ""
 "a **uniform distribution** between $-0.5$ and $0.5$, like the rounding error"
 " of a digital instrument expressed in units of its resolution;"
 
-#: ../../source/examples/histogram.ipynb:310008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:310008
 msgid ""
 "una **distribuzione gaussiana** standard, tipica degli errori casuali che "
 "sono la somma di molti piccoli contributi;"
@@ -1016,7 +1030,7 @@ msgstr ""
 "a standard **Gaussian distribution**, typical of random errors that are the "
 "sum of many small contributions;"
 
-#: ../../source/examples/histogram.ipynb:310009
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:310009
 msgid ""
 "una **distribuzione esponenziale** con media 1, come i tempi di attesa "
 "dell'esempio precedente."
@@ -1024,7 +1038,7 @@ msgstr ""
 "an **exponential distribution** with mean 1, like the waiting times of the "
 "previous example."
 
-#: ../../source/examples/histogram.ipynb:310011
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:310011
 msgid ""
 "Usiamo `stat=\"density\"` per confrontare le forme e calcoliamo con NumPy la"
 " frazione di valori che cade dentro la banda."
@@ -1032,13 +1046,13 @@ msgstr ""
 "We use `stat=\"density\"` to compare the shapes and compute with NumPy the "
 "fraction of values that falls inside the band."
 
-#: ../../source/examples/histogram.ipynb:320002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:320002
 msgid ""
 "Tre campioni da distribuzioni diverse, ciascuno con la propria media e la "
 "propria banda."
 msgstr "Three samples from different distributions, each with its own mean and band."
 
-#: ../../source/examples/histogram.ipynb:330004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:330004
 #, python-brace-format, python-format
 msgid ""
 "**Uniforme.** Le barre formano un altopiano irregolare attorno a 1, il "
@@ -1050,7 +1064,7 @@ msgstr ""
 "a uniform distribution the theoretical value is $1/\\sqrt{3} \\approx "
 "57.7\\%$."
 
-#: ../../source/examples/histogram.ipynb:330005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:330005
 #, python-format
 msgid ""
 "**Gaussiana.** La banda copre il 68.2% dei valori, in accordo con il 68.3% "
@@ -1059,7 +1073,7 @@ msgstr ""
 "**Gaussian.** The band covers 68.2% of the values, in agreement with the "
 "theoretical 68.3%."
 
-#: ../../source/examples/histogram.ipynb:330006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:330006
 #, python-brace-format, python-format
 msgid ""
 "**Esponenziale.** La distribuzione è fortemente asimmetrica e la banda copre"
@@ -1072,7 +1086,7 @@ msgstr ""
 "band also extends to the left of zero, where there are no data: waiting "
 "times cannot be negative."
 
-#: ../../source/examples/histogram.ipynb:330010
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:330010
 #, python-brace-format, python-format
 msgid ""
 "La regola \"il 68% dei dati cade entro una deviazione standard\" vale per la"
@@ -1087,7 +1101,7 @@ msgstr ""
 "$\\bar{x}$ and $s$ can have completely different shapes: this is why the "
 "histogram remains indispensable."
 
-#: ../../source/examples/histogram.ipynb:340005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:340005
 msgid ""
 "La banda $\\pm s$ ha un significato probabilistico preciso solo se conosci "
 "la forma della distribuzione. Guarda sempre l'istogramma prima di "
@@ -1097,11 +1111,11 @@ msgstr ""
 "shape of the distribution. Always look at the histogram before interpreting "
 "it."
 
-#: ../../source/examples/histogram.ipynb:350003
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:350003
 msgid "Quante misure servono?"
 msgstr "How many measurements do you need?"
 
-#: ../../source/examples/histogram.ipynb:350005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:350005
 msgid ""
 "Un istogramma costruito da poche misure può avere un aspetto molto diverso "
 "dalla distribuzione da cui provengono. Estraiamo tre campioni, di 20, 200 e "
@@ -1117,13 +1131,13 @@ msgstr ""
 "the number of measurements changes, and fix the same vertical range with "
 "`ylim`."
 
-#: ../../source/examples/histogram.ipynb:360002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:360002
 msgid "Tre campioni della stessa gaussiana con 20, 200 e 5000 misure, in densità."
 msgstr ""
 "Three samples of the same Gaussian with 20, 200 and 5000 measurements, as "
 "densities."
 
-#: ../../source/examples/histogram.ipynb:370004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:370004
 msgid ""
 "Con 20 misure (sinistra) l'istogramma è irregolare: un bin isolato, un buco,"
 " due picchi separati. Nessuno di questi dettagli è una proprietà del "
@@ -1141,22 +1155,30 @@ msgstr ""
 "and the maximum approaches the theoretical value $1/(\\sigma\\sqrt{2\\pi}) "
 "\\approx 40\\ \\mathrm{s^{-1}}$."
 
-#: ../../source/examples/histogram.ipynb:370006
-#, python-brace-format
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:370006
+#, python-brace-format, python-format
 msgid ""
-"Il motivo è statistico. Il numero di misure in un bin fluttua da un campione"
-" all'altro; se le misure sono indipendenti, la fluttuazione tipica di un "
-"conteggio $n_i$ è circa $\\sqrt{n_i}$, quindi l'incertezza relativa è circa "
-"$1/\\sqrt{n_i}$. Con 2 misure in un bin l'incertezza relativa è di circa il "
-"70%; con 900 misure è di circa il 3%."
+"Il motivo è statistico. Con un numero totale $N$ fissato di osservazioni "
+"indipendenti dalla stessa distribuzione e bin fissati, i conteggi seguono "
+"una distribuzione multinomiale. Se $p_i$ è la probabilità di cadere nel bin "
+"$i$, la deviazione standard del conteggio è $\\sqrt{N p_i(1-p_i)}$. Quando "
+"$p_i$ è piccolo, l’approssimazione di Poisson dà una stima $\\sqrt{n_i}$ e "
+"un’incertezza relativa circa $1/\\sqrt{n_i}$: circa il 70% con 2 conteggi e "
+"il 3% con 900. Questa approssimazione non vale in generale per bin molto "
+"popolati; inoltre, i conteggi dei diversi bin sono correlati perché la loro "
+"somma è fissata."
 msgstr ""
-"The reason is statistical. The number of measurements in a bin fluctuates "
-"from one sample to another; if the measurements are independent, the typical"
-" fluctuation of a count $n_i$ is about $\\sqrt{n_i}$, so the relative "
-"uncertainty is about $1/\\sqrt{n_i}$. With 2 measurements in a bin the "
-"relative uncertainty is about 70%; with 900 measurements it is about 3%."
+"The reason is statistical. With a fixed total $N$ of independent "
+"observations from the same distribution and fixed bins, counts follow a "
+"multinomial distribution. If $p_i$ is the probability of falling in bin $i$,"
+" the count standard deviation is $\\sqrt{N p_i(1-p_i)}$. When $p_i$ is "
+"small, the Poisson approximation gives an estimate $\\sqrt{n_i}$ and a "
+"relative uncertainty of about $1/\\sqrt{n_i}$: about 70% with 2 counts and "
+"3% with 900. This approximation does not hold in general for heavily "
+"populated bins; counts in different bins are also correlated because their "
+"sum is fixed."
 
-#: ../../source/examples/histogram.ipynb:370010
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:370010
 msgid ""
 "La forma di un istogramma non determina in modo univoco la distribuzione da "
 "cui provengono i dati, soprattutto con pochi dati. Con 20 misure non si può "
@@ -1168,20 +1190,24 @@ msgstr ""
 "tell a Gaussian from a two-peaked distribution; even with many data, "
 "different distributions can produce very similar histograms."
 
-#: ../../source/examples/histogram.ipynb:380005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:380005
 #, python-brace-format
 msgid ""
-"Ogni barra ha un'incertezza statistica di circa $\\sqrt{n_i}$ conteggi. Con "
-"pochi dati, interpreta solo le caratteristiche più marcate dell'istogramma."
+"Per bin con piccola probabilità, $\\sqrt{n_i}$ è una stima approssimata "
+"della deviazione standard del conteggio. Con $N$ fissato, la formula "
+"generale è $\\sqrt{N p_i(1-p_i)}$. Con pochi dati, interpreta solo le "
+"caratteristiche più marcate dell’istogramma."
 msgstr ""
-"Each bar has a statistical uncertainty of about $\\sqrt{n_i}$ counts. With "
-"few data, only interpret the most pronounced features of the histogram."
+"For bins with small probability, $\\sqrt{n_i}$ is an approximate estimate of"
+" the count standard deviation. With fixed $N$, the general formula is "
+"$\\sqrt{N p_i(1-p_i)}$. With little data, interpret only the most prominent "
+"histogram features."
 
-#: ../../source/examples/histogram.ipynb:390003
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:390003
 msgid "Dati discreti: conteggi di un rivelatore"
 msgstr "Discrete data: detector counts"
 
-#: ../../source/examples/histogram.ipynb:390005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:390005
 msgid ""
 "Non tutte le grandezze sono continue. Se conti gli eventi registrati da un "
 "rivelatore in intervalli di 10 secondi, ottieni numeri interi $k = 0, 1, 2, "
@@ -1193,7 +1219,7 @@ msgstr ""
 "which for a stable source follow a Poisson distribution. We simulate 300 "
 "intervals with a mean of 3.2 events."
 
-#: ../../source/examples/histogram.ipynb:390007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:390007
 msgid ""
 "Per dati interi la scelta dei bordi è delicata. Confrontiamo la regola "
 "automatica con bordi posti a metà tra un intero e il successivo, $k \\pm "
@@ -1207,13 +1233,13 @@ msgstr ""
 "`stat=\"probability\"`: the height of each bar is the fraction of intervals "
 "with that number of events."
 
-#: ../../source/examples/histogram.ipynb:400002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:400002
 msgid "Conteggi interi con la regola automatica e con bordi a metà tra gli interi."
 msgstr ""
 "Integer counts with the automatic rule and with edges halfway between "
 "integers."
 
-#: ../../source/examples/histogram.ipynb:410004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:410004
 msgid ""
 "**Regola automatica (sinistra).** `histogram` converte i dati in numeri "
 "decimali e la regola `\"auto\"` sceglie 16 bin larghi circa $0.56$, più "
@@ -1229,7 +1255,7 @@ msgstr ""
 "of the source. Moreover, the bars are not centred on the integers and their "
 "width has no meaning for counted data."
 
-#: ../../source/examples/histogram.ipynb:410005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:410005
 msgid ""
 "**Bordi a $k \\pm 0.5$ (destra).** Ogni barra è centrata su un intero e "
 "contiene solo quel valore. Le tacche a $-0.5, 0.5, 1.5, \\dots$ mostrano i "
@@ -1243,7 +1269,7 @@ msgstr ""
 "close to 3, and the heights match the frequencies printed below the plot: "
 "for example 63 intervals out of 300, that is 0.21, with $k = 3$."
 
-#: ../../source/examples/histogram.ipynb:410009
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:410009
 msgid ""
 "La barra a $k = 9$ è più alta di quella a $k = 8$, ma sono rispettivamente 2"
 " e 1 intervalli: con conteggi così piccoli la differenza è puro rumore "
@@ -1253,7 +1279,7 @@ msgstr ""
 " 2 and 1 intervals respectively: with such small counts the difference is "
 "pure statistical noise, not a property of the source."
 
-#: ../../source/examples/histogram.ipynb:420005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:420005
 msgid ""
 "Per dati interi usa bordi a metà tra gli interi, ad esempio `np.arange(-0.5,"
 " k.max() + 1.5, 1.0)`: ogni barra rappresenta un solo valore possibile."
@@ -1262,11 +1288,11 @@ msgstr ""
 "`np.arange(-0.5, k.max() + 1.5, 1.0)`: each bar then represents a single "
 "possible value."
 
-#: ../../source/examples/histogram.ipynb:430003
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:430003
 msgid "Dati reali con risoluzione finita"
 msgstr "Real data with finite resolution"
 
-#: ../../source/examples/histogram.ipynb:430005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:430005
 #, python-brace-format
 msgid ""
 "Il file [`test_misure.csv`](data/test_misure.csv), incluso nella "
@@ -1281,7 +1307,7 @@ msgstr ""
 "We load it with MesPy's `load_csv`; to run the code, download the file and "
 "put it in a `data` folder next to your notebook or script."
 
-#: ../../source/examples/histogram.ipynb:430007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:430007
 #, python-brace-format
 msgid ""
 "La risoluzione ha una conseguenza importante: i valori possibili non sono "
@@ -1296,11 +1322,11 @@ msgstr ""
 "\\mathrm{mm}$. We compare three choices of bins: the automatic rule, "
 "`bin_width=0.05` and explicit edges halfway between two possible values."
 
-#: ../../source/examples/histogram.ipynb:440002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:440002
 msgid "Le stesse 20 lunghezze quantizzate con tre scelte di bin diverse."
 msgstr "The same 20 quantised lengths with three different choices of bins."
 
-#: ../../source/examples/histogram.ipynb:450004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:450004
 #, python-brace-format
 msgid ""
 "**`bins=\"auto\"` (sinistra).** La regola automatica sceglie 6 bin larghi "
@@ -1315,28 +1341,30 @@ msgstr ""
 "in the middle of the distribution looks like a real phenomenon, but it is "
 "only an artefact of the bins."
 
-#: ../../source/examples/histogram.ipynb:450005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:450005
 #, python-brace-format
 msgid ""
 "**`bin_width=0.05` (centro).** I bordi sono multipli di $0.05$, quindi "
-"coincidono con i valori misurati. Calcolati in virgola mobile, risultano "
-"leggermente più grandi dei valori tondi: ad esempio $25.200000000000003$ "
-"invece di $25.2$. Ogni misura finisce così nel bin *a sinistra* del proprio "
-"valore: le 6 misure da $25.30\\ \\mathrm{mm}$ formano la barra tra $25.25$ e"
-" $25.30$, e l'ultimo bin resta vuoto. La linea della media, a $25.2975\\ "
-"\\mathrm{mm}$, cade proprio su un bordo invece che al centro della barra più"
-" alta."
+"coincidono con i valori misurati. Calcolati in virgola mobile, alcuni bordi "
+"sono esattamente i valori tondi, altri risultano leggermente più grandi: ad "
+"esempio $25.200000000000003$ invece di $25.2$. Le misure da $25.25$, $25.30$"
+" e $25.35\\ \\mathrm{mm}$ finiscono nel bin che inizia dal proprio valore, "
+"quelle da $25.20$ e $25.40\\ \\mathrm{mm}$ nel bin *a sinistra*. Il "
+"risultato è un bin vuoto tra $25.20$ e $25.25$ e un'ultima barra, la più "
+"alta, che somma le 5 misure da $25.35$ e le 2 da $25.40\\ \\mathrm{mm}$: "
+"nessuna delle due caratteristiche esiste nei dati."
 msgstr ""
 "**`bin_width=0.05` (centre).** The edges are multiples of $0.05$, so they "
-"coincide with the measured values. Computed in floating point, they turn out"
-" slightly larger than the round values: for example $25.200000000000003$ "
-"instead of $25.2$. Each measurement therefore ends up in the bin *to the "
-"left* of its own value: the 6 measurements of $25.30\\ \\mathrm{mm}$ form "
-"the bar between $25.25$ and $25.30$, and the last bin stays empty. The mean "
-"line, at $25.2975\\ \\mathrm{mm}$, falls exactly on an edge instead of in "
-"the middle of the tallest bar."
+"coincide with the measured values. Computed in floating point, some edges "
+"are exactly the round values while others come out slightly larger: for "
+"example $25.200000000000003$ instead of $25.2$. The measurements of $25.25$,"
+" $25.30$ and $25.35\\ \\mathrm{mm}$ end up in the bin that starts at their "
+"own value, those of $25.20$ and $25.40\\ \\mathrm{mm}$ in the bin *to the "
+"left*. The result is an empty bin between $25.20$ and $25.25$ and a last "
+"bar, the tallest, that adds up the 5 measurements of $25.35$ and the 2 of "
+"$25.40\\ \\mathrm{mm}$: neither feature exists in the data."
 
-#: ../../source/examples/histogram.ipynb:450006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:450006
 msgid ""
 "**Bordi a metà (destra).** Con `bins=np.arange(25.175, 25.45, 0.05)` ogni "
 "bin è centrato su un valore possibile: 3, 4, 6, 5 e 2 misure, come nella "
@@ -1347,7 +1375,7 @@ msgstr ""
 " first printed line. It is the only one of the three representations that is"
 " faithful to the data."
 
-#: ../../source/examples/histogram.ipynb:450010
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:450010
 msgid ""
 "Con 20 misure e soli cinque valori distinti, l'istogramma non permette di "
 "giudicare la forma della distribuzione: è compatibile con una gaussiana, ma "
@@ -1363,7 +1391,7 @@ msgstr ""
 "describes not only the variability of the measured object but also the "
 "discretisation of the instrument."
 
-#: ../../source/examples/histogram.ipynb:460005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:460005
 msgid ""
 "Con dati quantizzati scegli bin larghi quanto la risoluzione, o un suo "
 "multiplo, e con i bordi a metà tra due valori possibili: mai bordi che "
@@ -1373,30 +1401,30 @@ msgstr ""
 "it, with edges halfway between two possible values: never edges that "
 "coincide with the measured values."
 
-#: ../../source/examples/histogram.ipynb:470003
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:470003
 msgid "Un dato anomalo: escludere dal grafico non esclude dalla statistica"
 msgstr ""
 "An outlier: leaving it out of the plot does not leave it out of the "
 "statistics"
 
-#: ../../source/examples/histogram.ipynb:470005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:470005
 #, python-brace-format
 msgid ""
-"Durante una serie di 30 misure del periodo, una volta il cronometro viene "
+"Durante una serie di 31 misure del periodo, una volta il cronometro viene "
 "fermato in ritardo e il quaderno di laboratorio riporta il problema: la "
 "misura registrata è $1.520\\ \\mathrm{s}$, lontana da tutte le altre. "
 "Vediamo tre modi di disegnare questi dati:"
 msgstr ""
-"During a series of 30 period measurements, once the stopwatch is stopped "
+"During a series of 31 period measurements, once the stopwatch is stopped "
 "late and the lab notebook records the problem: the recorded measurement is "
 "$1.520\\ \\mathrm{s}$, far from all the others. Let us look at three ways of"
 " plotting these data:"
 
-#: ../../source/examples/histogram.ipynb:470007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:470007
 msgid "tutte le misure, senza accorgimenti;"
 msgstr "all the measurements, with no precautions;"
 
-#: ../../source/examples/histogram.ipynb:470008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:470008
 msgid ""
 "tutte le misure, limitando i bin all'intervallo plausibile con "
 "`hist_range=(1.39, 1.45)`;"
@@ -1404,13 +1432,13 @@ msgstr ""
 "all the measurements, restricting the bins to the plausible interval with "
 "`hist_range=(1.39, 1.45)`;"
 
-#: ../../source/examples/histogram.ipynb:470009
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:470009
 msgid "le misure senza il dato anomalo, che è l'ultimo dell'array, quindi `T[:-1]`."
 msgstr ""
 "the measurements without the outlier, which is the last element of the "
 "array, hence `T[:-1]`."
 
-#: ../../source/examples/histogram.ipynb:470011
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:470011
 msgid ""
 "Questa volta lasciamo la legenda, perché i valori numerici di media e banda "
 "sono il punto dell'esempio."
@@ -1418,7 +1446,7 @@ msgstr ""
 "This time we keep the legend, because the numerical values of the mean and "
 "the band are the point of the example."
 
-#: ../../source/examples/histogram.ipynb:480002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:480002
 msgid ""
 "Un dato anomalo con tutti i dati, con `hist_range` e dopo averlo rimosso dal"
 " campione."
@@ -1426,7 +1454,7 @@ msgstr ""
 "An outlier with all the data, with `hist_range` and after removing it from "
 "the sample."
 
-#: ../../source/examples/histogram.ipynb:490004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:490004
 #, python-brace-format
 msgid ""
 "**Tutte le misure (sinistra).** Il dato anomalo allarga l'intervallo dei "
@@ -1441,7 +1469,7 @@ msgstr ""
 "clearly visible: this is exactly how a histogram helps you discover gross "
 "errors."
 
-#: ../../source/examples/histogram.ipynb:490005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:490005
 #, python-brace-format
 msgid ""
 "**Con `hist_range` (centro).** Le barre sembrano pulite, perché il dato "
@@ -1458,7 +1486,7 @@ msgstr ""
 "distribution. The mean and $\\sigma$ are computed on the whole sample, "
 "outlier included."
 
-#: ../../source/examples/histogram.ipynb:490006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:490006
 #, python-brace-format
 msgid ""
 "**Dato rimosso (destra).** Senza la misura anomala la media scende a "
@@ -1469,7 +1497,7 @@ msgstr ""
 "drops to $1.419\\ \\mathrm{s}$ and $\\sigma$ halves to $0.010\\ "
 "\\mathrm{s}$: now the band and the bars tell the same story."
 
-#: ../../source/examples/histogram.ipynb:490008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:490008
 msgid ""
 "Lo stesso vale per `xlim`: restringere l'asse $x$ nasconde il dato anomalo "
 "alla vista, ma non cambia né i bin né la statistica."
@@ -1477,7 +1505,7 @@ msgstr ""
 "The same holds for `xlim`: restricting the $x$ axis hides the outlier from "
 "view, but changes neither the bins nor the statistics."
 
-#: ../../source/examples/histogram.ipynb:490012
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:490012
 msgid ""
 "Un valore non si scarta perché è scomodo o lontano dagli altri. Qui la "
 "rimozione è giustificata da un problema documentato durante la misura; senza"
@@ -1489,7 +1517,7 @@ msgstr ""
 "measurement; without a known cause, discarding data biases the result and "
 "must at least be stated and justified in the report."
 
-#: ../../source/examples/histogram.ipynb:500005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:500005
 msgid ""
 "`hist_range` e `xlim` cambiano ciò che vedi, non ciò che calcoli. Per "
 "escludere un dato dalla statistica, rimuovilo dal campione, e solo con una "
@@ -1499,7 +1527,7 @@ msgstr ""
 "exclude a value from the statistics, remove it from the sample, and only for"
 " a good reason."
 
-#: ../../source/examples/histogram.ipynb:510002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:510002
 msgid ""
 "<span id=\"personalizzazione-labels-e-legenda\"></span> <span id"
 "=\"confronto-su-due-assi\"></span>"
@@ -1507,11 +1535,11 @@ msgstr ""
 "<span id=\"personalizzazione-labels-e-legenda\"></span> <span id"
 "=\"confronto-su-due-assi\"></span>"
 
-#: ../../source/examples/histogram.ipynb:510005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:510005
 msgid "Aspetto, composizione e salvataggio"
 msgstr "Appearance, composition and saving"
 
-#: ../../source/examples/histogram.ipynb:510007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:510007
 msgid ""
 "Per una relazione il grafico deve essere leggibile anche stampato e coerente"
 " con le altre figure. Tutti i parametri estetici di `histogram` agiscono "
@@ -1527,7 +1555,7 @@ msgstr ""
 "the legend in the upper left corner, a stronger grid and a figure size "
 "suited to a page."
 
-#: ../../source/examples/histogram.ipynb:510009
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:510009
 msgid ""
 "I colori si scrivono in uno dei formati accettati da Matplotlib: un nome "
 "come `\"black\"`, un codice esadecimale come `\"#2d4f7c\"` o un riferimento "
@@ -1537,13 +1565,13 @@ msgstr ""
 "`\"black\"`, a hexadecimal code such as `\"#2d4f7c\"` or a reference to the "
 "style's colour cycle such as `\"C1\"`."
 
-#: ../../source/examples/histogram.ipynb:520002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:520002
 msgid ""
 "Lo stesso istogramma con testi, colori, trasparenze, legenda e dimensioni "
 "personalizzati."
 msgstr "The same histogram with custom texts, colours, transparency, legend and size."
 
-#: ../../source/examples/histogram.ipynb:530004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:530004
 #, python-brace-format
 msgid ""
 "Le barre hanno un bordo scuro e sono completamente opache "
@@ -1561,7 +1589,7 @@ msgstr ""
 "which also controls the digits of $\\bar{T}$ and $s$ in the legend. The "
 "horizontal grid has opacity $0.5$ thanks to `grid_alpha`."
 
-#: ../../source/examples/histogram.ipynb:530006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:530006
 msgid ""
 "**Comporre più grafici.** Negli esempi precedenti hai visto il procedimento:"
 " crei la figura e gli assi con `plt.subplots(...)`, passi ogni asse a "
@@ -1576,7 +1604,7 @@ msgstr ""
 "With `ax` the function ignores `figsize` and returns the figure the axes "
 "belong to."
 
-#: ../../source/examples/histogram.ipynb:530008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:530008
 msgid ""
 "**Salvare la figura.** Aggiungi `save_path` alla chiamata. Il formato segue "
 "l'estensione del file; senza estensione la figura viene salvata in PDF, un "
@@ -1586,7 +1614,7 @@ msgstr ""
 "file extension; without an extension the figure is saved as PDF, a vector "
 "format suited to LaTeX. For a PNG specify the resolution:"
 
-#: ../../source/examples/histogram.ipynb:540007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:540007
 msgid ""
 "Il file viene scritto nella cartella di lavoro corrente; se il percorso "
 "contiene cartelle, queste devono già esistere. Per figure destinate a una "
@@ -1598,7 +1626,7 @@ msgstr ""
 "MesPy also bundles the `\"report\"` and `\"column\"` styles, which you can "
 "pass with `style=\"report\"` or `style=\"column\"`."
 
-#: ../../source/examples/histogram.ipynb:550005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:550005
 msgid ""
 "Personalizza l'aspetto nella chiamata, componi più pannelli con `ax=` e "
 "salva con `save_path`: in PDF per LaTeX, in PNG con `dpi` esplicito."
@@ -1606,11 +1634,11 @@ msgstr ""
 "Customise the appearance in the call, compose several panels with `ax=` and "
 "save with `save_path`: as PDF for LaTeX, as PNG with an explicit `dpi`."
 
-#: ../../source/examples/histogram.ipynb:560003
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:560003
 msgid "Errori comuni"
 msgstr "Common mistakes"
 
-#: ../../source/examples/histogram.ipynb:560005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:560005
 msgid ""
 "**Dati con valori mancanti.** Una colonna letta da un CSV può contenere "
 "celle vuote, che diventano `nan`. `histogram` non le ignora in silenzio: "
@@ -1622,7 +1650,7 @@ msgstr ""
 "it raises an error. The same happens if you misspell `stat`. The following "
 "code shows the real messages."
 
-#: ../../source/examples/histogram.ipynb:580002
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:580002
 msgid ""
 "Per i valori mancanti decidi esplicitamente che cosa fare: elimina le righe "
 "incomplete già in lettura con `load_csv(..., missing=\"drop\")`, oppure "
@@ -1634,11 +1662,11 @@ msgstr ""
 "`x[np.isfinite(x)]`. In both cases write down how many measurements you "
 "excluded."
 
-#: ../../source/examples/histogram.ipynb:580004
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:580004
 msgid "Gli altri errori frequenti riguardano l'interpretazione più che il codice:"
 msgstr "The other frequent mistakes concern interpretation more than code:"
 
-#: ../../source/examples/histogram.ipynb:580006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:580006
 msgid ""
 "**Usare `bins` e `bin_width` insieme.** La funzione genera `ValueError: "
 "'bins' and 'bin_width' are mutually exclusive. Use only one of them`. Scegli"
@@ -1648,7 +1676,7 @@ msgstr ""
 "'bins' and 'bin_width' are mutually exclusive. Use only one of them`. Choose"
 " the number of bins *or* their width."
 
-#: ../../source/examples/histogram.ipynb:580007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:580007
 msgid ""
 "**Confrontare conteggi di campioni diversi.** Con numeri di misure diversi i"
 " conteggi non sono confrontabili: usa `stat=\"probability\"` o "
@@ -1660,7 +1688,7 @@ msgstr ""
 "`stat=\"density\"` with the same edges. See [Counts, relative frequencies "
 "and densities](#hist-ex-stat)."
 
-#: ../../source/examples/histogram.ipynb:580008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:580008
 msgid ""
 "**Leggere i conteggi con bin di larghezza diversa.** I bin larghi sembrano "
 "più popolati. Usa `stat=\"density\"`, come in [Bin di larghezza diversa"
@@ -1670,7 +1698,7 @@ msgstr ""
 "populated. Use `stat=\"density\"`, as in [Bins of different widths](#hist-"
 "ex-unequal)."
 
-#: ../../source/examples/histogram.ipynb:580009
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:580009
 msgid ""
 "**Scambiare la densità per una probabilità.** Una barra di densità può "
 "superare 1; la frazione di misure è la sua area, $h_i\\,\\Delta x_i$."
@@ -1678,7 +1706,7 @@ msgstr ""
 "**Mistaking the density for a probability.** A density bar can exceed 1; the"
 " fraction of measurements is its area, $h_i\\,\\Delta x_i$."
 
-#: ../../source/examples/histogram.ipynb:580010
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:580010
 #, python-brace-format
 msgid ""
 "**Scambiare la banda per l'incertezza.** La banda è $\\pm\\sigma$ delle "
@@ -1689,7 +1717,7 @@ msgstr ""
 " single measurements; the uncertainty of the mean is $\\sigma/\\sqrt{N}$. "
 "Remember also that the default is `ddof=0`."
 
-#: ../../source/examples/histogram.ipynb:580011
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:580011
 msgid ""
 "**Credere che `hist_range` o `xlim` escludano i dati dalla statistica.** "
 "Media e $\\sigma$ usano sempre tutto il campione, come mostra [Un dato "
@@ -1699,7 +1727,7 @@ msgstr ""
 "The mean and $\\sigma$ always use the whole sample, as [An outlier](#hist-"
 "ex-outlier) shows."
 
-#: ../../source/examples/histogram.ipynb:580012
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:580012
 msgid ""
 "**Bordi che coincidono con valori discreti.** Con dati interi o quantizzati,"
 " metti i bordi a metà tra due valori possibili. Vedi [Dati discreti](#hist-"
@@ -1710,7 +1738,7 @@ msgstr ""
 "](#hist-ex-discrete) and [Real data with finite resolution](#hist-ex-real-"
 "data)."
 
-#: ../../source/examples/histogram.ipynb:580013
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:580013
 msgid ""
 "**Fidarsi di una sola scelta di bin.** Una struttura che compare solo con "
 "certi bin non è una proprietà dei dati. Vedi [Quanti bin?](#hist-ex-bins)."
@@ -1719,7 +1747,7 @@ msgstr ""
 "certain bins is not a property of the data. See [How many bins?](#hist-ex-"
 "bins)."
 
-#: ../../source/examples/histogram.ipynb:580014
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:580014
 msgid ""
 "**Modificare la figura dopo la chiamata in un notebook.** La figura creata "
 "da `histogram` è già stata mostrata: crea prima l'asse e passalo con `ax=`, "
@@ -1730,7 +1758,7 @@ msgstr ""
 " `ax=`, as in the multi-panel examples, for instance [How many bins?](#hist-"
 "ex-bins)."
 
-#: ../../source/examples/histogram.ipynb:580015
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:580015
 msgid ""
 "**Lasciare i testi predefiniti.** `Istogramma`, `Valore` e `Dati` sono "
 "segnaposto: indica sempre grandezza e unità di misura."
@@ -1738,11 +1766,11 @@ msgstr ""
 "**Keeping the default texts.** `Istogramma`, `Valore` and `Dati` are "
 "placeholders: always state the quantity and its unit."
 
-#: ../../source/examples/histogram.ipynb:590003
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:590003
 msgid "Pagine collegate"
 msgstr "Related pages"
 
-#: ../../source/examples/histogram.ipynb:590005
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:590005
 msgid ""
 "[`histogram` nel riferimento del modulo](../moduli/plot_utils/histogram.md),"
 " con la [panoramica](../moduli/plot_utils/histogram/panoramica.md) e il "
@@ -1754,7 +1782,7 @@ msgstr ""
 "step-by-step [internal "
 "workflow](../moduli/plot_utils/histogram/funzionamento.md)."
 
-#: ../../source/examples/histogram.ipynb:590006
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:590006
 msgid ""
 "[`standard_deviation`](../moduli/stats_utils/standard-deviation.md), usata "
 "da `histogram` per la banda, e [`load_csv`](../moduli/io_utils/load-csv.md) "
@@ -1764,7 +1792,7 @@ msgstr ""
 " `histogram` for the band, and [`load_csv`](../moduli/io_utils/load-csv.md) "
 "to load the data."
 
-#: ../../source/examples/histogram.ipynb:590007
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:590007
 msgid ""
 "[Stile dei grafici](plot-style.ipynb), per gli stili `mespy`, `report` e "
 "`column`."
@@ -1772,7 +1800,7 @@ msgstr ""
 "[Plot style](plot-style.ipynb), for the `mespy`, `report` and `column` "
 "styles."
 
-#: ../../source/examples/histogram.ipynb:590008
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/examples/histogram.ipynb:590008
 msgid ""
 "[`numpy.histogram_bin_edges`](https://numpy.org/doc/stable/reference/generated/numpy.histogram_bin_edges.html),"
 " per le regole automatiche accettate da `bins`."

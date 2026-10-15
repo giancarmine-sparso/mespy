@@ -87,25 +87,45 @@ msgstr ""
 "Run the examples in order. These small measurements describe position `y` at"
 " time `x`; `sigma_y` gives the position uncertainties."
 
-#: ../../source/examples/plot-style.ipynb:50002
-msgid ""
-"`style=None` è utile dopo aver impostato uno stile Matplotlib globale. "
-"Mantiene quella configurazione mentre MesPy continua a fornire i propri "
-"elementi grafici e le proprie etichette."
-msgstr ""
-"`style=None` is useful after setting a global Matplotlib style. It keeps "
-"that configuration while MesPy still supplies its own plot elements and "
-"labels."
+#: ../../source/examples/plot-style.ipynb:50003
+msgid "Uno stile per tutto il notebook"
+msgstr "One style for the whole notebook"
 
 #: ../../source/examples/plot-style.ipynb:50005
+msgid ""
+"Per dare lo stesso aspetto a tutti i grafici, anche a quelli che crei "
+"direttamente con Matplotlib, attiva uno stile una sola volta all'inizio del "
+"notebook o dello script. Dopo `import mespy`, gli stili di MesPy sono "
+"disponibili per nome:"
+msgstr ""
+"To give every plot the same look, including those you create directly with "
+"Matplotlib, activate a style once at the start of the notebook or script. "
+"After `import mespy`, the MesPy styles are available by name:"
+
+#: ../../source/examples/plot-style.ipynb:70002
+msgid ""
+"Lo stile resta attivo per tutta la sessione. `histogram()` e `lin_fit()` "
+"applicano comunque il proprio argomento `style` durante la chiamata: con il "
+"valore predefinito `\"mespy\"` l'aspetto non cambia. Se hai attivato un "
+"altro stile globale, per esempio `plt.style.use(\"report\")`, passa "
+"`style=None` per mantenerlo: MesPy continua a fornire i propri elementi "
+"grafici e le proprie etichette."
+msgstr ""
+"The style stays active for the whole session. `histogram()` and `lin_fit()` "
+"still apply their own `style` argument during the call: with the default "
+"`\"mespy\"` the look does not change. If you activated another global style,"
+" for example `plt.style.use(\"report\")`, pass `style=None` to keep it: "
+"MesPy still provides its own plot elements and labels."
+
+#: ../../source/examples/plot-style.ipynb:80003
 msgid "Personalizzare un istogramma"
 msgstr "Customizing a histogram"
 
-#: ../../source/examples/plot-style.ipynb:50008
+#: ../../source/examples/plot-style.ipynb:80006
 msgid "Usa i parametri MesPy"
 msgstr "Use MesPy parameters"
 
-#: ../../source/examples/plot-style.ipynb:50010
+#: ../../source/examples/plot-style.ipynb:80008
 msgid ""
 "Imposta `bins` per scegliere il numero di barre. Usa `xlabel`, `ylabel` e "
 "`title` per i testi, e `bar_color` per le barre. I valori espliciti "
@@ -117,11 +137,11 @@ msgstr ""
 "style for that call. `show_mean` and `show_band` control the mean line and "
 "the shaded band."
 
-#: ../../source/examples/plot-style.ipynb:70003
+#: ../../source/examples/plot-style.ipynb:100003
 msgid "Continua le modifiche con Matplotlib"
 msgstr "Continue editing with Matplotlib"
 
-#: ../../source/examples/plot-style.ipynb:70005
+#: ../../source/examples/plot-style.ipynb:100005
 msgid ""
 "`histogram()` restituisce una `Figure` e un `Axes` Matplotlib standard. La "
 "figura è l'intera immagine; gli assi contengono i dati rappresentati, le "
@@ -130,7 +150,7 @@ msgstr ""
 "`histogram()` returns a standard Matplotlib `Figure` and `Axes`. The figure "
 "is the whole image; the axes hold the plotted data, labels, and grid."
 
-#: ../../source/examples/plot-style.ipynb:90002
+#: ../../source/examples/plot-style.ipynb:120002
 msgid ""
 "MesPy crea la visualizzazione statistica; Matplotlib ti permette di "
 "completarla. Salva **dopo** le modifiche per includerle."
@@ -138,7 +158,7 @@ msgstr ""
 "MesPy creates the statistical visualization; Matplotlib lets you finish it. "
 "Save **after** editing to include your changes."
 
-#: ../../source/examples/plot-style.ipynb:90004
+#: ../../source/examples/plot-style.ipynb:120004
 msgid ""
 "L'argomento facoltativo `save_path` salva durante la chiamata a "
 "`histogram()`. Non crea le cartelle mancanti e le modifiche successive non "
@@ -148,11 +168,11 @@ msgstr ""
 "does not create missing folders, and later edits do not update that saved "
 "file automatically."
 
-#: ../../source/examples/plot-style.ipynb:90007
+#: ../../source/examples/plot-style.ipynb:120007
 msgid "Personalizzare un fit lineare"
 msgstr "Customizing a linear fit"
 
-#: ../../source/examples/plot-style.ipynb:90009
+#: ../../source/examples/plot-style.ipynb:120009
 msgid ""
 "`lin_fit()` accetta direttamente `xlabel`, `ylabel` e `title`. Dispone anche"
 " di `normalize_residuals` per modificare la rappresentazione dei residui nel"
@@ -164,11 +184,11 @@ msgstr ""
 "Choose fonts, colors, grid settings, figure size, and line widths through "
 "`style`."
 
-#: ../../source/examples/plot-style.ipynb:90012
+#: ../../source/examples/plot-style.ipynb:120012
 msgid "Usa uno stile personalizzato"
 msgstr "Use a custom style"
 
-#: ../../source/examples/plot-style.ipynb:90014
+#: ../../source/examples/plot-style.ipynb:120014
 #, python-brace-format
 msgid ""
 "Per un aspetto riutilizzabile, salva questo file come "
@@ -177,7 +197,7 @@ msgstr ""
 "For a reusable look, save this file as {download}`styles/lab.mplstyle "
 "<styles/lab.mplstyle>` in your project:"
 
-#: ../../source/examples/plot-style.ipynb:90020
+#: ../../source/examples/plot-style.ipynb:120020
 msgid ""
 "Il primo colore viene usato per i dati; il secondo per la retta del fit e la"
 " sua banda. Passa il percorso del file a `style`:"
@@ -185,7 +205,7 @@ msgstr ""
 "The first color is used for the data; the second is used for the fitted line"
 " and its band. Pass the file path to `style`:"
 
-#: ../../source/examples/plot-style.ipynb:110002
+#: ../../source/examples/plot-style.ipynb:140002
 msgid ""
 "`output` è un percorso base **senza estensione**. MesPy crea la cartella se "
 "necessario e scrive `styled_fit.pdf` e `styled_fit.toml`. Il PDF viene "
@@ -197,7 +217,7 @@ msgstr ""
 "saved while the style is active, including any `savefig.*` settings in that "
 "style."
 
-#: ../../source/examples/plot-style.ipynb:110004
+#: ../../source/examples/plot-style.ipynb:140004
 msgid ""
 "Scegli stile ed etichette **prima di chiamare `lin_fit()`** per includerli "
 "nell'esportazione automatica. Le opzioni di aspetto come `bar_color` o "
@@ -207,11 +227,11 @@ msgstr ""
 "in the automatic export. Appearance options such as `bar_color` or "
 "`title_fontsize` belong to `histogram()`; `lin_fit()` does not accept them."
 
-#: ../../source/examples/plot-style.ipynb:110007
+#: ../../source/examples/plot-style.ipynb:140007
 msgid "Modifica la figura restituita"
 msgstr "Edit the returned figure"
 
-#: ../../source/examples/plot-style.ipynb:110009
+#: ../../source/examples/plot-style.ipynb:140009
 msgid ""
 "`lin_fit()` restituisce un `LinearFitResult`, anziché una coppia `(fig, "
 "ax)`. Con il valore predefinito `plot=True`, `result.figure` è una figura "
@@ -221,11 +241,11 @@ msgstr ""
 "With the default `plot=True`, `result.figure` is a Matplotlib figure you can"
 " edit and save. With `plot=False`, it is `None`."
 
-#: ../../source/examples/plot-style.ipynb:110011
+#: ../../source/examples/plot-style.ipynb:140011
 msgid "I suoi due assi sono il pannello del fit seguito da quello dei residui:"
 msgstr "Its two axes are the fit panel followed by the residuals panel:"
 
-#: ../../source/examples/plot-style.ipynb:130002
+#: ../../source/examples/plot-style.ipynb:160002
 msgid ""
 "Questo scrive un PDF separato con le tue modifiche. Non aggiorna il file "
 "`styled_fit.pdf` esportato in precedenza né il file TOML. I risultati del "
@@ -235,17 +255,17 @@ msgstr ""
 "previously exported `styled_fit.pdf` or the TOML file. The fit results stay "
 "the same."
 
-#: ../../source/examples/plot-style.ipynb:130005
+#: ../../source/examples/plot-style.ipynb:160005
 msgid "Pagine correlate"
 msgstr "Related pages"
 
-#: ../../source/examples/plot-style.ipynb:130007
+#: ../../source/examples/plot-style.ipynb:160007
 msgid ""
 "[Guida agli istogrammi](histogram.ipynb) e [guida al fit lineare](linear-"
 "fit.ipynb)."
 msgstr "[Histogram guide](histogram.ipynb) and [linear fit guide](linear-fit.ipynb)."
 
-#: ../../source/examples/plot-style.ipynb:130008
+#: ../../source/examples/plot-style.ipynb:160008
 msgid ""
 "Riferimento API: [`histogram`](../moduli/plot_utils/histogram.md), "
 "[`lin_fit`](../moduli/fit_utils/lin-fit.md) e "

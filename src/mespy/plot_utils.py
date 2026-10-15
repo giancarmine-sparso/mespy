@@ -209,7 +209,7 @@ def histogram(
     title_pad: int | float | None = None,
     legend_fontsize: int | float | None = None,
     legend_loc: str | None = None,
-    bar_color: str | None = None,  # gestito da patch.facecolor nello stile
+    bar_color: str | None = None,  # default: prossimo colore del ciclo dell'asse
     mean_color: str | None = None,  # default: "C1" dal prop_cycle attivo
     band_color: str | None = None,  # default: "C2" dal prop_cycle attivo
     edgecolor: str | None = None,  # gestito da patch.edgecolor nello stile
@@ -333,8 +333,10 @@ def histogram(
         Legend position (e.g. ``"upper right"``). ``None`` means the
         value from the style file (default ``None``).
     bar_color : str or None, optional
-        Fill color of the bars. ``None`` means the color from the style
-        file (default ``None``).
+        Fill color of the bars. ``None`` uses the next color in the axes'
+        active color cycle, initialized from ``axes.prop_cycle`` when the
+        axes are created; ``patch.facecolor`` does not select this color
+        (default ``None``).
     mean_color : str or None, optional
         Color of the vertical mean line. ``None`` means the second color
         of the active style's color cycle (default ``None``).

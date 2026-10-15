@@ -1,5 +1,7 @@
 # histogram
 
+Queste pagine descrivono le sorgenti correnti del repository. La costruzione dei bordi con `bin_width` e il controllo della griglia differiscono dalla distribuzione 2.0.0 già pubblicata su PyPI. Per riprodurre il comportamento qui descritto, segui [Installazione per lo sviluppo](../../installazione.md).
+
 ## Firma
 
 ```python
@@ -45,7 +47,7 @@ histogram(
 ) -> tuple[Figure, Axes]
 ```
 
-`histogram` disegna un istogramma di un campione numerico e puo aggiungere media, banda `+- 1 sigma`, legenda, griglia e salvataggio della figura.
+`histogram` disegna un istogramma di un campione numerico e può aggiungere media, banda $\pm 1\sigma$, legenda, griglia e salvataggio della figura.
 `stat` sceglie conteggi (`"count"`, valore predefinito), frequenze relative (`"probability"`) o densità di frequenza (`"density"`). Può essere passato come secondo argomento posizionale oppure per nome.
 Per impostazione predefinita applica lo stile Matplotlib `mespy`; passa `style=None` per usare gli `rcParams` correnti oppure il nome di un altro stile per delegare a Matplotlib.
 
@@ -104,7 +106,7 @@ I 37 parametri sono raggruppati in base a che cosa controllano. I valori predefi
 | `tick_rotation` | `0` | Rotazione in gradi delle etichette dell'asse $x$. |
 | `xlim` | `None` | Limiti `(min, max)` dell'asse $x$: cambiano solo la porzione visibile. |
 | `ylim` | `None` | Limiti `(min, max)` dell'asse $y$. |
-| `show_grid` | `True` | Con `False` spegne la griglia; con `True` la lascia allo stile. |
+| `show_grid` | `True` | Con `True` attiva la griglia sugli assi e sui tick maggiori/minori scelti dallo stile; con `False` spegne tutte le linee della griglia. |
 | `grid_alpha` | stile | Se indicato, disegna la griglia orizzontale con questa opacità. |
 
 **Figura, stile e salvataggio**
@@ -114,14 +116,14 @@ I 37 parametri sono raggruppati in base a che cosa controllano. I valori predefi
 | `style` | `"mespy"` | Stile applicato solo durante la chiamata. `None` usa le impostazioni correnti; accetta anche `"report"`, `"column"` o il nome di uno stile Matplotlib. |
 | `ax` | `None` | Asse su cui disegnare. Con `None` viene creata una nuova figura. |
 | `figsize` | stile | Dimensioni `(larghezza, altezza)` in pollici; usato solo se la figura viene creata dalla funzione. |
-| `dpi` | stile | Risoluzione della nuova figura e del file salvato con `save_path`. |
+| `dpi` | `None` | Se esplicito, imposta la risoluzione della nuova figura e del file salvato. Con `None`, la creazione usa `figure.dpi` dello stile; il salvataggio usa `savefig.dpi` del contesto esterno. |
 | `save_path` | `None` | Percorso del file in cui salvare la figura; senza estensione viene aggiunto `.pdf`. |
 
 **Colori e trasparenze**
 
 | Parametro | Valore predefinito | Effetto |
 | --- | --- | --- |
-| `bar_color` | stile | Colore di riempimento delle barre. |
+| `bar_color` | ciclo dell’asse | Colore di riempimento delle barre. Con `None` usa il prossimo colore del ciclo dell’asse, inizializzato da `axes.prop_cycle` quando viene creato; non usa `patch.facecolor`. |
 | `edgecolor` | stile | Colore del bordo delle barre (bianco nello stile `mespy`). |
 | `hist_alpha` | `0.85` | Opacità delle barre, da 0 a 1. |
 | `mean_color` | `None` | Colore della linea della media. Con `None` usa `"C1"`, il secondo colore del ciclo dello stile attivo. |
@@ -138,16 +140,16 @@ Alcuni comportamenti non si deducono dalla firma ma cambiano il modo di leggere 
   $$\bar{x} = \frac{1}{N}\sum_{j=1}^{N} x_j, \qquad \sigma = \sqrt{\frac{1}{N - \mathrm{ddof}}\sum_{j=1}^{N}\left(x_j - \bar{x}\right)^2}.$$
 - **I bin sono intervalli semiaperti.** Ogni bin è $[a, b)$: include il bordo sinistro ed esclude il destro. Solo l'ultimo è chiuso, $[a, b]$. Un valore che cade esattamente su un bordo finisce nel bin a destra, e piccoli errori di arrotondamento sul bordo possono spostarlo nel bin a sinistra.
 - **Le normalizzazioni contano solo le osservazioni nei bin.** In `"probability"` e `"density"`, $N = \sum_i n_i$ è il numero di osservazioni effettivamente contenute nei bin, che può essere minore della dimensione del campione. Se nessuna osservazione cade nei bin, tutte le altezze restano zero.
-- **`bin_width` costruisce i bordi da solo.** Con $a$ e $b$ estremi dei dati (o di `hist_range`) e $w$ la larghezza, i bordi partono da $\lfloor a/w \rfloor\, w$ e arrivano a $\lceil b/w \rceil\, w$, con passo $w$. Per questo `bins` e `bin_width` non si possono usare insieme.
+- **`bin_width` costruisce i bordi da solo.** Con $a$ e $b$ estremi dei dati (o di `hist_range`) e $w$ la larghezza, i bordi sono i multipli interi $k\,w$ da $\lfloor a/w \rfloor\, w$ a $\lceil b/w \rceil\, w$. Per questo `bin_width` non si può combinare con `bins`, salvo il valore predefinito `bins="auto"`.
 - **`hist_range` ha effetti diversi secondo `bins`.** Con un numero di bin o una regola automatica, delimita l'intervallo e i valori esterni non entrano nelle barre. Con un array esplicito di bordi viene ignorato, perché comandano i bordi. Con `bin_width` fornisce gli estremi da cui costruire i bordi.
 - **`xlim` e `ylim` cambiano solo la vista.** Non modificano bin, conteggi o normalizzazioni.
 - **Lo stile è temporaneo.** Con `style="mespy"` lo stile vale solo durante la chiamata e non modifica le impostazioni globali. Se passi `ax`, lo stile si applica solo agli elementi disegnati da `histogram`: l'asse e la figura mantengono le proprietà che avevano alla creazione. Per i grafici a più pannelli conviene attivare lo stile per tutta la sessione con `plt.style.use("mespy")`, disponibile dopo `import mespy`.
 - **Nei notebook la figura viene mostrata subito.** In Jupyter, una figura creata da `histogram` viene mostrata e chiusa prima che la funzione termini: le modifiche fatte dopo, ad esempio con `ax.plot(...)`, non compaiono automaticamente. Se vuoi aggiungere elementi, crea prima l'asse con `plt.subplots()` e passalo con `ax=`. In uno script, invece, chiama `plt.show()` per aprire la finestra.
-- **Il salvataggio avviene alla fine.** Con `save_path` la figura viene salvata con `bbox_inches="tight"` dopo che lo stile temporaneo è stato rimosso. Se non indichi `dpi`, un file raster come un PNG viene salvato con la risoluzione della figura, 100 dpi con lo stile `mespy`: per un PNG nitido passa ad esempio `dpi=300`.
+- **Il salvataggio avviene alla fine.** Con `save_path` la figura viene salvata con `bbox_inches="tight"` dopo che lo stile temporaneo è stato rimosso. Senza un `dpi` esplicito, Matplotlib usa il valore di `savefig.dpi` del contesto esterno: se vale `"figure"`, usa la risoluzione della figura (100 dpi per una nuova figura con lo stile `mespy`); se è numerico, usa quel valore. Per esempio, con `savefig.dpi=233` una figura a 100 dpi viene salvata in PNG a 233 dpi. Per scegliere direttamente la risoluzione del file passa, ad esempio, `dpi=300`.
 
 Per una guida passo passo, con undici esempi eseguiti e il significato statistico di ogni opzione, vedi [Istogramma](../../examples/histogram.ipynb) nella sezione Esempi.
 
-Questa pagina resta il punto di ingresso rapido. I dettagli completi sono in [Panoramica](histogram/panoramica.md), mentre [Funzionamento](histogram/funzionamento.md) e predisposta come sottopagina dedicata.
+[Panoramica](histogram/panoramica.md) riassume parametri, normalizzazioni, errori ed esempio d'uso; [Funzionamento](histogram/funzionamento.md) descrive passo per passo il flusso interno.
 
 ```{toctree}
 :hidden:
