@@ -46,7 +46,7 @@ msgstr ""
 
 #: ../../source/checks/stats_utils/validate-weights.md:19
 msgid ""
-"Se `w` e presente, viene prima convertito con [`_as_float_vector`](as-float-"
+"Se `w` è presente, viene prima convertito con [`_as_float_vector`](as-float-"
 "vector.md)."
 msgstr ""
 "If `w` is provided, it is first converted with [`_as_float_vector`](as-"
@@ -95,11 +95,11 @@ msgstr ""
 "infinities"
 
 #: ../../source/checks/stats_utils/validate-weights.md:34
-msgid "`ValueError` se la somma dei pesi non e positiva"
+msgid "`ValueError` se la somma dei pesi non è positiva"
 msgstr "`ValueError` if the sum of the weights is not positive"
 
 #: ../../source/checks/stats_utils/validate-weights.md:36
-msgid "Perche resta privata"
+msgid "Perché resta privata"
 msgstr "Why it stays private"
 
 #: ../../source/checks/stats_utils/validate-weights.md:38

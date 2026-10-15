@@ -32,11 +32,11 @@ msgstr "What problem it solves"
 
 #: ../../source/checks/plot_utils/validate-decimals.md:11
 msgid ""
-"Verifica che la precisione usata per etichette e legende resti leggibile e "
-"coerente tra le funzioni di visualizzazione grafica del pacchetto."
+"Verifica che la precisione usata per etichette e legende resti leggibile "
+"nelle etichette dei grafici."
 msgstr ""
-"Ensures that the precision used for labels and legends remains readable and "
-"consistent across the package plotting functions."
+"Ensures that the precision used for labels and legends stays readable in "
+"plot labels."
 
 #: ../../source/checks/plot_utils/validate-decimals.md:13
 msgid "Contratto sui dati in ingresso"
@@ -66,39 +66,30 @@ msgstr ""
 "in [`histogram`](../../moduli/plot_utils/histogram.md) to format ticks, the "
 "mean, and the band"
 
-#: ../../source/checks/plot_utils/validate-decimals.md:22
-msgid ""
-"in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) per formattare la legenda "
-"del fit quando serve"
-msgstr ""
-"in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) to format the fit legend "
-"when needed"
-
-#: ../../source/checks/plot_utils/validate-decimals.md:24
+#: ../../source/checks/plot_utils/validate-decimals.md:23
 msgid "Come fallisce"
 msgstr "How it fails"
 
-#: ../../source/checks/plot_utils/validate-decimals.md:26
-msgid "`ValueError` se `decimals` non e un intero"
+#: ../../source/checks/plot_utils/validate-decimals.md:25
+msgid "`ValueError` se `decimals` non è un intero"
 msgstr "`ValueError` if `decimals` is not an integer"
 
-#: ../../source/checks/plot_utils/validate-decimals.md:27
+#: ../../source/checks/plot_utils/validate-decimals.md:26
 msgid "`ValueError` se `decimals < 0`"
 msgstr "`ValueError` if `decimals < 0`"
 
-#: ../../source/checks/plot_utils/validate-decimals.md:28
+#: ../../source/checks/plot_utils/validate-decimals.md:27
 msgid "`ValueError` se `decimals > 20`"
 msgstr "`ValueError` if `decimals > 20`"
 
-#: ../../source/checks/plot_utils/validate-decimals.md:30
-msgid "Perche resta privata"
+#: ../../source/checks/plot_utils/validate-decimals.md:29
+msgid "Perché resta privata"
 msgstr "Why it remains private"
 
-#: ../../source/checks/plot_utils/validate-decimals.md:32
+#: ../../source/checks/plot_utils/validate-decimals.md:31
 msgid ""
-"E una regola di validazione orientata alla presentazione, condivisa "
-"internamente dalle API di visualizzazione grafica ma non pensata come "
-"utilita pubblica autonoma."
+"È una regola di validazione orientata alla presentazione, usata internamente"
+" da `histogram` e non pensata come utilità pubblica autonoma."
 msgstr ""
-"It is a presentation-oriented validation rule, shared internally by the "
-"plotting APIs but not intended as a standalone public utility."
+"It is a presentation-oriented validation rule, used internally by "
+"`histogram` and not intended as a standalone public utility."

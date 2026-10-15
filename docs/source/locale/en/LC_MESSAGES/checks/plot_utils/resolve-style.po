@@ -28,7 +28,7 @@ msgstr "Signature"
 
 #: ../../source/checks/plot_utils/resolve-style.md:9
 msgid "Che problema risolve"
-msgstr "What a problem it solves"
+msgstr "What problem it solves"
 
 #: ../../source/checks/plot_utils/resolve-style.md:11
 msgid ""
@@ -40,13 +40,12 @@ msgstr ""
 
 #: ../../source/checks/plot_utils/resolve-style.md:13
 msgid ""
-"Questo permette a funzioni come `histogram` e `lin_fit` di accettare "
-"`style=\"mespy\"`, `style=\"report\"` o `style=\"column\"` senza richiedere "
-"all'utente il percorso del file di stile."
+"Questo permette a `histogram` di accettare `style=\"mespy\"`, "
+"`style=\"report\"` o `style=\"column\"` senza richiedere all'utente il "
+"percorso del file di stile."
 msgstr ""
-"This allows functions like `histogram` and `lin_fit` to accept "
-"`style=\"mespy\"`, `style=\"report\"` or `style=\"column\"` without "
-"prompting the user for the path to the style file."
+"This allows `histogram` to accept `style=\"mespy\"`, `style=\"report\"` or "
+"`style=\"column\"` without asking the user for the path to the style file."
 
 #: ../../source/checks/plot_utils/resolve-style.md:15
 msgid "Contratto sui dati in ingresso"
@@ -85,21 +84,24 @@ msgstr ""
 "in [`histogram`](../../moduli/plot_utils/histogram.md), before entering "
 "`_style_context`"
 
-#: ../../source/checks/plot_utils/resolve-style.md:24
+#: ../../source/checks/plot_utils/resolve-style.md:25
 msgid ""
-"in [`lin_fit`](../../moduli/fit_utils/lin-fit.md), prima di entrare in "
-"`_style_context`"
+"[`lin_fit`](../../moduli/fit_utils/lin-fit.md) non la usa: passa lo stile "
+"direttamente a `_style_context`. I nomi brevi funzionano comunque, perché "
+"`import mespy` registra gli stili inclusi nella libreria degli stili di "
+"Matplotlib."
 msgstr ""
-"in [`lin_fit`](../../moduli/fit_utils/lin-fit.md), before entering "
-"`_style_context`"
+"[`lin_fit`](../../moduli/fit_utils/lin-fit.md) does not use it: it passes "
+"the style directly to `_style_context`. Short names still work, because "
+"`import mespy` registers the bundled styles in Matplotlib's style library."
 
-#: ../../source/checks/plot_utils/resolve-style.md:26
+#: ../../source/checks/plot_utils/resolve-style.md:27
 msgid "Come fallisce"
 msgstr "How it fails"
 
-#: ../../source/checks/plot_utils/resolve-style.md:28
+#: ../../source/checks/plot_utils/resolve-style.md:29
 msgid ""
-"La risoluzione e intenzionalmente permissiva: se la ricerca nelle risorse "
+"La risoluzione è intenzionalmente permissiva: se la ricerca nelle risorse "
 "del pacchetto non riesce, la funzione restituisce lo stile originale. "
 "L'eventuale errore viene quindi lasciato a Matplotlib quando "
 "`_style_context` prova ad applicare quello stile."
@@ -108,16 +110,16 @@ msgstr ""
 "resources fails, the function returns the original style. Any error is then "
 "left to Matplotlib when `_style_context` tries to apply that style."
 
-#: ../../source/checks/plot_utils/resolve-style.md:30
-msgid "Perche resta privata"
+#: ../../source/checks/plot_utils/resolve-style.md:31
+msgid "Perché resta privata"
 msgstr "Because it remains private"
 
-#: ../../source/checks/plot_utils/resolve-style.md:32
+#: ../../source/checks/plot_utils/resolve-style.md:33
 msgid ""
 "È una funzione di supporto infrastrutturale del sistema di stile. "
 "Documentarla chiarisce perché gli stili inclusi funzionano con nomi brevi, "
 "ma non è pensata come API pubblica autonoma."
 msgstr ""
-"And a style system infrastructure helper. Documenting it clarifies why "
-"bundled styles work with short names, but it is not intended as a standalone"
-" public API."
+"It is an infrastructure helper for the style system. Documenting it "
+"clarifies why bundled styles work with short names, but it is not intended "
+"as a standalone public API."

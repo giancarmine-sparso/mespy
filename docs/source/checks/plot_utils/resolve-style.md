@@ -10,7 +10,7 @@ _resolve_style(style: str | None) -> str | None
 
 Converte un nome breve di stile incluso in `mespy/stylelib` nel percorso assoluto del relativo file `.mplstyle`.
 
-Questo permette a funzioni come `histogram` e `lin_fit` di accettare `style="mespy"`, `style="report"` o `style="column"` senza richiedere all'utente il percorso del file di stile.
+Questo permette a `histogram` di accettare `style="mespy"`, `style="report"` o `style="column"` senza richiedere all'utente il percorso del file di stile.
 
 ## Contratto sui dati in ingresso
 
@@ -21,12 +21,13 @@ Questo permette a funzioni come `histogram` e `lin_fit` di accettare `style="mes
 ## Dove viene usata
 
 - in [`histogram`](../../moduli/plot_utils/histogram.md), prima di entrare in `_style_context`
-- in [`lin_fit`](../../moduli/fit_utils/lin-fit.md), prima di entrare in `_style_context`
+
+[`lin_fit`](../../moduli/fit_utils/lin-fit.md) non la usa: passa lo stile direttamente a `_style_context`. I nomi brevi funzionano comunque, perché `import mespy` registra gli stili inclusi nella libreria degli stili di Matplotlib.
 
 ## Come fallisce
 
-La risoluzione e intenzionalmente permissiva: se la ricerca nelle risorse del pacchetto non riesce, la funzione restituisce lo stile originale. L'eventuale errore viene quindi lasciato a Matplotlib quando `_style_context` prova ad applicare quello stile.
+La risoluzione è intenzionalmente permissiva: se la ricerca nelle risorse del pacchetto non riesce, la funzione restituisce lo stile originale. L'eventuale errore viene quindi lasciato a Matplotlib quando `_style_context` prova ad applicare quello stile.
 
-## Perche resta privata
+## Perché resta privata
 
 È una funzione di supporto infrastrutturale del sistema di stile. Documentarla chiarisce perché gli stili inclusi funzionano con nomi brevi, ma non è pensata come API pubblica autonoma.

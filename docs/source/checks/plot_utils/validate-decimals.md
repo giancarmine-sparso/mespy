@@ -8,7 +8,7 @@ _validate_decimals(decimals: int) -> int
 
 ## Che problema risolve
 
-Verifica che la precisione usata per etichette e legende resti leggibile e coerente tra le funzioni di visualizzazione grafica del pacchetto.
+Verifica che la precisione usata per etichette e legende resti leggibile nelle etichette dei grafici.
 
 ## Contratto sui dati in ingresso
 
@@ -19,14 +19,13 @@ Verifica che la precisione usata per etichette e legende resti leggibile e coere
 ## Dove viene usata
 
 - in [`histogram`](../../moduli/plot_utils/histogram.md) per formattare tick, media e banda
-- in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) per formattare la legenda del fit quando serve
 
 ## Come fallisce
 
-- `ValueError` se `decimals` non e un intero
+- `ValueError` se `decimals` non è un intero
 - `ValueError` se `decimals < 0`
 - `ValueError` se `decimals > 20`
 
-## Perche resta privata
+## Perché resta privata
 
-E una regola di validazione orientata alla presentazione, condivisa internamente dalle API di visualizzazione grafica ma non pensata come utilita pubblica autonoma.
+È una regola di validazione orientata alla presentazione, usata internamente da `histogram` e non pensata come utilità pubblica autonoma.

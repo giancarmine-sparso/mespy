@@ -50,7 +50,7 @@ msgstr "It takes no arguments."
 
 #: ../../source/checks/plot_utils/in-ipython.md:16
 msgid ""
-"Restituisce `True` solo se `IPython` e importabile, esiste una sessione "
+"Restituisce `True` solo se `IPython` è importabile, esiste una sessione "
 "corrente e la configurazione contiene `IPKernelApp`."
 msgstr ""
 "Returns `True` only if `IPython` is importable, there is a current session, "
@@ -63,38 +63,33 @@ msgstr "Where it is used"
 #: ../../source/checks/plot_utils/in-ipython.md:20
 msgid ""
 "in [`_style_context`](style-context.md) per decidere se tracciare le figure "
-"aperte prima del blocco"
+"aperte prima del blocco e se mostrare, con [`_display_new_figures`](display-"
+"new-figures.md), le nuove figure create nel contesto"
 msgstr ""
 "in [`_style_context`](style-context.md) to decide whether to track the "
-"figures already open before the block"
+"figures already open before the block and whether to display, with "
+"[`_display_new_figures`](display-new-figures.md), the new figures created in"
+" the context"
 
-#: ../../source/checks/plot_utils/in-ipython.md:21
-msgid ""
-"indirettamente in [`_display_new_figures`](display-new-figures.md) per "
-"mostrare solo le nuove figure create nel contesto"
-msgstr ""
-"indirectly in [`_display_new_figures`](display-new-figures.md) to show only "
-"the new figures created inside the context"
-
-#: ../../source/checks/plot_utils/in-ipython.md:23
+#: ../../source/checks/plot_utils/in-ipython.md:22
 msgid "Come fallisce"
 msgstr "How it fails"
 
-#: ../../source/checks/plot_utils/in-ipython.md:25
+#: ../../source/checks/plot_utils/in-ipython.md:24
 msgid ""
-"Se `IPython` non e installato oppure non esiste una sessione attiva, "
+"Se `IPython` non è installato oppure non esiste una sessione attiva, "
 "restituisce semplicemente `False`."
 msgstr ""
 "If `IPython` is not installed or there is no active session, it simply "
 "returns `False`."
 
-#: ../../source/checks/plot_utils/in-ipython.md:27
-msgid "Perche resta privata"
+#: ../../source/checks/plot_utils/in-ipython.md:26
+msgid "Perché resta privata"
 msgstr "Why it remains private"
 
-#: ../../source/checks/plot_utils/in-ipython.md:29
+#: ../../source/checks/plot_utils/in-ipython.md:28
 msgid ""
-"E una piccola euristica infrastrutturale specifica del comportamento dei "
+"È una piccola euristica infrastrutturale specifica del comportamento dei "
 "notebook, utile internamente ma poco significativa come API pubblica."
 msgstr ""
 "It is a small infrastructural heuristic specific to notebook behaviour, "

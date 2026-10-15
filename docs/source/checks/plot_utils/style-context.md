@@ -16,7 +16,7 @@ Applica uno stile Matplotlib temporaneo e rende coerente il comportamento delle 
 - `style="mespy"` carica il file di stile incluso nel pacchetto.
 - Qualunque altra stringa viene passata a Matplotlib come nome stile.
 
-Nelle funzioni pubbliche lo stile passa prima da [`_resolve_style`](resolve-style.md), così anche gli altri stili inclusi possono essere richiamati con il nome breve.
+`histogram` passa prima lo stile da [`_resolve_style`](resolve-style.md), che trasforma i nomi brevi degli stili inclusi, `"mespy"` compreso, nel percorso del file: da `histogram` il ramo `style="mespy"` riceve quindi già un percorso. `lin_fit` passa invece il nome direttamente; gli stili inclusi sono comunque disponibili per nome perché `import mespy` li registra in Matplotlib.
 
 ## Dove viene usata
 
@@ -28,6 +28,6 @@ Nelle funzioni pubbliche lo stile passa prima da [`_resolve_style`](resolve-styl
 - Se Matplotlib non riesce a caricare lo stile richiesto, propaga l'errore del sistema di stile sottostante.
 - In ambiente notebook, alla fine del blocco mostra le nuove figure create e poi le chiude per evitare la doppia visualizzazione automatica.
 
-## Perche resta privata
+## Perché resta privata
 
-E un dettaglio infrastrutturale condiviso dalle funzioni di visualizzazione grafica. Documentarlo chiarisce il comportamento del pacchetto, ma non e pensato come interfaccia pubblica stabile.
+È un dettaglio infrastrutturale condiviso dalle funzioni di visualizzazione grafica. Documentarlo chiarisce il comportamento del pacchetto, ma non è pensato come interfaccia pubblica stabile.

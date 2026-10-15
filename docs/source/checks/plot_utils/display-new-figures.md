@@ -14,7 +14,7 @@ Mostra esplicitamente in IPython/Jupyter le figure create dopo un certo stato in
 
 - `existing_nums` deve contenere i numeri di figura presenti prima di entrare nel blocco monitorato.
 - La funzione confronta questo insieme con `plt.get_fignums()` per individuare solo le figure nuove.
-- Se `IPython.display` non e disponibile, la funzione non fa nulla.
+- Se `IPython.display` non è disponibile, la funzione non fa nulla.
 
 ## Dove viene usata
 
@@ -23,8 +23,8 @@ Mostra esplicitamente in IPython/Jupyter le figure create dopo un certo stato in
 ## Come fallisce
 
 - In uso normale non alza eccezioni specifiche del pacchetto.
-- Se il supporto di visualizzazione non e disponibile, la funzione si comporta come un'operazione senza effetti.
+- Se il supporto di visualizzazione non è disponibile, la funzione si comporta come un'operazione senza effetti.
 
-## Perche resta privata
+## Perché resta privata
 
 Serve solo a rifinire l'integrazione notebook di `mespy`: non rappresenta un'operazione autonoma utile per l'utente finale.

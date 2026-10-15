@@ -2,11 +2,11 @@
 
 Questa sezione documenta le funzioni private usate da `mespy` per validare dati in ingresso e centralizzare piccoli passaggi di calcolo. Sono funzioni di supporto importanti per capire il comportamento del pacchetto, ma non fanno parte dell'API pubblica.
 
-## Perche esiste questa sezione
+## Perché esiste questa sezione
 
-- mostra dove vengono intercettati gli errori piu comuni
+- mostra dove vengono intercettati gli errori più comuni
 - rende esplicite le dipendenze interne tra moduli
-- aiuta a capire perche le funzioni pubbliche hanno un comportamento coerente
+- aiuta a capire perché le funzioni pubbliche hanno un comportamento coerente
 
 ## Mappa rapida
 

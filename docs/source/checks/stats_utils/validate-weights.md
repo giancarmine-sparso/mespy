@@ -16,7 +16,7 @@ Centralizza la validazione dei pesi usati nelle statistiche pesate.
 ## Contratto sui dati in ingresso
 
 - Se `w is None`, restituisce `None` e il chiamante ricade nel caso non pesato.
-- Se `w` e presente, viene prima convertito con [`_as_float_vector`](as-float-vector.md).
+- Se `w` è presente, viene prima convertito con [`_as_float_vector`](as-float-vector.md).
 - `w` deve avere la stessa forma di `x`.
 - Ogni peso deve essere strettamente positivo.
 - Anche la somma dei pesi deve essere strettamente positiva e finita.
@@ -31,8 +31,8 @@ Centralizza la validazione dei pesi usati nelle statistiche pesate.
 
 - `ValueError` se `w` non ha la stessa forma di `x`
 - `ValueError` se contiene zeri, valori negativi, `NaN` o infiniti
-- `ValueError` se la somma dei pesi non e positiva
+- `ValueError` se la somma dei pesi non è positiva
 
-## Perche resta privata
+## Perché resta privata
 
 Serve a imporre una convenzione comune sui pesi senza introdurre una funzione aggiuntiva nell'API pubblica.

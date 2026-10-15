@@ -61,7 +61,7 @@ msgstr ""
 " new figures."
 
 #: ../../source/checks/plot_utils/display-new-figures.md:17
-msgid "Se `IPython.display` non e disponibile, la funzione non fa nulla."
+msgid "Se `IPython.display` non è disponibile, la funzione non fa nulla."
 msgstr "If `IPython.display` is not available, the function does nothing."
 
 #: ../../source/checks/plot_utils/display-new-figures.md:19
@@ -86,12 +86,12 @@ msgstr "In normal use it does not raise package-specific exceptions."
 
 #: ../../source/checks/plot_utils/display-new-figures.md:26
 msgid ""
-"Se il supporto di visualizzazione non e disponibile, la funzione si comporta"
+"Se il supporto di visualizzazione non è disponibile, la funzione si comporta"
 " come un'operazione senza effetti."
 msgstr "If display support is not available, the function behaves as a no-op."
 
 #: ../../source/checks/plot_utils/display-new-figures.md:28
-msgid "Perche resta privata"
+msgid "Perché resta privata"
 msgstr "Why it remains private"
 
 #: ../../source/checks/plot_utils/display-new-figures.md:30

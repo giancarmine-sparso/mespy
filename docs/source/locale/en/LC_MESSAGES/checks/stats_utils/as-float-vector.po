@@ -33,7 +33,7 @@ msgstr "What problem it solves"
 #: ../../source/checks/stats_utils/as-float-vector.md:16
 msgid ""
 "Normalizza un insieme di dati numerici in ingresso in un array `float64` "
-"monodimensionale e finito. E il controllo di base su cui si appoggiano piu "
+"monodimensionale e finito. È il controllo di base su cui si appoggiano più "
 "moduli del pacchetto."
 msgstr ""
 "Normalizes a numeric input into a one-dimensional, finite `float64` array. "
@@ -52,7 +52,7 @@ msgid "Il risultato deve essere monodimensionale."
 msgstr "The result must be one-dimensional."
 
 #: ../../source/checks/stats_utils/as-float-vector.md:22
-msgid "Se `allow_empty=False`, l'array non puo essere vuoto."
+msgid "Se `allow_empty=False`, l'array non può essere vuoto."
 msgstr "If `allow_empty=False`, the array cannot be empty."
 
 #: ../../source/checks/stats_utils/as-float-vector.md:23
@@ -65,43 +65,49 @@ msgstr "Where it is used"
 
 #: ../../source/checks/stats_utils/as-float-vector.md:27
 msgid ""
-"internamente da quasi tutte le funzioni pubbliche di "
-"[`stats_utils`](../../moduli/stats_utils/index.md)"
+"in tutte le funzioni pubbliche di "
+"[`stats_utils`](../../moduli/stats_utils/index.md), direttamente o tramite "
+"[`variance`](../../moduli/stats_utils/variance.md)"
 msgstr ""
-"internally by almost all public functions in "
-"[`stats_utils`](../../moduli/stats_utils/index.md)"
+"in every public function of "
+"[`stats_utils`](../../moduli/stats_utils/index.md), directly or through "
+"[`variance`](../../moduli/stats_utils/variance.md)"
 
 #: ../../source/checks/stats_utils/as-float-vector.md:28
 msgid "in [`histogram`](../../moduli/plot_utils/histogram.md)"
 msgstr "in [`histogram`](../../moduli/plot_utils/histogram.md)"
 
-#: ../../source/checks/stats_utils/as-float-vector.md:29
-msgid "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md)"
-msgstr "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md)"
+#: ../../source/checks/stats_utils/as-float-vector.md:30
+msgid ""
+"[`lin_fit`](../../moduli/fit_utils/lin-fit.md) non la usa: ha una propria "
+"validazione dei dati in ingresso, più restrittiva."
+msgstr ""
+"[`lin_fit`](../../moduli/fit_utils/lin-fit.md) does not use it: it has its "
+"own, stricter input validation."
 
-#: ../../source/checks/stats_utils/as-float-vector.md:31
+#: ../../source/checks/stats_utils/as-float-vector.md:32
 msgid "Come fallisce"
 msgstr "Failure modes"
 
-#: ../../source/checks/stats_utils/as-float-vector.md:33
+#: ../../source/checks/stats_utils/as-float-vector.md:34
 msgid "`ValueError` se i dati in ingresso non sono monodimensionali"
 msgstr "`ValueError` if the input is not one-dimensional"
 
-#: ../../source/checks/stats_utils/as-float-vector.md:34
+#: ../../source/checks/stats_utils/as-float-vector.md:35
 msgid "`ValueError` se i dati in ingresso sono vuoti quando non ammesso"
 msgstr "`ValueError` if the input is empty when that is not allowed"
 
-#: ../../source/checks/stats_utils/as-float-vector.md:35
+#: ../../source/checks/stats_utils/as-float-vector.md:36
 msgid "`ValueError` se sono presenti `NaN` o infiniti"
 msgstr "`ValueError` if `NaN` values or infinities are present"
 
-#: ../../source/checks/stats_utils/as-float-vector.md:37
-msgid "Perche resta privata"
+#: ../../source/checks/stats_utils/as-float-vector.md:38
+msgid "Perché resta privata"
 msgstr "Why it stays private"
 
-#: ../../source/checks/stats_utils/as-float-vector.md:39
+#: ../../source/checks/stats_utils/as-float-vector.md:40
 msgid ""
-"E un dettaglio infrastrutturale condiviso. Documentarla aiuta a capire il "
+"È un dettaglio infrastrutturale condiviso. Documentarla aiuta a capire il "
 "pacchetto, ma esporla come API pubblica vincolerebbe inutilmente "
 "l'implementazione interna."
 msgstr ""

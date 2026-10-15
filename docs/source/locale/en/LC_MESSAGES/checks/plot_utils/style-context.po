@@ -60,12 +60,19 @@ msgstr "Any other string is passed to Matplotlib as a style name."
 
 #: ../../source/checks/plot_utils/style-context.md:19
 msgid ""
-"Nelle funzioni pubbliche lo stile passa prima da [`_resolve_style`](resolve-"
-"style.md), così anche gli altri stili inclusi possono essere richiamati con "
-"il nome breve."
+"`histogram` passa prima lo stile da [`_resolve_style`](resolve-style.md), "
+"che trasforma i nomi brevi degli stili inclusi, `\"mespy\"` compreso, nel "
+"percorso del file: da `histogram` il ramo `style=\"mespy\"` riceve quindi "
+"già un percorso. `lin_fit` passa invece il nome direttamente; gli stili "
+"inclusi sono comunque disponibili per nome perché `import mespy` li registra"
+" in Matplotlib."
 msgstr ""
-"In public functions the style first goes through [`_resolve_style`](resolve-"
-"style.md), so other bundled styles can also be called with the short name."
+"`histogram` first passes the style through [`_resolve_style`](resolve-"
+"style.md), which turns the short names of the bundled styles, `\"mespy\"` "
+"included, into the file path: when called from `histogram`, the "
+"`style=\"mespy\"` branch therefore already receives a path. `lin_fit` "
+"instead passes the name directly; the bundled styles are still available by "
+"name because `import mespy` registers them in Matplotlib."
 
 #: ../../source/checks/plot_utils/style-context.md:21
 msgid "Dove viene usata"
@@ -100,13 +107,13 @@ msgstr ""
 "that were created and then closes them to avoid double automatic display."
 
 #: ../../source/checks/plot_utils/style-context.md:31
-msgid "Perche resta privata"
+msgid "Perché resta privata"
 msgstr "Why it remains private"
 
 #: ../../source/checks/plot_utils/style-context.md:33
 msgid ""
-"E un dettaglio infrastrutturale condiviso dalle funzioni di visualizzazione "
-"grafica. Documentarlo chiarisce il comportamento del pacchetto, ma non e "
+"È un dettaglio infrastrutturale condiviso dalle funzioni di visualizzazione "
+"grafica. Documentarlo chiarisce il comportamento del pacchetto, ma non è "
 "pensato come interfaccia pubblica stabile."
 msgstr ""
 "It is an infrastructural detail shared by the plotting functions. "

@@ -35,11 +35,11 @@ msgstr ""
 "API."
 
 #: ../../source/checks/index.md:5
-msgid "Perche esiste questa sezione"
+msgid "Perché esiste questa sezione"
 msgstr "Why this section exists"
 
 #: ../../source/checks/index.md:7
-msgid "mostra dove vengono intercettati gli errori piu comuni"
+msgid "mostra dove vengono intercettati gli errori più comuni"
 msgstr "shows where the most common errors are caught"
 
 #: ../../source/checks/index.md:8
@@ -47,7 +47,7 @@ msgid "rende esplicite le dipendenze interne tra moduli"
 msgstr "makes internal dependencies between modules explicit"
 
 #: ../../source/checks/index.md:9
-msgid "aiuta a capire perche le funzioni pubbliche hanno un comportamento coerente"
+msgid "aiuta a capire perché le funzioni pubbliche hanno un comportamento coerente"
 msgstr "helps explain why the public functions behave consistently"
 
 #: ../../source/checks/index.md:11

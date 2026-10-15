@@ -47,7 +47,7 @@ msgid "`figsize` deve essere una sequenza di due elementi."
 msgstr "`figsize` must be a sequence of two elements."
 
 #: ../../source/checks/plot_utils/validate-figsize.md:16
-msgid "Non puo essere una stringa o un oggetto bytes."
+msgid "Non può essere una stringa o un oggetto bytes."
 msgstr "It cannot be a string or a bytes object."
 
 #: ../../source/checks/plot_utils/validate-figsize.md:17
@@ -66,29 +66,25 @@ msgstr ""
 "in [`histogram`](../../moduli/plot_utils/histogram.md) when the figure is "
 "created internally"
 
-#: ../../source/checks/plot_utils/validate-figsize.md:22
-msgid "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) quando `show_plot=True`"
-msgstr "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) when `show_plot=True`"
-
-#: ../../source/checks/plot_utils/validate-figsize.md:24
+#: ../../source/checks/plot_utils/validate-figsize.md:23
 msgid "Come fallisce"
 msgstr "Failure modes"
 
-#: ../../source/checks/plot_utils/validate-figsize.md:26
-msgid "`ValueError` se `figsize` non e una coppia"
+#: ../../source/checks/plot_utils/validate-figsize.md:25
+msgid "`ValueError` se `figsize` non è una coppia"
 msgstr "`ValueError` if `figsize` is not a pair"
 
-#: ../../source/checks/plot_utils/validate-figsize.md:27
+#: ../../source/checks/plot_utils/validate-figsize.md:26
 msgid ""
-"`ValueError` se uno dei valori non e numerico, non e finito oppure non e "
+"`ValueError` se uno dei valori non è numerico, non è finito oppure non è "
 "positivo"
 msgstr "`ValueError` if one of the values is not numeric, not finite, or not positive"
 
-#: ../../source/checks/plot_utils/validate-figsize.md:29
-msgid "Perche resta privata"
+#: ../../source/checks/plot_utils/validate-figsize.md:28
+msgid "Perché resta privata"
 msgstr "Why it stays private"
 
-#: ../../source/checks/plot_utils/validate-figsize.md:31
+#: ../../source/checks/plot_utils/validate-figsize.md:30
 msgid ""
 "Evita di duplicare sempre lo stesso controllo nel codice di visualizzazione "
 "grafica, ma non aggiunge un concetto autonomo per l'utente finale."

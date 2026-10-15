@@ -13,20 +13,21 @@ _as_float_vector(
 
 ## Che problema risolve
 
-Normalizza un insieme di dati numerici in ingresso in un array `float64` monodimensionale e finito. E il controllo di base su cui si appoggiano piu moduli del pacchetto.
+Normalizza un insieme di dati numerici in ingresso in un array `float64` monodimensionale e finito. È il controllo di base su cui si appoggiano più moduli del pacchetto.
 
 ## Contratto sui dati in ingresso
 
 - `values` deve poter essere convertito da `numpy.asarray(..., dtype=float)`.
 - Il risultato deve essere monodimensionale.
-- Se `allow_empty=False`, l'array non puo essere vuoto.
+- Se `allow_empty=False`, l'array non può essere vuoto.
 - Tutti gli elementi devono essere finiti.
 
 ## Dove viene usata
 
-- internamente da quasi tutte le funzioni pubbliche di [`stats_utils`](../../moduli/stats_utils/index.md)
+- in tutte le funzioni pubbliche di [`stats_utils`](../../moduli/stats_utils/index.md), direttamente o tramite [`variance`](../../moduli/stats_utils/variance.md)
 - in [`histogram`](../../moduli/plot_utils/histogram.md)
-- in [`lin_fit`](../../moduli/fit_utils/lin-fit.md)
+
+[`lin_fit`](../../moduli/fit_utils/lin-fit.md) non la usa: ha una propria validazione dei dati in ingresso, più restrittiva.
 
 ## Come fallisce
 
@@ -34,6 +35,6 @@ Normalizza un insieme di dati numerici in ingresso in un array `float64` monodim
 - `ValueError` se i dati in ingresso sono vuoti quando non ammesso
 - `ValueError` se sono presenti `NaN` o infiniti
 
-## Perche resta privata
+## Perché resta privata
 
-E un dettaglio infrastrutturale condiviso. Documentarla aiuta a capire il pacchetto, ma esporla come API pubblica vincolerebbe inutilmente l'implementazione interna.
+È un dettaglio infrastrutturale condiviso. Documentarla aiuta a capire il pacchetto, ma esporla come API pubblica vincolerebbe inutilmente l'implementazione interna.

@@ -66,34 +66,30 @@ msgstr ""
 "in [`histogram`](../../moduli/plot_utils/histogram.md) for `xlim`, `ylim`, "
 "and `hist_range`"
 
-#: ../../source/checks/plot_utils/validate-axis-limits.md:28
-msgid "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) per `xlim` e `ylim`"
-msgstr "in [`lin_fit`](../../moduli/fit_utils/lin-fit.md) for `xlim` and `ylim`"
-
-#: ../../source/checks/plot_utils/validate-axis-limits.md:30
+#: ../../source/checks/plot_utils/validate-axis-limits.md:29
 msgid "Come fallisce"
 msgstr "Failure modes"
 
-#: ../../source/checks/plot_utils/validate-axis-limits.md:32
-msgid "`ValueError` se `limits` non e una sequenza valida"
+#: ../../source/checks/plot_utils/validate-axis-limits.md:31
+msgid "`ValueError` se `limits` non è una sequenza valida"
 msgstr "`ValueError` if `limits` is not a valid sequence"
 
-#: ../../source/checks/plot_utils/validate-axis-limits.md:33
+#: ../../source/checks/plot_utils/validate-axis-limits.md:32
 msgid "`ValueError` se non contiene esattamente due elementi"
 msgstr "`ValueError` if it does not contain exactly two elements"
 
-#: ../../source/checks/plot_utils/validate-axis-limits.md:34
+#: ../../source/checks/plot_utils/validate-axis-limits.md:33
 msgid "`ValueError` se contiene valori non finiti"
 msgstr "`ValueError` if it contains non-finite values"
 
-#: ../../source/checks/plot_utils/validate-axis-limits.md:36
-msgid "Perche resta privata"
+#: ../../source/checks/plot_utils/validate-axis-limits.md:35
+msgid "Perché resta privata"
 msgstr "Why it stays private"
 
-#: ../../source/checks/plot_utils/validate-axis-limits.md:38
+#: ../../source/checks/plot_utils/validate-axis-limits.md:37
 msgid ""
-"E un validatore di supporto per la parte grafica. La sua utilita e interna, "
-"ma documentarla rende piu leggibili le regole comuni di visualizzazione "
+"È un validatore di supporto per la parte grafica. La sua utilità è interna, "
+"ma documentarla rende più leggibili le regole comuni di visualizzazione "
 "grafica."
 msgstr ""
 "It is a support validator for the plotting layer. Its usefulness is "
