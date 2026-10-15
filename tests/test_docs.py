@@ -15,16 +15,33 @@ DOCS_SOURCE = ROOT / "docs" / "source"
 EN_CATALOGS = DOCS_SOURCE / "locale" / "en" / "LC_MESSAGES"
 
 
+# Type aliases of the source that the reference pages spell out in full.
+SIGNATURE_ALIASES = {"MissingPolicy": 'Literal["error", "drop", "allow"]'}
+
+
+class _ExpandAliases(ast.NodeTransformer):
+    def visit_Name(self, node):
+        if node.id in SIGNATURE_ALIASES:
+            return ast.parse(SIGNATURE_ALIASES[node.id], mode="eval").body
+        return node
+
+
 @pytest.mark.parametrize("module,function,page", [
     ("fit_utils", "lin_fit", "moduli/fit_utils/lin-fit.md"),
     ("plot_utils", "histogram", "moduli/plot_utils/histogram.md"),
+    ("io_utils", "load_csv", "moduli/io_utils/load-csv.md"),
+    ("stats_utils", "median", "moduli/stats_utils/median.md"),
+    ("stats_utils", "weighted_mean", "moduli/stats_utils/weighted-mean.md"),
+    ("stats_utils", "variance", "moduli/stats_utils/variance.md"),
+    ("stats_utils", "covariance", "moduli/stats_utils/covariance.md"),
+    ("stats_utils", "standard_deviation", "moduli/stats_utils/standard-deviation.md"),
 ])
 def test_core_reference_signature_matches_current_source(module, function, page):
     source = ast.parse((ROOT / "src/mespy" / f"{module}.py").read_text())
-    implementation = next(
+    implementation = _ExpandAliases().visit(next(
         node for node in source.body
         if isinstance(node, ast.FunctionDef) and node.name == function
-    )
+    ))
     code = re.search(
         r"```python\n(.*?)\n```", (DOCS_SOURCE / page).read_text(), re.DOTALL
     ).group(1).strip()

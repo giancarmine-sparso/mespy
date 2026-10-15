@@ -18,6 +18,6 @@ La creazione dei grafici usa il [contesto di stile](../../checks/plot_utils/styl
 :hidden:
 :maxdepth: 2
 
-linear-fit-result
 lin-fit
+linear-fit-result
 ```

@@ -153,7 +153,7 @@ Si tratta dell'approssimazione storica WLS con ripesatura iterativa, non del met
 
 ### Valutazione numerica
 
-L'implementazione risolve i momenti pesati centrati e riscalati mediante potenze di due, conservando le coordinate locali per residui e previsioni. OLS e WLS con sole incertezze su y non eseguono iterazioni; la propagazione orizzontale facoltativa ripete questo risolutore WLS. Valori in ingresso finiti e distinti sono necessari, ma non garantiscono che tutte le grandezze numeriche richieste siano rappresentabili: scale estreme possono sollevare `FloatingPointError`, anche quando la normalizzazione delle incertezze ridurrebbe a zero un peso positivo.
+L'implementazione risolve i momenti pesati centrati e riscalati mediante potenze di due, conservando le coordinate locali per residui e previsioni. OLS e WLS con sole incertezze su y non eseguono iterazioni; la propagazione orizzontale facoltativa ripete questo risolutore WLS. Valori in ingresso finiti e distinti sono necessari, ma non garantiscono che tutte le grandezze numeriche richieste siano rappresentabili: scale estreme possono sollevare `FloatingPointError`, per esempio quando la normalizzazione delle incertezze ridurrebbe a zero un peso positivo.
 
 (lin-fit-diagnostics)=
 ## Diagnostica statistica
@@ -269,7 +269,7 @@ I numeri in virgola mobile vengono serializzati senza arrotondamenti di presenta
 (lin-fit-manual-export)=
 ### Esportazione TOML manuale
 
-`result.to_toml(path: str | Path) -> Path` scrive separatamente lo stesso documento con schema 2. Un suffisso mancante diventa `.toml`; un suffisso esistente viene conservato. Sovrascrive atomicamente un file esistente e restituisce il `Path` di destinazione.
+`result.to_toml(path: str | Path) -> Path` scrive separatamente lo stesso documento dell'esportazione automatica, con schema 2, oppure 3 se è stato fornito `sigma_x`. Un suffisso mancante diventa `.toml`; un suffisso esistente viene conservato. Sovrascrive atomicamente un file esistente e restituisce il `Path` di destinazione.
 
 A differenza di `output`, questo metodo **non crea le directory superiori mancanti** e non genera un PDF. Scrive i dati del fit conservati e le opzioni originali del grafico, anche se gli array in ingresso o la figura sono stati modificati nel frattempo.
 

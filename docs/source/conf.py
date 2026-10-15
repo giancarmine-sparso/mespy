@@ -63,7 +63,7 @@ GUIDE_PAGES = {
         "eyebrow": "API Reference / mespy.lin_fit", "reference": "lin_fit",
     },
     "moduli/fit_utils/linear-fit-result": {
-        "eyebrow": "API Reference / mespy.LinearFitResult", "reference": "lin_fit",
+        "eyebrow": "API Reference / mespy.fit_utils.LinearFitResult", "reference": "lin_fit",
     },
     "moduli/plot_utils/histogram": {
         "eyebrow": "API Reference / mespy.histogram", "reference": "histogram",
@@ -225,7 +225,6 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx_copybutton",
     "myst_nb",
-    "sphinx.ext.intersphinx",
 ]
 
 nb_execution_mode = "auto"

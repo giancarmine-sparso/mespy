@@ -18,7 +18,7 @@ L'oggetto risultato immutabile restituito da [`lin_fit`](lin-fit.md). I suoi cam
 | `p_value` | Probabilità nella coda superiore del chi quadro, oppure `None` in OLS o con zero gradi di libertà. Approssimata in WLS iterativo. |
 | `dof` | Numero di osservazioni meno due. |
 | `fit_method` | `"ols"` o `"wls"`. |
-| `x_error_method` | `"none"` o `"iterate"`; un campo da passare solo per nome, con valore predefinito `"none"`. |
+| `x_error_method` | `"none"` o `"iterate"`: il trattamento delle incertezze orizzontali scelto in `lin_fit`. |
 | `figure` | Figura Matplotlib, oppure `None` quando `plot=False`. |
 
 Per `x_error_method="iterate"`, la covarianza dei parametri, la banda e l'interpretazione del chi quadro e del valore p appartengono all'approssimazione storica della varianza efficace. Non sono risultati York/ODR validati. `fit_method` rimane `"wls"` e `estimated_sigma` rimane `None`.
@@ -42,6 +42,6 @@ result.to_toml("fit_results.toml")
 
 La directory di destinazione deve già esistere. Un'estensione mancante diventa `.toml`; una destinazione esistente viene sostituita atomicamente. Il metodo restituisce il `Path` del file scritto.
 
-Il documento contiene `[mespy]`, `[fit]`, `[diagnostics]` e `[residuals]`, oltre a `[data]` e `[plot]` per i risultati prodotti da `lin_fit`. Le incertezze in ingresso vengono conservate nella loro forma originale dopo l'espansione degli scalari e i risultati in virgola mobile mantengono la piena precisione. Le informazioni diagnostiche non definite vengono omesse. Le modifiche alla figura e la configurazione Matplotlib completa non vengono serializzate.
+Il documento contiene le tabelle `[mespy]`, `[data]`, `[fit]`, `[diagnostics]`, `[residuals]` e `[plot]`. Le incertezze in ingresso vengono conservate nella loro forma originale dopo l'espansione degli scalari e i risultati in virgola mobile mantengono la piena precisione. Le informazioni diagnostiche non definite vengono omesse. Le modifiche alla figura e la configurazione Matplotlib completa non vengono serializzate.
 
-Senza `sigma_x`, le esportazioni mantengono lo schema 2. Con `sigma_x`, lo schema 3 memorizza anche `[data].sigma_x` e `[fit].x_error_method`, compreso `"none"` quando sono state soltanto visualizzate barre orizzontali. I risultati iterativi costruiti manualmente usano lo schema 3 e registrano il metodo senza inventare dati in ingresso.
+Senza `sigma_x`, le esportazioni mantengono lo schema 2. Con `sigma_x`, lo schema 3 memorizza anche `[data].sigma_x` e `[fit].x_error_method`, compreso `"none"` quando sono state soltanto visualizzate barre orizzontali.
