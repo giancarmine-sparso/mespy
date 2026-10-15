@@ -299,6 +299,9 @@ def histogram(
         If ``True``, shows the legend (default ``True``).
     show_grid : bool, optional
         If ``True``, shows the grid (default ``True``).
+        The active style selects the grid axes and major/minor ticks;
+        an explicit ``grid_alpha`` enables the y-axis grid with that opacity.
+        ``False`` disables both major and minor grid lines.
     xlim : array-like or None, optional
         Pair ``(min, max)`` for the x-axis limits. ``None`` means
         automatic limits (default ``None``).
@@ -539,11 +542,18 @@ def histogram(
             title_kwargs["pad"] = title_pad
         ax.set_title(title, **title_kwargs)
 
+        from matplotlib import rcParams
+
         if not show_grid:
-            ax.grid(False)
-        elif grid_alpha is not None:
-            ax.grid(True, axis="y", alpha=grid_alpha)
-        # altrimenti: la griglia è gestita dallo stile (axes.grid, grid.alpha, ...)
+            ax.grid(False, which="both")
+        else:
+            grid_kwargs = {
+                "axis": rcParams["axes.grid.axis"],
+                "which": rcParams["axes.grid.which"],
+            }
+            if grid_alpha is not None:
+                grid_kwargs.update(axis="y", alpha=grid_alpha)
+            ax.grid(True, **grid_kwargs)
 
         if show_legend:
             legend_kwargs: dict = {}

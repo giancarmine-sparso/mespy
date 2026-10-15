@@ -356,6 +356,36 @@ def test_histogram_custom_ylabel_and_bar_styles(stat):
     plt.close(fig)
 
 
+@pytest.mark.parametrize("stat", STAT_MODES)
+@pytest.mark.parametrize("grid_axis", ("x", "y", "both"))
+def test_histogram_show_grid_enables_style_axes_even_when_grid_is_disabled(stat, grid_axis):
+    with plt.rc_context({"axes.grid": False, "axes.grid.axis": grid_axis}):
+        fig, ax = plt.subplots()
+        histogram([0, 1, 2], stat, ax=ax, style=None, show_grid=True)
+
+        assert any(line.get_visible() for line in ax.get_xgridlines()) == (
+            grid_axis in ("x", "both")
+        )
+        assert any(line.get_visible() for line in ax.get_ygridlines()) == (
+            grid_axis in ("y", "both")
+        )
+        assert matplotlib.rcParams["axes.grid"] is False
+        plt.close(fig)
+
+
+def test_histogram_show_grid_false_disables_existing_major_and_minor_grids():
+    fig, ax = plt.subplots()
+    ax.minorticks_on()
+    ax.grid(True, which="both")
+
+    histogram([0, 1, 2], ax=ax, style=None, show_grid=False, grid_alpha=0.3)
+
+    for axis in (ax.xaxis, ax.yaxis):
+        for tick in axis.get_major_ticks() + axis.get_minor_ticks():
+            assert not tick.gridline.get_visible()
+    plt.close(fig)
+
+
 @pytest.mark.parametrize("stat", ["probability", "density"])
 def test_histogram_normalized_bars_preserve_mespy_style_and_full_sample_statistics(stat):
     data = [-2, 0, 0.5, 1, 2.5, 3, 9]
