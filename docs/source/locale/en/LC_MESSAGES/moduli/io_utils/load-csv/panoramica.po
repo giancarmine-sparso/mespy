@@ -69,7 +69,7 @@ msgstr ""
 
 #: ../../source/moduli/io_utils/load-csv/panoramica.md:14
 msgid ""
-"`missing`: politica sui `NaN`. Puo essere `\"error\"`, `\"drop\"` oppure "
+"`missing`: politica sui `NaN`. Può essere `\"error\"`, `\"drop\"` oppure "
 "`\"allow\"`."
 msgstr ""
 "`missing`: policy for `NaN` values. It can be `\"error\"`, `\"drop\"`, or "
@@ -91,7 +91,7 @@ msgstr "Returns"
 
 #: ../../source/moduli/io_utils/load-csv/panoramica.md:20
 msgid ""
-"Un `pd.DataFrame` con i dati caricati e, se richiesto, gia rinominati o "
+"Un `pd.DataFrame` con i dati caricati e, se richiesto, già rinominati o "
 "filtrati."
 msgstr ""
 "A `pd.DataFrame` with the loaded data and, if requested, already renamed or "
@@ -102,11 +102,11 @@ msgid "Errori ed eccezioni"
 msgstr "Errors and exceptions"
 
 #: ../../source/moduli/io_utils/load-csv/panoramica.md:24
-msgid "`ValueError` se `missing` non e una policy supportata."
+msgid "`ValueError` se `missing` non è una policy supportata."
 msgstr "`ValueError` if `missing` is not a supported policy."
 
 #: ../../source/moduli/io_utils/load-csv/panoramica.md:25
-msgid "`ValueError` se una o piu colonne richieste non sono presenti."
+msgid "`ValueError` se una o più colonne richieste non sono presenti."
 msgstr "`ValueError` if one or more required columns are missing."
 
 #: ../../source/moduli/io_utils/load-csv/panoramica.md:26

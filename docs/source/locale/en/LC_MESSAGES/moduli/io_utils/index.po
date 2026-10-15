@@ -62,13 +62,13 @@ msgstr "What it exports"
 #: ../../source/moduli/io_utils/index.md:16
 msgid ""
 "[`load_csv`](load-csv.md): interfaccia semplificata di `pandas.read_csv` con"
-" un contratto piu piccolo e prevedibile."
+" un contratto più piccolo e prevedibile."
 msgstr ""
 "[`load_csv`](load-csv.md): wrapper di `pandas.read_csv` con un contratto piu"
 " piccolo e prevedibile."
 
 #: ../../source/moduli/io_utils/index.md:18
-msgid "Responsabilita del modulo"
+msgid "Responsabilità del modulo"
 msgstr "Module responsibilities"
 
 #: ../../source/moduli/io_utils/index.md:20
@@ -97,7 +97,7 @@ msgstr "Relations with the rest of the package"
 
 #: ../../source/moduli/io_utils/index.md:28
 msgid ""
-"`io_utils.py` e il punto di ingresso per trasformare dati su disco in un "
+"`io_utils.py` è il punto di ingresso per trasformare dati su disco in un "
 "`DataFrame` da passare poi alle funzioni di "
 "[`stats_utils`](../stats_utils/index.md), "
 "[`plot_utils`](../plot_utils/index.md) e "

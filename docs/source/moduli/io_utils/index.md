@@ -13,9 +13,9 @@
 
 ## Cosa espone
 
-- [`load_csv`](load-csv.md): interfaccia semplificata di `pandas.read_csv` con un contratto piu piccolo e prevedibile.
+- [`load_csv`](load-csv.md): interfaccia semplificata di `pandas.read_csv` con un contratto più piccolo e prevedibile.
 
-## Responsabilita del modulo
+## Responsabilità del modulo
 
 - leggere un file CSV da percorso stringa o `Path`
 - supportare separatori e separatori decimali configurabili
@@ -25,7 +25,7 @@
 
 ## Relazioni con il resto del pacchetto
 
-`io_utils.py` e il punto di ingresso per trasformare dati su disco in un `DataFrame` da passare poi alle funzioni di [`stats_utils`](../stats_utils/index.md), [`plot_utils`](../plot_utils/index.md) e [`fit_utils`](../fit_utils/index.md).
+`io_utils.py` è il punto di ingresso per trasformare dati su disco in un `DataFrame` da passare poi alle funzioni di [`stats_utils`](../stats_utils/index.md), [`plot_utils`](../plot_utils/index.md) e [`fit_utils`](../fit_utils/index.md).
 
 ## Pagina di dettaglio
 

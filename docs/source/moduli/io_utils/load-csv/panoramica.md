@@ -11,18 +11,18 @@ Caricare un file CSV in un `DataFrame` pandas con un insieme ristretto di opzion
 - `decimal`: separatore decimale, utile per file con formato italiano.
 - `rename_columns`: mappa `{nome_origine: nome_destinazione}` applicata dopo il caricamento.
 - `required_columns`: elenco di colonne che devono esistere dopo l'eventuale rinomina.
-- `missing`: politica sui `NaN`. Puo essere `"error"`, `"drop"` oppure `"allow"`.
+- `missing`: politica sui `NaN`. Può essere `"error"`, `"drop"` oppure `"allow"`.
 - `comment`: carattere di commento opzionale per `read_csv`.
 - `skip_initial_space`: se vero, ignora gli spazi subito dopo il separatore.
 
 ## Restituisce
 
-Un `pd.DataFrame` con i dati caricati e, se richiesto, gia rinominati o filtrati.
+Un `pd.DataFrame` con i dati caricati e, se richiesto, già rinominati o filtrati.
 
 ## Errori ed eccezioni
 
-- `ValueError` se `missing` non e una policy supportata.
-- `ValueError` se una o piu colonne richieste non sono presenti.
+- `ValueError` se `missing` non è una policy supportata.
+- `ValueError` se una o più colonne richieste non sono presenti.
 - `ValueError` se il file contiene valori mancanti e `missing="error"`.
 
 ## Esempio
