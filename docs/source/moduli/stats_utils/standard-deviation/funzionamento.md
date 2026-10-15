@@ -1,8 +1,8 @@
 # Funzionamento
 
-Questa pagina descrive il flusso interno di `standard_deviation` e il modo in cui la funzione delega quasi tutto il lavoro a [`variance`](../variance.md). A differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere i parametri, ma mostrare perche il comportamento pratico della deviazione standard coincide quasi interamente con quello della varianza.
+Questa pagina descrive il flusso interno di `standard_deviation` e il modo in cui la funzione delega quasi tutto il lavoro a [`variance`](../variance.md). A differenza di [Panoramica](panoramica.md), qui l'obiettivo non è ripetere i parametri, ma mostrare perché il comportamento pratico della deviazione standard coincide quasi interamente con quello della varianza.
 
-I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. Anche se [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) non compare direttamente nel corpo di `standard_deviation`, entra in gioco subito attraverso `variance(...)`; lo stesso vale per [`_validate_weights`](../../../checks/stats_utils/validate-weights.md) quando `w` e presente.
+I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. Anche se [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) non compare direttamente nel corpo di `standard_deviation`, entra in gioco subito attraverso `variance(...)`; lo stesso vale per [`_validate_weights`](../../../checks/stats_utils/validate-weights.md) quando `w` è presente.
 
 ## Sequenza di esecuzione
 
@@ -28,7 +28,7 @@ Questo frammento mostra che `standard_deviation` non reimplementa nessuna parte 
 
 - Non valida direttamente `x`: la validazione avviene dentro `variance(...)`.
 - Non gestisce direttamente i pesi: anche questo controllo e delegato.
-- Non distingue con rami propri tra caso pesato e non pesato: eredita i due rami gia presenti nella varianza.
+- Non distingue con rami propri tra caso pesato e non pesato: eredita i due rami già presenti nella varianza.
 
 ## Formula implementata
 

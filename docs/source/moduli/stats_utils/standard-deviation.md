@@ -12,7 +12,7 @@ standard_deviation(
 
 `standard_deviation` restituisce la deviazione standard come radice quadrata della varianza calcolata da [`variance`](variance.md).
 
-Questa pagina offre un accesso rapido alla funzione. Le informazioni d'uso complete sono in [Panoramica](standard-deviation/panoramica.md), mentre [Funzionamento](standard-deviation/funzionamento.md) e disponibile come sottopagina separata.
+[Panoramica](standard-deviation/panoramica.md) riassume scopo, parametri, errori ed esempio d'uso; [Funzionamento](standard-deviation/funzionamento.md) descrive passo per passo il flusso interno e le formule implementate.
 
 ```{toctree}
 :hidden:

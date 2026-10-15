@@ -8,7 +8,7 @@ Calcolare la varianza di `x`, con supporto sia al caso non pesato sia al caso pe
 
 - `x`: dati numerici.
 - `w`: pesi opzionali.
-- `ddof`: correzione sul denominatore. Nel caso non pesato il denominatore e `len(x) - ddof`; nel caso pesato e `sum(w) - ddof`.
+- `ddof`: correzione sul denominatore. Nel caso non pesato il denominatore è `len(x) - ddof`; nel caso pesato è `sum(w) - ddof`.
 
 ## Restituisce
 
@@ -16,7 +16,7 @@ Un `float` con la varianza.
 
 ## Errori ed eccezioni
 
-- `ValueError` se `x` e vuoto o non finito.
+- `ValueError` se `x` è vuoto o non finito.
 - `ValueError` se `w` e invalido.
 - `ValueError` se il denominatore diventa minore o uguale a zero.
 
@@ -33,5 +33,5 @@ print(variance(x, ddof=1))  # correzione di Bessel
 
 ## Note
 
-- Il valore predefinito `ddof=0` e coerente con l'impostazione descrittiva dell'intero pacchetto.
+- Il valore predefinito `ddof=0` è coerente con l'impostazione descrittiva dell'intero pacchetto.
 - La versione pesata usa la media pesata interna, non `numpy.var`.

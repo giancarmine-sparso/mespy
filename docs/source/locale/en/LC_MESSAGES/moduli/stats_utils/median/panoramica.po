@@ -55,11 +55,11 @@ msgid "Errori ed eccezioni"
 msgstr "Errors and exceptions"
 
 #: ../../source/moduli/stats_utils/median/panoramica.md:17
-msgid "`ValueError` se `x` e vuoto."
+msgid "`ValueError` se `x` è vuoto."
 msgstr "`ValueError` if `x` is empty."
 
 #: ../../source/moduli/stats_utils/median/panoramica.md:18
-msgid "`ValueError` se `x` non e monodimensionale."
+msgid "`ValueError` se `x` non è monodimensionale."
 msgstr "`ValueError` if `x` is not one-dimensional."
 
 #: ../../source/moduli/stats_utils/median/panoramica.md:19

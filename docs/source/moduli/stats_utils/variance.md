@@ -12,7 +12,7 @@ variance(
 
 `variance` calcola la varianza di un campione nel caso non pesato o, in alternativa, nel caso pesato con denominatore corretto da `ddof`.
 
-Questa pagina resta il punto di accesso rapido. La documentazione completa e in [Panoramica](variance/panoramica.md), mentre [Funzionamento](variance/funzionamento.md) e disponibile come sottopagina separata.
+[Panoramica](variance/panoramica.md) riassume scopo, parametri, errori ed esempio d'uso; [Funzionamento](variance/funzionamento.md) descrive passo per passo il flusso interno e le formule implementate.
 
 ```{toctree}
 :hidden:

@@ -28,7 +28,7 @@ msgid ""
 "vengono applicate validazione dei dati in ingresso, scelta tra ramo non "
 "pesato e ramo pesato, controllo del denominatore e calcolo finale degli "
 "scarti quadratici. A differenza di [Panoramica](panoramica.md), qui "
-"l'obiettivo non e ripetere la firma, ma mostrare come la funzione costruisce"
+"l'obiettivo non è ripetere la firma, ma mostrare come la funzione costruisce"
 " davvero la varianza."
 msgstr ""
 "This page describes the internal flow of `variance` and the order in which "
@@ -65,7 +65,7 @@ msgstr "Converts `x` into a one-dimensional, finite `float64` vector."
 
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:12
 msgid ""
-"Se `w` e presente, lo valida come vettore compatibile, strettamente positivo"
+"Se `w` è presente, lo valida come vettore compatibile, strettamente positivo"
 " e con somma positiva."
 msgstr ""
 "If `w` is provided, it validates it as a compatible vector with strictly "
@@ -78,26 +78,26 @@ msgstr ""
 "ddof`."
 
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:14
-msgid "Se `w` e presente, usa il ramo pesato con denominatore `sum(w) - ddof`."
+msgid "Se `w` è presente, usa il ramo pesato con denominatore `sum(w) - ddof`."
 msgstr ""
 "If `w` is provided, it uses the weighted branch with denominator `sum(w) - "
 "ddof`."
 
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:15
 msgid ""
-"In entrambi i rami calcola prima la media coerente con il caso corrente, poi"
-" la somma degli scarti quadratici."
+"In entrambi i rami controlla subito il denominatore: se è minore o uguale a "
+"zero, interrompe il calcolo con `ValueError`."
 msgstr ""
-"In both branches it first computes the mean consistent with the current "
-"case, then the sum of squared deviations."
+"In both branches it checks the denominator right away: if it is less than or"
+" equal to zero, it stops the calculation with `ValueError`."
 
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:16
 msgid ""
-"Se il denominatore risulta minore o uguale a zero, interrompe il calcolo con"
-" `ValueError`."
+"Calcola la media coerente con il ramo selezionato, poi la somma corretta "
+"degli scarti quadratici divisa per il denominatore."
 msgstr ""
-"If the denominator is less than or equal to zero, it stops the calculation "
-"with `ValueError`."
+"It computes the mean consistent with the selected branch, then the corrected"
+" sum of squared deviations divided by the denominator."
 
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:18
 msgid "Ramo non pesato e ramo pesato"
@@ -105,19 +105,19 @@ msgstr "Unweighted and weighted branches"
 
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:49
 msgid ""
-"Il cuore della funzione e la separazione netta tra due definizioni operative"
+"Il cuore della funzione è la separazione netta tra due definizioni operative"
 " della varianza."
 msgstr ""
 "The core of the function is the clear separation between two operational "
 "definitions of variance."
 
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:51
-msgid "Nel caso non pesato la cardinalita effettiva e `n = values.size`."
+msgid "Nel caso non pesato la cardinalità effettiva è `n = values.size`."
 msgstr "In the unweighted case the effective cardinality is `n = values.size`."
 
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:52
 msgid ""
-"Nel caso pesato la quantita di normalizzazione diventa `w_sum = "
+"Nel caso pesato la quantità di normalizzazione diventa `w_sum = "
 "sum(weights)`."
 msgstr ""
 "In the weighted case the normalization quantity becomes `w_sum = "
@@ -179,7 +179,7 @@ msgstr ""
 "deviations."
 
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:75
-msgid "Stabilita numerica"
+msgid "Stabilità numerica"
 msgstr "Numerical stability"
 
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:77
@@ -207,7 +207,7 @@ msgstr ""
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:85
 msgid ""
 "con $w_i = 1$ nel ramo non pesato. In aritmetica esatta $\\sum_i w_i d_i = "
-"0$, quindi il termine sottratto e nullo e la definizione resta quella "
+"0$, quindi il termine sottratto è nullo e la definizione resta quella "
 "scritta sopra."
 msgstr ""
 "with $w_i = 1$ in the unweighted branch. In exact arithmetic $\\sum_i w_i "
@@ -230,9 +230,9 @@ msgstr ""
 
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:89
 msgid ""
-"Il limite che resta e la rappresentazione: se le differenze tra i dati sono "
-"piu piccole dell'ulp dell'offset, l'informazione e gia persa in `float64` e "
-"nessun algoritmo puo recuperarla."
+"Il limite che resta è la rappresentazione: se le differenze tra i dati sono "
+"più piccole dell'ulp dell'offset, l'informazione è già persa in `float64` e "
+"nessun algoritmo può recuperarla."
 msgstr ""
 "The remaining limit is representation: if the differences between data "
 "points are smaller than the ulp of the offset, the information is already "
@@ -245,7 +245,7 @@ msgstr "Role of `ddof` and error conditions"
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:93
 msgid ""
 "Il parametro `ddof` non modifica solo l'interpretazione statistica del "
-"risultato: puo rendere il calcolo impossibile."
+"risultato: può rendere il calcolo impossibile."
 msgstr ""
 "The `ddof` parameter does not only change the statistical interpretation of "
 "the result: it can make the computation impossible."
@@ -268,7 +268,7 @@ msgstr ""
 
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:99
 msgid ""
-"Il valore predefinito `ddof=0` e coerente con l'impostazione descrittiva del"
+"Il valore predefinito `ddof=0` è coerente con l'impostazione descrittiva del"
 " pacchetto: la funzione calcola per impostazione predefinita una varianza di"
 " popolazione, non la versione con correzione di Bessel."
 msgstr ""
@@ -304,7 +304,7 @@ msgstr ""
 
 #: ../../source/moduli/stats_utils/variance/funzionamento.md:107
 msgid ""
-"La funzione accetta `ddof` anche come `float`, quindi la correzione non e "
+"La funzione accetta `ddof` anche come `float`, quindi la correzione non è "
 "limitata a interi."
 msgstr ""
 "The function also accepts `ddof` as a `float`, so the correction is not "

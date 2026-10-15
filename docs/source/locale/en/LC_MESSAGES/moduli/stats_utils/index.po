@@ -27,8 +27,8 @@ msgid ""
 "`stats_utils.py` raccoglie le statistiche descrittive di base del pacchetto "
 "e i validatori interni riusati anche da altri moduli."
 msgstr ""
-"`stats_utils.py` collects the package basic descriptive statistics and the "
-"internal validators reused by other modules as well."
+"`stats_utils.py` collects the package’s basic descriptive statistics and the"
+" internal validators reused by other modules as well."
 
 #: ../../source/moduli/stats_utils/index.md:5
 msgid "Import principali"

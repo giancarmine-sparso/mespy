@@ -48,8 +48,8 @@ msgstr "`w`: optional weights."
 
 #: ../../source/moduli/stats_utils/variance/panoramica.md:11
 msgid ""
-"`ddof`: correzione sul denominatore. Nel caso non pesato il denominatore e "
-"`len(x) - ddof`; nel caso pesato e `sum(w) - ddof`."
+"`ddof`: correzione sul denominatore. Nel caso non pesato il denominatore è "
+"`len(x) - ddof`; nel caso pesato è `sum(w) - ddof`."
 msgstr ""
 "`ddof`: correction applied to the denominator. In the unweighted case the "
 "denominator is `len(x) - ddof`; in the weighted case it is `sum(w) - ddof`."
@@ -67,7 +67,7 @@ msgid "Errori ed eccezioni"
 msgstr "Errors and exceptions"
 
 #: ../../source/moduli/stats_utils/variance/panoramica.md:19
-msgid "`ValueError` se `x` e vuoto o non finito."
+msgid "`ValueError` se `x` è vuoto o non finito."
 msgstr "`ValueError` if `x` is empty or not finite."
 
 #: ../../source/moduli/stats_utils/variance/panoramica.md:20
@@ -88,7 +88,7 @@ msgstr "Notes"
 
 #: ../../source/moduli/stats_utils/variance/panoramica.md:36
 msgid ""
-"Il valore predefinito `ddof=0` e coerente con l'impostazione descrittiva "
+"Il valore predefinito `ddof=0` è coerente con l'impostazione descrittiva "
 "dell'intero pacchetto."
 msgstr ""
 "The default `ddof=0` is consistent with the descriptive convention used "

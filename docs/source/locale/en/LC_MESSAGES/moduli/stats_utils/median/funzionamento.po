@@ -26,7 +26,7 @@ msgstr "Implementation"
 msgid ""
 "Questa pagina descrive il flusso interno di `median` e l'ordine con cui "
 "vengono applicate validazione e calcolo finale della mediana. A differenza "
-"di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere la firma "
+"di [Panoramica](panoramica.md), qui l'obiettivo non è ripetere la firma "
 "della funzione, ma mostrare come il risultato viene costruito davvero."
 msgstr ""
 "This page describes the internal flow of `median` and the order in which "
@@ -37,7 +37,7 @@ msgstr ""
 #: ../../source/moduli/stats_utils/median/funzionamento.md:5
 msgid ""
 "I frammenti seguenti sono estratti dal codice attuale di "
-"`src/mespy/stats_utils.py`. L'unica funzione di supporto coinvolta e "
+"`src/mespy/stats_utils.py`. L'unica funzione di supporto coinvolta è "
 "[`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), che "
 "definisce il contratto numerico di ingresso prima della delega finale a "
 "NumPy."
@@ -84,7 +84,7 @@ msgid "Validazione e delega a NumPy"
 msgstr "Validation and delegation to NumPy"
 
 #: ../../source/moduli/stats_utils/median/funzionamento.md:24
-msgid "`median` e la funzione piu lineare dell'intero modulo."
+msgid "`median` è la funzione più lineare dell'intero modulo."
 msgstr "`median` is the most straightforward function in the whole module."
 
 #: ../../source/moduli/stats_utils/median/funzionamento.md:26
@@ -97,7 +97,7 @@ msgstr ""
 
 #: ../../source/moduli/stats_utils/median/funzionamento.md:27
 msgid ""
-"Tutta la robustezza dell'API e concentrata nella prima riga: "
+"Tutta la robustezza dell'API è concentrata nella prima riga: "
 "`_as_float_vector(...)` impone che `x` sia un array numerico, "
 "monodimensionale, non vuoto e composto solo da valori finiti."
 msgstr ""
@@ -118,8 +118,8 @@ msgid ""
 "La conversione finale a `float` uniforma il tipo di ritorno dell'API "
 "pubblica, evitando di esporre uno scalare NumPy."
 msgstr ""
-"The final cast at `float` smooths the return type of the public API, "
-"avoiding exposing a NumPy scalar."
+"The final conversion to `float` makes the public API return type consistent "
+"and avoids exposing a NumPy scalar."
 
 #: ../../source/moduli/stats_utils/median/funzionamento.md:31
 msgid "Casi limite e comportamento pratico"
@@ -133,7 +133,7 @@ msgstr "This feature does not implement special policies beyond initial validati
 
 #: ../../source/moduli/stats_utils/median/funzionamento.md:35
 msgid ""
-"Se `x` e vuoto, il fallimento avviene prima di chiamare `np.median(...)`, "
+"Se `x` è vuoto, il fallimento avviene prima di chiamare `np.median(...)`, "
 "quindi il pacchetto evita avvisi o `nan` silenziosi."
 msgstr ""
 "If `x` is empty, the failure occurs before calling `np.median(...)`, so the "
@@ -151,16 +151,16 @@ msgstr ""
 #: ../../source/moduli/stats_utils/median/funzionamento.md:37
 msgid ""
 "Se `x` ha un numero pari di elementi, la scelta su come combinare i due "
-"valori centrali e interamente quella di NumPy, perche `mespy` non la "
+"valori centrali è interamente quella di NumPy, perché `mespy` non la "
 "ridefinisce."
 msgstr ""
 "If `x` has an even number of elements, the choice on how to combine the two "
-"central values and entirely that of NumPy, because `mespy` does not redefine"
-" it."
+"central values is entirely determined by NumPy, because `mespy` does not "
+"redefine it."
 
 #: ../../source/moduli/stats_utils/median/funzionamento.md:38
 msgid ""
-"Proprio per questa struttura minimale, il comportamento di `median` e facile"
+"Proprio per questa struttura minimale, il comportamento di `median` è facile"
 " da leggere: validazione comune all'ingresso, poi singola delega al motore "
 "numerico sottostante."
 msgstr ""

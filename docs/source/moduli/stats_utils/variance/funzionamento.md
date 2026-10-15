@@ -1,6 +1,6 @@
 # Funzionamento
 
-Questa pagina descrive il flusso interno di `variance` e l'ordine con cui vengono applicate validazione dei dati in ingresso, scelta tra ramo non pesato e ramo pesato, controllo del denominatore e calcolo finale degli scarti quadratici. A differenza di [Panoramica](panoramica.md), qui l'obiettivo non e ripetere la firma, ma mostrare come la funzione costruisce davvero la varianza.
+Questa pagina descrive il flusso interno di `variance` e l'ordine con cui vengono applicate validazione dei dati in ingresso, scelta tra ramo non pesato e ramo pesato, controllo del denominatore e calcolo finale degli scarti quadratici. A differenza di [Panoramica](panoramica.md), qui l'obiettivo non è ripetere la firma, ma mostrare come la funzione costruisce davvero la varianza.
 
 I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.py`. Le funzioni di supporto private vengono citate solo per chiarire il flusso; i dettagli completi sono documentati in [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md) e [`_validate_weights`](../../../checks/stats_utils/validate-weights.md).
 
@@ -9,11 +9,11 @@ I frammenti seguenti sono estratti dal codice attuale di `src/mespy/stats_utils.
 L'implementazione segue questa sequenza:
 
 1. Converte `x` in un vettore `float64` monodimensionale e finito.
-2. Se `w` e presente, lo valida come vettore compatibile, strettamente positivo e con somma positiva.
+2. Se `w` è presente, lo valida come vettore compatibile, strettamente positivo e con somma positiva.
 3. Se `w is None`, usa il ramo non pesato con denominatore `len(x) - ddof`.
-4. Se `w` e presente, usa il ramo pesato con denominatore `sum(w) - ddof`.
-5. In entrambi i rami calcola prima la media coerente con il caso corrente, poi la somma degli scarti quadratici.
-6. Se il denominatore risulta minore o uguale a zero, interrompe il calcolo con `ValueError`.
+4. Se `w` è presente, usa il ramo pesato con denominatore `sum(w) - ddof`.
+5. In entrambi i rami controlla subito il denominatore: se è minore o uguale a zero, interrompe il calcolo con `ValueError`.
+6. Calcola la media coerente con il ramo selezionato, poi la somma corretta degli scarti quadratici divisa per il denominatore.
 
 ## Ramo non pesato e ramo pesato
 
@@ -46,10 +46,10 @@ def variance(x: ArrayLike, w: ArrayLike | None = None, ddof: int | float = 0) ->
     )
 ```
 
-Il cuore della funzione e la separazione netta tra due definizioni operative della varianza.
+Il cuore della funzione è la separazione netta tra due definizioni operative della varianza.
 
-- Nel caso non pesato la cardinalita effettiva e `n = values.size`.
-- Nel caso pesato la quantita di normalizzazione diventa `w_sum = sum(weights)`.
+- Nel caso non pesato la cardinalità effettiva è `n = values.size`.
+- Nel caso pesato la quantità di normalizzazione diventa `w_sum = sum(weights)`.
 - In entrambi i casi `ddof` agisce sottraendo una correzione al denominatore, ma la base su cui interviene cambia.
 
 ## Formule implementate
@@ -72,7 +72,7 @@ $$
 
 La funzione non delega a `numpy.var(...)`: costruisce esplicitamente la media coerente con il ramo selezionato e poi somma gli scarti quadratici.
 
-## Stabilita numerica
+## Stabilità numerica
 
 Il codice non somma direttamente $(x_i - \bar{x})^2$, ma usa la formula two-pass corretta (Chan, Golub, LeVeque):
 
@@ -82,21 +82,21 @@ $$
 d_i = x_i - \bar{x}_w,
 $$
 
-con $w_i = 1$ nel ramo non pesato. In aritmetica esatta $\sum_i w_i d_i = 0$, quindi il termine sottratto e nullo e la definizione resta quella scritta sopra.
+con $w_i = 1$ nel ramo non pesato. In aritmetica esatta $\sum_i w_i d_i = 0$, quindi il termine sottratto è nullo e la definizione resta quella scritta sopra.
 
 In virgola mobile la media calcolata ha un errore di arrotondamento $\delta$ che, con dati affetti da un grande offset (per esempio $x \approx 10^{15}$), vale circa un ulp dell'offset. Sommando solo gli scarti quadratici quell'errore entra nel risultato come $+\delta^2$; il termine correttivo lo rimuove.
 
-Il limite che resta e la rappresentazione: se le differenze tra i dati sono piu piccole dell'ulp dell'offset, l'informazione e gia persa in `float64` e nessun algoritmo puo recuperarla.
+Il limite che resta è la rappresentazione: se le differenze tra i dati sono più piccole dell'ulp dell'offset, l'informazione è già persa in `float64` e nessun algoritmo può recuperarla.
 
 ## Ruolo di `ddof` e condizioni di errore
 
-Il parametro `ddof` non modifica solo l'interpretazione statistica del risultato: puo rendere il calcolo impossibile.
+Il parametro `ddof` non modifica solo l'interpretazione statistica del risultato: può rendere il calcolo impossibile.
 
 - Nel caso non pesato il codice richiede `len(x) - ddof > 0`.
 - Nel caso pesato richiede `sum(w) - ddof > 0`.
 - Se una di queste condizioni fallisce, la funzione alza `ValueError` prima di effettuare la divisione finale.
 
-Il valore predefinito `ddof=0` e coerente con l'impostazione descrittiva del pacchetto: la funzione calcola per impostazione predefinita una varianza di popolazione, non la versione con correzione di Bessel.
+Il valore predefinito `ddof=0` è coerente con l'impostazione descrittiva del pacchetto: la funzione calcola per impostazione predefinita una varianza di popolazione, non la versione con correzione di Bessel.
 
 ## Interazioni importanti tra parametri
 
@@ -104,7 +104,7 @@ Alcuni aspetti del comportamento meritano di essere resi espliciti.
 
 - `w=None` non significa "pesi tutti uguali" implementati a mano: significa proprio usare il ramo non pesato basato su `np.mean(values)`.
 - Se i pesi sono tutti uguali e `ddof=0`, il valore ottenuto coincide con una varianza calcolata con pesi uniformi, ma il denominatore nel ramo pesato resta `sum(w)`, non `len(x)`.
-- La funzione accetta `ddof` anche come `float`, quindi la correzione non e limitata a interi.
+- La funzione accetta `ddof` anche come `float`, quindi la correzione non è limitata a interi.
 - Gli errori legati a dati in ingresso vuoti, non monodimensionali o non finiti vengono sempre intercettati all'inizio da [`_as_float_vector`](../../../checks/stats_utils/as-float-vector.md), mentre gli errori specifici del ramo pesato passano da [`_validate_weights`](../../../checks/stats_utils/validate-weights.md).
 
 ## Esempio commentato

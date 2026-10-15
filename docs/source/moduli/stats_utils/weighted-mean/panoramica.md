@@ -2,7 +2,7 @@
 
 ## Scopo
 
-Calcolare la media aritmetica di `x` oppure, se `w` e presente, la media pesata.
+Calcolare la media aritmetica di `x` oppure, se `w` è presente, la media pesata.
 
 ## Parametri
 
@@ -15,7 +15,7 @@ Un `float` con la media semplice o pesata.
 
 ## Errori ed eccezioni
 
-- `ValueError` se `x` e vuoto o non finito.
+- `ValueError` se `x` è vuoto o non finito.
 - `ValueError` se `w` ha forma incompatibile.
 - `ValueError` se `w` contiene valori non positivi o ha somma non positiva.
 

@@ -28,7 +28,7 @@ msgstr "Purpose"
 
 #: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:5
 msgid ""
-"Calcolare la media aritmetica di `x` oppure, se `w` e presente, la media "
+"Calcolare la media aritmetica di `x` oppure, se `w` è presente, la media "
 "pesata."
 msgstr "Compute the arithmetic mean of `x` or, if `w` is provided, the weighted mean."
 
@@ -61,7 +61,7 @@ msgid "Errori ed eccezioni"
 msgstr "Errors and exceptions"
 
 #: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:18
-msgid "`ValueError` se `x` e vuoto o non finito."
+msgid "`ValueError` se `x` è vuoto o non finito."
 msgstr "`ValueError` if `x` is empty or not finite."
 
 #: ../../source/moduli/stats_utils/weighted-mean/panoramica.md:19

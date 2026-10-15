@@ -47,7 +47,7 @@ msgid "`w`: pesi opzionali."
 msgstr "`w`: optional weights."
 
 #: ../../source/moduli/stats_utils/standard-deviation/panoramica.md:11
-msgid "`ddof`: correzione sui gradi di liberta passata direttamente a `variance`."
+msgid "`ddof`: correzione sui gradi di libertà passata direttamente a `variance`."
 msgstr "`ddof`: degrees-of-freedom correction passed directly to `variance`."
 
 #: ../../source/moduli/stats_utils/standard-deviation/panoramica.md:13
@@ -64,7 +64,7 @@ msgstr "Errors and exceptions"
 
 #: ../../source/moduli/stats_utils/standard-deviation/panoramica.md:19
 msgid ""
-"Eredita gli stessi errori di [`variance`](../variance.md), perche la "
+"Eredita gli stessi errori di [`variance`](../variance.md), perché la "
 "funzione è una semplice interfaccia semplificata sopra quel calcolo."
 msgstr ""
 "It inherits the same errors as [`variance`](../variance.md), because the "
@@ -81,7 +81,7 @@ msgstr "Notes"
 #: ../../source/moduli/stats_utils/standard-deviation/panoramica.md:32
 msgid ""
 "Se vuoi capire in dettaglio il controllo su pesi e denominatore, la pagina "
-"rilevante e quella di [`variance`](../variance.md)."
+"rilevante è quella di [`variance`](../variance.md)."
 msgstr ""
 "If you want to understand the weight and denominator checks in detail, the "
 "relevant page is [`variance`](../variance.md)."

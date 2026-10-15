@@ -12,7 +12,7 @@ covariance(
 
 `covariance` stima la covarianza tra due variabili numeriche, con supporto opzionale ai pesi e con validazione coerente dei dati in ingresso.
 
-Questa pagina resta il punto di ingresso rapido. I dettagli operativi sono in [Panoramica](covariance/panoramica.md), mentre [Funzionamento](covariance/funzionamento.md) e predisposta come sottopagina separata.
+[Panoramica](covariance/panoramica.md) riassume scopo, parametri, errori ed esempio d'uso; [Funzionamento](covariance/funzionamento.md) descrive passo per passo il flusso interno e le formule implementate.
 
 ```{toctree}
 :hidden:

@@ -8,7 +8,7 @@ Restituire la deviazione standard come radice quadrata della varianza calcolata 
 
 - `x`: dati numerici.
 - `w`: pesi opzionali.
-- `ddof`: correzione sui gradi di liberta passata direttamente a `variance`.
+- `ddof`: correzione sui gradi di libertà passata direttamente a `variance`.
 
 ## Restituisce
 
@@ -16,7 +16,7 @@ Un `float` con la deviazione standard.
 
 ## Errori ed eccezioni
 
-Eredita gli stessi errori di [`variance`](../variance.md), perche la funzione è una semplice interfaccia semplificata sopra quel calcolo.
+Eredita gli stessi errori di [`variance`](../variance.md), perché la funzione è una semplice interfaccia semplificata sopra quel calcolo.
 
 ## Esempio
 
@@ -29,4 +29,4 @@ print(standard_deviation(x))  # 2.0
 
 ## Note
 
-Se vuoi capire in dettaglio il controllo su pesi e denominatore, la pagina rilevante e quella di [`variance`](../variance.md).
+Se vuoi capire in dettaglio il controllo su pesi e denominatore, la pagina rilevante è quella di [`variance`](../variance.md).

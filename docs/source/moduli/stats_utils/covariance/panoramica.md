@@ -18,7 +18,7 @@ Un `float` con la covarianza tra `x` e `y`.
 
 - `ValueError` se `x` e `y` non hanno la stessa lunghezza.
 - `ValueError` se i dati in ingresso contengono valori non finiti.
-- `ValueError` se `w` e incompatibile o non positivo.
+- `ValueError` se `w` è incompatibile o non positivo.
 
 ## Esempio
 
@@ -33,4 +33,4 @@ print(covariance(x, y))
 
 ## Note
 
-La covarianza e definita come `E[(x - E[x])(y - E[y])]`, normalizzata per `n` oppure per `sum(w)`. Nel caso pesato, le medie sono pesate con lo stesso vettore `w`. Il calcolo centra i dati prima di moltiplicarli, cosi resta accurato anche con grandi offset.
+La covarianza è definita come `E[(x - E[x])(y - E[y])]`, normalizzata per `n` oppure per `sum(w)`. Nel caso pesato, le medie sono pesate con lo stesso vettore `w`. Il calcolo centra i dati prima di moltiplicarli, così resta accurato anche con grandi offset.

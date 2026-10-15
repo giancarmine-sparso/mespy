@@ -69,7 +69,7 @@ msgid "`ValueError` se i dati in ingresso contengono valori non finiti."
 msgstr "`ValueError` if the inputs contain non-finite values."
 
 #: ../../source/moduli/stats_utils/covariance/panoramica.md:21
-msgid "`ValueError` se `w` e incompatibile o non positivo."
+msgid "`ValueError` se `w` è incompatibile o non positivo."
 msgstr "`ValueError` if `w` is incompatible or not positive."
 
 #: ../../source/moduli/stats_utils/covariance/panoramica.md:23
@@ -82,9 +82,9 @@ msgstr "Notes"
 
 #: ../../source/moduli/stats_utils/covariance/panoramica.md:36
 msgid ""
-"La covarianza e definita come `E[(x - E[x])(y - E[y])]`, normalizzata per "
+"La covarianza è definita come `E[(x - E[x])(y - E[y])]`, normalizzata per "
 "`n` oppure per `sum(w)`. Nel caso pesato, le medie sono pesate con lo stesso"
-" vettore `w`. Il calcolo centra i dati prima di moltiplicarli, cosi resta "
+" vettore `w`. Il calcolo centra i dati prima di moltiplicarli, così resta "
 "accurato anche con grandi offset."
 msgstr ""
 "Covariance is defined as `E[(x - E[x])(y - E[y])]`, normalized by `n` or by "

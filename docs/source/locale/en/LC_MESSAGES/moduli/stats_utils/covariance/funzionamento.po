@@ -26,9 +26,9 @@ msgstr "Implementation"
 msgid ""
 "Questa pagina descrive il flusso interno di `covariance` e l'ordine con cui "
 "vengono applicate validazione separata di `x` e `y`, controllo di "
-"compatibilita delle forme, eventuale validazione dei pesi e calcolo finale "
+"compatibilità delle forme, eventuale validazione dei pesi e calcolo finale "
 "della covarianza sui dati centrati. A differenza di "
-"[Panoramica](panoramica.md), qui l'obiettivo non e ripetere i parametri, ma "
+"[Panoramica](panoramica.md), qui l'obiettivo non è ripetere i parametri, ma "
 "mostrare come la funzione costruisce davvero il risultato."
 msgstr ""
 "This page describes the internal flow of `covariance` and the order in which"
@@ -68,19 +68,19 @@ msgid "Verifica che i due vettori abbiano la stessa forma."
 msgstr "Checks that the two vectors have the same shape."
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:13
-msgid "Se `w` e presente, lo valida rispetto alla forma di `x`."
+msgid "Se `w` è presente, lo valida rispetto alla forma di `x`."
 msgstr "If `w` is provided, it validates it against the shape of `x`."
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:14
 msgid ""
-"Se `w is None`, usa pesi unitari, cosi i due rami condividono lo stesso "
+"Se `w is None`, usa pesi unitari, così i due rami condividono lo stesso "
 "calcolo."
 msgstr ""
 "If `w is None`, uses unit weights, so both branches share the same "
 "computation."
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:15
-msgid "Centra `x` e `y` sottraendo le rispettive medie (pesate se `w` e presente)."
+msgid "Centra `x` e `y` sottraendo le rispettive medie (pesate se `w` è presente)."
 msgstr ""
 "Centers `x` and `y` by subtracting their respective means (weighted if `w` "
 "is given)."
@@ -99,7 +99,7 @@ msgstr "Input validation and centering"
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:41
 msgid ""
-"Il primo tratto del flusso e interamente dedicato a mettere `x` e `y` sullo "
+"Il primo tratto del flusso è interamente dedicato a mettere `x` e `y` sullo "
 "stesso piano numerico."
 msgstr ""
 "The first part of the flow is entirely dedicated to putting `x` and `y` on "
@@ -162,13 +162,13 @@ msgstr ""
 " does not."
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:61
-msgid "Stabilita numerica"
+msgid "Stabilità numerica"
 msgstr "Numerical stability"
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:63
 #, python-brace-format
 msgid ""
-"L'identita $E[xy] - E[x]E[y]$ sottrae due quantita grandi e quasi uguali "
+"L'identita $E[xy] - E[x]E[y]$ sottrae due quantità grandi e quasi uguali "
 "quando i dati hanno un offset grande rispetto alla loro dispersione: con $x "
 "\\approx 10^{15}$ i due termini valgono circa $10^{15} \\cdot E[y]$ e la "
 "differenza perde quasi tutte le cifre significative (cancellazione "
@@ -200,7 +200,7 @@ msgstr ""
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:71
 msgid ""
-"e nullo in aritmetica esatta e compensa l'errore di arrotondamento delle "
+"è nullo in aritmetica esatta e compensa l'errore di arrotondamento delle "
 "medie (formula two-pass corretta di Chan, Golub e LeVeque)."
 msgstr ""
 "is zero in exact arithmetic and compensates for the rounding error of the "
@@ -208,8 +208,8 @@ msgstr ""
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:73
 msgid ""
-"Il limite che resta e la rappresentazione: se le differenze tra i dati sono "
-"piu piccole dell'ulp dell'offset, l'informazione e gia persa in `float64` "
+"Il limite che resta è la rappresentazione: se le differenze tra i dati sono "
+"più piccole dell'ulp dell'offset, l'informazione è già persa in `float64` "
 "prima della chiamata."
 msgstr ""
 "The remaining limit is representation: if the differences between data "
@@ -250,7 +250,7 @@ msgstr ""
 
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:82
 msgid ""
-"Se `w` e presente, il codice non lo normalizza preventivamente; usa la "
+"Se `w` è presente, il codice non lo normalizza preventivamente; usa la "
 "normalizzazione implicita tramite divisione per `sum(w)`."
 msgstr ""
 "If `w` is given, the code does not normalize it beforehand; it uses the "
@@ -259,7 +259,7 @@ msgstr ""
 #: ../../source/moduli/stats_utils/covariance/funzionamento.md:83
 msgid ""
 "Errori su valori non finiti o pesi non positivi vengono intercettati prima "
-"del calcolo, cosi la funzione non restituisce mai covarianze `nan` in "
+"del calcolo, così la funzione non restituisce mai covarianze `nan` in "
 "silenzio."
 msgstr ""
 "Errors from non-finite values or non-positive weights are caught before the "

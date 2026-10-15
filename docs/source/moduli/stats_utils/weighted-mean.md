@@ -8,7 +8,7 @@ weighted_mean(x: ArrayLike, w: ArrayLike | None = None) -> float
 
 `weighted_mean` calcola la media aritmetica semplice oppure, se forniti, la media pesata con pesi strettamente positivi.
 
-Questa pagina fa da indice rapido della funzione. I dettagli d'uso stanno in [Panoramica](weighted-mean/panoramica.md), mentre [Funzionamento](weighted-mean/funzionamento.md) resta come sottopagina dedicata.
+[Panoramica](weighted-mean/panoramica.md) riassume scopo, parametri, errori ed esempio d'uso; [Funzionamento](weighted-mean/funzionamento.md) descrive passo per passo il flusso interno e le formule implementate.
 
 ```{toctree}
 :hidden:

@@ -14,8 +14,8 @@ Un `float` con la mediana di `x`.
 
 ## Errori ed eccezioni
 
-- `ValueError` se `x` e vuoto.
-- `ValueError` se `x` non e monodimensionale.
+- `ValueError` se `x` è vuoto.
+- `ValueError` se `x` non è monodimensionale.
 - `ValueError` se `x` contiene `NaN` o infiniti.
 
 ## Esempio
