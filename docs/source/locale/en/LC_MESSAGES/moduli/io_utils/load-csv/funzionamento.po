@@ -223,7 +223,7 @@ msgid ""
 "analisi."
 msgstr ""
 "`error` is useful when the file needs to be complete before moving to "
-"parsing."
+"analysis."
 
 #: ../../source/moduli/io_utils/load-csv/funzionamento.md:76
 msgid ""
@@ -236,8 +236,7 @@ msgid ""
 "`allow` è utile quando la gestione dei dati mancanti viene demandata a "
 "passaggi successivi."
 msgstr ""
-"`allow` and useful when the management of missing data is delegated to next "
-"steps."
+"`allow` is useful when missing-data handling is delegated to later steps."
 
 #: ../../source/moduli/io_utils/load-csv/funzionamento.md:79
 msgid ""

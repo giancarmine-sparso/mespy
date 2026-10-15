@@ -64,8 +64,8 @@ msgid ""
 "[`load_csv`](load-csv.md): interfaccia semplificata di `pandas.read_csv` con"
 " un contratto più piccolo e prevedibile."
 msgstr ""
-"[`load_csv`](load-csv.md): wrapper di `pandas.read_csv` con un contratto piu"
-" piccolo e prevedibile."
+"[`load_csv`](load-csv.md): a simplified interface to `pandas.read_csv` with "
+"a smaller, predictable contract."
 
 #: ../../source/moduli/io_utils/index.md:18
 msgid "Responsabilità del modulo"
