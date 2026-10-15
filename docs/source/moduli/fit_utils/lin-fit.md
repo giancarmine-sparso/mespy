@@ -240,7 +240,7 @@ I percorsi relativi vengono risolti dalla directory di lavoro corrente. Le direc
 
 ### Validazione dei percorsi e sostituzione
 
-`output` deve essere uno `str` o un `pathlib.Path`. Non sono validi stringhe vuote, percorsi di directory, stringhe che terminano con il separatore di directory della piattaforma, componenti finali `.` o `..`, caratteri NUL incorporati e nomi base che terminano con un punto.
+`output` deve essere uno `str` o un `pathlib.Path`. Le stringhe vuote o che terminano con il separatore di directory della piattaforma vengono rifiutate. Il percorso viene normalizzato con `Path`, che elimina i componenti `.` e i separatori ridondanti: per esempio, `"results/run/."` diventa `"results/run"` ed è accettato se non indica una directory esistente. Dopo la normalizzazione vengono rifiutati percorsi di directory, nomi finali vuoti o `..`, caratteri NUL incorporati e nomi base che terminano con un punto.
 
 Il suffisso finale viene rifiutato, senza distinzione tra maiuscole e minuscole, se è una delle estensioni di file riconosciute elencate sotto. Fornisci un percorso base invece, per esempio, di `"spring.pdf"` o `"spring.toml"`.
 
