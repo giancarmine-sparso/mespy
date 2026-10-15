@@ -4,6 +4,8 @@ Per installare MesPy e usarlo nelle tue analisi segui [Inizia qui](getting-start
 
 Questa pagina serve a chi vuole modificare MesPy o contribuire al progetto. MesPy richiede Python `3.12` o superiore. I comandi seguenti assumono che tu sia nella directory del repository e che il virtualenv locale sia `.venv`, in coerenza con i target `make` del repository.
 
+L’installazione modificabile usa il codice del checkout locale, incluse le modifiche non ancora pubblicate su PyPI. Per riprodurre gli esempi della documentazione di sviluppo, esegui i notebook e la build dallo stesso checkout: il solo numero di versione 2.0.0 non distingue queste modifiche dalla distribuzione già pubblicata.
+
 ## Con make
 
 ```bash
@@ -34,7 +36,7 @@ python -m pip install -e ".[dev]"
 ## Cosa viene installato
 
 - dipendenze per l'esecuzione: `numpy`, `pandas`, `matplotlib`, `scipy`, `tomli-w`
-- strumenti di sviluppo: `pytest`, `sphinx`, `pydata-sphinx-theme`, `myst-nb`, `sphinx-intl`, `build`, `twine`
+- strumenti di sviluppo: `pytest`, `ipykernel`, `sphinx`, `pydata-sphinx-theme`, `myst-nb`, `sphinx-copybutton`, `sphinx-intl`, `build`, `twine`, `setuptools`, `wheel`
 - il pacchetto locale in modalità modificabile, grazie a `-e`
 
 Dopo l'installazione puoi lanciare i test con `make test` e costruire la documentazione con `make docs`.

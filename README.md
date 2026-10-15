@@ -59,7 +59,7 @@ The root namespace stays intentionally small. Additional public types, such as `
 `mespy` requires Python `>= 3.12`.
 
 ```bash
-pip install git+https://github.com/giancarmine-sparso/mespy.git
+pip install mespy
 ```
 
 ## Development Setup

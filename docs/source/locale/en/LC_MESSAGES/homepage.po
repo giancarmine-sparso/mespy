@@ -1006,3 +1006,19 @@ msgstr "Installation on Google Colab"
 
 msgid "Installazione in Python locale"
 msgstr "Installation in a local Python"
+
+msgid "Versione degli esempi"
+msgstr "Example version"
+
+msgid "Installazione per lo sviluppo"
+msgstr "Development setup"
+
+msgid ""
+"Questa documentazione segue le sorgenti del repository. Gli esempi di "
+"histogram includono modifiche a bin_width e alla griglia successive alla "
+"versione 2.0.0 su PyPI. Per riprodurli esattamente, installa MesPy dalle "
+"sorgenti."
+msgstr ""
+"This documentation follows the repository sources. The histogram examples "
+"include bin_width and grid changes made after version 2.0.0 was published on"
+" PyPI. To reproduce them exactly, install MesPy from source."

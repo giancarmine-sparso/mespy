@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MesPy 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 17:31+0200\n"
+"POT-Creation-Date: 2026-10-14 18:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../source/installazione.md:1
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/installazione.md:1
 msgid "Installazione per lo sviluppo"
 msgstr "Development setup"
 
-#: ../../source/installazione.md:3
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/installazione.md:3
 msgid ""
 "Per installare MesPy e usarlo nelle tue analisi segui [Inizia qui](getting-"
 "started.md): trovi i comandi per uv, Google Colab, Jupyter e pip."
@@ -30,7 +30,7 @@ msgstr ""
 "To install MesPy and use it in your analyses, follow [Get started](getting-"
 "started.md): it has the commands for uv, Google Colab, Jupyter and pip."
 
-#: ../../source/installazione.md:5
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/installazione.md:5
 msgid ""
 "Questa pagina serve a chi vuole modificare MesPy o contribuire al progetto. "
 "MesPy richiede Python `3.12` o superiore. I comandi seguenti assumono che tu"
@@ -42,11 +42,25 @@ msgstr ""
 "you are in the repository directory and that the local virtualenv is "
 "`.venv`, consistent with the repository's `make` targets."
 
-#: ../../source/installazione.md:7
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/installazione.md:7
+msgid ""
+"L’installazione modificabile usa il codice del checkout locale, incluse le "
+"modifiche non ancora pubblicate su PyPI. Per riprodurre gli esempi della "
+"documentazione di sviluppo, esegui i notebook e la build dallo stesso "
+"checkout: il solo numero di versione 2.0.0 non distingue queste modifiche "
+"dalla distribuzione già pubblicata."
+msgstr ""
+"The editable installation uses the local checkout, including changes not yet"
+" published on PyPI. To reproduce the development documentation examples, run"
+" the notebooks and build from the same checkout: the version number 2.0.0 "
+"alone does not distinguish these changes from the already published "
+"distribution."
+
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/installazione.md:9
 msgid "Con make"
 msgstr "With make"
 
-#: ../../source/installazione.md:15
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/installazione.md:17
 msgid ""
 "`make setup` crea `.venv` e installa il pacchetto in modalità modificabile "
 "con le dipendenze di sviluppo."
@@ -54,37 +68,39 @@ msgstr ""
 "`make setup` creates `.venv` and installs the package in editable mode with "
 "the development dependencies."
 
-#: ../../source/installazione.md:17
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/installazione.md:19
 msgid "Con uv"
 msgstr "With uv"
 
-#: ../../source/installazione.md:25
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/installazione.md:27
 msgid "Con pip"
 msgstr "With pip"
 
-#: ../../source/installazione.md:34
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/installazione.md:36
 msgid "Cosa viene installato"
 msgstr "What gets installed"
 
-#: ../../source/installazione.md:36
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/installazione.md:38
 msgid ""
 "dipendenze per l'esecuzione: `numpy`, `pandas`, `matplotlib`, `scipy`, "
 "`tomli-w`"
 msgstr "runtime dependencies: `numpy`, `pandas`, `matplotlib`, `scipy`, `tomli-w`"
 
-#: ../../source/installazione.md:37
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/installazione.md:39
 msgid ""
-"strumenti di sviluppo: `pytest`, `sphinx`, `pydata-sphinx-theme`, `myst-nb`,"
-" `sphinx-intl`, `build`, `twine`"
+"strumenti di sviluppo: `pytest`, `ipykernel`, `sphinx`, `pydata-sphinx-"
+"theme`, `myst-nb`, `sphinx-copybutton`, `sphinx-intl`, `build`, `twine`, "
+"`setuptools`, `wheel`"
 msgstr ""
-"development tools: `pytest`, `sphinx`, `pydata-sphinx-theme`, `myst-nb`, "
-"`sphinx-intl`, `build`, `twine`"
+"development tools: `pytest`, `ipykernel`, `sphinx`, `pydata-sphinx-theme`, "
+"`myst-nb`, `sphinx-copybutton`, `sphinx-intl`, `build`, `twine`, "
+"`setuptools`, `wheel`"
 
-#: ../../source/installazione.md:38
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/installazione.md:40
 msgid "il pacchetto locale in modalità modificabile, grazie a `-e`"
 msgstr "the local package in editable mode, thanks to `-e`"
 
-#: ../../source/installazione.md:40
+#: ../../../home/giancarminesparso/Dev/progetti/mespy/docs/source/installazione.md:42
 msgid ""
 "Dopo l'installazione puoi lanciare i test con `make test` e costruire la "
 "documentazione con `make docs`."

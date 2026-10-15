@@ -6,6 +6,8 @@
 
 Installa MesPy, verifica che funzioni e scegli da dove continuare. Tutto quello che serve per iniziare, in pochi passi. MesPy richiede Python 3.12 o successivo.
 
+Questa documentazione segue le sorgenti del repository. Gli esempi di `histogram`, in particolare i bordi costruiti con `bin_width` e il controllo della griglia, includono modifiche successive alla versione 2.0.0 pubblicata su PyPI. Per riprodurli esattamente, usa l’installazione dalle sorgenti descritta in [Installazione per lo sviluppo](installazione.md).
+
 ## Scegli il tuo ambiente
 
 Su Google Colab o in un notebook Jupyter, esegui in una cella di codice:
