@@ -148,47 +148,6 @@
     </div>
   </section>
 
-  {# Video: copy of video/install-tutorial/out/legacy/mespy-installation-web.mp4 (+ poster),
-     whose out/ folder is gitignored. Localized clips, no audio. Not a numbered step. #}
-  {% if current_language == 'it' %}
-  <section class="mh-section mh-shell" id="video" aria-labelledby="video-title">
-    <div class="mh-section-heading">
-      <div><p class="mh-eyebrow">{{ home('Video') }} / 2 × 0:29</p><h2 id="video-title">{{ home('Guarda l’installazione passo per passo.') }}</h2></div>
-      <p>{{ home('Due demo simulate di 29 secondi ciascuna: installazione e verifica su Google Colab e con pip in Python locale.') }}</p>
-    </div>
-    {% for tutorial in [
-      {'path': 'colab', 'title': home('Installazione su Google Colab')},
-      {'path': 'local', 'title': home('Installazione in Python locale')},
-    ] %}
-    <figure class="gs-video">
-      <video controls preload="none" playsinline width="1920" height="1080"
-             poster="{{ pathto('_static/get-started-install-' ~ tutorial.path ~ '-it.png', 1) }}"
-             aria-label="{{ tutorial.title }}" aria-describedby="video-caption-{{ tutorial.path }}">
-        <source src="{{ pathto('_static/get-started-install-' ~ tutorial.path ~ '-it.mp4', 1) }}" type="video/mp4">
-        <p><a class="mh-text-link" href="{{ pathto('_static/get-started-install-' ~ tutorial.path ~ '-it.mp4', 1) }}">{{ home('Il browser non riproduce il video: scaricalo') }} <span aria-hidden="true">↓</span></a></p>
-      </video>
-      <figcaption id="video-caption-{{ tutorial.path }}">{{ tutorial.title }} · {{ home('Demo simulata · Senza audio · I tempi reali di installazione possono variare.') }}</figcaption>
-    </figure>
-    {% endfor %}
-  </section>
-  {% else %}
-  <section class="mh-section mh-shell" id="video" aria-labelledby="video-title">
-    <div class="mh-section-heading">
-      <div><p class="mh-eyebrow">{{ home('Video') }} / 1:15</p><h2 id="video-title">{{ home('Guarda l’installazione passo per passo.') }}</h2></div>
-      <p>{{ home('Una demo simulata di 75 secondi: installazione e verifica su Google Colab, poi con pip in un Python locale.') }}{% if current_language != 'en' %} {{ home('Il video è in inglese.') }}{% endif %}</p>
-    </div>
-    <figure class="gs-video">
-      <video controls preload="none" playsinline width="1920" height="1080"
-             poster="{{ pathto('_static/get-started-installation-poster.png', 1) }}"
-             aria-label="{{ home('Video dimostrativo: installazione di MesPy su Google Colab e in Python locale') }}" aria-describedby="video-caption">
-        <source src="{{ pathto('_static/get-started-installation.mp4', 1) }}" type="video/mp4">
-        <p><a class="mh-text-link" href="{{ pathto('_static/get-started-installation.mp4', 1) }}">{{ home('Il browser non riproduce il video: scaricalo') }} <span aria-hidden="true">↓</span></a></p>
-      </video>
-      <figcaption id="video-caption">{{ home('Demo simulata · Senza audio · I tempi reali di installazione possono variare.') }}</figcaption>
-    </figure>
-  </section>
-
-  {% endif %}
   <section class="mh-section mh-shell gs-explore" id="keep-exploring" aria-labelledby="explore-title">
     <div class="mh-section-heading">
       <div><p class="mh-eyebrow">04 / {{ home('Continua a esplorare') }}</p><h2 id="explore-title">{{ home('Pronto per andare oltre?') }}</h2></div>

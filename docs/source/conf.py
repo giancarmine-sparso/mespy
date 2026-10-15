@@ -26,7 +26,11 @@ version = release
 
 
 templates_path = ["_templates"]
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = [
+    "_build", "Thumbs.db", ".DS_Store",
+    # Installation videos are temporarily withdrawn from the documentation.
+    "**/get-started-install*.mp4", "**/get-started-install*.png",
+]
 
 language = "it"
 locale_dirs = ["locale/"]

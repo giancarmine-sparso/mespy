@@ -1,5 +1,7 @@
 # Clip di installazione MesPy
 
+> **Stato:** i video sono temporaneamente rimossi dalla documentazione, in entrambe le lingue. La build Sphinx esclude anche gli MP4 e i poster. Il generatore è conservato come materiale di lavoro: le istruzioni e le note di integrazione sotto descrivono lo stato precedente alla rimozione, non il sito attuale.
+
 Quattro clip Remotion/React/TypeScript, **29 s, 1920×1080, 30 fps, H.264/yuv420p, senza audio**. Una sola timeline e un solo componente, parametrizzati con `path` e `language`. Stile, logo, Inter e Liberation Mono derivano dal video originale.
 
 ## File prodotti
