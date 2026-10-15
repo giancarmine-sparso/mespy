@@ -37,7 +37,7 @@
 - Descriptive and weighted statistics for one-dimensional data
 - Histogram plotting for quick exploratory analysis
 - Linear fitting with absolute or residual-scaled uncertainties and a typed result object
-- Clear validation errors instead of silent `nan` propagation
+- Explicit validation of input shapes, finite data and valid weights; extreme numerical scales can still produce non-finite results
 
 ## Public API
 
