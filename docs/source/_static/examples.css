@@ -7,7 +7,7 @@
 .mespy-examples .ex-hero .mh-eyebrow { margin-bottom: 16px; }
 .mespy-examples .ex-hero h1 { font-size: clamp(2.1rem, 2.9vw, 2.6rem); text-wrap: balance; }
 .mespy-examples .ex-hero .mh-lead { max-width: 600px; margin-top: 14px; color: var(--mh-muted); }
-.mespy-examples .ex-hero-note { max-width: 400px; justify-self: end; padding-left: 14px; border-left: 1px solid var(--mh-amber); font: .75rem/1.75 var(--mh-mono); color: var(--mh-muted); }
+.mespy-examples .ex-hero-note { max-width: 400px; justify-self: end; padding-left: 14px; border-left: 1px solid var(--mh-amber); font: .875rem/1.75 var(--mh-mono); color: var(--mh-muted); }
 
 /* Cards: the landing's editorial cards, two by two; the whole card is the link. */
 .mespy-examples .ex-catalog { padding-bottom: 88px; }
@@ -16,17 +16,17 @@
 .mespy-examples .ex-card:hover { border-color: var(--mh-line-strong); }
 .mespy-examples .ex-card-start { box-shadow: inset 0 2px 0 var(--mh-amber); }
 .mespy-examples .ex-card:has(.ex-card-link:focus-visible) { outline: 2px solid var(--mh-amber); outline-offset: 4px; }
-.mespy-examples .ex-card .mh-feature-top { min-height: 46px; padding-block: 0; padding-inline: 28px; }
+.mespy-examples .ex-card .mh-feature-top { min-height: 46px; padding-block: 6px; gap: 4px 12px; padding-inline: 28px; }
 .mespy-examples .ex-card .mh-badge { margin-left: 0; padding: 2px 8px; line-height: 1.6; }
-.mespy-examples .ex-card-tags { display: flex; align-items: center; gap: 12px; }
+.mespy-examples .ex-card-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .mespy-examples .ex-card-body { display: flex; flex-direction: column; flex: 1; padding: 20px 28px 18px; }
 .mespy-examples .ex-card-body > p { color: var(--mh-muted); margin: 10px 0 16px; }
 .mespy-examples .ex-card-link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
 .mespy-examples .ex-card-link:focus-visible { outline: none; }
 .mespy-examples .ex-card:hover .ex-card-link { color: var(--mh-ink); }
-.mespy-examples .ex-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--mh-line); }
-.mespy-examples .ex-card-foot code { min-width: 0; font-size: .75rem; line-height: 1.6; color: var(--mh-blue); }
-.mespy-examples .ex-card-cta { flex: none; margin-left: auto; font-size: .85rem; font-weight: var(--mespy-weight-semibold); transition: color .2s; }
+.mespy-examples .ex-card-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--mh-line); }
+.mespy-examples .ex-card-foot code { min-width: 0; font-size: .875rem; line-height: 1.6; color: var(--mh-blue); }
+.mespy-examples .ex-card-cta { flex: none; margin-left: auto; font-size: .875rem; font-weight: var(--mespy-weight-semibold); transition: color .2s; }
 .mespy-examples .ex-card-cta > span { display: inline-block; margin-left: 8px; color: var(--mh-amber); transition: transform .2s; }
 .mespy-examples .ex-card:hover .ex-card-cta { color: var(--mh-amber); }
 .mespy-examples .ex-card:hover .ex-card-cta > span { transform: translateX(3px); }
@@ -44,8 +44,8 @@
 .mespy-examples .ex-icon-fit { stroke: var(--mh-chart-fit); stroke-width: 2; fill: none; }
 .mespy-examples .ex-icon-dash { stroke: var(--mh-chart-fit); stroke-width: 1.5; stroke-dasharray: 3 3; fill: none; }
 
-.mespy-examples .ex-aside { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 24px; font: .75rem/1.7 var(--mh-mono); color: var(--mh-muted); }
-.mespy-examples .ex-aside .mh-text-link { gap: 10px; color: var(--mh-ink); font-family: var(--mespy-font-text); font-size: .85rem; }
+.mespy-examples .ex-aside { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 24px; font: .875rem/1.7 var(--mh-mono); color: var(--mh-muted); }
+.mespy-examples .ex-aside .mh-text-link { gap: 10px; color: var(--mh-ink); font-family: var(--mespy-font-text); font-size: .875rem; }
 
 @media (max-width: 1150px) {
   .mespy-examples .ex-hero { gap: 40px; }
