@@ -203,6 +203,10 @@ msgstr "With NumPy & Matplotlib"
 msgid "La fisica resta al centro"
 msgstr "Keep the focus on physics"
 
+#: _templates/homepage.html
+msgid "Fai salutare l’anatra MesPy"
+msgstr "Make the MesPy duck wave"
+
 #: _templates/homepage.html:76
 msgid "Piccole funzioni. Grandi scoperte."
 msgstr "Small functions. Big discoveries."

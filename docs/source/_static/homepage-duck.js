@@ -151,7 +151,10 @@
 
   function init() {
     const strip = document.querySelector('.mespy-home .mh-principles');
-    if (!strip) return;
+    // The translated name comes from the template; no duck without one, since
+    // the sprite is hidden from assistive technology.
+    const label = strip?.dataset.duckLabel;
+    if (!label) return;
     const grid = strip.querySelector('.mh-principles-grid');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let swimmable = false;
@@ -162,7 +165,7 @@
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'mh-duck';
-    button.setAttribute('aria-label', 'MesPy duck');
+    button.setAttribute('aria-label', label);
     button.style.setProperty('--mh-duck-sink', `${(ROWS - WATERLINE + PAD) * UNIT}px`);
     button.append(buildSprite());
     // Native button: Enter and Space also fire click.

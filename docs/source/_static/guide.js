@@ -4,8 +4,6 @@
 (() => {
   function init() {
     const links = [...document.querySelectorAll('[data-guide-nav] a[href^="#"]')];
-    if (!links.length) return;
-
     const targets = [...new Set(links.map((link) => decodeURIComponent(link.hash.slice(1))))]
       .map((id) => document.getElementById(id))
       .filter(Boolean)
@@ -32,6 +30,9 @@
     }
 
     function update() {
+      // No link reaches an existing section: keep the initial menu label and
+      // leave every link unmarked; the menu handlers below still apply.
+      if (!targets.length) return;
       const line = readingLine();
       let next = targets[0];
       for (const target of targets) {

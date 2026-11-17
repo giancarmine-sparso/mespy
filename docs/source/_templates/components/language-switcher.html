@@ -6,7 +6,7 @@
     type="button"
     class="version-switcher__button btn btn-sm dropdown-toggle"
     data-bs-toggle="dropdown"
-    aria-haspopup="listbox"
+    aria-expanded="false"
     aria-controls="{{ dropdown_id }}"
     aria-label="{{ language_switcher_title }}"
     data-language-switcher-current="{{ current_language }}"
@@ -17,8 +17,7 @@
   <div
     id="{{ dropdown_id }}"
     class="version-switcher__menu dropdown-menu list-group-flush py-0"
-    role="listbox"
-    aria-labelledby="{{ button_id }}"
+    role="group"
     aria-label="{{ language_switcher_label }}"
   >
     {% for item in supported_languages %}
@@ -27,7 +26,6 @@
         href="{{ item.page_href }}"
         hreflang="{{ item.code }}"
         lang="{{ item.code }}"
-        role="option"
         {% if item.is_current %}aria-current="page"{% endif %}
         data-language-switcher-link="true"
         data-language-code="{{ item.code }}"

@@ -48,7 +48,9 @@
     function updateScroll() {
       frame = 0;
       if (!heroVisible || document.hidden || reducedMotion.matches) return;
-      // Bounded movement, only within the hero; no perpetual animation loop.
+      // Hero only: one requestAnimationFrame per burst of scroll events, with a
+      // bounded shift; nothing runs between scrolls. The mascots keep their own
+      // loops in homepage-duck.js and homepage-cat.js.
       art.style.setProperty('--mh-scroll-shift', `${Math.min(window.scrollY * .045, 24)}px`);
     }
     function onScroll() {
