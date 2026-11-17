@@ -45,7 +45,8 @@ html:has(body.mespy-guide) { scroll-padding-top: 24px; }
 .mespy-guide .mx-guide-menu { display: none; }
 
 /* ------------------------------------------------------------ article */
-.mespy-guide .gd-eyebrow { margin-bottom: 22px; }
+/* Shows Python identifiers (mespy.fit_utils.LinearFitResult) exactly as written. */
+.mespy-guide .gd-eyebrow { margin-bottom: 22px; text-transform: none; }
 .mespy-guide .gd-article { color: var(--mh-muted); font-size: 1rem; line-height: var(--mespy-leading-text); }
 .mespy-guide .gd-article > section > p,
 .mespy-guide .gd-article section section > p,

@@ -517,8 +517,10 @@ def add_api_reference_context(app, pagename, templatename, context, doctree):
         entry["doc"]: {**entry, "module": module}
         for module in modules for entry in module["entries"]
     }
-    core_docs = ("moduli/plot_utils/histogram", "moduli/fit_utils/lin-fit")
-    context["api_core"] = [entries[doc] for doc in core_docs]
+    # Short canonical names for the core cards and the section strip; the
+    # documents keep their own titles (lin-fit.md is `mespy.lin_fit`).
+    core_docs = {"moduli/plot_utils/histogram": "histogram", "moduli/fit_utils/lin-fit": "lin_fit"}
+    context["api_core"] = [{**entries[doc], "name": name} for doc, name in core_docs.items()]
     context["api_utilities"] = [
         {**module, "entries": [entry for entry in module["entries"] if entry["doc"] not in core_docs]}
         for module in modules
@@ -530,7 +532,7 @@ def add_api_reference_context(app, pagename, templatename, context, doctree):
         "label": "API navigation" if english else "Navigazione API",
         "lang": app.config.language or language,
         "pages": [
-            {"title": entry["title"], "href": f"#{entry['doc'].rsplit('/', 1)[-1]}"}
+            {"title": entry["name"], "href": f"#{entry['doc'].rsplit('/', 1)[-1]}"}
             for entry in context["api_core"]
         ] + [{"title": "Additional utilities" if english else "Altre funzioni di utilità",
                "href": "#additional-utilities"}],

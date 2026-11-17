@@ -18,6 +18,7 @@
 .mespy-examples .ex-card:has(.ex-card-link:focus-visible) { outline: 2px solid var(--mh-amber); outline-offset: 4px; }
 .mespy-examples .ex-card .mh-feature-top { min-height: 46px; padding-block: 0; padding-inline: 28px; }
 .mespy-examples .ex-card .mh-badge { margin-left: 0; padding: 2px 8px; line-height: 1.6; }
+.mespy-examples .ex-card-tags { display: flex; align-items: center; gap: 12px; }
 .mespy-examples .ex-card-body { display: flex; flex-direction: column; flex: 1; padding: 20px 28px 18px; }
 .mespy-examples .ex-card-body > p { color: var(--mh-muted); margin: 10px 0 16px; }
 .mespy-examples .ex-card-link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
@@ -28,7 +29,7 @@
 .mespy-examples .ex-card-cta { flex: none; margin-left: auto; font-size: .85rem; font-weight: var(--mespy-weight-semibold); transition: color .2s; }
 .mespy-examples .ex-card-cta > span { display: inline-block; margin-left: 8px; color: var(--mh-amber); transition: transform .2s; }
 .mespy-examples .ex-card:hover .ex-card-cta { color: var(--mh-amber); }
-.mespy-examples .ex-card:hover .ex-card-cta > span { transform: translate(3px, -3px); }
+.mespy-examples .ex-card:hover .ex-card-cta > span { transform: translateX(3px); }
 
 /* Glyphs: square markers like the landing plots. */
 /* Icon and title share one row. */

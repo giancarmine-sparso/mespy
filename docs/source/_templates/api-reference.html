@@ -18,16 +18,18 @@
   'moduli/stats_utils/index': {'label': home('Statistica descrittiva'), 'anchor': 'api-module-2'},
   'moduli/fit_utils/index': {'label': home('Risultati del fit'), 'anchor': 'api-module-4'},
 } %}
+{#- Keyed by docname: the displayed title of a document can differ from its
+   function name (lin-fit.md is titled `mespy.lin_fit`). #}
 {%- set descriptions = {
-  'histogram': home('Visualizza le misure sperimentali, la loro distribuzione e le statistiche descrittive.'),
-  'lin_fit': home('Adatta una retta ai dati sperimentali, stima le incertezze dei parametri ed esamina i residui.'),
-  'load_csv': home('Carica un CSV in un DataFrame con controlli sulle colonne e sui valori mancanti.'),
-  'median': home('Calcola la mediana di un campione numerico.'),
-  'weighted_mean': home('Calcola la media aritmetica o pesata di un campione.'),
-  'variance': home('Calcola la varianza con pesi facoltativi e una correzione ddof.'),
-  'covariance': home('Stima la covarianza tra due variabili con pesi facoltativi.'),
-  'standard_deviation': home('Calcola la deviazione standard come radice quadrata della varianza.'),
-  'LinearFitResult': home('Parametri del fit, incertezze, residui e informazioni diagnostiche.'),
+  'moduli/plot_utils/histogram': home('Visualizza le misure sperimentali, la loro distribuzione e le statistiche descrittive.'),
+  'moduli/fit_utils/lin-fit': home('Adatta una retta ai dati sperimentali, stima le incertezze dei parametri ed esamina i residui.'),
+  'moduli/io_utils/load-csv': home('Carica un CSV in un DataFrame con controlli sulle colonne e sui valori mancanti.'),
+  'moduli/stats_utils/median': home('Calcola la mediana di un campione numerico.'),
+  'moduli/stats_utils/weighted-mean': home('Calcola la media aritmetica o pesata di un campione.'),
+  'moduli/stats_utils/variance': home('Calcola la varianza con pesi facoltativi e una correzione ddof.'),
+  'moduli/stats_utils/covariance': home('Stima la covarianza tra due variabili con pesi facoltativi.'),
+  'moduli/stats_utils/standard-deviation': home('Calcola la deviazione standard come radice quadrata della varianza.'),
+  'moduli/fit_utils/linear-fit-result': home('Parametri del fit, incertezze, residui e informazioni diagnostiche.'),
 } %}
 
 {% include "components/mespy-header.html" %}
@@ -53,12 +55,12 @@
         {%- for entry in api_core %}
         <li class="api-core-item" id="{{ entry.doc.rsplit('/', 1)[-1] }}">
           {# Preserve the previous visualization module heading anchor. #}
-          {%- if entry.title == 'histogram' %}<span id="api-module-3" aria-hidden="true"></span>{% endif %}
+          {%- if entry.doc == 'moduli/plot_utils/histogram' %}<span id="api-module-3" aria-hidden="true"></span>{% endif %}
           <a class="api-entry api-core-entry" href="{{ entry.href }}">
-            <h3 class="api-entry-name"><code>{{ entry.title }}</code><span aria-hidden="true">↗</span></h3>
-            <p class="api-entry-description">{{ descriptions[entry.title] }}</p>
+            <h3 class="api-entry-name"><code>{{ entry.name }}</code><span aria-hidden="true">→</span></h3>
+            <p class="api-entry-description">{{ descriptions[entry.doc] }}</p>
           </a>
-          <p class="api-origin"><a href="{{ entry.module.href }}"><code>{{ entry.module.title }}</code> <span aria-hidden="true">↗</span></a></p>
+          <p class="api-origin"><a href="{{ entry.module.href }}"><code>{{ entry.module.title }}</code> <span aria-hidden="true">→</span></a></p>
         </li>
         {%- endfor %}
       </ul>
@@ -74,13 +76,13 @@
         {%- set category = categories.get(module.doc, {}) %}
         <section class="api-utility-group" aria-labelledby="{{ category.anchor | default('api-group-' ~ loop.index) }}">
           <h3 id="{{ category.anchor | default('api-group-' ~ loop.index) }}">{{ category.label | default(module.title) }}</h3>
-          <p class="api-origin"><a href="{{ module.href }}"><code>{{ module.title }}</code> <span aria-hidden="true">↗</span></a></p>
+          <p class="api-origin"><a href="{{ module.href }}"><code>{{ module.title }}</code> <span aria-hidden="true">→</span></a></p>
           <ul class="api-entries">
             {%- for entry in module.entries %}
             <li>
               <a class="api-entry" href="{{ entry.href }}">
-                <span class="api-entry-name"><code>{{ entry.title }}</code><span aria-hidden="true">↗</span></span>
-                {%- if entry.title in descriptions %}<span class="api-entry-description">{{ descriptions[entry.title] }}</span>{% endif %}
+                <span class="api-entry-name"><code>{{ entry.title }}</code><span aria-hidden="true">→</span></span>
+                {%- if entry.doc in descriptions %}<span class="api-entry-description">{{ descriptions[entry.doc] }}</span>{% endif %}
               </a>
             </li>
             {%- endfor %}
@@ -89,7 +91,7 @@
         {%- endfor %}
       </div>
     </section>
-    <p class="api-aside">{{ home('Cerchi esempi pratici?') }} <a class="mh-text-link" href="{{ pathto('examples/index') }}">{{ home('Esempi') }} <span aria-hidden="true">↗</span></a></p>
+    <p class="api-aside">{{ home('Cerchi esempi pratici?') }} <a class="mh-text-link" href="{{ pathto('examples/index') }}">{{ home('Esempi') }} <span aria-hidden="true">→</span></a></p>
   </div>
 </main>
 

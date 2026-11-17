@@ -53,12 +53,12 @@
 
 {%- set cards = {
   'examples/basic-workflow': {
-    'icon': 'workflow', 'step': home('Primi passi'), 'start': true,
+    'icon': 'workflow', 'step': home('Primi passi'), 'kind': home('Notebook'), 'start': true,
     'text': home('Due chiamate essenziali: histogram salva il grafico in PDF, lin_fit salva grafico e risultati in PDF e TOML.'),
     'api': 'histogram · lin_fit',
   },
   'examples/histogram': {
-    'icon': 'histogram', 'step': home('Distribuzioni'), 'kind': home('Guida completa'),
+    'icon': 'histogram', 'step': home('Distribuzioni'), 'kind': home('Notebook'),
     'text': home('Dalle misure alla distribuzione: scegli i bin, confronta conteggi, frequenze relative e densità e leggi media e deviazione standard sul grafico.'),
     'api': 'histogram',
   },
@@ -89,16 +89,18 @@
 
   <section class="mh-shell ex-catalog" aria-labelledby="ex-catalog-title">
     <h2 class="mh-sr-only" id="ex-catalog-title">{{ home('Esempi disponibili') }}</h2>
-    <ol class="ex-cards">
+    <ul class="ex-cards">
       {%- for page in guide_section.pages %}
       {%- set card = cards.get(page.doc, {}) %}
       <li class="ex-card{% if card.start %} ex-card-start{% endif %}">
         <div class="mh-feature-top">
-          <span>{{ '%02d' % loop.index }}{% if card.step %} / {{ card.step }}{% endif %}</span>
-          {%- if card.start %}
-          <span class="mh-badge">{{ home('Inizia da qui') }}</span>
-          {%- elif card.kind %}
-          <span>{{ card.kind }}</span>
+          <span>{{ card.step }}</span>
+          {#- The badge marks the suggested start; it does not replace the type. #}
+          {%- if card.start or card.kind %}
+          <span class="ex-card-tags">
+            {%- if card.start %}<span class="mh-badge">{{ home('Inizia da qui') }}</span>{% endif %}
+            {%- if card.kind %}<span>{{ card.kind }}</span>{% endif %}
+          </span>
           {%- endif %}
         </div>
         <div class="ex-card-body">
@@ -111,13 +113,13 @@
           {%- endif %}
           <div class="ex-card-foot">
             {%- if card.api %}<code>{{ card.api }}</code>{% endif %}
-            <span class="ex-card-cta" aria-hidden="true">{{ home('Apri l’esempio') }} <span>↗</span></span>
+            <span class="ex-card-cta" aria-hidden="true">{{ home('Apri l’esempio') }} <span>→</span></span>
           </div>
         </div>
       </li>
       {%- endfor %}
-    </ol>
-    <p class="ex-aside">{{ home('Cerchi firme e parametri?') }} <a class="mh-text-link" href="{{ pathto('moduli/index') }}">{{ home('Apri il riferimento API') }} <span aria-hidden="true">↗</span></a></p>
+    </ul>
+    <p class="ex-aside">{{ home('Cerchi firme e parametri?') }} <a class="mh-text-link" href="{{ pathto('moduli/index') }}">{{ home('Apri il riferimento API') }} <span aria-hidden="true">→</span></a></p>
   </section>
 </main>
 

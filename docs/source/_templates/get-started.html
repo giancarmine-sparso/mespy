@@ -36,7 +36,7 @@
 
   <section class="mh-shell gs-hero" aria-labelledby="gs-title">
     <div class="gs-hero-copy">
-      <p class="mh-eyebrow"><span class="mh-status" aria-hidden="true"></span> 01 / {{ home('Inizia') }}</p>
+      <p class="mh-eyebrow"><span class="mh-status" aria-hidden="true"></span> {{ home('Inizia') }}</p>
       <h1 id="gs-title">{{ home('Fai i primi passi') }} <span class="mh-accent">{{ home('con MesPy.') }}</span></h1>
       <p class="mh-lead">{{ home('Installa MesPy, verifica che funzioni e scegli da dove continuare. Tutto quello che serve per iniziare, in pochi passi.') }}</p>
       <p class="mh-hero-meta">Python ≥ 3.12 <span aria-hidden="true">/</span> {{ home('Open source') }} <span aria-hidden="true">/</span> {{ home('Fatto per imparare') }}</p>
@@ -44,20 +44,20 @@
     <nav class="gs-protocol" aria-labelledby="gs-protocol-title">
       <p class="gs-protocol-head" id="gs-protocol-title"><span>{{ home('Procedura') }}</span><span aria-hidden="true">3 {{ home('passi') }}</span></p>
       <ol>
-        <li><a href="#setup"><span class="gs-step">02</span><span>{{ home('Scegli l’ambiente e installa MesPy') }}</span><span class="gs-arrow" aria-hidden="true">↓</span></a></li>
-        <li><a href="#first-import"><span class="gs-step">03</span><span>{{ home('Verifica l’installazione') }}</span><span class="gs-arrow" aria-hidden="true">↓</span></a></li>
-        <li><a href="#keep-exploring"><span class="gs-step">04</span><span>{{ home('Esempi, API e teoria') }}</span><span class="gs-arrow" aria-hidden="true">↓</span></a></li>
+        <li><a href="#setup"><span class="gs-step">01</span><span>{{ home('Scegli l’ambiente e installa MesPy') }}</span><span class="gs-arrow" aria-hidden="true">↓</span></a></li>
+        <li><a href="#first-import"><span class="gs-step">02</span><span>{{ home('Verifica l’installazione') }}</span><span class="gs-arrow" aria-hidden="true">↓</span></a></li>
+        <li><a href="#keep-exploring"><span class="gs-step">03</span><span>{{ home('Esempi, API e teoria') }}</span><span class="gs-arrow" aria-hidden="true">↓</span></a></li>
       </ol>
     </nav>
   </section>
 
   <aside class="mh-shell" aria-label="{{ home('Versione degli esempi') }}">
-    <p>{{ home('Questa documentazione segue le sorgenti del repository. Gli esempi di histogram includono modifiche a bin_width e alla griglia successive alla versione 2.0.0 su PyPI. Per riprodurli esattamente, installa MesPy dalle sorgenti.') }} <a href="{{ pathto('installazione') }}">{{ home('Installazione per lo sviluppo') }} ↗</a></p>
+    <p>{{ home('Questa documentazione segue le sorgenti del repository. Gli esempi di histogram includono modifiche a bin_width e alla griglia successive alla versione 2.0.0 su PyPI. Per riprodurli esattamente, installa MesPy dalle sorgenti.') }} <a href="{{ pathto('installazione') }}">{{ home('Installazione per lo sviluppo') }} <span aria-hidden="true">→</span></a></p>
   </aside>
 
   <section class="mh-section mh-shell" id="setup" aria-labelledby="setup-title">
     <div class="mh-section-heading">
-      <div><p class="mh-eyebrow">02 / {{ home('Preparazione') }}</p><h2 id="setup-title">{{ home('Scegli il tuo ambiente.') }}</h2></div>
+      <div><p class="mh-eyebrow">01 / {{ home('Preparazione') }}</p><h2 id="setup-title">{{ home('Scegli il tuo ambiente.') }}</h2></div>
       <p>{{ home('MesPy funziona con il tuo flusso di lavoro Python preferito. Scegli la configurazione più adatta a te.') }}</p>
     </div>
 
@@ -135,7 +135,7 @@
 
   <section class="mh-section mh-shell gs-verify" id="first-import" aria-labelledby="verify-title">
     <div>
-      <p class="mh-eyebrow">03 / {{ home('Primo import') }}</p>
+      <p class="mh-eyebrow">02 / {{ home('Primo import') }}</p>
       <h2 id="verify-title">{{ home('Verifica che tutto funzioni.') }}</h2>
       <p>{{ home('Esegui queste righe in una sessione Python o in una cella del notebook. Se compare il messaggio, MesPy è installato e pronto.') }}</p>
       <p class="gs-hint">{{ home('Vedi <code>ModuleNotFoundError</code>? MesPy è installato in un altro ambiente: usa lo stesso Python, o lo stesso kernel, con cui l’hai installato.') }}</p>
@@ -150,7 +150,7 @@
 
   <section class="mh-section mh-shell gs-explore" id="keep-exploring" aria-labelledby="explore-title">
     <div class="mh-section-heading">
-      <div><p class="mh-eyebrow">04 / {{ home('Continua a esplorare') }}</p><h2 id="explore-title">{{ home('Pronto per andare oltre?') }}</h2></div>
+      <div><p class="mh-eyebrow">03 / {{ home('Continua a esplorare') }}</p><h2 id="explore-title">{{ home('Pronto per andare oltre?') }}</h2></div>
     </div>
     <ul class="gs-destinations">
       <li class="gs-destination">
@@ -158,7 +158,7 @@
         <div class="gs-destination-body">
           <h3>{{ home('Esempi') }}</h3>
           <p>{{ home('Esplora flussi di analisi pratici e notebook.') }}</p>
-          <a class="mh-text-link" href="{{ pathto('examples/index') }}">{{ home('Apri gli esempi') }} <span aria-hidden="true">↗</span></a>
+          <a class="mh-text-link" href="{{ pathto('examples/index') }}">{{ home('Apri gli esempi') }} <span aria-hidden="true">→</span></a>
         </div>
       </li>
       <li class="gs-destination">
@@ -166,7 +166,7 @@
         <div class="gs-destination-body">
           <h3>{{ home('Riferimento API') }}</h3>
           <p>{{ home('Scopri le funzioni disponibili, i loro parametri e i valori restituiti.') }}</p>
-          <a class="mh-text-link" href="{{ pathto('moduli/index') }}">{{ home('Apri il riferimento API') }} <span aria-hidden="true">↗</span></a>
+          <a class="mh-text-link" href="{{ pathto('moduli/index') }}">{{ home('Apri il riferimento API') }} <span aria-hidden="true">→</span></a>
         </div>
       </li>
       <li class="gs-destination gs-destination-soon">

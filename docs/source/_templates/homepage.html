@@ -28,7 +28,7 @@
       <p class="mh-lead">{{ home('Una raccolta di strumenti Python per chi muove i primi passi nella fisica sperimentale.') }}</p>
       <p class="mh-hero-note">{{ home('Visualizza le misure, esplora le distribuzioni e trova le relazioni tra i dati. MesPy ti aiuta a interpretare i risultati e le loro incertezze, senza riscrivere ogni volta lo stesso codice di analisi.') }}</p>
       <div class="mh-actions">
-        <a class="mh-button mh-button-primary" href="{{ pathto('getting-started') }}">{{ home('Inizia qui') }} <span aria-hidden="true">↗</span></a>
+        <a class="mh-button mh-button-primary" href="{{ pathto('getting-started') }}">{{ home('Inizia qui') }} <span aria-hidden="true">→</span></a>
         <a class="mh-button mh-button-secondary" href="#features">{{ home('Scopri le funzioni') }} <span aria-hidden="true">↓</span></a>
       </div>
       <p class="mh-hero-meta">Python ≥ 3.12 <span aria-hidden="true">/</span> {{ home('Open source') }} <span aria-hidden="true">/</span> {{ home('Fatto per imparare') }}</p>
@@ -64,7 +64,7 @@
           <p class="mh-feature-tagline">{{ home('Ogni misura ha una storia.') }}</p>
           <p>{{ home('Raggruppa le misure in un istogramma. Visualizza la media e la deviazione standard per capire dove si concentrano i dati e quanto sono dispersi.') }}</p>
           <pre aria-label="{{ home('Esempio Python per un istogramma') }}"><code><span class="mh-code-function">histogram</span>(measurements)</code></pre>
-          <a class="mh-text-link" href="{{ pathto('moduli/plot_utils/histogram') }}">{{ home('Esplora histogram') }} <span aria-hidden="true">↗</span></a>
+          <a class="mh-text-link" href="{{ pathto('moduli/plot_utils/histogram') }}">{{ home('Esplora histogram') }} <span aria-hidden="true">→</span></a>
         </div>
       </article>
       <article class="mh-feature mh-fit" data-reveal>
@@ -75,7 +75,7 @@
           <p class="mh-feature-tagline">{{ home('Trova il filo tra i punti.') }}</p>
           <p>{{ home('Trova la retta che descrive le tue misure. Ottieni pendenza, intercetta e le loro incertezze, con un grafico dei residui per esplorare il risultato.') }}</p>
           <pre aria-label="{{ home('Esempio Python per un fit lineare') }}"><code><span class="mh-code-function">lin_fit</span>(x, y, sigma_y)</code></pre>
-          <a class="mh-text-link" href="{{ pathto('moduli/fit_utils/lin-fit') }}">{{ home('Esplora lin_fit') }} <span aria-hidden="true">↗</span></a>
+          <a class="mh-text-link" href="{{ pathto('moduli/fit_utils/lin-fit') }}">{{ home('Esplora lin_fit') }} <span aria-hidden="true">→</span></a>
         </div>
       </article>
     </div>
@@ -111,7 +111,7 @@
   </section>
 
   <section class="mh-section mh-shell mh-start" id="get-started" aria-labelledby="start-title" data-reveal>
-    <div><p class="mh-eyebrow">{{ home('Dal primo import al primo risultato') }}</p><h2 id="start-title">{{ home('Il prossimo esperimento') }}<br>{{ home('inizia qui.') }}</h2><p>{{ home('Installa MesPy e porta i tuoi dati. Al resto, un passo alla volta.') }}</p><a class="mh-button mh-button-primary" href="{{ pathto('getting-started') }}#setup">{{ home('Guida all’installazione') }} <span aria-hidden="true">↗</span></a></div>
+    <div><p class="mh-eyebrow">{{ home('Dal primo import al primo risultato') }}</p><h2 id="start-title">{{ home('Il prossimo esperimento') }}<br>{{ home('inizia qui.') }}</h2><p>{{ home('Installa MesPy e porta i tuoi dati. Al resto, un passo alla volta.') }}</p><a class="mh-button mh-button-primary" href="{{ pathto('getting-started') }}#setup">{{ home('Guida all’installazione') }} <span aria-hidden="true">→</span></a></div>
     {% include "components/homepage-editor.html" %}
     {% include "components/homepage-demo-results.html" %}
   </section>

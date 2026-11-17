@@ -366,10 +366,6 @@ msgid "Installazione"
 msgstr "Installation"
 
 #: _templates/homepage.html:142
-msgid "Documentazione"
-msgstr "Documentation"
-
-#: _templates/homepage.html:142
 msgid "Esempi"
 msgstr "Examples"
 
@@ -839,9 +835,6 @@ msgid ""
 msgstr ""
 "Two essential calls: histogram saves the plot as PDF, lin_fit saves the plot"
 " and the results as PDF and TOML."
-
-msgid "Guida completa"
-msgstr "Full guide"
 
 msgid ""
 "Dalle misure alla distribuzione: scegli i bin, confronta conteggi, frequenze"
