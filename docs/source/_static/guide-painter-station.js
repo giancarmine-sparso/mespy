@@ -281,8 +281,9 @@
   const POLE_END = DUCK_AT.y + Math.max(
     ...Object.entries(DUCK_POSES).map(([name, rows]) => headRow(rows) + 1 - RIG_DY[name]),
   );
-  // Each pose gets a dark contour in the page colour (K): invisible on the
-  // bare page, it keeps the amber duck apart from the amber paint behind it.
+  // Each pose gets a contour (K, --gd-paint-contour in
+  // guide-painter-station.css) that keeps the gold duck apart from the gold
+  // paint behind it.
   const outline = (rows) => rows.map((row, y) => [...row].map((char, x) => (
     char === '.' && [[y - 1, x], [y + 1, x], [y, x - 1], [y, x + 1]]
       .some(([j, i]) => rows[j] && rows[j][i] && rows[j][i] !== '.') ? 'K' : '.'
@@ -292,7 +293,7 @@
     O: 'var(--gd-paint-gloss)',
     W: 'var(--gd-paint-whites)', V: 'var(--gd-paint-whites-shade)',
     P: 'var(--gd-paint-orange)', B: 'var(--gd-paint-feet-shade)',
-    K: 'var(--mh-bg)',
+    K: 'var(--gd-paint-contour)',
   };
 
   // Paint roller held up in front of the duck, centred on it: a grey nap

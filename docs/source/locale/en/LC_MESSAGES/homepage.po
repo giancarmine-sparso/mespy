@@ -986,17 +986,17 @@ msgstr ""
 "New here? Start with Basic workflow: in a few steps you see the whole path. "
 "The other examples explore one tool at a time and can be read in any order."
 
-msgid "Modalità colore"
-msgstr "Color mode"
+#: _templates/components/theme-switcher.html
+msgid "Tema: chiaro"
+msgstr "Theme: light"
 
-msgid "Impostazioni di sistema"
-msgstr "System Settings"
+#: _templates/components/theme-switcher.html
+msgid "Tema: scuro"
+msgstr "Theme: dark"
 
-msgid "Chiaro"
-msgstr "Light"
-
-msgid "Scuro"
-msgstr "Dark"
+#: _templates/components/theme-switcher.html
+msgid "Tema: di sistema"
+msgstr "Theme: system"
 
 msgid ""
 "Due demo simulate di 29 secondi ciascuna: installazione e verifica su Google"

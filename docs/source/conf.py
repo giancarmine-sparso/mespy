@@ -48,8 +48,35 @@ html_static_path = ["_static", "../../assets/brand"]
 # Copied verbatim to the root of each language build (llms.txt, see llmstxt.org);
 # `make docs` also copies it to the site root.
 html_extra_path = ["_extra"]
-html_css_files = ["custom.css"]
-html_js_files = ["language-switcher.js"]
+# typography.css (fonts and shared typographic variables) and themes.css
+# (colour tokens of the light and dark themes) precede the page stylesheets
+# added in html-page-context (priority 500); html_css_files entries otherwise
+# default to 800, i.e. after them.
+html_css_files = [
+    ("typography.css", {"priority": 200}),
+    ("themes.css", {"priority": 300}),
+    "custom.css",
+]
+
+# Colour theme: PyData's own mode cycle and storage (theme-switch-button in
+# components/theme-switcher.html), starting from the system setting.
+html_context = {"default_mode": "auto"}
+
+# Runs in every page's head, after PyData's inline script, which restores the
+# saved mode and the saved *effective* theme. In "auto" mode that theme can be
+# stale (saved under a dark system that is now light): PyData only corrects it
+# once its deferred bundle runs, after a first paint in the wrong colours.
+# This resolves the theme from the mode and the system right away; PyData
+# still owns switching, storage and later system changes.
+THEME_INIT_JS = (
+    "(() => {"
+    " const root = document.documentElement;"
+    " const mode = root.dataset.mode;"
+    " root.dataset.theme = mode === 'light' || mode === 'dark' ? mode"
+    " : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';"
+    " })();"
+)
+html_js_files = [(None, {"body": THEME_INIT_JS, "priority": 1}), "language-switcher.js"]
 html_title = "MesPy"
 # html_logo = "_static/logo.svg"
 html_favicon = "../../assets/brand/mespy-favicon.svg"
@@ -233,6 +260,14 @@ extensions = [
 
 nb_execution_mode = "auto"
 nb_execution_raise_on_error = True
+
+# MathJax renders formulas with the STIX2 font, whose data the site serves
+# from _static/fonts/mathjax-stix2-font. The core stays on jsDelivr, without
+# its bundled default font (-nofont) and pinned to the version of that data.
+# mathjax-config.js sets the font on top of MyST's mathjax3_config.
+MATHJAX_VERSION = "4.1.3"
+mathjax_path = f"https://cdn.jsdelivr.net/npm/mathjax@{MATHJAX_VERSION}/tex-mml-chtml-nofont.js"
+mathjax_config_path = "mathjax-config.js"
 
 
 def _relative_site_root(pagename: str) -> str:

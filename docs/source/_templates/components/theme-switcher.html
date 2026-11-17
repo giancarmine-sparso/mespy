@@ -1,6 +1,10 @@
-{# Preserve PyData behaviour; fill the two missing Italian labels with home(). #}
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" type="button" aria-label="{{ home('Modalità colore') }}" data-bs-title="{{ home('Modalità colore') }}" data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="{{ home('Chiaro') }}"></i>
-  <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="{{ home('Scuro') }}"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="{{ home('Impostazioni di sistema') }}"></i>
+{# PyData's theme switcher, in the shared header (mespy-header.html). PyData's
+   bundle cycles light/dark/auto on .theme-switch-button and stores the
+   choice; its CSS shows only the .theme-switch of the current html[data-mode].
+   Each one carries its mode's name, so the button's accessible name is the
+   current mode. Without JavaScript the button stays hidden (pst-js-only). #}
+<button class="theme-switch-button mh-theme-switch pst-js-only" type="button">
+  <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun" aria-hidden="true"></i><span class="mh-sr-only">{{ home('Tema: chiaro') }}</span></span>
+  <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon" aria-hidden="true"></i><span class="mh-sr-only">{{ home('Tema: scuro') }}</span></span>
+  <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i><span class="mh-sr-only">{{ home('Tema: di sistema') }}</span></span>
 </button>

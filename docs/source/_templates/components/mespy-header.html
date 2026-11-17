@@ -1,5 +1,7 @@
 {# Shared by the landing-style pages (homepage.html, get-started.html).
-   home() is the "homepage" UI catalog; pagename marks the current link. #}
+   home() is the "homepage" UI catalog; pagename marks the current link.
+   One logo per theme (themes.css shows the current one); the language and
+   theme switchers stay outside the compact menu. #}
 {%- set landing = pathto('index') if pagename != 'index' else '' -%}
 {# These hooks keep PyData's bundled search and back-to-top scripts working. #}
 <div id="pst-scroll-pixel-helper"></div>
@@ -8,7 +10,8 @@
 <header class="mh-header bd-header">
   <div class="mh-shell mh-nav">
     <a class="mh-brand" href="{{ pathto('index') }}" aria-label="{{ home('Pagina iniziale di MesPy') }}">
-      <img src="{{ pathto('_static/mespy-logo-horizontal-dark.svg', 1) }}" alt="MesPy" width="145" height="39">
+      <img class="mh-logo--light" src="{{ pathto('_static/mespy-logo-horizontal.svg', 1) }}" alt="MesPy" width="145" height="39">
+      <img class="mh-logo--dark" src="{{ pathto('_static/mespy-logo-horizontal-dark.svg', 1) }}" alt="MesPy" width="145" height="39">
     </a>
     <button class="mh-menu-toggle" type="button" aria-expanded="false" aria-controls="mh-navigation" hidden>
       {{ home('Menu') }} <span aria-hidden="true">＋</span>
@@ -20,6 +23,9 @@
       <a href="{{ landing }}#behind-the-scenes">{{ home('Come funziona') }}</a>
       <a class="mh-github" href="{{ theme_github_url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ home('GitHub (nuova scheda)') }}">{{ home('GitHub') }} <span aria-hidden="true">↗</span></a>
     </nav>
-    <div class="mh-language">{% include "components/language-switcher.html" %}</div>
+    <div class="mh-tools">
+      <div class="mh-language">{% include "components/language-switcher.html" %}</div>
+      {% include "components/theme-switcher.html" %}
+    </div>
   </div>
 </header>

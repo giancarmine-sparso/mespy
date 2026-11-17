@@ -1,9 +1,12 @@
 /* Homepage duck mascot. Loaded by the landing page, next to homepage.css, and
    for its colours by guide pages with the duck station (guide-duck-station.css). */
 .mespy-home {
-  /* Duck accents, derived from the brand amber. */
-  --mh-duck-beak: color-mix(in srgb, var(--mh-amber) 70%, red);
-  --mh-duck-wing: color-mix(in srgb, var(--mh-amber) 70%, black);
+  /* The duck's own gold, the same in both themes: the dark theme's amber,
+     not the interface accent, which is darker in the light theme. Beak and
+     wing derive from it. */
+  --mh-duck-body: #f2b45d;
+  --mh-duck-beak: color-mix(in srgb, var(--mh-duck-body) 70%, red);
+  --mh-duck-wing: color-mix(in srgb, var(--mh-duck-body) 70%, black);
 }
 .mespy-home .mh-principles { position: relative; }
 .mespy-home .mh-duck {

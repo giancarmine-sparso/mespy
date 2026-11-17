@@ -60,6 +60,65 @@ def test_sphinx_version_matches_project_metadata():
     assert config["version"] == project["project"]["version"]
 
 
+def test_site_fonts_are_local_and_mathjax_data_matches_core():
+    import json
+
+    config = runpy.run_path(str(DOCS_SOURCE / "conf.py"))
+    static = DOCS_SOURCE / "_static"
+    sources = re.findall(r"src:([^;]+);", (static / "typography.css").read_text(encoding="utf-8"))
+
+    assert sources
+    for source in sources:
+        files = re.findall(r'url\("([^"]+)"\) format\("woff2"\)', source)
+        # Only woff2 files served by the site: no CDN and no local() fallback.
+        assert len(files) == source.count("url(") == 1 and "local(" not in source, source
+        assert files[0].startswith("fonts/") and (static / files[0]).is_file(), files[0]
+
+    version = config["MATHJAX_VERSION"]
+    package = json.loads((static / "fonts/mathjax-stix2-font/package.json").read_text(encoding="utf-8"))
+    assert package["name"] == "@mathjax/mathjax-stix2-font"
+    assert package["version"] == version
+    assert config["mathjax_path"].endswith(f"/mathjax@{version}/tex-mml-chtml-nofont.js")
+    assert (static / "fonts/mathjax-stix2-font/chtml.js").is_file()
+
+
+def _css_block(css: str, opening: str) -> dict[str, str]:
+    """Declarations of the first rule that starts with *opening*."""
+    start = css.index(opening) + len(opening)
+    body = css[start:css.index("}", start)]
+    body = re.sub(r"/\*.*?\*/", "", body, flags=re.DOTALL)
+    return dict(
+        (name.strip(), value.strip())
+        for name, value in (item.split(":", 1) for item in body.split(";") if item.strip())
+    )
+
+
+def test_theme_palettes_define_the_same_tokens():
+    css = (DOCS_SOURCE / "_static/themes.css").read_text(encoding="utf-8")
+    light = _css_block(css, ":root,\nhtml[data-theme] {")
+    dark = _css_block(css, '@media screen {\n  html[data-theme="dark"] {')
+    auto_dark = _css_block(css, '@media screen and (prefers-color-scheme: dark) {\n  html[data-theme="auto"] {')
+
+    # The no-JavaScript fallback repeats the dark palette verbatim.
+    assert auto_dark == dark
+    # Every token has a value in both themes.
+    assert set(dark) == set(light)
+    assert light["color-scheme"] == "light" and dark["color-scheme"] == "dark"
+
+
+def test_page_stylesheets_take_colours_from_theme_tokens():
+    static = DOCS_SOURCE / "_static"
+    # Mascot coats and scene hardware keep fixed colours by design; white is
+    # the paper of Matplotlib figures.
+    pages = ["homepage.css", "guide.css", "get-started.css", "examples.css",
+             "api-reference.css", "lin-fit-reference.css", "system-pages.css"]
+    literals = {
+        name: re.findall(r"#[0-9a-fA-F]{3,8}\b|\brgba?\(|\bhsla?\(", (static / name).read_text(encoding="utf-8"))
+        for name in pages
+    }
+    assert not {name: found for name, found in literals.items() if found}
+
+
 def test_markdown_csv_references_exist_from_repository_root():
     references: set[str] = set()
     for document in DOCS_SOURCE.rglob("*.md"):

@@ -1,0 +1,145 @@
+/* Site typography, shared by every page (html_css_files in conf.py, loaded
+   before the page stylesheets). It is the only file that names font files
+   and font families: the other stylesheets use the variables below, and
+   PyData's --pst-font-family-* and the landing's --mh-mono point to them.
+
+     STIX Two Text   text, headings, navigation, buttons, descriptions
+     STIX Two Math   native MathML; MathJax formulas use the matching STIX2
+                     font data, configured in ../mathjax-config.js
+     JetBrains Mono  code, signatures, outputs, editor, technical labels
+
+   Every face is served from fonts/ (sources, versions and licences in
+   fonts/README.txt) through url() sources only: no CDN, and no dependency on
+   the visitor's installed fonts. A browser fetches a face only when it
+   renders text with it, so a page downloads just the variants it uses. */
+
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("fonts/stix-two/STIXTwoText-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("fonts/stix-two/STIXTwoText-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("fonts/stix-two/STIXTwoText-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("fonts/stix-two/STIXTwoText-SemiBoldItalic.woff2") format("woff2");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("fonts/stix-two/STIXTwoText-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("fonts/stix-two/STIXTwoText-BoldItalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "STIX Two Math";
+  src: url("fonts/stix-two/STIXTwoMath-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/jetbrains-mono/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/jetbrains-mono/JetBrainsMono-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/jetbrains-mono/JetBrainsMono-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/jetbrains-mono/JetBrainsMono-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+/* STIX Two Text has no arrows (↗ ↓ ↑), geometric shapes (■ ▶) or operators
+   such as ≥, which the interface uses as glyphs. This alias draws them from
+   JetBrains Mono, already loaded for the labels, rather than from whatever
+   the visitor's system provides. Its unicode-range keeps it out of ordinary
+   text, so while STIX Two Text loads the page falls back to a serif, never to
+   monospace. One face for every weight, so the symbols are never synthesised
+   in bold. */
+@font-face {
+  font-family: "MesPy Symbols";
+  src: url("fonts/jetbrains-mono/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+2190-21FF, U+2200-22FF, U+25A0-25FF;
+}
+
+:root {
+  --mespy-font-text: "STIX Two Text", "MesPy Symbols", "Times New Roman", "Liberation Serif", Times, serif;
+  --mespy-font-heading: var(--mespy-font-text);
+  --mespy-font-math: "STIX Two Math", "Cambria Math", "Latin Modern Math", math, serif;
+  --mespy-font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  /* The three weights shipped in fonts/: text is regular; headings, controls
+     and emphasised labels semibold; <strong> bold. */
+  --mespy-weight-regular: 400;
+  --mespy-weight-semibold: 600;
+  --mespy-weight-bold: 700;
+  --mespy-leading-text: 1.75;
+  --mespy-leading-heading: 1.2;
+
+  --pst-font-family-base: var(--mespy-font-text);
+  --pst-font-family-heading: var(--mespy-font-heading);
+  --pst-font-family-monospace: var(--mespy-font-mono);
+  --pst-font-weight-heading: var(--mespy-weight-semibold);
+}
+
+body {
+  font-family: var(--mespy-font-text);
+  font-weight: var(--mespy-weight-regular);
+  line-height: var(--mespy-leading-text);
+}
+h1, h2, h3, h4, h5, h6 { line-height: var(--mespy-leading-heading); }
+b, strong { font-weight: var(--mespy-weight-bold); }
+code, kbd, pre, samp { font-family: var(--mespy-font-mono); }
+math { font-family: var(--mespy-font-math); }
+
+/* No programming ligatures. JetBrains Mono implements them as contextual
+   alternates, a feature STIX Two Text does not use: turning contextual forms
+   off everywhere keeps code and monospace labels literal while prose keeps
+   its fi/fl ligatures, and code drops ligatures altogether. !important
+   because the component styles set the `font` shorthand, which resets
+   font-variant-ligatures on its own element. */
+*, ::before, ::after { font-variant-ligatures: no-contextual !important; }
+code, kbd, pre, samp, textarea { font-variant-ligatures: none !important; }

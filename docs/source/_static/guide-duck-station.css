@@ -2,24 +2,26 @@
    and homepage-duck.css, only on guide pages with "station": "duck" in
    GUIDE_PAGES. The block's layout is shared, in guide.css. */
 .mespy-guide .gd-station--duck {
-  /* Station hardware: greys between --mh-line and --mh-muted. */
+  /* Station hardware: the dark theme's greys, between its --mh-line and
+     --mh-muted, in both themes. Only the floor follows the page. */
   --gd-station-case: #4b5357;
   --gd-station-case-top: #68737a;
-  --gd-station-case-shade: var(--mh-line);
-  --gd-station-vent: var(--mh-panel);
+  --gd-station-case-shade: #353b3e;
+  --gd-station-vent: #1a1e20;
   --gd-station-tower: #2b3033;
   --gd-station-desk: #3a4044;
   --gd-station-desk-edge: var(--gd-station-case);
   --gd-station-desk-front: #25292c;
   --gd-station-keyboard: #5d676c;
-  --gd-station-keys: var(--mh-line);
-  --gd-station-mug: var(--mh-muted);
+  --gd-station-keys: #353b3e;
+  --gd-station-mug: #b2b7b9;
   --gd-station-floor: var(--mh-line);
   --gd-station-glass: #0b0f12;
-  /* Plots in the data blue and the fit amber of the article. */
-  --gd-station-blue: var(--mh-blue);
+  /* Plots in the dark theme's data blue and fit amber: they glow on the
+     dark glass in both themes. */
+  --gd-station-blue: #86b7ea;
   --gd-station-blue-dim: #3d5876;
-  --gd-station-amber: var(--mh-amber);
+  --gd-station-amber: #f2b45d;
   --gd-station-amber-dim: #7d6442;
   /* Green phosphor of a 1980s Unix terminal. Deliberate exception to the
      site-tokens-only rule, like the homepage cat's coat. */

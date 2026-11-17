@@ -82,7 +82,7 @@ window.mespyDuckFrames = (() => {
     ],
   };
   const PALETTE = {
-    o: 'var(--mh-amber)',
+    o: 'var(--mh-duck-body)',
     b: 'var(--mh-duck-beak)',
     e: 'black', // fixed, not theme-dependent
     w: 'var(--mh-duck-wing)',

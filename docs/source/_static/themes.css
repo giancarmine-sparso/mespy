@@ -1,0 +1,198 @@
+/* Colour themes, shared by every page (html_css_files in conf.py): loaded
+   after PyData's stylesheet and typography.css, before the page stylesheets.
+   It is the only file that sets theme-dependent colours: the page
+   stylesheets use the --mh-* tokens below, and PyData's --pst-color-* point
+   to them. Mascot coats and scene hardware keep their own colours in their
+   stylesheets (homepage-duck.css, homepage-cat.css, guide-*-station.css).
+
+   PyData keeps the chosen mode ("light", "dark" or "auto") in html[data-mode]
+   and the effective theme in html[data-theme]; its theme-switch-button
+   cycles and stores both (default_mode "auto", conf.py). THEME_INIT_JS in
+   conf.py resolves "auto" against the system before the first paint.
+   Without JavaScript html[data-theme] stays "auto", and the last palette
+   block follows the system instead.
+
+   Light is the base palette, so print stays light whatever the saved
+   preference: the dark palette applies to screens only. Both dark blocks
+   hold the same declarations (checked by tests/test_docs.py). */
+
+/* Light: "warm paper". The base for html[data-theme="light"], for print and
+   until a theme is known. */
+:root,
+html[data-theme] {
+  color-scheme: light;
+  --mh-bg: #f7f3ea;
+  --mh-panel: #fffdf7;
+  --mh-ink: #242a2d;
+  --mh-muted: #555f63;
+  --mh-faint: #646d71;          /* decorative numbers and separators */
+  --mh-subtle: #646d71;         /* line numbers, shell prompts */
+  --mh-line: #d8d0c3;           /* decorative separators */
+  --mh-line-strong: #7e888c;    /* hovered card and link borders */
+  --mh-control-line: #7e888c;   /* borders of buttons, menus and fields */
+  --mh-amber: #895000;          /* text and actions */
+  --mh-amber-line: #a67b3e;
+  --mh-amber-tint: rgb(137 80 0 / .06);
+  --mh-blue: #245d86;           /* data and references */
+  --mh-blue-line: #7c9db3;
+  --mh-hover-bg: #fbf8f1;
+  --mh-active-bg: #efe8db;      /* hovered and current menu items */
+  --mh-accent-hover: #6e4000;   /* filled amber controls, hovered */
+  --mh-on-accent: #fffdf7;      /* text on filled amber controls */
+  --mh-selection: rgb(36 93 134 / .2);
+  --mh-mark-bg: #f2d6a2;        /* search matches */
+  --mh-mark-ink: #242a2d;
+  --mh-error: #9d2b25;
+  --mh-shadow: rgb(36 42 45 / .16);
+  --mh-syntax-keyword: #6b3f91;
+  --mh-syntax-string: #286047;
+  --mh-chart-grid: #b5ab9a;
+  --mh-chart-axis: #7e888c;
+  --mh-chart-tick: #555f63;
+  --mh-chart-data-strong: #3b7aae;
+  --mh-chart-fit: #b86e00;      /* graphics only: text uses --mh-amber */
+  --mh-sprite-edge: #8a8172;    /* contour of pixel sprites drawn over the page */
+  --mh-logo-light: inline;
+  --mh-logo-dark: none;
+}
+
+/* Dark: the original palette. */
+@media screen {
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --mh-bg: #141718;
+    --mh-panel: #1a1e20;
+    --mh-ink: #f3f1e9;
+    --mh-muted: #b2b7b9;
+    --mh-faint: #727a7e;
+    --mh-subtle: #8d969a;
+    --mh-line: #353b3e;
+    --mh-line-strong: #68757b;
+    --mh-control-line: #353b3e;
+    --mh-amber: #f2b45d;
+    --mh-amber-line: #7d6442;
+    --mh-amber-tint: #f2b45d0d;
+    --mh-blue: #86b7ea;
+    --mh-blue-line: #3d5876;
+    --mh-hover-bg: #171a1c;
+    --mh-active-bg: #353b3e;
+    --mh-accent-hover: #ffcb84;
+    --mh-on-accent: #141718;
+    --mh-selection: #86b7ea44;
+    --mh-mark-bg: #f2b45d;
+    --mh-mark-ink: #141718;
+    --mh-error: #ffc9ba;
+    --mh-shadow: rgb(0 0 0 / .45);
+    --mh-syntax-keyword: #c9acf1;
+    --mh-syntax-string: #9bd1b7;
+    --mh-chart-grid: #50595e;
+    --mh-chart-axis: #788489;
+    --mh-chart-tick: #bcc5ca;
+    --mh-chart-data-strong: #a2c9ef;
+    --mh-chart-fit: #f2b45d;
+    --mh-sprite-edge: #141718;
+    --mh-logo-light: none;
+    --mh-logo-dark: inline;
+  }
+}
+
+/* "auto" without JavaScript: the system decides. Same declarations as the
+   dark block above. */
+@media screen and (prefers-color-scheme: dark) {
+  html[data-theme="auto"] {
+    color-scheme: dark;
+    --mh-bg: #141718;
+    --mh-panel: #1a1e20;
+    --mh-ink: #f3f1e9;
+    --mh-muted: #b2b7b9;
+    --mh-faint: #727a7e;
+    --mh-subtle: #8d969a;
+    --mh-line: #353b3e;
+    --mh-line-strong: #68757b;
+    --mh-control-line: #353b3e;
+    --mh-amber: #f2b45d;
+    --mh-amber-line: #7d6442;
+    --mh-amber-tint: #f2b45d0d;
+    --mh-blue: #86b7ea;
+    --mh-blue-line: #3d5876;
+    --mh-hover-bg: #171a1c;
+    --mh-active-bg: #353b3e;
+    --mh-accent-hover: #ffcb84;
+    --mh-on-accent: #141718;
+    --mh-selection: #86b7ea44;
+    --mh-mark-bg: #f2b45d;
+    --mh-mark-ink: #141718;
+    --mh-error: #ffc9ba;
+    --mh-shadow: rgb(0 0 0 / .45);
+    --mh-syntax-keyword: #c9acf1;
+    --mh-syntax-string: #9bd1b7;
+    --mh-chart-grid: #50595e;
+    --mh-chart-axis: #788489;
+    --mh-chart-tick: #bcc5ca;
+    --mh-chart-data-strong: #a2c9ef;
+    --mh-chart-fit: #f2b45d;
+    --mh-sprite-edge: #141718;
+    --mh-logo-light: none;
+    --mh-logo-dark: inline;
+  }
+}
+
+/* Paper: white surfaces, darker text. */
+@media print {
+  :root,
+  html[data-theme] {
+    --mh-bg: #fff;
+    --mh-panel: #fff;
+    --mh-ink: #111;
+    --mh-muted: #444;
+  }
+}
+
+/* Roles that follow the palette in both themes. */
+:root,
+html[data-theme] {
+  --mh-syntax-number: var(--mh-blue);
+  --mh-syntax-function: var(--mh-amber);
+  --mh-syntax-comment: var(--mh-muted);
+  --mh-chart-data: var(--mh-blue);
+
+  /* PyData: text, surfaces, links, borders and states. */
+  --pst-color-text-base: var(--mh-ink);
+  --pst-color-text-muted: var(--mh-muted);
+  --pst-color-text: var(--mh-ink);
+  --pst-color-muted: var(--mh-muted);
+  --pst-color-heading-color: var(--mh-ink);
+  --pst-color-background: var(--mh-bg);
+  --pst-color-on-background: var(--mh-bg);
+  --pst-color-surface: var(--mh-panel);
+  --pst-color-on-surface: var(--mh-ink);
+  --pst-color-border: var(--mh-line);
+  --pst-color-border-muted: var(--mh-line);
+  --pst-color-shadow: var(--mh-shadow);
+  --pst-color-link: var(--mh-ink);
+  --pst-color-link-hover: var(--mh-amber);
+  --pst-color-primary: var(--mh-amber);
+  --pst-color-primary-bg: var(--mh-amber-tint);
+  --pst-color-secondary: var(--mh-amber);
+  --pst-color-secondary-bg: var(--mh-amber-tint);
+  --pst-color-accent: var(--mh-amber);
+  --pst-color-accent-bg: var(--mh-amber-tint);
+  --pst-color-inline-code: var(--mh-blue);
+  --pst-color-inline-code-links: var(--mh-blue);
+  --pst-color-target: var(--mh-mark-bg);
+  --pst-color-table-row-hover-bg: var(--mh-hover-bg);
+  --pst-color-info: var(--mh-blue);
+  --pst-color-info-bg: color-mix(in srgb, var(--mh-blue) 10%, var(--mh-panel));
+  --pst-color-warning: var(--mh-amber);
+  --pst-color-warning-bg: var(--mh-amber-tint);
+  --pst-color-danger: var(--mh-error);
+  --pst-color-danger-bg: color-mix(in srgb, var(--mh-error) 10%, var(--mh-panel));
+}
+
+/* Logos: each place has one <img> per theme, of the same size. */
+.mh-logo--light { display: var(--mh-logo-light); }
+.mh-logo--dark { display: var(--mh-logo-dark); }
+
+/* PyData dims every image in its dark theme; logos, Matplotlib figures and
+   notebook outputs keep their own colours. */
+html[data-theme] body.mespy-home img { filter: none; }
