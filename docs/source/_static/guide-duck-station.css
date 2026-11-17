@@ -32,6 +32,8 @@
   --gd-station-cable-dark: #3a4144;
   --gd-station-cable-green: #2f6b45;
 }
+/* Drawn at a whole 3 px per pixel instead of stretched to the column. */
+.mespy-guide .gd-station--duck svg { width: auto; height: auto; max-width: 100%; image-rendering: pixelated; }
 
 /* Blinking cursor and LEDs; the duck types in short bursts, then reads. */
 .mespy-guide .gd-station__duck-b { opacity: 0; }

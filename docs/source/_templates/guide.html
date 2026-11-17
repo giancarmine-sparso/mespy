@@ -22,7 +22,7 @@
   </aside>
   <main id="main-content" role="main" class="gd-main">
     {% include "components/guide-nav-mobile.html" %}
-    {% if guide_eyebrow %}<p class="mh-eyebrow gd-eyebrow"><span class="mh-status" aria-hidden="true"></span> {{ guide_eyebrow }}</p>{% endif %}
+    {% if guide_eyebrow %}<p class="mh-eyebrow gd-eyebrow">{{ guide_eyebrow }}</p>{% endif %}
     <article class="gd-article">
       {{ body }}
     </article>

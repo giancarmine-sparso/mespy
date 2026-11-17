@@ -111,7 +111,7 @@ def test_page_stylesheets_take_colours_from_theme_tokens():
     # Mascot coats and scene hardware keep fixed colours by design; white is
     # the paper of Matplotlib figures.
     pages = ["homepage.css", "guide.css", "get-started.css", "examples.css",
-             "api-reference.css", "lin-fit-reference.css", "system-pages.css"]
+             "api-reference.css", "reference.css", "system-pages.css"]
     literals = {
         name: re.findall(r"#[0-9a-fA-F]{3,8}\b|\brgba?\(|\bhsla?\(", (static / name).read_text(encoding="utf-8"))
         for name in pages

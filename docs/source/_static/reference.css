@@ -7,7 +7,6 @@
   margin-bottom: 22px;
   font-size: clamp(1.55rem, 2.1vw, 1.9rem);
 }
-.mespy-guide .mx-reference > section > h2::before { margin-bottom: 12px; }
 .mespy-guide .mx-reference > section > section { margin-top: 36px; }
 .mespy-guide .mx-reference h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
 .mespy-guide .mx-reference h1 code.literal { color: var(--mh-ink); font-size: .9em; }
@@ -25,7 +24,8 @@
 .mespy-guide .mx-reference dl.simple > dd p:last-child { margin-bottom: 0; }
 .mespy-guide .mx-reference table.table { min-width: 520px; }
 .mespy-guide .mx-reference table.table:has(thead th:nth-child(3):last-child) th:nth-child(1) { width: 10rem; }
-.mespy-guide .mx-reference table.table:has(thead th:nth-child(3):last-child) th:nth-child(2) { width: 8rem; }
+/* Wide enough for the longest type, NDArray[np.float64], on one line. */
+.mespy-guide .mx-reference table.table:has(thead th:nth-child(3):last-child) th:nth-child(2) { width: 11.5rem; }
 .mespy-guide .mx-reference p:has(> strong:only-child):has(+ .pst-scrollable-table-container) {
   margin: 0 0 18px;
   font: inherit;

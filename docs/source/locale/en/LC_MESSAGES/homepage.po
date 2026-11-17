@@ -1019,3 +1019,11 @@ msgstr ""
 "This documentation follows the repository sources. The histogram examples "
 "include bin_width and grid changes made after version 2.0.0 was published on"
 " PyPI. To reproduce them exactly, install MesPy from source."
+
+#: conf.py
+msgid "File di progetto"
+msgstr "Project files"
+
+#: conf.py
+msgid "File salvati"
+msgstr "Saved files"

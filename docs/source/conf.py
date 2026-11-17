@@ -395,6 +395,76 @@ def mark_guide_doctree(app, doctree, docname):
         if captions:
             for image in figure.findall(nodes.image):
                 image["alt"] = captions[0].astext()
+    label_guide_blocks(doctree, get_translation("homepage"))
+
+
+# Labels above the code blocks of guide pages, as msgids of the "homepage"
+# catalog. A block's kind comes from an explicit class in its source
+# (`:class: mx-block-csv`) or from its language, never from titles, anchors,
+# position or code; mx-block-file shows the name of the included file.
+# Notebook outputs are told apart by myst-nb's own cell structure. Python
+# blocks have no label.
+GUIDE_BLOCK_CLASSES = {
+    "mx-block-csv": "CSV",
+    "mx-block-project": "File di progetto",
+    "mx-block-saved": "File salvati",
+}
+GUIDE_BLOCK_LANGUAGES = dict.fromkeys(("bash", "console", "shell", "sh", "zsh"), "Shell")
+GUIDE_OUTPUT_LABEL = "Risultato"
+GUIDE_LABEL_CLASS = "mx-block__label"
+
+
+def _guide_block_label(block, translate):
+    """Label text of a code block outside notebook cells, or None."""
+    if "mx-block-file" in block["classes"] and block.get("source"):
+        return Path(block["source"]).name
+    for name, label in GUIDE_BLOCK_CLASSES.items():
+        if name in block["classes"]:
+            return translate(label)
+    label = GUIDE_BLOCK_LANGUAGES.get(block.get("language", ""))
+    return translate(label) if label else None
+
+
+def _guide_label(text):
+    # Real text for readers and copy-paste, left out of the search index.
+    return nodes.paragraph("", text, classes=[GUIDE_LABEL_CLASS, "no-search"])
+
+
+def _in_cell_or_block(node) -> bool:
+    node = node.parent
+    while node is not None:
+        if str(node.get("nb_element", "")).startswith("cell_code") or "mx-block" in node.get("classes", []):
+            return True
+        node = node.parent
+    return False
+
+
+def label_guide_blocks(doctree, translate):
+    """Label notebook outputs and the code blocks whose kind is known.
+
+    Runs on the resolved doctree, after translation, so the labels are in the
+    page's language. A labelled block is wrapped, label first, in a
+    ``div.mx-block``; the label sits outside the ``<pre>``, so the copy button
+    never copies it. Already labelled blocks and outputs are left alone.
+    """
+    outputs = [
+        node for node in doctree.findall(nodes.container)
+        if node.get("nb_element") == "cell_code_output"
+    ]
+    for output in outputs:
+        first = output.children[0] if output.children else None
+        if not (isinstance(first, nodes.Element) and GUIDE_LABEL_CLASS in first["classes"]):
+            output.insert(0, _guide_label(translate(GUIDE_OUTPUT_LABEL)))
+    for block in list(doctree.findall(nodes.literal_block)):
+        if _in_cell_or_block(block):
+            continue
+        text = _guide_block_label(block, translate)
+        if not text:
+            continue
+        wrapper = nodes.container("", classes=["mx-block"])
+        # Not replace_self: it would copy the block's ids and classes.
+        block.parent.replace(block, wrapper)
+        wrapper += [_guide_label(text), block]
 
 
 def _guide_section(app, pagename, english, parent=None):
@@ -478,7 +548,7 @@ def add_guide_context(app, pagename, templatename, context, doctree):
     app.add_css_file("homepage.css")
     app.add_css_file("guide.css")
     if reference:
-        app.add_css_file("lin-fit-reference.css")
+        app.add_css_file("reference.css")
     app.add_js_file("homepage.js", loading_method="defer")
     app.add_js_file("guide.js", loading_method="defer")
     context["guide_station"] = station = GUIDE_PAGES[pagename].get("station")
