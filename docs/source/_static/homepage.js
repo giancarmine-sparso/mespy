@@ -28,6 +28,12 @@
         closeMenu(navigation.contains(document.activeElement));
       }
     });
+    document.addEventListener('click', (event) => {
+      if (page.classList.contains('mh-menu-open') &&
+          !menu.contains(event.target) && !navigation.contains(event.target)) {
+        closeMenu();
+      }
+    });
     page.addEventListener('keydown', (event) => {
       // Escape in the search dialog closes the dialog only, which gives the
       // focus back to the search button.
