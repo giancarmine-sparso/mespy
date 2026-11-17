@@ -68,7 +68,7 @@ html:has(body.mespy-guide) { scroll-padding-top: 24px; }
 .mespy-guide .gd-article div.math { margin: 8px 0 24px; overflow-x: auto; overflow-y: hidden; }
 
 /* Headings: the landing scale, one step smaller. */
-.mespy-guide .gd-article h1 { font-size: clamp(2.3rem, 3.4vw, 3.1rem); text-wrap: balance; margin-bottom: 26px; }
+.mespy-guide .gd-article h1 { overflow-wrap: anywhere; font-size: clamp(2.3rem, 3.4vw, 3.1rem); text-wrap: balance; margin-bottom: 26px; }
 .mespy-guide .gd-article h1 + p { font-size: clamp(1.05rem, 1.4vw, 1.2rem); color: var(--mh-ink); margin-bottom: 14px; }
 .mespy-guide .gd-article h2 { font-size: clamp(2rem, 3.2vw, 2.75rem); margin-bottom: 28px; }
 .mespy-guide .gd-article h3 { font-size: clamp(1.45rem, 2vw, 1.85rem); margin: 0 0 18px; }
