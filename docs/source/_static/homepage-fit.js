@@ -1,9 +1,11 @@
 /* The homepage's editable example. All scientific work happens in a worker. */
 (() => {
-  function highlight(code, language) {
+  function highlight(code) {
     const fragment = document.createDocumentFragment();
     // A small lexical highlighter, using text nodes throughout: editor content
-    // and exported labels can never become HTML or script in the page.
+    // and exported labels can never become HTML or script in the page. One
+    // lexer for the Python editor and the TOML export: keywords and
+    // bracketed names, such as TOML [table] headers, share the keyword class.
     const tokens = /#[^\n]*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:from|import|True|False|None)\b|\b(?:lin_fit)\b|\b\d+(?:\.\d*)?(?:[eE][+-]?\d+)?\b|\[[A-Za-z_][^\]\n]*\]/g;
     let end = 0;
     for (const match of code.matchAll(tokens)) {
@@ -11,8 +13,7 @@
       const span = document.createElement('span');
       const token = match[0];
       const kind = token.startsWith('#') ? 'c' : /^["']/.test(token) ? 's'
-        : /^\d/.test(token) ? 'mi' : token === 'lin_fit' ? 'nf'
-        : language === 'toml' && token.startsWith('[') ? 'k' : 'k';
+        : /^\d/.test(token) ? 'mi' : token === 'lin_fit' ? 'nf' : 'k';
       span.className = `mh-syntax-${kind}`;
       span.textContent = token;
       fragment.append(span);
@@ -44,7 +45,7 @@
     let imageURL;
     let toml = '';
     function syncEditor() {
-      preview.replaceChildren(highlight(source.value, 'python'));
+      preview.replaceChildren(highlight(source.value));
       lines.textContent = Array.from({length: source.value.split('\n').length}, (_, i) => i + 1).join('\n');
       moveEditor();
     }
@@ -118,7 +119,7 @@
       image.src = url;
       openFigure.href = url;
       toml = result.toml;
-      output.replaceChildren(highlight(toml, 'toml'));
+      output.replaceChildren(highlight(toml));
       results.dataset.runId = String(data.id);
       results.hidden = false;
       // Begin at the fitted parameters. The complete, unchanged export remains

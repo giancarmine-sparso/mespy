@@ -1,4 +1,4 @@
-/* Homepage duck mascot: a pixel sprite swimming on the principles strip's bottom line; click to salute. */
+/* Homepage duck mascot: a pixel sprite swimming on the bottom line of the strip under the hero; click to salute. */
 (() => {
   const { svgEl, frameGroup } = window.mespyPixel;
 
@@ -23,7 +23,6 @@
   const FRONTAL = new Set(['fronte', 'salutoMeta', 'salutoSu']); // never mirrored
   const WATERLINE = 10; // sprite row resting on the line
   const UNIT = 3; // CSS px per logical pixel
-  const GAP = 16; // min distance from the strip's text when resting, px
   const MAX_DT = 50; // ms, clamps the step after a pause or a slow frame
   const MIN_RUN = 4; // shortest swimmable line, in duck widths
 
@@ -101,7 +100,7 @@
     }
   }
 
-  // moving: false on narrow screens and with reduced motion (no swim, no bob).
+  // moving: false on a line too short to swim on and with reduced motion (no swim, no bob).
   function step(dt, moving) {
     duck.clock += dt;
     duck.y = moving ? Math.round(BOB_AMPLITUDE * Math.sin((2 * Math.PI * duck.clock) / BOB_PERIOD)) : 0;
@@ -126,27 +125,6 @@
       duck.state = 'turn';
       duck.wait = TURN_PAUSE;
     }
-  }
-
-  function textRects(strip) {
-    const range = document.createRange();
-    return [...strip.querySelectorAll('.mh-principles-grid p')].map((p) => {
-      range.selectNodeContents(p);
-      return range.getBoundingClientRect();
-    });
-  }
-
-  // Just after the first text on the bottom row with room for the duck.
-  function restingX(strip, texts) {
-    const box = strip.getBoundingClientRect();
-    const bottom = Math.max(...texts.map((r) => r.bottom));
-    const row = texts.filter((r) => bottom - r.bottom < r.height).sort((a, b) => a.left - b.left);
-    const edges = [...row.map((r) => [r.left - box.left, r.right - box.left]), [box.width, box.width]];
-    for (let i = 1; i < edges.length; i += 1) {
-      const from = edges[i - 1][1];
-      if (edges[i][0] - from >= WIDTH + 2 * GAP) return from + GAP;
-    }
-    return 0;
   }
 
   function init() {
@@ -177,7 +155,7 @@
     duck.el = button;
     strip.append(button);
 
-    // The loop also runs for a salute on narrow screens or with reduced motion.
+    // The loop also runs for a salute on a short line or with reduced motion.
     const shouldRun = () => (swimmable || duck.salute >= 0) && visible && !document.hidden;
 
     function tick(now) {
@@ -200,31 +178,27 @@
       }
     }
 
+    // The lane is the inner box's width (.mh-principles-grid, an .mh-shell).
     function layout() {
       const box = strip.getBoundingClientRect();
       const content = grid.getBoundingClientRect();
-      const texts = textRects(strip);
-      const tops = texts.map((r) => r.top);
       duck.min = content.left - box.left + EDGE_MARGIN;
-      duck.max = content.right - box.left - WIDTH - EDGE_MARGIN;
+      duck.max = Math.max(duck.min, content.right - box.left - WIDTH - EDGE_MARGIN);
       const wasSwimmable = swimmable;
-      // Narrow screens: the points wrap or the line is too short to swim on.
-      swimmable = !reducedMotion.matches
-        && Math.max(...tops) - Math.min(...tops) < 4
-        && duck.max - duck.min >= MIN_RUN * WIDTH;
+      swimmable = !reducedMotion.matches && duck.max - duck.min >= MIN_RUN * WIDTH;
+      // Not swimming: at rest at the start of the lane.
       if (!swimmable) {
-        Object.assign(duck, { x: restingX(strip, texts), y: 0, dir: 1, state: 'idle' });
+        Object.assign(duck, { x: duck.min, y: 0, dir: 1, state: 'idle' });
       } else if (!wasSwimmable) {
-        Object.assign(duck, { x: Math.max(duck.min, restingX(strip, texts)), dir: 1, state: 'swim' });
+        Object.assign(duck, { x: duck.min, dir: 1, state: 'swim' });
       }
-      duck.x = Math.min(Math.max(duck.x, swimmable ? duck.min : 0), swimmable ? duck.max : box.width - WIDTH);
+      duck.x = Math.min(Math.max(duck.x, duck.min), duck.max);
       render();
       sync();
     }
 
     layout();
     new ResizeObserver(layout).observe(strip);
-    document.fonts?.ready.then(layout);
     reducedMotion.addEventListener('change', layout);
     document.addEventListener('visibilitychange', sync);
     new IntersectionObserver(([entry]) => {

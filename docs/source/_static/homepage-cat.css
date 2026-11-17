@@ -15,14 +15,22 @@
   --mh-cat-harness: #7656A8;    /* optional, see SHOW_HARNESS */
   /* The sleep "z" stays in the data blue, apart from the coat. */
   --mh-cat-z: var(--mh-blue);
+  /* Room above the editor panel for the cat, see .mh-fit-stage; the hero's
+     introduction uses it too (homepage-layout.css). Sprite body 13 rows x
+     3px, its baseline on Run's top border, 13px below the stage's panel
+     edge: 39 - 13 = 26px, plus a margin. */
+  --mh-cat-room: 32px;
 }
-/* The cat sticks out above the card's top edge: let the card show it. */
-.mespy-home .mh-fit-editor.mh-has-cat { overflow: visible; }
-.mespy-home .mh-cat-perch { position: relative; }
+/* The editor's outer box (components/homepage-editor.html). The cat sticks
+   out above the panel, so the room it needs there is always reserved: the
+   deferred script adds it without moving the page, and the panel keeps its
+   clipped rounded corners. */
+.mespy-home .mh-fit-stage { position: relative; min-width: 0; padding-top: var(--mh-cat-room); }
 .mespy-home .mh-cat {
   position: absolute;
-  top: var(--mh-cat-top, 0px);
-  right: var(--mh-cat-right, 0px);
+  top: var(--mh-cat-y, 0px);
+  left: var(--mh-cat-x, 0px);
+  z-index: 1;
   line-height: 0;
   /* Decorative: never takes a click from the Run button or anything else. */
   pointer-events: none;

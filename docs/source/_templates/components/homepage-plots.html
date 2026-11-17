@@ -1,6 +1,6 @@
 {# Inline SVGs are illustrative, not outputs calculated from a live dataset. #}
-{% macro scatter(id, hero=false) %}
-<svg class="mh-chart mh-scatter{% if hero %} mh-hero-chart{% endif %}" viewBox="0 0 520 388" role="img" aria-labelledby="scatter-{{ id }}-title scatter-{{ id }}-desc">
+{% macro scatter(id) %}
+<svg class="mh-chart mh-scatter" viewBox="0 0 520 388" role="img" aria-labelledby="scatter-{{ id }}-title scatter-{{ id }}-desc">
   <title id="scatter-{{ id }}-title">{{ home('Fit lineare') }}</title>
   <desc id="scatter-{{ id }}-desc">{{ home('Esempio illustrativo: punti sperimentali con barre di incertezza lungo una retta crescente.') }}</desc>
   <defs><pattern id="grid-{{ id }}" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M44 0H0V44" fill="none" stroke="currentColor" stroke-width="0.7"/></pattern></defs>

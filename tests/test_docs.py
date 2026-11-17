@@ -171,6 +171,28 @@ def test_homepage_template_strings_have_english_translations():
                 assert message and message.string, (path, call.args[0].value)
 
 
+def test_homepage_hero_hosts_the_only_demo_and_keeps_the_anchors():
+    templates = DOCS_SOURCE / "_templates"
+    homepage = (templates / "homepage.html").read_text(encoding="utf-8")
+    # One editor and one results panel on the whole site, both in the
+    # homepage's hero, the results after the editor.
+    for component in ("homepage-editor.html", "homepage-demo-results.html"):
+        include = f'{{% include "components/{component}" %}}'
+        owners = [path.name for path in templates.rglob("*.html") if include in path.read_text(encoding="utf-8")]
+        assert owners == ["homepage.html"] and homepage.count(include) == 1
+    hero = re.search(r'<section class="mh-hero[^"]*"[^>]*>(.*?)\n  </section>', homepage, re.DOTALL)
+    assert hero and hero[1].index("homepage-editor.html") < hero[1].index("homepage-demo-results.html")
+    assert "mespy-homepage" in re.search(r"<body ([^>]*)>", homepage)[1]
+    # Links into the homepage keep working.
+    for anchor in ("features", "behind-the-scenes", "behind-title", "get-started", "start-title"):
+        assert homepage.count(f'id="{anchor}"') == 1, anchor
+    results = (templates / "components/homepage-demo-results.html").read_text(encoding="utf-8")
+    assert 'id="demo-fit-results"' in results and " hidden>" in results
+    # The cat sits outside the editor panel, which keeps clipping its corners.
+    assert "overflow: visible" not in (DOCS_SOURCE / "_static/homepage-cat.css").read_text(encoding="utf-8")
+    editor = (templates / "components/homepage-editor.html").read_text(encoding="utf-8")
+    assert re.search(r'<div class="mh-fit-stage">\s*<div class="mh-fit-editor" data-fit-demo', editor)
+
 def test_homepage_initial_example_runs_with_public_lin_fit():
     import json
     import mespy
@@ -188,7 +210,7 @@ def test_homepage_initial_example_runs_with_public_lin_fit():
     assert document["fit"]["slope_std"] == expected.slope_std
     assert document["diagnostics"]["chi2"] == expected.chi2
     np.testing.assert_allclose(document["residuals"]["values"], expected.residuals)
-    assert document["plot"]["style"] == "mespy"
+    assert document["plot"]["style"] == "report"
     assert '<svg' in response["svg"] and 'Residuals' in response["svg"]
     assert not plt.get_fignums()
 

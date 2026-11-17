@@ -1,0 +1,50 @@
+/* Homepage composition (homepage.html), loaded only by the landing page,
+   after homepage.css: the hero that hosts the live lin_fit demo, the compact
+   pointer to the API reference and the closing install invitation. Scoped to
+   body.mespy-homepage, since other pages share body.mespy-home. Colours are
+   the --mh-* tokens of themes.css, type the variables of typography.css. */
+
+/* Hero: one column (introduction, editor, results) below 1100px; from there
+   the introduction and a wider editor side by side, the results of a run
+   below both (.mh-fit-results spans the grid, homepage.css). */
+body.mespy-homepage .mh-hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px 56px; align-items: start; padding-block: 48px 72px; }
+body.mespy-homepage .mh-hero-copy { max-width: 680px; }
+body.mespy-homepage .mh-hero h1 { font-size: clamp(2.25rem, 3.4vw, 3rem); text-wrap: balance; }
+body.mespy-homepage .mh-hero .mh-lead { max-width: 600px; margin-top: 24px; font-size: clamp(1.05rem, 1.25vw, 1.125rem); }
+body.mespy-homepage .mh-hero-invite { max-width: 600px; margin-top: 16px; color: var(--mh-muted); }
+body.mespy-homepage .mh-hero .mh-actions { margin-top: 28px; }
+@media (min-width: 1100px) {
+  body.mespy-homepage .mh-hero { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); padding-top: 56px; }
+  /* The title level with the editor panel's top edge, below the cat's room. */
+  body.mespy-homepage .mh-hero-copy { max-width: none; padding-top: var(--mh-cat-room, 0px); }
+}
+
+/* What the two functions have in common, under their cards. */
+body.mespy-homepage .mh-features-note { max-width: 680px; margin-top: 28px; color: var(--mh-ink); }
+
+/* The API reference's deep dives: a short note and one link. */
+body.mespy-homepage .mh-reference { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px 56px; align-items: start; padding-block: 40px; border-block: 1px solid var(--mh-line); }
+body.mespy-homepage .mh-reference h2 { font-size: clamp(1.5rem, 2.4vw, 2rem); }
+body.mespy-homepage .mh-reference p { max-width: 680px; color: var(--mh-muted); }
+body.mespy-homepage .mh-reference .mh-text-link,
+body.mespy-homepage .mh-install .mh-button { justify-self: start; }
+body.mespy-homepage .mh-reference .mh-text-link { justify-content: flex-start; gap: 12px; min-height: 44px; }
+@media (min-width: 900px) {
+  body.mespy-homepage .mh-reference { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  body.mespy-homepage .mh-reference h2 { grid-row: span 2; }
+}
+
+/* Closing invitation to install. */
+body.mespy-homepage .mh-install { display: grid; gap: 20px; padding-bottom: 112px; }
+body.mespy-homepage .mh-install h2 { font-size: clamp(2rem, 3vw, 2.5rem); }
+body.mespy-homepage .mh-install p { max-width: 600px; color: var(--mh-muted); }
+
+@media (max-width: 900px) {
+  body.mespy-homepage .mh-install { padding-bottom: 80px; }
+}
+@media (max-width: 600px) {
+  body.mespy-homepage .mh-hero { padding-block: 32px 48px; }
+  body.mespy-homepage .mh-hero h1 { font-size: clamp(2rem, 8vw, 2.5rem); }
+  body.mespy-homepage .mh-reference { padding-block: 32px; }
+  body.mespy-homepage .mh-install { padding-bottom: 64px; }
+}

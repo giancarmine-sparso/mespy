@@ -645,6 +645,7 @@ def add_homepage_context(app, pagename, templatename, context, doctree):
     app.add_css_file("homepage-cat.css")
     app.add_js_file("homepage-cat-frames.js", loading_method="defer")
     app.add_js_file("homepage-cat.js", loading_method="defer")
+    app.add_css_file("homepage-layout.css")
     return "homepage.html"
 
 

@@ -1,5 +1,6 @@
-/* Landing-style pages: compact menu, one-shot reveals and an event-driven
-   scroll response for the homepage hero (absent on Get started). */
+/* Landing-style pages: the header's compact menu. The pages have no scroll
+   effects; the homepage's only motion is its two mascots (homepage-duck.js,
+   homepage-cat.js). */
 (() => {
 
   function init() {
@@ -8,7 +9,8 @@
 
     const menu = page.querySelector('.mh-menu-toggle');
     const navigation = page.querySelector('#mh-navigation');
-    const compactNavigation = window.matchMedia('(max-width: 1050px)');
+    // The compact menu's width, as in homepage.css and search.css.
+    const compactNavigation = window.matchMedia('(max-width: 1200px)');
     const closeMenu = (restoreFocus = false) => {
       page.classList.remove('mh-menu-open');
       menu.setAttribute('aria-expanded', 'false');
@@ -27,6 +29,9 @@
       }
     });
     page.addEventListener('keydown', (event) => {
+      // Escape in the search dialog closes the dialog only, which gives the
+      // focus back to the search button.
+      if (event.target.closest('#pst-search-dialog')) return;
       if (event.key === 'Escape' && page.classList.contains('mh-menu-open')) {
         closeMenu(true);
       }
@@ -35,60 +40,6 @@
     compactNavigation.addEventListener('change', () => {
       closeMenu(compactNavigation.matches && navigation.contains(document.activeElement));
     });
-
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const revealTargets = [...page.querySelectorAll('[data-reveal]')];
-    const hero = page.querySelector('.mh-hero-visual');
-    const art = page.querySelector('.mh-scroll-art');
-    let revealObserver;
-    let heroObserver;
-    let heroVisible = false;
-    let frame = 0;
-
-    function updateScroll() {
-      frame = 0;
-      if (!heroVisible || document.hidden || reducedMotion.matches) return;
-      // Hero only: one requestAnimationFrame per burst of scroll events, with a
-      // bounded shift; nothing runs between scrolls. The mascots keep their own
-      // loops in homepage-duck.js and homepage-cat.js.
-      art.style.setProperty('--mh-scroll-shift', `${Math.min(window.scrollY * .045, 24)}px`);
-    }
-    function onScroll() {
-      if (heroVisible && !frame) frame = requestAnimationFrame(updateScroll);
-    }
-    function configureMotion() {
-      revealObserver?.disconnect();
-      heroObserver?.disconnect();
-      window.removeEventListener('scroll', onScroll);
-      if (frame) cancelAnimationFrame(frame);
-      frame = 0;
-      heroVisible = false;
-      art?.style.removeProperty('--mh-scroll-shift');
-      revealTargets.forEach((target) => target.classList.remove('mh-pending', 'mh-in-view'));
-      if (reducedMotion.matches || !('IntersectionObserver' in window)) return;
-
-      revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.remove('mh-pending');
-          entry.target.classList.add('mh-in-view');
-          revealObserver.unobserve(entry.target);
-        });
-      }, { threshold: .08 });
-      revealTargets.forEach((target) => {
-        target.classList.add('mh-pending');
-        revealObserver.observe(target);
-      });
-      if (!hero || !art) return;
-      heroObserver = new IntersectionObserver(([entry]) => {
-        heroVisible = entry.isIntersecting;
-        if (heroVisible) onScroll();
-      });
-      heroObserver.observe(hero);
-      window.addEventListener('scroll', onScroll, { passive: true });
-    }
-    reducedMotion.addEventListener('change', configureMotion);
-    configureMotion();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init, { once: true });

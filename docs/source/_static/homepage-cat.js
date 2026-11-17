@@ -152,8 +152,12 @@
     const run = document.querySelector('.mespy-home .mh-fit-run');
     if (!run) return;
     const card = run.closest('.mh-fit-editor');
+    // The editor's outer box: the cat sits there, outside the panel, which
+    // keeps its rounded corners and overflow: hidden.
+    const stage = card?.closest('.mh-fit-stage');
+    if (!stage) return;
     const code = card.querySelector('.mh-editor-code'); // aria-busy while a run loads or executes
-    const perch = run.parentElement; // the toolbar's button group; Run is its last child
+    const toolbar = run.closest('.mh-editor-toolbar');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let visible = false;
     let frame = 0;
@@ -162,13 +166,24 @@
 
     const el = document.createElement('span');
     el.className = 'mh-cat';
-    // Body's rear on the button's right edge, its baseline on the button's top border.
-    el.style.setProperty('--mh-cat-top', `${-BODY_ROWS * UNIT}px`);
-    el.style.setProperty('--mh-cat-right', `${-(COLS - BODY_COLS) * UNIT}px`);
     el.append(buildSprite());
-    perch.classList.add('mh-cat-perch');
-    card.classList.add('mh-has-cat');
-    perch.append(el);
+    stage.append(el);
+
+    // Body's rear on Run's right edge, its baseline on Run's top border, in
+    // the stage's coordinates. Measured again only when the layout can have
+    // moved the button: a size change of the stage or the toolbar, and the
+    // web fonts' arrival. Nothing is measured from the animation loop.
+    function place() {
+      const box = stage.getBoundingClientRect();
+      const button = run.getBoundingClientRect();
+      el.style.setProperty('--mh-cat-x', `${Math.round(button.right - box.left - BODY_COLS * UNIT)}px`);
+      el.style.setProperty('--mh-cat-y', `${Math.round(button.top - box.top - BODY_ROWS * UNIT)}px`);
+    }
+    place();
+    const placement = new ResizeObserver(place);
+    placement.observe(stage);
+    if (toolbar) placement.observe(toolbar);
+    document.fonts?.ready.then(place);
 
     const shouldRun = () => !reducedMotion.matches && visible && !document.hidden;
 

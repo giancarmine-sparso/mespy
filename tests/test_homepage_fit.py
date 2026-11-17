@@ -28,7 +28,7 @@ def test_edited_inputs_update_figure_and_toml_from_one_public_api_call(monkeypat
     monkeypatch.setattr(mespy, "lin_fit", record)
     monkeypatch.setattr(tempfile, "tempdir", str(tmp_path))
     first = json.loads(adapter.execute_fit(EXAMPLE))
-    edited = EXAMPLE.replace("[0.52, 0.92, 1.39, 1.76, 2.24, 2.61]", "[1, 3, 5, 7, 9, 11]")
+    edited = EXAMPLE.replace("[0.57, 1.13, 1.28, 1.89, 2.17, 2.77]", "[1, 3, 5, 7, 9, 11]")
     second = json.loads(adapter.execute_fit(edited))
     assert first["ok"] and second["ok"]
     assert len(calls) == 2
@@ -44,9 +44,10 @@ def test_edited_inputs_update_figure_and_toml_from_one_public_api_call(monkeypat
         np.testing.assert_array_equal(points.get_xdata(), document["data"]["x"])
         np.testing.assert_array_equal(points.get_ydata(), document["data"]["y"])
         np.testing.assert_allclose(residual.lines[0].get_ydata(), document["residuals"]["values"])
-        assert main.yaxis.label.get_fontfamily() == ["sans-serif"]
+        # The example asks for the report style.
+        assert main.yaxis.label.get_fontfamily() == ["serif"]
         assert main.get_facecolor() == (1, 1, 1, 1)
-        assert document["plot"]["style"] == "mespy"
+        assert document["plot"]["style"] == "report"
     assert tomllib.loads(second["toml"])["fit"]["slope"] == pytest.approx(2)
     assert not list(tmp_path.iterdir())
     assert not plt.get_fignums()
@@ -58,8 +59,8 @@ def test_edited_inputs_update_figure_and_toml_from_one_public_api_call(monkeypat
     EXAMPLE.replace("[0, 1, 2, 3, 4, 5]", "[i for i in range(6)]"),
     EXAMPLE.replace("[0, 1, 2, 3, 4, 5]", "[0] * 100000000"),
     EXAMPLE.replace("[0, 1, 2, 3, 4, 5]", "__import__('js').fetch('https://example.com')"),
-    EXAMPLE.replace("lin_fit(x, y, sigma_y=sigma_y)", "lin_fit(x, y, output='/other/file')"),
-    EXAMPLE.replace("lin_fit(x, y, sigma_y=sigma_y)", "lin_fit(x, y, plot=False)"),
+    EXAMPLE.replace('lin_fit(x, y, sigma_y=sigma_y, style="report")', "lin_fit(x, y, output='/other/file')"),
+    EXAMPLE.replace('lin_fit(x, y, sigma_y=sigma_y, style="report")', "lin_fit(x, y, plot=False)"),
     EXAMPLE.replace("from mespy import lin_fit", "from mespy import lin_fit as fit"),
     EXAMPLE + "\nwhile True: pass",
     EXAMPLE + "\nprint(open('/file').read())",

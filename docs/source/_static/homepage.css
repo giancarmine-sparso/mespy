@@ -45,13 +45,9 @@ body.mespy-home #pst-back-to-top { left: auto; top: auto; transform: none; width
 .mespy-home .mh-theme-switch svg { display: block; }
 .mespy-home .mh-menu-toggle { display: none; background: transparent; border: 1px solid var(--mh-control-line); border-radius: 3px; color: var(--mh-ink); font: inherit; font-size: .875rem; font-weight: var(--mespy-weight-semibold); padding: 8px 12px; }
 .mespy-home .mh-menu-toggle[hidden] { display: none; }
-.mespy-home .mh-hero { display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); gap: 48px; align-items: center; padding-block: 68px 64px; }
 .mespy-home .mh-eyebrow { font-family: var(--mh-mono); font-size: .72rem; font-weight: var(--mespy-weight-regular); text-transform: uppercase; letter-spacing: .11em; color: var(--mh-muted); margin-bottom: 26px; }
 .mespy-home .mh-status { display: inline-block; width: 7px; height: 7px; background: var(--mh-amber); margin-right: 9px; }
-.mespy-home .mh-hero h1 { font-size: clamp(2.5rem, 3.7vw, 3.5rem); text-wrap: balance; }
-.mespy-home .mh-hero h1 > span { display: inline; }
 .mespy-home .mh-lead { font-size: clamp(1.05rem, 1.4vw, 1.2rem); max-width: 510px; margin-top: 24px; }
-.mespy-home .mh-hero-note { color: var(--mh-muted); margin-top: 14px; max-width: 520px; }
 .mespy-home .mh-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
 .mespy-home .mh-button { display: inline-flex; align-items: center; justify-content: space-between; gap: 30px; border: 1px solid var(--mh-control-line); border-radius: 3px; padding: 14px 22px; font-weight: var(--mespy-weight-semibold); font-size: .9rem; transition: transform .2s, background-color .2s, border-color .2s; }
 .mespy-home .mh-button-primary { background: var(--mh-amber); color: var(--mh-on-accent); border-color: var(--mh-amber); }
@@ -59,11 +55,6 @@ body.mespy-home #pst-back-to-top { left: auto; top: auto; transform: none; width
 .mespy-home .mh-button-secondary:hover { border-color: var(--mh-amber); transform: translateY(-2px); }
 .mespy-home .mh-hero-meta { font-family: var(--mh-mono); font-size: .65rem; color: var(--mh-muted); margin-top: 25px; }
 .mespy-home .mh-hero-meta > span { color: var(--mh-faint); margin-inline: 9px; }
-.mespy-home .mh-hero-visual { position: relative; min-width: 0; }
-.mespy-home .mh-plot-heading, .mespy-home .mh-visual-foot { display: flex; justify-content: space-between; gap: 12px; font-family: var(--mh-mono); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--mh-muted); }
-.mespy-home .mh-plot-heading { margin: 0 8px 20px; }
-.mespy-home .mh-plot-heading > span:last-child { color: var(--mh-amber); text-transform: none; }
-.mespy-home .mh-scroll-art { position: relative; transform: translateY(var(--mh-scroll-shift, 0px)); }
 .mespy-home .mh-chart { display: block; width: 100%; height: auto; overflow: visible; }
 .mespy-home .mh-grid { color: var(--mh-chart-grid); opacity: .55; }
 .mespy-home .mh-axis { stroke: var(--mh-chart-axis); stroke-width: 1; fill: none; }
@@ -71,30 +62,13 @@ body.mespy-home #pst-back-to-top { left: auto; top: auto; transform: none; width
 .mespy-home .mh-ticks text:not([text-anchor]) { text-anchor: middle; }
 .mespy-home .mh-ticks text[text-anchor="end"] { dominant-baseline: middle; }
 .mespy-home .mh-axis-labels { fill: var(--mh-ink); font-family: var(--mh-mono); font-size: 21px; text-anchor: middle; dominant-baseline: middle; }
-.mespy-home .mh-chart-callout { display: flex; justify-content: flex-end; align-items: center; gap: 24px; min-height: 32px; margin: 0 8px 18px; }
-.mespy-home .mh-chart-note { font: .75rem/1.6 var(--mh-mono); color: var(--mh-muted); text-align: right; margin: 0; }
-.mespy-home .mh-chart-note::before { content: ""; display: inline-block; width: 18px; height: 8px; border-left: 1px dashed var(--mh-muted); border-bottom: 1px dashed var(--mh-muted); margin-right: 10px; vertical-align: middle; }
 .mespy-home .mh-fit-band { fill: var(--mh-chart-fit); opacity: .09; }
 .mespy-home .mh-regression { fill: none; stroke: var(--mh-chart-fit); stroke-width: 2.8; }
 .mespy-home .mh-error-bars path { fill: none; stroke: var(--mh-chart-data); stroke-width: 1.3; opacity: .95; vector-effect: non-scaling-stroke; }
 .mespy-home .mh-data-point rect { fill: var(--mh-chart-data); stroke: var(--mh-bg); stroke-width: 1.5; }
-.mespy-home .mh-chart-annotation path { stroke: var(--mh-chart-axis); stroke-width: 1; fill: none; stroke-dasharray: 3 4; }
-.mespy-home .mh-chart-annotation text { fill: var(--mh-muted); font-family: var(--mh-mono); font-size: 15px; }
-.mespy-home .mh-plot-caption { display: flex; flex-wrap: wrap; gap: 24px; font-family: var(--mh-mono); font-size: .75rem; color: var(--mh-muted); margin: 14px 8px 22px; }
-.mespy-home .mh-plot-caption > span { display: inline-flex; align-items: center; gap: 8px; }
-.mespy-home .mh-legend-point { width: 7px; height: 7px; background: var(--mh-chart-data); }
-.mespy-home .mh-legend-line { width: 18px; height: 2px; background: var(--mh-chart-fit); }
-.mespy-home .mh-visual-foot { padding: 16px 8px 0; border-top: 1px solid var(--mh-line); }
-.mespy-home .mh-pixel { position: absolute; pointer-events: none; width: 8px; height: 8px; }
-.mespy-home .mh-pixel-one { position: relative; flex: 0 0 8px; width: 8px; height: 8px; margin: 10px; pointer-events: none; background: var(--mh-chart-data); box-shadow: -10px 0 var(--mh-chart-data), 0 -10px var(--mh-chart-data), 10px 0 var(--mh-chart-data), 0 10px var(--mh-chart-data); }
-.mespy-home .mh-pixel-two { bottom: 43px; left: -24px; background: var(--mh-chart-fit); box-shadow: 10px 0 var(--mh-chart-fit), 0 -10px var(--mh-chart-fit); }
 .mespy-home .mh-principles { border-block: 1px solid var(--mh-line); }
-.mespy-home .mh-principles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; padding-block: 22px; font-size: .875rem; }
-.mespy-home .mh-principles-grid p { display: flex; align-items: center; gap: 16px; padding-block: 4px; }
-.mespy-home .mh-principles-grid p:nth-child(2) { justify-content: center; }
-.mespy-home .mh-principles-grid p:last-child { justify-content: end; }
-.mespy-home .mh-principles-grid span { display: inline-flex; align-items: center; gap: 8px; color: var(--mh-amber); font-family: var(--mh-mono); font-size: .75rem; font-weight: var(--mespy-weight-semibold); white-space: nowrap; }
-.mespy-home .mh-principles-grid span::before { content: ""; width: 4px; height: 4px; background: currentColor; opacity: .65; }
+/* The duck's lane (homepage-duck.js): room for the sprite above its water line, the strip's bottom border. */
+.mespy-home .mh-principles-grid { height: 48px; }
 .mespy-home .mh-section { padding-top: 112px; scroll-margin-top: 30px; }
 .mespy-home .mh-section-heading { display: grid; grid-template-columns: 1.3fr 1fr; gap: 100px; align-items: end; margin-bottom: 44px; }
 .mespy-home .mh-section-heading .mh-eyebrow { margin-bottom: 18px; }
@@ -108,8 +82,7 @@ body.mespy-home #pst-back-to-top { left: auto; top: auto; transform: none; width
 .mespy-home .mh-feature-plot figcaption { margin-top: 12px; font: .72rem/1.65 var(--mh-mono); color: var(--mh-muted); min-height: 3.3em; }
 .mespy-home .mh-feature-copy { display: flex; flex-direction: column; flex: 1; padding: 12px 32px 30px; }
 .mespy-home .mh-feature-copy > p { color: var(--mh-muted); margin-top: 18px; }
-.mespy-home .mh-feature-copy > p:not(.mh-feature-tagline) { margin-bottom: 24px; }
-.mespy-home .mh-feature-copy > .mh-feature-tagline { color: var(--mh-ink); margin-top: 10px; }
+.mespy-home .mh-feature-copy > p { margin-bottom: 24px; }
 .mespy-home .mh-feature-copy pre { background: var(--mh-bg); color: var(--mh-ink); border: 1px solid var(--mh-line); border-radius: 3px; padding: 15px 18px; margin: auto 0 24px; font-size: .875rem; line-height: 1.65; overflow-x: auto; }
 .mespy-home .mh-code-function { color: var(--mh-blue); }
 .mespy-home .mh-text-link { display: flex; align-items: center; justify-content: space-between; font-size: .9rem; font-weight: var(--mespy-weight-semibold); }
@@ -122,30 +95,20 @@ body.mespy-home #pst-back-to-top { left: auto; top: auto; transform: none; width
 .mespy-home .mh-sigma-band { fill: var(--mh-chart-fit); opacity: .10; }
 .mespy-home .mh-mean-line { fill: none; stroke: var(--mh-chart-fit); stroke-width: 2; stroke-dasharray: 5 5; }
 .mespy-home .mh-hist-labels { fill: var(--mh-amber); font-size: 20px; font-family: var(--mh-mono); text-anchor: middle; }
-.mespy-home .mh-behind { display: grid; grid-template-columns: 1.1fr 1fr; gap: 90px; border-block: 1px solid var(--mh-line); padding-block: 64px; }
 .mespy-home .mh-badge { border: 1px solid var(--mh-amber-line); color: var(--mh-amber); padding: 5px 8px; border-radius: 2px; font-size: .6rem; margin-left: 12px; white-space: nowrap; }
-.mespy-home .mh-behind-copy > p:not(.mh-eyebrow) { color: var(--mh-muted); margin-top: 24px; max-width: 460px; }
-.mespy-home .mh-equation { color: var(--mh-blue); margin-bottom: 30px; }
-.mespy-home .mh-equation math { font-size: clamp(1.5rem, 2.5vw, 2.2rem); padding-block: 8px 14px; text-align: left; }
-.mespy-home .mh-equation figcaption { font: .75rem/1.65 var(--mh-mono); color: var(--mh-muted); margin-top: 10px; }
-.mespy-home .mh-topics ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 22px; }
-.mespy-home .mh-topics li { border-top: 1px solid var(--mh-line); padding-block: 13px; font-size: .875rem; color: var(--mh-muted); }
-.mespy-home .mh-start { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: center; gap: 56px; padding-bottom: 112px; }
-.mespy-home .mh-start h2 { max-width: 430px; font-size: clamp(2.2rem, 3.5vw, 3rem); }
-.mespy-home .mh-start > div > p:not(.mh-eyebrow) { color: var(--mh-muted); margin-block: 22px 28px; max-width: 430px; }
 .mespy-home .mh-footer { border-top: 1px solid var(--mh-line); padding-block: 40px 24px; }
 .mespy-home .mh-footer-main { display: flex; align-items: center; gap: 32px; }
-.mespy-home .mh-footer-main > p { color: var(--mh-muted); }
 .mespy-home .mh-footer-main nav { display: flex; flex-wrap: wrap; gap: 24px; margin-left: auto; font-size: .875rem; }
 .mespy-home .mh-footer-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font: .6rem/1.8 var(--mh-mono); color: var(--mh-muted); margin-top: 40px; }
 .mespy-home .mh-footer-meta span > span { padding-inline: 8px; }
 .mespy-home .mh-footer-pixel { color: var(--mh-amber); }
 
 /* Section strip (components/section-nav.html): a section's landing and its pages.
-   Used by guide.html and examples.html. */
+   Used by guide.html, examples.html and api-reference.html. One row on wide
+   screens, scrolling with a visible scrollbar if it ever overflows; up to
+   1200px the title takes a row and the pages wrap below it. */
 .mespy-home .gd-section { border-bottom: 1px solid var(--mh-line); }
-.mespy-home .gd-section-inner { display: flex; align-items: center; gap: 28px; min-height: 56px; overflow-x: auto; scrollbar-width: none; }
-.mespy-home .gd-section-inner::-webkit-scrollbar { display: none; }
+.mespy-home .gd-section-inner { display: flex; align-items: center; gap: 28px; min-height: 56px; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--mh-line) transparent; }
 .mespy-home .gd-section-title { flex: none; font: .68rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); }
 .mespy-home .gd-section-title::after { content: "/"; margin-left: 28px; color: var(--mh-line); }
 .mespy-home .gd-section-pages { display: flex; gap: 26px; margin: 0; padding: 0; list-style: none; }
@@ -178,9 +141,9 @@ body.mespy-home #pst-back-to-top:hover { background: var(--mh-amber); color: var
 .mespy-home .mh-editor-highlight code { display: block; width: max-content; min-width: 100%; font: inherit; }
 .mespy-home .mh-editor-input textarea { display: block; position: relative; width: 100%; min-height: 218px; max-height: 500px; color: transparent; caret-color: var(--mh-ink); background: transparent; resize: vertical; outline-offset: 4px; overflow: auto; }
 .mespy-home .mh-editor-input textarea::selection { background: var(--mh-selection); }
-.mespy-home .mh-start .mh-fit-editor > p:not(.mh-eyebrow) { max-width: none; margin: 0; padding: 0 24px 16px; font: .7rem/1.8 var(--mh-mono); color: var(--mh-muted); }
-.mespy-home .mh-start .mh-fit-editor > .mh-fit-status { color: var(--mh-blue); min-height: 2.8em; }
-.mespy-home .mh-start .mh-fit-editor > p.mh-fit-error { color: var(--mh-error); white-space: pre-wrap; overflow-wrap: anywhere; }
+.mespy-home .mh-fit-editor > p:not(.mh-eyebrow) { max-width: none; margin: 0; padding: 0 24px 16px; font: .7rem/1.8 var(--mh-mono); color: var(--mh-muted); }
+.mespy-home .mh-fit-editor > .mh-fit-status { color: var(--mh-blue); min-height: 2.8em; }
+.mespy-home .mh-fit-editor > p.mh-fit-error { color: var(--mh-error); white-space: pre-wrap; overflow-wrap: anywhere; }
 .mespy-home .mh-fit-results { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start; gap: 24px; min-width: 0; scroll-margin-top: 24px; }
 .mespy-home .mh-fit-results[hidden], .mespy-home .mh-fit-editor [hidden] { display: none !important; }
 .mespy-home .mh-fit-plot, .mespy-home .mh-fit-toml { padding: 0; min-width: 0; border: 1px solid var(--mh-line); border-radius: 8px; overflow: hidden; background: var(--mh-panel); }
@@ -202,7 +165,7 @@ body.mespy-home #pst-back-to-top:hover { background: var(--mh-amber); color: var
   .mespy-home .mh-editor-code { padding: 20px 16px; gap: 10px; grid-template-columns: 20px minmax(0, 1fr); }
   .mespy-home .mh-editor-lines, .mespy-home .mh-editor-highlight, .mespy-home .mh-editor-input textarea { font-size: .8rem; }
   .mespy-home .mh-editor-toolbar { padding-inline: 16px; }
-  .mespy-home .mh-start .mh-fit-editor > p:not(.mh-eyebrow) { padding-inline: 16px; }
+  .mespy-home .mh-fit-editor > p:not(.mh-eyebrow) { padding-inline: 16px; }
   .mespy-home .mh-fit-output-heading { padding-inline: 16px; }
   .mespy-home .mh-fit-image img { min-width: 520px; }
   .mespy-home .mh-fit-toml pre { font-size: .75rem; padding: 16px; }
@@ -212,40 +175,20 @@ body.mespy-home #pst-back-to-top:hover { background: var(--mh-amber); color: var
   .mespy-home .mh-editor-input textarea { color: CanvasText; caret-color: CanvasText; }
 }
 
-/* Progressive enhancement: all content and completed plots are visible without JS. */
-@media (prefers-reduced-motion: no-preference) {
-  .mespy-home .mh-pending { opacity: 0; transform: translateY(18px); }
-  .mespy-home [data-reveal] { transition: opacity .65s ease, transform .65s cubic-bezier(.2,.7,.2,1); }
-  .mespy-home [data-reveal]:focus-within { opacity: 1; transform: none; }
-  .mespy-home .mh-in-view .mh-bar { transform-box: fill-box; transform-origin: center bottom; animation: mh-grow .85s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i) * 45ms + 150ms); }
-  .mespy-home .mh-in-view .mh-data-point { transform-box: fill-box; transform-origin: center; animation: mh-point .55s ease both; animation-delay: calc(var(--i) * 75ms + 120ms); }
-  .mespy-home .mh-in-view .mh-regression { stroke-dasharray: 1; animation: mh-draw 1.3s ease both; animation-delay: .8s; }
-  .mespy-home .mh-in-view .mh-fit-band { animation: mh-band .9s ease both; animation-delay: 1.5s; }
-  .mespy-home .mh-in-view .mh-chart-annotation { animation: mh-point .7s ease both; animation-delay: 1.8s; }
-  .mespy-home .mh-in-view .mh-residual-term { animation: mh-residual 1.6s ease .6s; }
-}
-@keyframes mh-grow { from { transform: scaleY(.02); opacity: .2; } to { transform: scaleY(1); opacity: 1; } }
-@keyframes mh-point { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: scale(1); } }
-@keyframes mh-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-@keyframes mh-band { from { opacity: 0; } to { opacity: .09; } }
-@keyframes mh-residual { 0%, 100% { color: var(--mh-blue); } 45%, 65% { color: var(--mh-amber); } }
 @media (prefers-reduced-motion: reduce) {
   .mespy-home *, .mespy-home *::before, .mespy-home *::after { animation: none !important; transition: none !important; }
-  .mespy-home .mh-scroll-art { transform: none; }
 }
 @media (max-width: 1150px) {
   .mespy-home .mh-shell { width: calc(100% - 72px); }
   .mespy-home .mh-nav { gap: 20px; }
   .mespy-home .mh-nav-links { gap: 16px; }
   .mespy-home .mh-github { padding-left: 16px; }
-  .mespy-home .mh-hero { gap: 32px; }
-  .mespy-home .mh-hero h1 { font-size: 2.8rem; }
-  .mespy-home .mh-section-heading, .mespy-home .mh-behind, .mespy-home .mh-start { gap: 48px; }
+  .mespy-home .mh-section-heading { gap: 48px; }
   .mespy-home .mh-feature-plot { padding-inline: 24px; }
   .mespy-home .mh-feature-copy { padding-inline: 26px; }
   .mespy-home .mh-footer-main { flex-wrap: wrap; gap: 24px; }
 }
-@media (max-width: 1050px) {
+@media (max-width: 1200px) {
   .mespy-home .mh-nav { flex-wrap: wrap; gap: 18px; }
   .mespy-home .mh-tools { margin-left: auto; }
   .mespy-home .mh-nav-links { order: 4; flex-basis: 100%; flex-direction: column; align-items: stretch; gap: 0; font-size: .875rem; }
@@ -255,16 +198,17 @@ body.mespy-home #pst-back-to-top:hover { background: var(--mh-amber); color: var
   .mespy-home.mh-menu-ready .mh-nav-links { display: none; }
   .mespy-home.mh-menu-open .mh-nav-links { display: flex; padding-block: 12px; border-top: 1px solid var(--mh-line); }
   .mespy-home .mh-nav-links .mh-github { width: max-content; padding-left: 16px; }
+  /* Section strip: title on the first row, the pages wrapping on the next
+     ones, each a 44px target; nothing is cut off or scrolls sideways. */
+  .mespy-home .gd-section-inner { flex-wrap: wrap; align-items: stretch; gap: 0; min-height: 0; padding-block: 6px; overflow-x: visible; }
+  .mespy-home .gd-section-title { display: flex; align-items: center; min-height: 44px; }
+  .mespy-home .gd-section-title::after { content: none; }
+  .mespy-home .gd-section-pages { flex: 1 0 100%; flex-wrap: wrap; gap: 0 26px; }
+  .mespy-home .gd-section-pages a { display: flex; align-items: center; min-height: 44px; padding-block: 10px; white-space: normal; overflow-wrap: anywhere; }
 }
 @media (max-width: 900px) {
   .mespy-home .mh-nav { padding-block: 20px; min-height: 80px; }
   .mespy-home .mh-brand img { width: 120px; height: 32px; }
-  .mespy-home .mh-hero { grid-template-columns: 1fr; gap: 48px; padding-block: 56px 48px; }
-  .mespy-home .mh-hero h1 { font-size: clamp(2.5rem, 5.5vw, 3.5rem); max-width: 620px; }
-  .mespy-home .mh-hero-copy { max-width: 660px; }
-  .mespy-home .mh-hero-visual { width: min(650px, 100%); justify-self: center; }
-  .mespy-home .mh-principles-grid { gap: 16px; }
-  .mespy-home .mh-principles-grid p { gap: 10px; }
   .mespy-home .mh-section { padding-top: 80px; }
   .mespy-home .mh-section-heading { grid-template-columns: 1fr; gap: 24px; }
   .mespy-home .mh-section-heading > p { justify-self: start; max-width: 470px; }
@@ -274,55 +218,36 @@ body.mespy-home #pst-back-to-top:hover { background: var(--mh-amber); color: var
   .mespy-home .mh-chart .mh-ticks { font-size: 23px; }
   .mespy-home .mh-chart .mh-axis-labels { font-size: 25px; }
   .mespy-home .mh-feature-copy pre { font-size: .75rem; padding-inline: 12px; }
-  .mespy-home .mh-behind, .mespy-home .mh-start { grid-template-columns: 1fr; gap: 40px; }
-  .mespy-home .mh-behind { padding-block: 44px; }
-  .mespy-home .mh-behind-copy > p:not(.mh-eyebrow) { max-width: 600px; }
-  .mespy-home .mh-start { padding-bottom: 80px; }
   .mespy-home .mh-footer-main nav { margin-left: 0; flex-basis: 100%; }
 }
 @media (max-width: 600px) {
   .mespy-home .mh-shell { width: calc(100% - 40px); }
   .mespy-home .mh-nav { gap: 10px; }
+  /* Logo and Menu on the first row; search, language and theme on a second
+     one, above the open menu. */
+  .mespy-home .mh-tools { order: 3; flex-basis: 100%; justify-content: flex-end; margin-left: 0; }
   .mespy-home .mh-brand img { width: 100px; height: 27px; }
   .mespy-home .mh-language .version-switcher__button { padding: 8px; }
   .mespy-home .mh-menu-toggle { padding: 8px; gap: 6px; }
-  .mespy-home .mh-hero { padding-block: 44px 38px; gap: 40px; }
-  .mespy-home .mh-hero h1 { font-size: clamp(2.15rem, 8.6vw, 3rem); }
   .mespy-home .mh-eyebrow { font-size: .61rem; margin-bottom: 24px; }
   .mespy-home .mh-lead { font-size: 1.05rem; margin-top: 24px; }
   .mespy-home .mh-actions { gap: 10px; }
   .mespy-home .mh-button { font-size: .875rem; padding: 13px 16px; gap: 20px; }
   .mespy-home .mh-hero-meta { font-size: .56rem; }
   .mespy-home .mh-hero-meta > span { margin-inline: 5px; }
-  .mespy-home .mh-hero-visual { width: calc(100% - 16px); }
-  .mespy-home .mh-plot-heading, .mespy-home .mh-visual-foot { font-size: .65rem; }
-  .mespy-home .mh-plot-caption { font-size: .65rem; gap: 12px 16px; margin-top: 8px; }
-  .mespy-home .mh-pixel-two { left: -16px; width: 6px; height: 6px; }
-  .mespy-home .mh-principles-grid { grid-template-columns: 1fr; gap: 12px; padding-block: 22px; }
-  .mespy-home .mh-principles-grid p:nth-child(n) { justify-content: start; gap: 18px; }
   .mespy-home .mh-section { padding-top: 64px; }
   .mespy-home .mh-section-heading { margin-bottom: 32px; }
   .mespy-home .mh-features { grid-template-columns: 1fr; gap: 24px; }
   .mespy-home .mh-feature-plot { padding: 22px 24px 16px; }
   .mespy-home .mh-feature-copy { padding: 12px 24px 28px; }
   .mespy-home .mh-feature-copy > p { min-height: 0; }
-  .mespy-home .mh-feature-copy > p:not(.mh-feature-tagline) { min-height: 0; }
   .mespy-home .mh-feature-copy pre { font-size: .8rem; padding-inline: 16px; }
-  .mespy-home .mh-behind h2 { font-size: 1.9rem; }
-  .mespy-home .mh-topics ul { gap: 0 16px; }
-  .mespy-home .mh-start h2 { max-width: 430px; font-size: 2rem; }
-  .mespy-home .mh-equation math { font-size: clamp(1.2rem, 5vw, 1.8rem); }
   .mespy-home .mh-footer-main { gap: 20px; }
-  .mespy-home .mh-footer-main > p { flex-basis: 100%; }
   .mespy-home .mh-footer-main nav { gap: 18px; }
-  .mespy-home .gd-section-inner { gap: 18px; min-height: 48px; }
-  .mespy-home .gd-section-title::after { margin-left: 18px; }
-  .mespy-home .gd-section-pages { gap: 18px; }
-  .mespy-home .gd-section-pages a { padding-block: 13px; }
+  .mespy-home .gd-section-pages { gap: 0 18px; }
 }
 @media print {
-  .mespy-home .mh-header, .mespy-home .mh-footer, .mespy-home .gd-section, .mespy-home .mh-pixel, .mespy-home .mh-pixel-one { display: none; }
-  .mespy-home .mh-pending { opacity: 1; transform: none; }
+  .mespy-home .mh-header, .mespy-home .mh-footer, .mespy-home .gd-section { display: none; }
   .mespy-home .mh-section, .mespy-home .mh-hero { padding-block: 24px; }
   .mespy-home .mh-feature { break-inside: avoid; }
 }

@@ -1034,3 +1034,85 @@ msgstr "Continue with examples and the API reference"
 #: _templates/homepage.html
 msgid "Installa MesPy"
 msgstr "Install MesPy"
+
+#: _templates/homepage.html
+msgid "Analisi dei dati di laboratorio"
+msgstr "Lab data analysis"
+
+#: _templates/homepage.html
+msgid ""
+"Funzioni Python per il laboratorio di fisica: istogrammi con media e "
+"deviazione standard, fit lineari pesati con le incertezze dei parametri, "
+"residui ed esportazione TOML."
+msgstr ""
+"Python functions for the physics lab: histograms with mean and standard "
+"deviation, weighted linear fits with parameter uncertainties, residuals "
+"and TOML export."
+
+#: _templates/homepage.html
+msgid "Analisi dei dati di laboratorio con MesPy"
+msgstr "Lab data analysis with MesPy"
+
+#: _templates/homepage.html
+msgid ""
+"MesPy è una raccolta di funzioni Python per il laboratorio di fisica. "
+"Mostra la distribuzione delle misure con media e deviazione standard, "
+"adatta una retta ai dati pesando ogni punto con la sua incertezza e "
+"restituisce pendenza e intercetta con le loro incertezze, insieme ai "
+"residui."
+msgstr ""
+"MesPy is a collection of Python functions for the physics lab. It shows "
+"the distribution of your measurements with their mean and standard "
+"deviation, fits a line to your data weighting each point by its "
+"uncertainty, and returns the slope and intercept with their "
+"uncertainties, along with the residuals."
+
+#: _templates/homepage.html
+msgid ""
+"Modifica i dati dell’esempio e premi Esegui: il vero lin_fit calcola "
+"grafico e TOML nel tuo browser."
+msgstr ""
+"Edit the example data and press Run: the real lin_fit computes the plot "
+"and the TOML in your browser."
+
+#: _templates/homepage.html
+msgid "Le funzioni principali"
+msgstr "The main functions"
+
+#: _templates/homepage.html
+msgid ""
+"Entrambe disegnano con Matplotlib e restituiscono oggetti che puoi "
+"riusare: figura e asse per l’istogramma, un risultato con parametri, "
+"incertezze e residui per il fit."
+msgstr ""
+"Both draw with Matplotlib and return objects you can reuse: the figure "
+"and axes for the histogram, a result with parameters, uncertainties and "
+"residuals for the fit."
+
+#: _templates/homepage.html
+msgid "Approfondimenti nel Riferimento API"
+msgstr "In depth in the API Reference"
+
+#: _templates/homepage.html
+msgid ""
+"Ogni funzione ha una pagina con firma, parametri e controlli sui dati. "
+"Per lin_fit trovi i casi OLS e WLS, la propagazione delle incertezze su x"
+" e la diagnostica con il χ²; per histogram la costruzione dei bin e le "
+"normalizzazioni."
+msgstr ""
+"Each function has a page with its signature, parameters and input checks."
+" For lin_fit you will find the OLS and WLS cases, the propagation of x "
+"uncertainties and the χ² diagnostics; for histogram, how the bins are "
+"built and the normalizations."
+
+#: _templates/homepage.html
+msgid "Apri il Riferimento API"
+msgstr "Open the API Reference"
+
+#: _templates/homepage.html
+msgid ""
+"Serve Python 3.12 o successivo. La guida spiega l’installazione su Google"
+" Colab e sul tuo computer, poi il primo import."
+msgstr ""
+"MesPy requires Python 3.12 or later. The guide covers installation on "
+"Google Colab and on your computer, then the first import."
