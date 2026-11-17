@@ -2,7 +2,29 @@
    the example navigators and keep the mobile menu summary in sync. Without
    JavaScript the navigators are plain lists of anchor links. */
 (() => {
+  function enableFigureScrolling() {
+    const figures = document.querySelectorAll('.gd-article .cell_output figure');
+    if (!figures.length) return;
+
+    function updateFocus(figure) {
+      if (figure.scrollWidth > figure.clientWidth) figure.tabIndex = 0;
+      else figure.removeAttribute('tabindex');
+    }
+
+    const observer = new ResizeObserver(entries => {
+      for (const entry of entries) updateFocus(entry.target);
+    });
+    for (const figure of figures) {
+      observer.observe(figure);
+      for (const image of figure.querySelectorAll('img')) {
+        image.addEventListener('load', () => updateFocus(figure), { once: true });
+      }
+      updateFocus(figure);
+    }
+  }
+
   function init() {
+    enableFigureScrolling();
     const links = [...document.querySelectorAll('[data-guide-nav] a[href^="#"]')];
     const targets = [...new Set(links.map((link) => decodeURIComponent(link.hash.slice(1))))]
       .map((id) => document.getElementById(id))
