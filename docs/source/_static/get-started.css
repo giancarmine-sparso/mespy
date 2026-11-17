@@ -2,21 +2,31 @@
    tokens (--mh-*) and components (mh-*). Every selector is scoped to its body. */
 .mespy-start pre { background: transparent; color: var(--mh-ink); border: 0; border-radius: 0; margin: 0; padding: 0; box-shadow: none; }
 .mespy-start pre:focus-visible { outline-offset: -2px; }
-.mespy-start .gs-notes-title { font: .68rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); }
+.mespy-start .gs-notes-title { font: .875rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); }
+/* Informational labels stay at .875rem or more, at every width: this beats
+   the smaller sizes, mobile ones included, set in homepage.css. */
+.mespy-start .mh-eyebrow { font-size: .875rem; }
 
 /* 01 — Hero: the landing's language, at a smaller scale. */
 .mespy-start .gs-hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 64px; align-items: end; padding-block: 72px 64px; border-bottom: 1px solid var(--mh-line); }
 .mespy-start .gs-hero h1 { font-size: clamp(2.3rem, 3.4vw, 3.1rem); text-wrap: balance; max-width: 640px; }
 .mespy-start .gs-hero .mh-lead { max-width: 540px; color: var(--mh-muted); }
+.mespy-start .gs-hero .mh-hero-meta { font-size: .875rem; }
 .mespy-start .gs-protocol { border: 1px solid var(--mh-line); border-radius: 5px; background: var(--mh-panel); }
-.mespy-start .gs-protocol-head { display: flex; justify-content: space-between; gap: 12px; padding: 16px 22px; border-bottom: 1px solid var(--mh-line); font: .68rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); }
+.mespy-start .gs-protocol-head { display: flex; justify-content: space-between; gap: 12px; padding: 16px 22px; border-bottom: 1px solid var(--mh-line); font: .875rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); }
 .mespy-start .gs-protocol ol { list-style: none; margin: 0; padding: 0; }
 .mespy-start .gs-protocol li + li { border-top: 1px solid var(--mh-line); }
 .mespy-start .gs-protocol a { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 14px 22px; font-size: .9rem; }
 .mespy-start .gs-protocol a:focus-visible { outline-offset: -4px; }
-.mespy-start .gs-step { font: var(--mespy-weight-semibold) .75rem var(--mh-mono); color: var(--mh-amber); }
+.mespy-start .gs-step { font: var(--mespy-weight-semibold) .875rem var(--mh-mono); color: var(--mh-amber); }
 .mespy-start .gs-arrow { color: var(--mh-muted); transition: transform .2s, color .2s; }
 .mespy-start .gs-protocol a:hover .gs-arrow { color: var(--mh-amber); transform: translateY(2px); }
+
+/* Version note: a panel set apart from the hero, its text kept to a reading
+   measure and the link beside it on wide screens. */
+.mespy-start .gs-version-note { display: grid; grid-template-columns: minmax(0, 72ch) auto; justify-content: space-between; align-items: center; gap: 16px 48px; margin-top: 40px; padding: 24px 32px; border: 1px solid var(--mh-line); border-radius: 5px; background: var(--mh-panel); box-shadow: inset 2px 0 0 var(--mh-amber); }
+.mespy-start .gs-version-note > p { max-width: 72ch; color: var(--mh-ink); }
+.mespy-start .gs-version-note > .mh-text-link { justify-content: flex-start; gap: 10px; }
 
 /* 02 — Installation selector. Tabs appear only once get-started.js is ready. */
 .mespy-start .gs-installer { border: 1px solid var(--mh-line); border-radius: 5px; background: var(--mh-panel); overflow: hidden; }
@@ -27,58 +37,53 @@
 .mespy-start .gs-tablist [role="tab"][aria-selected="true"] { color: var(--mh-ink); background: var(--mh-panel); box-shadow: inset 0 2px 0 var(--mh-amber); }
 .mespy-start .gs-tablist [role="tab"]:focus-visible { outline-offset: -5px; }
 .mespy-start .gs-tab-name { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 0; font-size: 1rem; font-weight: var(--mespy-weight-semibold); }
-.mespy-start .gs-tab-note { font: .66rem/1.5 var(--mh-mono); text-transform: uppercase; letter-spacing: .07em; }
+.mespy-start .gs-tab-note { font: .875rem/1.5 var(--mh-mono); text-transform: uppercase; letter-spacing: .07em; }
 .mespy-start .gs-panel { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); }
 .mespy-start .gs-panel[hidden] { display: none; }
 .mespy-start .gs-panel + .gs-panel { border-top: 1px solid var(--mh-line); }
 .mespy-start .gs-panel:focus-visible { outline-offset: -4px; }
 .mespy-start .gs-panel-main { padding: 36px 40px 40px; min-width: 0; }
-.mespy-start .gs-panel-kicker { font: .7rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-amber); margin-bottom: 12px; }
+.mespy-start .gs-panel-kicker { font: .875rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-amber); margin-bottom: 12px; }
 .mespy-start .gs-tabs-ready .gs-panel-kicker { display: none; }
 .mespy-start .gs-panel h3 { font-size: clamp(1.4rem, 2vw, 1.75rem); }
 .mespy-start .gs-panel-main > p:not(.gs-panel-kicker) { color: var(--mh-muted); max-width: 600px; margin-top: 16px; }
 .mespy-start .gs-panel-notes { display: flex; flex-direction: column; gap: 14px; padding: 36px 32px; border-left: 1px solid var(--mh-line); color: var(--mh-muted); min-width: 0; }
-.mespy-start .gs-panel-notes .mh-text-link { justify-content: flex-start; gap: 10px; color: var(--mh-ink); font-size: .85rem; }
+.mespy-start .gs-panel-notes .mh-text-link { justify-content: flex-start; gap: 10px; color: var(--mh-ink); font-size: .875rem; }
 .mespy-start .gs-command { margin-top: 14px; }
-.mespy-start .gs-command-label { font: .62rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); margin-bottom: 6px; }
+.mespy-start .gs-command-label { font: .875rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); margin-bottom: 6px; }
 .mespy-start .gs-command-line { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; padding-right: 8px; border: 1px solid var(--mh-line); border-radius: 3px; background: var(--mh-bg); }
 .mespy-start .gs-command-line pre { padding: 15px 18px; overflow-x: auto; font: .95rem/1.5 var(--mh-mono); white-space: pre; }
 .mespy-start .gs-prompt { color: var(--mh-subtle); margin-right: 12px; user-select: none; }
-.mespy-start .gs-copy { flex-shrink: 0; min-height: 36px; padding: 6px 12px; white-space: nowrap; }
+.mespy-start .gs-copy { flex-shrink: 0; min-height: 36px; padding: 6px 12px; font-size: .875rem; white-space: nowrap; }
 .mespy-start .gs-copy.gs-copied { color: var(--mh-amber); border-color: var(--mh-amber-line); }
-.mespy-start .gs-footnote { margin-top: 16px; font: .72rem/1.7 var(--mh-mono); color: var(--mh-muted); }
+.mespy-start .gs-footnote { margin-top: 16px; font: .875rem/1.7 var(--mh-mono); color: var(--mh-muted); }
 
 /* 03 — First import. */
 .mespy-start .gs-verify { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 56px; align-items: center; }
 .mespy-start .gs-verify > div:first-child > p:not(.mh-eyebrow) { color: var(--mh-muted); margin-top: 22px; max-width: 440px; }
-.mespy-start .gs-verify .gs-hint { padding-left: 14px; border-left: 1px solid var(--mh-amber); font: .75rem/1.75 var(--mh-mono); }
+.mespy-start .gs-verify .gs-hint { padding-left: 14px; border-left: 1px solid var(--mh-amber); font: .875rem/1.75 var(--mh-mono); }
+.mespy-start .gs-verify .gs-hint code { font-size: inherit; }
 .mespy-start .gs-terminal { min-width: 0; border: 1px solid var(--mh-line); border-radius: 8px; background: var(--mh-panel); overflow: hidden; }
+.mespy-start .gs-terminal .mh-editor-label { font-size: .875rem; }
 .mespy-start .gs-terminal pre { padding: 24px; overflow-x: auto; font: .9rem/1.85 var(--mh-mono); white-space: pre; tab-size: 4; }
 .mespy-start .gs-output { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; padding: 16px 24px; border-top: 1px solid var(--mh-line); background: var(--mh-bg); }
-.mespy-start .gs-output-label { font: .62rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); }
+.mespy-start .gs-output-label { font: .875rem/1.6 var(--mh-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mh-muted); }
 .mespy-start .gs-output samp { font: .9rem/1.6 var(--mh-mono); color: var(--mh-blue); }
 
-
-/* Video walkthrough, framed like the landing's output panels. */
-.mespy-start .gs-video { border: 1px solid var(--mh-line); border-radius: 8px; background: var(--mh-panel); overflow: hidden; }
-.mespy-start .gs-video video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: var(--mh-bg); }
-.mespy-start .gs-video video:focus-visible { outline-offset: -3px; }
-.mespy-start .gs-video figcaption { padding: 14px 20px 16px; border-top: 1px solid var(--mh-line); font: .7rem/1.7 var(--mh-mono); color: var(--mh-muted); }
 
 /* 04 — Keep exploring: the landing's editorial cards. */
 .mespy-start .gs-explore { padding-bottom: 112px; }
 .mespy-start .gs-explore .mh-section-heading { margin-bottom: 36px; }
-.mespy-start .gs-destinations { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 0; padding: 0; }
+.mespy-start .gs-explore h2 { text-wrap: balance; }
+.mespy-start .gs-destinations { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin: 0; padding: 0; }
 .mespy-start .gs-destination { display: flex; flex-direction: column; background: var(--mh-panel); border: 1px solid var(--mh-line); border-radius: 5px; min-width: 0; transition: border-color .25s; }
-.mespy-start .gs-destination:not(.gs-destination-soon):hover, .mespy-start .gs-destination:focus-within { border-color: var(--mh-line-strong); }
+.mespy-start .gs-destination:hover, .mespy-start .gs-destination:focus-within { border-color: var(--mh-line-strong); }
 .mespy-start .gs-destination .mh-feature-top { padding-inline: 26px; }
-.mespy-start .gs-destination .mh-feature-top { min-height: 62px; padding-block: 0; }
-.mespy-start .gs-destination .mh-badge { margin-left: 0; padding: 2px 8px; line-height: 1.6; }
+.mespy-start .gs-destination .mh-feature-top { min-height: 62px; padding-block: 0; font-size: .875rem; }
+.mespy-start .gs-destination .mh-feature-top code { font-size: .875rem; }
 .mespy-start .gs-destination-body { display: flex; flex-direction: column; flex: 1; padding: 26px 26px 28px; }
 .mespy-start .gs-destination-body > p { color: var(--mh-muted); margin: 14px 0 28px; }
 .mespy-start .gs-destination-body > .mh-text-link { margin-top: auto; }
-.mespy-start .gs-destination-soon h3 { color: var(--mh-muted); }
-.mespy-start .gs-destination-body > .gs-soon-note { margin: auto 0 0; font: .7rem/1.6 var(--mh-mono); }
 
 @media (max-width: 1150px) {
   .mespy-start .gs-hero { gap: 40px; }
@@ -90,6 +95,7 @@
   .mespy-start .gs-hero { grid-template-columns: 1fr; gap: 40px; padding-block: 56px 48px; }
   .mespy-start .gs-hero h1 { font-size: clamp(2.2rem, 5.4vw, 3rem); }
   .mespy-start .gs-protocol { max-width: 560px; }
+  .mespy-start .gs-version-note { grid-template-columns: minmax(0, 1fr); margin-top: 32px; }
   .mespy-start .gs-tablist { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .mespy-start .gs-tablist [role="tab"]:nth-child(2) { border-right: 0; }
   .mespy-start .gs-tablist [role="tab"]:nth-child(-n + 2) { border-bottom: 1px solid var(--mh-line); }
@@ -104,18 +110,18 @@
 @media (max-width: 600px) {
   .mespy-start .gs-hero { padding-block: 44px 40px; }
   .mespy-start .gs-hero h1 { font-size: clamp(2rem, 8.4vw, 2.6rem); }
-  .mespy-start .gs-protocol a { grid-template-columns: 32px minmax(0, 1fr) auto; padding-inline: 16px; font-size: .85rem; }
+  .mespy-start .gs-protocol a { grid-template-columns: 32px minmax(0, 1fr) auto; padding-inline: 16px; font-size: .875rem; }
   .mespy-start .gs-protocol-head { padding-inline: 16px; }
+  .mespy-start .gs-version-note { margin-top: 24px; padding: 20px; }
   .mespy-start .gs-tablist [role="tab"] { min-height: 68px; padding: 14px 16px; }
   .mespy-start .gs-tab-name { font-size: .9rem; }
-  .mespy-start .gs-tab-note { font-size: .58rem; }
   .mespy-start .gs-panel-main { padding: 26px 20px 28px; }
   .mespy-start .gs-panel-notes { padding: 22px 20px 24px; }
   .mespy-start .gs-command-line pre { padding: 13px 14px; font-size: .82rem; }
   .mespy-start .gs-prompt { margin-right: 8px; }
   .mespy-start .gs-terminal pre { padding: 20px 16px; font-size: .78rem; }
   .mespy-start .gs-terminal .mh-editor-toolbar { padding-inline: 16px; min-height: 56px; }
-  .mespy-start .gs-output, .mespy-start .gs-video figcaption { padding-inline: 16px; }
+  .mespy-start .gs-output { padding-inline: 16px; }
   .mespy-start .gs-destination .mh-feature-top { padding-inline: 20px; }
   .mespy-start .gs-destination-body { padding: 22px 20px 24px; }
 }

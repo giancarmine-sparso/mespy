@@ -37,7 +37,7 @@
   <section class="mh-shell gs-hero" aria-labelledby="gs-title">
     <div class="gs-hero-copy">
       <p class="mh-eyebrow"><span class="mh-status" aria-hidden="true"></span> {{ home('Inizia') }}</p>
-      <h1 id="gs-title">{{ home('Fai i primi passi') }} <span class="mh-accent">{{ home('con MesPy.') }}</span></h1>
+      <h1 id="gs-title">{{ home('Installa MesPy') }}</h1>
       <p class="mh-lead">{{ home('Installa MesPy, verifica che funzioni e scegli da dove continuare. Tutto quello che serve per iniziare, in pochi passi.') }}</p>
       <p class="mh-hero-meta">Python ≥ 3.12 <span aria-hidden="true">/</span> {{ home('Open source') }} <span aria-hidden="true">/</span> {{ home('Fatto per imparare') }}</p>
     </div>
@@ -46,13 +46,14 @@
       <ol>
         <li><a href="#setup"><span class="gs-step">01</span><span>{{ home('Scegli l’ambiente e installa MesPy') }}</span><span class="gs-arrow" aria-hidden="true">↓</span></a></li>
         <li><a href="#first-import"><span class="gs-step">02</span><span>{{ home('Verifica l’installazione') }}</span><span class="gs-arrow" aria-hidden="true">↓</span></a></li>
-        <li><a href="#keep-exploring"><span class="gs-step">03</span><span>{{ home('Esempi, API e teoria') }}</span><span class="gs-arrow" aria-hidden="true">↓</span></a></li>
+        <li><a href="#keep-exploring"><span class="gs-step">03</span><span>{{ home('Continua con esempi e riferimento API') }}</span><span class="gs-arrow" aria-hidden="true">↓</span></a></li>
       </ol>
     </nav>
   </section>
 
-  <aside class="mh-shell" aria-label="{{ home('Versione degli esempi') }}">
-    <p>{{ home('Questa documentazione segue le sorgenti del repository. Gli esempi di histogram includono modifiche a bin_width e alla griglia successive alla versione 2.0.0 su PyPI. Per riprodurli esattamente, installa MesPy dalle sorgenti.') }} <a href="{{ pathto('installazione') }}">{{ home('Installazione per lo sviluppo') }} <span aria-hidden="true">→</span></a></p>
+  <aside class="mh-shell gs-version-note" aria-label="{{ home('Versione degli esempi') }}">
+    <p>{{ home('Questa documentazione segue le sorgenti del repository. Gli esempi di histogram includono modifiche a bin_width e alla griglia successive alla versione 2.0.0 su PyPI. Per riprodurli esattamente, installa MesPy dalle sorgenti.') }}</p>
+    <a class="mh-text-link" href="{{ pathto('installazione') }}">{{ home('Installazione per lo sviluppo') }} <span aria-hidden="true">→</span></a>
   </aside>
 
   <section class="mh-section mh-shell" id="setup" aria-labelledby="setup-title">
@@ -150,11 +151,11 @@
 
   <section class="mh-section mh-shell gs-explore" id="keep-exploring" aria-labelledby="explore-title">
     <div class="mh-section-heading">
-      <div><p class="mh-eyebrow">03 / {{ home('Continua a esplorare') }}</p><h2 id="explore-title">{{ home('Pronto per andare oltre?') }}</h2></div>
+      <div><p class="mh-eyebrow">03 / {{ home('Continua a esplorare') }}</p><h2 id="explore-title">{{ home('Continua con esempi e riferimento API') }}</h2></div>
     </div>
     <ul class="gs-destinations">
       <li class="gs-destination">
-        <div class="mh-feature-top"><span>01 / {{ home('Pratica') }}</span><code>examples/</code></div>
+        <div class="mh-feature-top"><span>{{ home('Pratica') }}</span><code>examples/</code></div>
         <div class="gs-destination-body">
           <h3>{{ home('Esempi') }}</h3>
           <p>{{ home('Esplora flussi di analisi pratici e notebook.') }}</p>
@@ -162,19 +163,11 @@
         </div>
       </li>
       <li class="gs-destination">
-        <div class="mh-feature-top"><span>02 / {{ home('Riferimento') }}</span><code>mespy.*</code></div>
+        <div class="mh-feature-top"><span>{{ home('Riferimento') }}</span><code>mespy.*</code></div>
         <div class="gs-destination-body">
           <h3>{{ home('Riferimento API') }}</h3>
           <p>{{ home('Scopri le funzioni disponibili, i loro parametri e i valori restituiti.') }}</p>
           <a class="mh-text-link" href="{{ pathto('moduli/index') }}">{{ home('Apri il riferimento API') }} <span aria-hidden="true">→</span></a>
-        </div>
-      </li>
-      <li class="gs-destination gs-destination-soon">
-        <div class="mh-feature-top"><span>03 / {{ home('Teoria') }}</span><span class="mh-badge">{{ home('In arrivo') }}</span></div>
-        <div class="gs-destination-body">
-          <h3>{{ home('Come funziona') }}</h3>
-          <p>{{ home('Le idee scientifiche e matematiche dietro gli strumenti.') }}</p>
-          <p class="gs-soon-note">{{ home('Questa sezione è in preparazione.') }}</p>
         </div>
       </li>
     </ul>

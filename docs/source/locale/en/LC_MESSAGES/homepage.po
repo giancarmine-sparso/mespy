@@ -1027,3 +1027,10 @@ msgstr "Project files"
 #: conf.py
 msgid "File salvati"
 msgstr "Saved files"
+
+msgid "Continua con esempi e riferimento API"
+msgstr "Continue with examples and the API reference"
+
+#: _templates/homepage.html
+msgid "Installa MesPy"
+msgstr "Install MesPy"
