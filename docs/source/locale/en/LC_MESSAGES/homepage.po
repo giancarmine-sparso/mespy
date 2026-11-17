@@ -99,18 +99,6 @@ msgstr "Fit a straight line with uncertainties and an optional plot."
 msgid "Cerchi esempi pratici?"
 msgstr "Looking for practical examples?"
 
-#: _templates/homepage.html:8 _templates/homepage.html:48
-msgid "I tuoi dati sperimentali, più semplici."
-msgstr "Your experimental data, made easier."
-
-#: _templates/homepage.html:12
-msgid ""
-"Dalle misure ai risultati. Strumenti Python per la fisica sperimentale, "
-"pensati per il tuo primo laboratorio."
-msgstr ""
-"From measurements to results. Python tools for experimental physics, made "
-"for your first lab."
-
 #: _templates/homepage.html:17
 msgid "Vai al contenuto"
 msgstr "Skip to content"
@@ -141,24 +129,6 @@ msgstr "Histogram"
 msgid "Fit lineare"
 msgstr "Linear fit"
 
-#: _templates/homepage.html:37 _templates/homepage.html:108
-msgid "Dietro le quinte"
-msgstr "Behind the scenes"
-
-#: _templates/homepage.html:47
-msgid "Il tuo laboratorio, in Python"
-msgstr "Your lab, in Python"
-
-#: _templates/homepage.html:50
-msgid ""
-"Visualizza le misure, esplora le distribuzioni e trova le relazioni tra i "
-"dati. MesPy ti aiuta a interpretare i risultati e le loro incertezze, senza "
-"riscrivere ogni volta lo stesso codice di analisi."
-msgstr ""
-"Visualize measurements, explore distributions and fit relationships. MesPy "
-"helps you interpret results and uncertainties, without rewriting the same "
-"analysis code every time."
-
 #: _templates/homepage.html:53
 msgid "Scopri le funzioni"
 msgstr "Explore features"
@@ -171,55 +141,9 @@ msgstr "Open source"
 msgid "Fatto per imparare"
 msgstr "Made for learning"
 
-#: _templates/homepage.html:58
-msgid "Esperimento 001"
-msgstr "Experiment 001"
-
-#: _templates/homepage.html:59
-msgid "Un po’ di ordine."
-msgstr "A little order."
-
-#: _templates/homepage.html:61
-msgid "Misure"
-msgstr "Measurements"
-
-#: _templates/homepage.html:61
-msgid "Una relazione da scoprire"
-msgstr "A relationship to discover"
-
-#: _templates/homepage.html:62
-msgid "Misura. Esplora. Comprendi."
-msgstr "Measure. Explore. Understand."
-
-#: _templates/homepage.html:68
-msgid "Pensato per chi inizia"
-msgstr "Built for beginners"
-
-#: _templates/homepage.html:69
-msgid "Con NumPy e Matplotlib"
-msgstr "With NumPy & Matplotlib"
-
-#: _templates/homepage.html:70
-msgid "La fisica resta al centro"
-msgstr "Keep the focus on physics"
-
 #: _templates/homepage.html
 msgid "Fai salutare l’anatra MesPy"
 msgstr "Make the MesPy duck wave"
-
-#: _templates/homepage.html:76
-msgid "Piccole funzioni. Grandi scoperte."
-msgstr "Small functions. Big discoveries."
-
-#: _templates/homepage.html:76
-msgid "I tuoi compagni di laboratorio."
-msgstr "Meet your lab partners."
-
-#: _templates/homepage.html:77
-msgid "Meno tempo a impostare grafici. Più tempo a capire cosa raccontano i dati."
-msgstr ""
-"Less time setting up plots. More time understanding what your data is "
-"telling you."
 
 #: _templates/homepage.html:81
 msgid "Distribuzioni"
@@ -228,10 +152,6 @@ msgstr "Distributions"
 #: _templates/homepage.html:82
 msgid "Una distribuzione, la sua media e la banda ±σ. Esempio illustrativo."
 msgstr "A distribution, its mean and the ±σ band. Illustrative example."
-
-#: _templates/homepage.html:85
-msgid "Ogni misura ha una storia."
-msgstr "Every measurement tells a story."
 
 #: _templates/homepage.html:86
 msgid ""
@@ -257,10 +177,6 @@ msgstr "Relationships"
 msgid "Misure con incertezze e una retta di fit. Esempio illustrativo."
 msgstr "Measurements with uncertainties and a fitted line. Illustrative example."
 
-#: _templates/homepage.html:96
-msgid "Trova il filo tra i punti."
-msgstr "Find the thread between points."
-
 #: _templates/homepage.html:97
 msgid ""
 "Trova la retta che descrive le tue misure. Ottieni pendenza, intercetta e le"
@@ -277,85 +193,9 @@ msgstr "Python linear fit example"
 msgid "Esplora lin_fit"
 msgstr "Explore lin_fit"
 
-#: _templates/homepage.html:108
-msgid "In arrivo"
-msgstr "Coming soon"
-
-#: _templates/homepage.html:109
-msgid "Il come è utile."
-msgstr "The how is useful."
-
-#: _templates/homepage.html:109
-msgid "Il perché, ancora di più."
-msgstr "The why, even more."
-
-#: _templates/homepage.html:110
-msgid ""
-"Un risultato non è solo un numero. Stiamo preparando un percorso per capire "
-"la matematica dietro le funzioni, un concetto alla volta."
-msgstr ""
-"A result is more than a number. We’re preparing a path through the "
-"mathematics behind the functions, one concept at a time."
-
-#: _templates/homepage.html:111
-msgid "Questa sezione è un’anteprima: le nuove guide arriveranno in seguito."
-msgstr "This section is a preview: new guides will follow."
-
-#: _templates/homepage.html:125
-msgid "Ogni scarto, rapportato alla sua incertezza. Ogni misura conta."
-msgstr "Each residual, measured against its uncertainty. Every measurement counts."
-
-#: _templates/homepage.html:127
-msgid "Argomenti in programma"
-msgstr "Planned topics"
-
-#: _templates/homepage.html:128
-msgid "Media aritmetica e pesata"
-msgstr "Arithmetic & weighted mean"
-
-#: _templates/homepage.html:128
-msgid "Varianza e deviazione standard"
-msgstr "Variance & standard deviation"
-
-#: _templates/homepage.html:128
-msgid "Incertezza di misura"
-msgstr "Measurement uncertainty"
-
-#: _templates/homepage.html:128
-msgid "Covarianza e correlazione"
-msgstr "Covariance & correlation"
-
-#: _templates/homepage.html:128
-msgid "Propagazione delle incertezze"
-msgstr "Propagation of uncertainties"
-
-#: _templates/homepage.html:128
-msgid "Metodo dei minimi quadrati"
-msgstr "Least squares method"
-
-#: _templates/homepage.html:135
-msgid "Dal primo import al primo risultato"
-msgstr "From first import to first result"
-
-#: _templates/homepage.html:135
-msgid "Il prossimo esperimento"
-msgstr "Your next experiment"
-
-#: _templates/homepage.html:135
-msgid "inizia qui."
-msgstr "starts here."
-
-#: _templates/homepage.html:135
-msgid "Installa MesPy e porta i tuoi dati. Al resto, un passo alla volta."
-msgstr "Install MesPy and bring your data. Take the rest one step at a time."
-
 #: _templates/homepage.html:135
 msgid "Guida all’installazione"
 msgstr "Installation guide"
-
-#: _templates/homepage.html:142
-msgid "La curiosità è tua. Gli strumenti sono qui."
-msgstr "Bring your curiosity. The tools are here."
 
 #: _templates/homepage.html:142
 msgid "Link utili"
@@ -516,9 +356,6 @@ msgstr "Scrollable plot: on small screens you can scroll horizontally."
 msgid "Riferimento API"
 msgstr "API Reference"
 
-msgid "Come funziona"
-msgstr "How it works"
-
 msgid "GitHub"
 msgstr "GitHub"
 
@@ -526,12 +363,6 @@ msgid "GitHub (nuova scheda)"
 msgstr "GitHub (new tab)"
 
 # Get started page (_templates/get-started.html).
-msgid "Fai i primi passi"
-msgstr "Take your first steps"
-
-msgid "con MesPy."
-msgstr "with MesPy."
-
 msgid "Inizia"
 msgstr "Get started"
 
@@ -546,9 +377,6 @@ msgstr "Choose an environment and install MesPy"
 
 msgid "Verifica l’installazione"
 msgstr "Verify the installation"
-
-msgid "Esempi, API e teoria"
-msgstr "Examples, API and theory"
 
 msgid "Preparazione"
 msgstr "Setup"
@@ -730,8 +558,8 @@ msgstr "MesPy is ready."
 msgid "Continua a esplorare"
 msgstr "Keep exploring"
 
-msgid "Pronto per andare oltre?"
-msgstr "Ready to go further?"
+msgid "Continua con esempi e riferimento API"
+msgstr "Continue with examples and the API reference"
 
 msgid "Pratica"
 msgstr "Practice"
@@ -750,15 +578,6 @@ msgstr "Discover the available functions, their parameters and return values."
 
 msgid "Apri il riferimento API"
 msgstr "Open the API reference"
-
-msgid "Teoria"
-msgstr "Theory"
-
-msgid "Le idee scientifiche e matematiche dietro gli strumenti."
-msgstr "Understand the scientific and mathematical ideas behind the tools."
-
-msgid "Questa sezione è in preparazione."
-msgstr "This section is in preparation."
 
 msgid "Copiato"
 msgstr "Copied"
@@ -946,22 +765,16 @@ msgid ""
 "pesi."
 msgstr "Basic statistics with input validation and support for weights."
 
-#: _templates/homepage.html:49
-msgid ""
-"Una raccolta di strumenti Python per chi muove i primi passi nella fisica "
-"sperimentale."
-msgstr ""
-"A Python toolbox for students taking their first steps in experimental "
-"physics."
-
-#: _templates/homepage.html:115
-msgid ""
-"Chi quadro: somma dei residui al quadrato, pesati con l’inverso della "
-"varianza."
-msgstr "Chi-square: the sum of squared residuals, weighted by the inverse variance."
-
 msgid "Risultato"
 msgstr "Output"
+
+#: conf.py
+msgid "File di progetto"
+msgstr "Project files"
+
+#: conf.py
+msgid "File salvati"
+msgstr "Saved files"
 
 #: _templates/examples.html
 msgid ""
@@ -1020,20 +833,21 @@ msgstr ""
 "include bin_width and grid changes made after version 2.0.0 was published on"
 " PyPI. To reproduce them exactly, install MesPy from source."
 
-#: conf.py
-msgid "File di progetto"
-msgstr "Project files"
+#: _templates/components/mespy-search.html
+msgid "Cerca"
+msgstr "Search"
 
-#: conf.py
-msgid "File salvati"
-msgstr "Saved files"
+#: _templates/components/mespy-search.html
+msgid "Cerca nella documentazione"
+msgstr "Search the documentation"
 
-msgid "Continua con esempi e riferimento API"
-msgstr "Continue with examples and the API reference"
+#: _templates/components/mespy-header.html
+msgid "Ricerca nella documentazione"
+msgstr "Documentation search"
 
-#: _templates/homepage.html
-msgid "Installa MesPy"
-msgstr "Install MesPy"
+#: _templates/components/mespy-header.html
+msgid "Chiudi la ricerca"
+msgstr "Close search"
 
 #: _templates/homepage.html
 msgid "Analisi dei dati di laboratorio"
@@ -1110,25 +924,13 @@ msgid "Apri il Riferimento API"
 msgstr "Open the API Reference"
 
 #: _templates/homepage.html
+msgid "Installa MesPy"
+msgstr "Install MesPy"
+
+#: _templates/homepage.html
 msgid ""
 "Serve Python 3.12 o successivo. La guida spiega l’installazione su Google"
 " Colab e sul tuo computer, poi il primo import."
 msgstr ""
 "MesPy requires Python 3.12 or later. The guide covers installation on "
 "Google Colab and on your computer, then the first import."
-
-#: _templates/components/mespy-search.html
-msgid "Cerca"
-msgstr "Search"
-
-#: _templates/components/mespy-search.html
-msgid "Cerca nella documentazione"
-msgstr "Search the documentation"
-
-#: _templates/components/mespy-header.html
-msgid "Ricerca nella documentazione"
-msgstr "Documentation search"
-
-#: _templates/components/mespy-header.html
-msgid "Chiudi la ricerca"
-msgstr "Close search"

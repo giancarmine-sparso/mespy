@@ -228,24 +228,11 @@ GUIDE_STATIONS = {
     },
 }
 
+# Every page replaces PyData's layout with the site's own header and footer,
+# so the theme's navbar, sidebar and logo options have no effect. github_url
+# feeds their GitHub links (theme_github_url); set_search_bar_text adds the
+# search field's placeholder.
 html_theme_options = {
-    "logo": {
-        "text": "MesPy",
-        "image_light": "../../assets/brand/mespy-icon.svg",
-        "image_dark": "../../assets/brand/mespy-icon-dark.svg",
-        "alt_text": "MesPy",
-    },
-    "navigation_depth": 3,
-    "show_toc_level": 2,
-    "navbar_align": "content",
-    "navbar_persistent": "",
-    "navbar_end": [
-        "components/language-switcher",
-        "theme-switcher",
-        "navbar-icon-links",
-    ],
-    "secondary_sidebar_items": ["page-toc"],
-    "show_prev_next": False,
     "github_url": "https://github.com/giancarmine-sparso/mespy",
 }
 myst_enable_extensions = [
