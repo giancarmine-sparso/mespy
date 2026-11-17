@@ -16,9 +16,9 @@
        data-copy-failure="{{ home('Copia non disponibile. Seleziona e copia il TOML.') }}">
     <div class="mh-editor-toolbar"><span class="mh-editor-label">Python</span><div><button class="mh-fit-cancel" type="button" hidden>{{ home('Annulla') }}</button><button class="mh-fit-run" type="button" disabled><span aria-hidden="true">▶</span> {{ home('Esegui') }}</button></div></div>
     <div class="mh-editor-code">
-      <pre class="mh-editor-lines" aria-hidden="true"></pre>
+      <pre class="mh-editor-lines" aria-hidden="true" inert></pre>
       <div class="mh-editor-input">
-        <pre class="mh-editor-highlight" aria-hidden="true"><code>{{ fit_example_html | safe }}</code></pre>
+        <pre class="mh-editor-highlight" aria-hidden="true" inert><code>{{ fit_example_html | safe }}</code></pre>
         <textarea id="mh-fit-source" aria-label="{{ home('Esempio Python modificabile: misure e fit lineare') }}" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" wrap="off">{{ fit_example }}</textarea>
       </div>
     </div>
