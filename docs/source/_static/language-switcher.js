@@ -1,44 +1,31 @@
 (() => {
-  function navigateToLanguage(event) {
-    const link = event.currentTarget;
-    const targetUrl = new URL(link.href, window.location.href);
-    const homeUrl = new URL(link.dataset.languageHome, window.location.href);
+  // The build already resolves each link's destination (the same page in the
+  // other language, or its home when the page has no counterpart). Links
+  // stay native: this only carries the current query and fragment over to a
+  // same-page link, without network requests or preventDefault.
+  const LINK_SELECTOR =
+    "[data-language-switcher-link='true']:not([data-language-fallback='true'])";
 
-    if (window.location.search) {
-      targetUrl.search = window.location.search;
-      homeUrl.search = window.location.search;
-    }
-    if (window.location.hash) {
-      targetUrl.hash = window.location.hash;
-      homeUrl.hash = window.location.hash;
-    }
+  function carryLocation(link) {
+    const url = new URL(link.href, window.location.href);
+    url.search = window.location.search;
+    url.hash = window.location.hash;
+    link.href = url.href;
+  }
 
-    event.preventDefault();
-
-    const goTo = (url) => {
-      window.location.assign(url.toString());
-    };
-
-    if (window.location.protocol === "file:") {
-      goTo(targetUrl);
-      return;
-    }
-
-    fetch(targetUrl, { method: "HEAD" })
-      .then((response) => {
-        goTo(response.ok ? targetUrl : homeUrl);
-      })
-      .catch(() => {
-        goTo(homeUrl);
-      });
+  function carryLocationToAll() {
+    document.querySelectorAll(LINK_SELECTOR).forEach(carryLocation);
   }
 
   function initLanguageSwitcher() {
-    document
-      .querySelectorAll("[data-language-switcher-link='true']")
-      .forEach((link) => {
-        link.addEventListener("click", navigateToLanguage);
-      });
+    carryLocationToAll();
+    window.addEventListener("hashchange", carryLocationToAll);
+    // Also refresh right before activation, in case the URL changed through
+    // the History API, which fires no hashchange.
+    document.querySelectorAll(LINK_SELECTOR).forEach((link) => {
+      link.addEventListener("click", () => carryLocation(link));
+      link.addEventListener("auxclick", () => carryLocation(link));
+    });
   }
 
   if (document.readyState === "loading") {

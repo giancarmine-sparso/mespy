@@ -30,6 +30,7 @@
         data-language-switcher-link="true"
         data-language-code="{{ item.code }}"
         data-language-home="{{ item.home_href }}"
+        data-language-fallback="{{ 'true' if item.is_fallback else 'false' }}"
       >
         <span>{{ item.label }}</span>
       </a>

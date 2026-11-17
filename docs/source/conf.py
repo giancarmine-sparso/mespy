@@ -275,10 +275,22 @@ def _relative_site_root(pagename: str) -> str:
     return "../" * depth
 
 
+# Pages Sphinx generates in every language build without a source document.
+LANGUAGE_SWITCHER_GENERATED_PAGES = frozenset({"search", "genindex"})
+
+
 def add_language_switcher_context(app, pagename, templatename, context, doctree):
     current_language = (app.config.language or language).split("_", 1)[0]
     page_href = f"{pagename}.html"
     site_root = _relative_site_root(pagename)
+    # Both languages are built from the same sources: a page that is a Sphinx
+    # document here also exists in the other build, even without a
+    # translation catalog. Any other page (theme or extension output) links
+    # to the other language's home instead. The other build's files are not
+    # checked, so the links are right before that build has run.
+    is_fallback = not (
+        pagename in app.env.found_docs or pagename in LANGUAGE_SWITCHER_GENERATED_PAGES
+    )
 
     # The shared header and theme controls use this UI domain on every page.
     context["home"] = get_translation("homepage")
@@ -297,15 +309,16 @@ def add_language_switcher_context(app, pagename, templatename, context, doctree)
     context["language_switcher_title"] = (
         "Language switcher" if current_language == "en" else "Selettore lingua"
     )
-    context["supported_languages"] = [
-        {
+    context["supported_languages"] = []
+    for item in SUPPORTED_LANGUAGES:
+        home_href = f"{site_root}{item['code']}/index.html"
+        context["supported_languages"].append({
             **item,
-            "home_href": f"{site_root}{item['code']}/index.html",
-            "page_href": f"{site_root}{item['code']}/{page_href}",
+            "home_href": home_href,
+            "page_href": home_href if is_fallback else f"{site_root}{item['code']}/{page_href}",
             "is_current": item["code"] == current_language,
-        }
-        for item in SUPPORTED_LANGUAGES
-    ]
+            "is_fallback": is_fallback,
+        })
 
 
 def set_search_bar_text(app, config):
