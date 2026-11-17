@@ -5,6 +5,13 @@
   <a class="mh-skip" href="#main-content">{{ home('Vai al contenuto') }}</a>
 {% endblock %}
 
+{% block body %}
+  {{ super() }}
+  {% if not genindexentries %}
+    <p><a href="{{ pathto('moduli/index') }}">{{ home('Apri il riferimento API') }}</a></p>
+  {% endif %}
+{% endblock %}
+
 {% block content %}
   {% set system_body = self.body() %}
   {% include "components/system-page-content.html" %}
