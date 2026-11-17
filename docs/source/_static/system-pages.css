@@ -10,7 +10,6 @@
   border-radius: 5px;
 }
 .mespy-system .bd-search-container .bd-search:focus-within { border-color: var(--mh-amber); }
-.mespy-system .bd-search-container .bd-search > i { color: var(--mh-amber); }
 .mespy-system .bd-search-container .bd-search input {
   min-width: 0;
   padding: 0;

@@ -1,0 +1,14 @@
+{# Visible entry to PyData's search, first in the shared header's .mh-tools
+   (mespy-header.html). PyData's bundle binds every .search-button__button to
+   the same toggle as Ctrl+K / ⌘K: it opens #pst-search-dialog, or focuses
+   the visible field of the results page instead. On Apple systems it turns
+   the first kbd.kbd-shortcut__modifier into ⌘. search.css shows the label
+   and the shortcut only on wide screens, the lens everywhere; without
+   JavaScript the button stays hidden (pst-js-only). #}
+{%- from "components/mespy-icons.html" import icon %}
+<button class="search-button__button mh-search-button pst-js-only" type="button" aria-label="{{ home('Cerca nella documentazione') }}"
+  {%- if pagename != 'search' %} aria-controls="pst-search-dialog" aria-haspopup="dialog"{% endif %}>
+  {{ icon('magnifying-glass') }}
+  <span class="mh-search-button__label">{{ home('Cerca') }}</span>
+  <span class="search-button__kbd-shortcut mh-search-button__kbd" aria-hidden="true"><kbd class="kbd-shortcut__modifier">Ctrl</kbd><kbd>K</kbd></span>
+</button>

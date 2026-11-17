@@ -1,0 +1,19 @@
+{#- PyData's layout.html imports its asset macros as
+   "static/webpack-macros.html"; this file comes first in templates_path.
+   head_pre_assets and body_post are the theme's own (pydata-sphinx-theme
+   0.16.1). head_js_preload is the theme's without the fontawesome.js script
+   (1.5 MB, parser-blocking): the site draws its few icons as inline SVG
+   (components/mespy-icons.html). The theme's fontawesome_included option
+   does not remove that script. tests/test_docs.py compares this macro with
+   the installed theme's. -#}
+{%- import "!static/webpack-macros.html" as theme_assets with context -%}
+
+{% macro head_pre_assets() %}{{ theme_assets.head_pre_assets() }}{% endmacro %}
+
+{% macro head_js_preload() %}
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="{{ pathto('_static/scripts/bootstrap.js', 1) }}?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="{{ pathto('_static/scripts/pydata-sphinx-theme.js', 1) }}?digest=8878045cc6db502f8baf" />
+{% endmacro %}
+
+{% macro body_post() %}{{ theme_assets.body_post() }}{% endmacro %}

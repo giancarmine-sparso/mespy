@@ -1,0 +1,8 @@
+{#- Not a document: a template reached by path. PyData's search page
+   (search.html, extended by _templates/search.html) includes its field as
+   "../components/search-field.html", a name Sphinx resolves against each
+   template directory in turn; against _templates it is this file, ahead of
+   the theme's own. It forwards to the local field, which draws the lens as
+   inline SVG, so the results page and the search dialog share one field.
+   tests/test_docs.py checks this against the installed theme. -#}
+{% include "components/search-field.html" %}

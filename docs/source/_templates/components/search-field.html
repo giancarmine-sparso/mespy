@@ -1,0 +1,23 @@
+{#- pydata-sphinx-theme 0.16.1's components/search-field.html with the lens
+   drawn as inline SVG (components/mespy-icons.html) instead of a Font
+   Awesome <i>. Everything PyData's search script reads stays as in the
+   theme: form.bd-search, input[name="q"] and the shortcut's classes. Used by
+   the search dialog (mespy-header.html) and, through
+   docs/source/components/search-field.html, by the results page. -#}
+{%- from "components/mespy-icons.html" import icon -%}
+{# Displays an interactive search field directly on the page. #}
+<form class="bd-search d-flex align-items-center"
+      action="{{ pathto('search') }}"
+      method="get">
+  {{ icon('magnifying-glass') }}
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="{{ theme_search_bar_text }}"
+         aria-label="{{ theme_search_bar_text }}"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>

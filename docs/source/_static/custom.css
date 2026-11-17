@@ -1,60 +1,47 @@
 /* Font families and weights come from typography.css. */
 
-.mespy-home-brand {
-  display: flex;
-  justify-content: center;
-}
-
-.mespy-home-brand img {
-  width: min(420px, 100%);
-  height: auto;
-}
-
-.bd-main .bd-content h1,
-.bd-main .bd-content h2,
-.bd-main .bd-content h3 {
-  font-weight: var(--mespy-weight-bold);
-}
-
-.bd-sidebar-primary .nav-link,
-.bd-sidebar-primary .toctree-l1 > a,
-.bd-sidebar-primary .toctree-l2 > a,
-.bd-sidebar-primary .toctree-l3 > a {
-  font-family: var(--pst-font-family-monospace);
-}
-
-.bd-sidebar-primary .toctree-l1 > a {
-  font-weight: var(--mespy-weight-bold);
-}
-
-.bd-sidebar-primary ul ul {
-  border-left: 1px solid rgba(63, 81, 181, 0.22);
-  margin-left: 0.65rem;
-  padding-left: 0.85rem;
-}
-
-.bd-sidebar-primary .toctree-l2 > a,
-.bd-sidebar-primary .toctree-l3 > a {
-  font-size: 0.93rem;
-}
-
-.bd-sidebar-primary .sidebar-primary-item .search-button-field {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.6rem;
-}
-
-.bd-sidebar-primary .sidebar-primary-item .search-button__kbd-shortcut {
-  margin-left: auto;
-}
-
 .language-switcher-container .dropdown-item.active,
 .language-switcher-container .dropdown-item:active {
   font-weight: var(--mespy-weight-bold);
 }
 
-.language-switcher-container .version-switcher__button {
-  min-width: 7.5rem;
+/* Inline SVG icons (components/mespy-icons.html), sized as Font Awesome's
+   SVGs were: one em tall, the width set by the icon, on the text baseline
+   less an eighth of an em. */
+.mh-icon {
+  display: inline-block;
+  box-sizing: content-box;
+  height: 1em;
+  overflow: visible;
+  vertical-align: -.125em;
+}
+
+/* PyData draws these icons as glyphs of Font Awesome's webfont (156 KB),
+   from its own stylesheet. The same Font Awesome Free 6.5.2 solid glyphs
+   (CC BY 4.0, https://fontawesome.com/license/free) as masks over the
+   colour PyData gives them, in the box the glyph occupied. Without the
+   theme's font family as well: an empty box set in it still makes the
+   browser download the icon font. */
+a.reference.download::before {
+  content: "";
+  font-family: inherit;
+  display: inline-block;
+  box-sizing: content-box;
+  width: 1em;
+  height: 1em;
+  vertical-align: -.125em;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+/* The error box of the results page without JavaScript (<noscript>): the
+   glyph was one em square, centred in a line of the title's height. */
+div.admonition.error > .admonition-title::after {
+  content: "";
+  font-family: inherit;
+  width: 1em;
+  height: 1lh;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z'/%3E%3C/svg%3E") left center / 1em 1em no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z'/%3E%3C/svg%3E") left center / 1em 1em no-repeat;
 }

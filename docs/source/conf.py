@@ -51,11 +51,13 @@ html_extra_path = ["_extra"]
 # typography.css (fonts and shared typographic variables) and themes.css
 # (colour tokens of the light and dark themes) precede the page stylesheets
 # added in html-page-context (priority 500); html_css_files entries otherwise
-# default to 800, i.e. after them.
+# default to 800, i.e. after them. search.css (header search button and
+# dialog, components/mespy-search.html) comes after the page stylesheets.
 html_css_files = [
     ("typography.css", {"priority": 200}),
     ("themes.css", {"priority": 300}),
     "custom.css",
+    "search.css",
 ]
 
 # Colour theme: PyData's own mode cycle and storage (theme-switch-button in

@@ -171,6 +171,63 @@ def test_homepage_template_strings_have_english_translations():
                 assert message and message.string, (path, call.args[0].value)
 
 
+def test_header_search_keeps_pydata_dialog_contract():
+    templates = DOCS_SOURCE / "_templates"
+    header = (templates / "components/mespy-header.html").read_text(encoding="utf-8")
+    button = (templates / "components/mespy-search.html").read_text(encoding="utf-8")
+
+    # One search dialog per page, in the shared header only.
+    owners = [path.name for path in templates.rglob("*.html") if 'id="pst-search-dialog"' in path.read_text(encoding="utf-8")]
+    assert owners == ["mespy-header.html"]
+    dialog = re.search(r'<dialog id="pst-search-dialog"([^>]*)>(.*?)</dialog>', header, re.DOTALL)
+    assert 'aria-label="{{ home(' in dialog[1]
+    # PyData's field (form.bd-search) is the dialog's first child, so PyData
+    # tells it from the results page's field and the browser focuses it; the
+    # close button has its own method="dialog" form and no input of its own.
+    close = re.fullmatch(
+        r'\{%- include "components/search-field.html" %\}\s*'
+        r'<form class="mh-search-close-form" method="dialog">(.*)</form>',
+        dialog[2].strip(), re.DOTALL,
+    )
+    assert close and "<input" not in close[1] and 'type="submit"' in close[1]
+
+    # The button opens the dialog through PyData's own handler, comes first
+    # among the header tools and announces the dialog only where it opens it.
+    tools = header[header.index('<div class="mh-tools">'):]
+    assert tools.split("\n")[1].strip() == '{% include "components/mespy-search.html" %}'
+    assert re.search(r'<button class="search-button__button [^"]*\bpst-js-only\b', button)
+    assert ("{%- if pagename != 'search' %} aria-controls=\"pst-search-dialog\" "
+            'aria-haspopup="dialog"{% endif %}') in button
+    assert "aria-expanded" not in button
+    assert '<span class="search-button__kbd-shortcut' in button
+    assert '<kbd class="kbd-shortcut__modifier">Ctrl</kbd>' in button
+
+    # Loaded on every page, after the page stylesheets (default priority).
+    config = runpy.run_path(str(DOCS_SOURCE / "conf.py"))
+    assert "search.css" in config["html_css_files"]
+
+
+def test_compact_menu_width_is_shared_by_css_and_script():
+    static = DOCS_SOURCE / "_static"
+    script = re.search(
+        r"compactNavigation = window\.matchMedia\('\(max-width: (\d+)px\)'\)",
+        (static / "homepage.js").read_text(encoding="utf-8"),
+    )
+    # The media query that hides the links behind Menu, and the one that
+    # reduces the search button to its lens.
+    menu = re.search(
+        r"@media \(max-width: (\d+)px\) \{[^@]*\.mh-menu-ready \.mh-nav-links \{ display: none; \}",
+        (static / "homepage.css").read_text(encoding="utf-8"),
+    )
+    lens = re.search(
+        r"@media \(max-width: (\d+)px\) \{[^@]*\.mh-search-button__label",
+        (static / "search.css").read_text(encoding="utf-8"),
+    )
+    assert script and menu and lens
+    assert script[1] == menu[1] == lens[1] == "1200"
+
+
+
 def test_homepage_hero_hosts_the_only_demo_and_keeps_the_anchors():
     templates = DOCS_SOURCE / "_templates"
     homepage = (templates / "homepage.html").read_text(encoding="utf-8")
@@ -253,3 +310,67 @@ def test_llms_tables_preserve_identifier_and_latex_markup():
     assert "`slope_std`" in markdown
     assert r"$\hat y(x)$" in markdown
     assert "Incertezza tipo di" in markdown
+
+
+def _pydata_theme_dir() -> Path:
+    import pydata_sphinx_theme
+
+    return Path(pydata_sphinx_theme.__file__).parent / "theme" / "pydata_sphinx_theme"
+
+
+def _macro_body(template: str, name: str) -> str:
+    return re.search(r"\{% macro " + name + r"\(\) %\}(.*?)\{% endmacro %\}", template, re.DOTALL)[1]
+
+
+def test_site_icons_are_inline_svg_without_font_awesome_markup():
+    templates = DOCS_SOURCE / "_templates"
+    icons = (templates / "components/mespy-icons.html").read_text(encoding="utf-8")
+    defined = set(re.findall(r'^  "([\w-]+)": \(', icons, re.MULTILINE))
+    used: set[str] = set()
+    for path in [*templates.rglob("*.html"), DOCS_SOURCE / "components/search-field.html"]:
+        text = path.read_text(encoding="utf-8")
+        # Font Awesome's script is no longer loaded: no markup may rely on it.
+        assert not re.search(r'<i class="fa|\bfa-(?:solid|regular|brands)\b', text), path
+        used.update(re.findall(r"\bicon\('([\w-]+)'\)", text))
+    assert used and used <= defined
+    # Decorative icons, one em tall, in the colour of the control's text.
+    svg = re.search(r"<svg [^>]*>", icons)[0]
+    assert 'aria-hidden="true"' in svg and 'focusable="false"' in svg and 'height="1em"' in svg
+    assert '<path fill="currentColor"' in icons
+
+
+def test_asset_macros_drop_only_font_awesome_from_the_installed_theme():
+    theme_dir = _pydata_theme_dir()
+    # layout.html takes its asset macros by this name, so the local file wins.
+    assert 'import "static/webpack-macros.html" as _webpack' in (theme_dir / "layout.html").read_text(encoding="utf-8")
+    theme = (theme_dir / "static/webpack-macros.html").read_text(encoding="utf-8")
+    local = (DOCS_SOURCE / "_templates/static/webpack-macros.html").read_text(encoding="utf-8")
+
+    assert '{%- import "!static/webpack-macros.html" as theme_assets with context -%}' in local
+    for name in ("head_pre_assets", "body_post"):
+        assert _macro_body(local, name) == "{{ theme_assets.%s() }}" % name
+    # The preloads are the theme's, digest included; only the Font Awesome
+    # script and its comment are gone.
+    theme_preload = _macro_body(theme, "head_js_preload").splitlines()
+    assert any("fontawesome.js" in line for line in theme_preload)
+    expected = [line for line in theme_preload if "fontawesome.js" not in line and "custom icons" not in line]
+    assert _macro_body(local, "head_js_preload").splitlines() == expected
+
+
+def test_results_page_and_dialog_share_the_local_search_field():
+    theme_dir = _pydata_theme_dir()
+    # PyData's search page names its field relative to each template
+    # directory; against _templates that is docs/source/components/.
+    assert '{% include "../components/search-field.html" %}' in (theme_dir / "search.html").read_text(encoding="utf-8")
+    assert (DOCS_SOURCE / "_templates/search.html").read_text(encoding="utf-8").startswith('{% extends "!search.html" %}')
+    forward = (DOCS_SOURCE / "components/search-field.html").read_text(encoding="utf-8")
+    assert forward.rstrip().endswith('{% include "components/search-field.html" %}')
+
+    # The local field is the theme's, lens aside: form.bd-search, input[name="q"]
+    # and the shortcut classes that PyData's search script reads.
+    form = r"<form class=\"bd-search.*?</form>"
+    theme_field = re.search(form, (theme_dir / "components/search-field.html").read_text(encoding="utf-8"), re.DOTALL)[0]
+    local_field = re.search(form, (DOCS_SOURCE / "_templates/components/search-field.html").read_text(encoding="utf-8"), re.DOTALL)[0]
+    assert local_field == theme_field.replace(
+        '<i class="fa-solid fa-magnifying-glass"></i>', "{{ icon('magnifying-glass') }}"
+    )

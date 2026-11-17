@@ -1,11 +1,22 @@
 {# Shared by the landing-style pages (homepage.html, get-started.html).
    home() is the "homepage" UI catalog; pagename marks the current link.
-   One logo per theme (themes.css shows the current one); the language and
-   theme switchers stay outside the compact menu. #}
-{%- set landing = pathto('index') if pagename != 'index' else '' -%}
-{# These hooks keep PyData's bundled search and back-to-top scripts working. #}
+   One logo per theme (themes.css shows the current one); the search button
+   and the language and theme switchers stay outside the compact menu. #}
+{# These hooks keep PyData's bundled search and back-to-top scripts working.
+   The search dialog is the only one on the page: PyData's script tells its
+   field from the one of the results page by the form.bd-search being a
+   direct child of #pst-search-dialog, and the browser focuses that field,
+   the first control, on opening. The close button sits in its own
+   method="dialog" form, so Enter in the field still submits the search. #}
+{%- from "components/mespy-icons.html" import icon %}
+<!-- Icons: Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0) -->
 <div id="pst-scroll-pixel-helper"></div>
-<dialog id="pst-search-dialog">{% include "components/search-field.html" %}</dialog>
+<dialog id="pst-search-dialog" aria-label="{{ home('Ricerca nella documentazione') }}">
+  {%- include "components/search-field.html" %}
+  <form class="mh-search-close-form" method="dialog">
+    <button class="mh-search-close" type="submit" aria-label="{{ home('Chiudi la ricerca') }}">{{ icon('xmark') }}</button>
+  </form>
+</dialog>
 <button id="pst-back-to-top" class="mh-back-to-top" type="button" aria-label="{{ home('Torna su') }}"><span aria-hidden="true">↑</span></button>
 <header class="mh-header bd-header">
   <div class="mh-shell mh-nav">
@@ -20,10 +31,10 @@
       <a href="{{ pathto('getting-started') }}"{% if pagename == 'getting-started' %} aria-current="page"{% endif %}>{{ home('Inizia qui') }}</a>
       <a href="{{ pathto('examples/index') }}"{% if pagename.startswith('examples/') %} aria-current="{{ 'page' if pagename == 'examples/index' else 'true' }}"{% endif %}>{{ home('Esempi') }}</a>
       <a href="{{ pathto('moduli/index') }}"{% if pagename == 'moduli/index' %} aria-current="page"{% endif %}>{{ home('Riferimento API') }}</a>
-      <a href="{{ landing }}#behind-the-scenes">{{ home('Come funziona') }}</a>
       <a class="mh-github" href="{{ theme_github_url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ home('GitHub (nuova scheda)') }}">{{ home('GitHub') }} <span aria-hidden="true">↗</span></a>
     </nav>
     <div class="mh-tools">
+      {% include "components/mespy-search.html" %}
       <div class="mh-language">{% include "components/language-switcher.html" %}</div>
       {% include "components/theme-switcher.html" %}
     </div>

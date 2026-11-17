@@ -1,0 +1,160 @@
+/* Search: the header button (components/mespy-search.html) and PyData's
+   search dialog (components/mespy-header.html). Loaded on every page after
+   the page stylesheets (html_css_files in conf.py); colours and fonts are
+   the tokens of themes.css and typography.css. PyData opens, closes and
+   focuses; this file only lays them out. The results page styles its own
+   field in system-pages.css. */
+
+/* Header button: lens, label and Ctrl/⌘ K on wide screens; the lens alone,
+   44 × 44 px, once the navigation turns into the compact menu (1200px, as
+   in homepage.css and homepage.js). */
+.mespy-home .mh-search-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 10px 0 14px;
+  background: transparent;
+  border: 1px solid var(--mh-control-line);
+  border-radius: 3px;
+  color: var(--mh-ink);
+  font: inherit;
+  font-size: .875rem;
+  font-weight: var(--mespy-weight-semibold);
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.mespy-home .mh-search-button:hover { border-color: var(--mh-amber); color: var(--mh-amber); }
+.mespy-home .mh-search-button svg { display: block; flex: none; }
+.mespy-home .mh-search-button__label { white-space: nowrap; }
+
+/* Shortcut keys, in the header button and in the dialog's field, as two
+   keycaps side by side (font-size 0 hides the "+" of PyData's field). */
+.mespy-home .mh-search-button__kbd,
+.mespy-home #pst-search-dialog .search-button__kbd-shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin: 0;
+  color: var(--mh-muted);
+  font-size: 0;
+}
+.mespy-home .mh-search-button__kbd kbd,
+.mespy-home #pst-search-dialog .search-button__kbd-shortcut kbd {
+  display: inline-block;
+  min-width: 1.6em;
+  padding: 3px 5px;
+  background: var(--mh-bg);
+  border: 1px solid var(--mh-line);
+  border-radius: 3px;
+  box-shadow: none;
+  color: var(--mh-muted);
+  font: var(--mespy-weight-regular) .6875rem/1 var(--mh-mono);
+  text-align: center;
+}
+
+@media (max-width: 1200px) {
+  .mespy-home .mh-search-button { justify-content: center; width: 44px; height: 44px; padding: 0; }
+  .mespy-home .mh-search-button__label,
+  .mespy-home .mh-search-button__kbd { display: none; }
+}
+
+/* Dialog: a panel near the top of the viewport, the field and the close
+   button side by side (the same order as the keyboard's). */
+body.mespy-home #pst-search-dialog[open] {
+  align-items: center;
+  gap: 8px;
+  top: clamp(16px, 12vh, 120px);
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(720px, calc(100% - 40px));
+  max-width: none;
+  margin: 0;
+  padding: 10px;
+  background: var(--mh-panel);
+  border: 1px solid var(--mh-control-line);
+  border-radius: 5px;
+  box-shadow: 0 24px 64px var(--mh-shadow);
+  color: var(--mh-ink);
+}
+/* The page fades towards its own background, in either theme. */
+body.mespy-home #pst-search-dialog::backdrop {
+  background: color-mix(in srgb, var(--mh-bg) 78%, transparent);
+  opacity: 1;
+  backdrop-filter: blur(2px);
+}
+
+body.mespy-home #pst-search-dialog form.bd-search {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  min-height: 52px;
+  margin: 0;
+  padding: 0 12px 0 16px;
+  background: var(--mh-bg);
+  border: 1px solid var(--mh-control-line);
+  border-radius: 3px;
+  box-shadow: none;
+  color: var(--mh-ink);
+}
+/* The field shows focus on its frame: a 2px amber border. */
+body.mespy-home #pst-search-dialog form.bd-search:focus-within {
+  border-color: var(--mh-amber);
+  box-shadow: 0 0 0 1px var(--mh-amber);
+}
+body.mespy-home #pst-search-dialog form.bd-search > svg {
+  position: static;
+  flex: none;
+  color: var(--mh-amber);
+  font-size: 1rem;
+}
+body.mespy-home #pst-search-dialog form.bd-search input {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  outline: none;
+  color: var(--mh-ink);
+  font: 1rem/1.5 var(--mh-mono);
+}
+body.mespy-home #pst-search-dialog form.bd-search input::placeholder { color: var(--mh-muted); opacity: 1; }
+
+.mespy-home .mh-search-close-form { display: flex; flex: none; margin: 0; }
+.mespy-home .mh-search-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--mh-control-line);
+  border-radius: 3px;
+  color: var(--mh-ink);
+  font-size: 1.125rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.mespy-home .mh-search-close:hover { border-color: var(--mh-amber); color: var(--mh-amber); }
+.mespy-home .mh-search-close:focus-visible { outline-offset: 2px; }
+.mespy-home .mh-search-close svg { display: block; }
+
+@media (max-width: 600px) {
+  body.mespy-home #pst-search-dialog[open] { padding: 8px; gap: 6px; }
+  body.mespy-home #pst-search-dialog form.bd-search { gap: 10px; padding-inline: 12px 8px; }
+  body.mespy-home #pst-search-dialog .search-button__kbd-shortcut { display: none; }
+}

@@ -1116,3 +1116,19 @@ msgid ""
 msgstr ""
 "MesPy requires Python 3.12 or later. The guide covers installation on "
 "Google Colab and on your computer, then the first import."
+
+#: _templates/components/mespy-search.html
+msgid "Cerca"
+msgstr "Search"
+
+#: _templates/components/mespy-search.html
+msgid "Cerca nella documentazione"
+msgstr "Search the documentation"
+
+#: _templates/components/mespy-header.html
+msgid "Ricerca nella documentazione"
+msgstr "Documentation search"
+
+#: _templates/components/mespy-header.html
+msgid "Chiudi la ricerca"
+msgstr "Close search"
