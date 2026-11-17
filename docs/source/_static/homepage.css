@@ -248,7 +248,7 @@ body.mespy-home #pst-back-to-top:hover { background: var(--mh-amber); color: var
   .mespy-home .gd-section-pages { gap: 0 18px; }
 }
 @media print {
-  .mespy-home .mh-header, .mespy-home .mh-footer, .mespy-home .gd-section { display: none; }
+  .mespy-home .mh-header.bd-header, .mespy-home .mh-footer, .mespy-home .gd-section, .mespy-home .mh-skip { display: none; }
   .mespy-home .mh-section, .mespy-home .mh-hero { padding-block: 24px; }
   .mespy-home .mh-feature { break-inside: avoid; }
 }
