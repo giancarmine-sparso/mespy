@@ -32,6 +32,8 @@ body.mespy-home #pst-back-to-top { left: auto; top: auto; transform: none; width
 .mespy-home .mh-github { border-left: 1px solid var(--mh-line); padding-left: 28px; }
 .mespy-home .mh-tools { flex: 0 0 auto; display: flex; align-items: center; gap: 10px; }
 .mespy-home .mh-language { flex: 0 0 auto; }
+.mespy-home .mh-language-links { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+.mespy-home .mh-language-links a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; }
 .mespy-home .mh-language .version-switcher__container { display: flex; align-items: center; }
 .mespy-home .mh-language .version-switcher__button { background: transparent; border: 1px solid var(--mh-control-line); border-radius: 3px; color: var(--mh-ink); font-size: .875rem; font-weight: var(--mespy-weight-semibold); min-width: 0; min-height: 44px; margin: 0; padding: 9px 12px; }
 .mespy-home .version-switcher__button:hover { border-color: var(--mh-amber); }

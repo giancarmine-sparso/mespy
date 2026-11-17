@@ -1,6 +1,14 @@
 {%- set button_id = unique_html_id("pst-language-switcher-button") -%}
 {%- set dropdown_id = unique_html_id("pst-language-switcher-list") -%}
-<div class="version-switcher__container dropdown language-switcher-container">
+<noscript>
+  <nav class="mh-language-links" aria-label="{{ language_switcher_label }}">
+    {% for item in supported_languages %}
+      <a href="{{ item.page_href }}" hreflang="{{ item.code }}" lang="{{ item.code }}"
+         {% if item.is_current %}aria-current="page"{% endif %}>{{ item.label }}</a>
+    {% endfor %}
+  </nav>
+</noscript>
+<div class="version-switcher__container dropdown language-switcher-container pst-js-only">
   <button
     id="{{ button_id }}"
     type="button"
