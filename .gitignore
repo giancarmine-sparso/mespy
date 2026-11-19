@@ -27,7 +27,8 @@ ref.ipynb
 .claude
 .codex
 CLAUDE.md
-
+.codex/config.toml
+AGENTS.md
 # Dati grezzi potenzialmente sensibili o pesanti
 data/raw/
 data/processed/
@@ -74,3 +75,8 @@ docs/source/examples/histogram.pdf
 # Audit locali
 AUDIT_*.md
 audit/
+/docs/c-front-end-report.md
+/docs/b-front-end-report.md
+/docs/a-front-end-report.md
+/docs/masterplan-frontend-Codex.md
+/docs/claude-opus-5-5-front-end-masterplan.md
