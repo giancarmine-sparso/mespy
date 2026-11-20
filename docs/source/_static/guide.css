@@ -115,7 +115,7 @@ html:has(body.mespy-guide) { scroll-padding-top: 24px; }
 /* Plots without a caption are a bare <img>, not a <figure>: same gutters. */
 .mespy-guide .gd-article .cell_output > img { max-width: calc(100% - 48px); margin: 14px auto 18px; }
 .mespy-guide .gd-article .cell_output figcaption { margin-top: 14px; text-align: left; }
-.mespy-guide .gd-article .cell_output figcaption p { margin: 0; font: .875rem/1.7 var(--mh-mono); color: var(--mh-muted); }
+.mespy-guide .gd-article .cell_output figcaption p { margin: 0; font: .875rem/1.7 var(--mespy-font-text); color: var(--mh-muted); }
 .mespy-guide .gd-article .cell_output figcaption code.literal { font-size: 1em; }
 .mespy-guide .gd-article .cell_output .output.stream,
 .mespy-guide .gd-article .cell_output .output.text_plain { margin: 0; padding: 10px 24px 18px; border: 0; background: transparent; }

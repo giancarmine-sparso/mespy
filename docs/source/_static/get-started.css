@@ -56,12 +56,12 @@
 .mespy-start .gs-prompt { color: var(--mh-subtle); margin-right: 12px; user-select: none; }
 .mespy-start .gs-copy { flex-shrink: 0; min-height: 36px; padding: 6px 12px; font-size: .875rem; white-space: nowrap; }
 .mespy-start .gs-copy.gs-copied { color: var(--mh-amber); border-color: var(--mh-amber-line); }
-.mespy-start .gs-footnote { margin-top: 16px; font: .875rem/1.7 var(--mh-mono); color: var(--mh-muted); }
+.mespy-start .gs-footnote { margin-top: 16px; font: .875rem/1.7 var(--mespy-font-text); color: var(--mh-muted); }
 
 /* 03 — First import. */
 .mespy-start .gs-verify { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 56px; align-items: center; }
 .mespy-start .gs-verify > div:first-child > p:not(.mh-eyebrow) { color: var(--mh-ink); margin-top: 22px; max-width: 440px; }
-.mespy-start .gs-verify .gs-hint { padding-left: 14px; border-left: 1px solid var(--mh-amber); font: .875rem/1.75 var(--mh-mono); }
+.mespy-start .gs-verify .gs-hint { padding-left: 14px; border-left: 1px solid var(--mh-amber); font: .875rem/1.75 var(--mespy-font-text); }
 .mespy-start .gs-verify .gs-hint code { font-size: inherit; }
 .mespy-start .gs-terminal { min-width: 0; border: 1px solid var(--mh-line); border-radius: 8px; background: var(--mh-panel); overflow: hidden; }
 .mespy-start .gs-terminal .mh-editor-label { font-size: .875rem; }

@@ -7,7 +7,7 @@
 .mespy-examples .ex-hero .mh-eyebrow { margin-bottom: 16px; }
 .mespy-examples .ex-hero h1 { font-size: clamp(2.1rem, 2.9vw, 2.6rem); text-wrap: balance; }
 .mespy-examples .ex-hero .mh-lead { max-width: 600px; margin-top: 14px; color: var(--mh-ink); }
-.mespy-examples .ex-hero-note { max-width: 400px; justify-self: end; padding-left: 14px; border-left: 1px solid var(--mh-amber); font: .875rem/1.75 var(--mh-mono); color: var(--mh-muted); }
+.mespy-examples .ex-hero-note { max-width: 400px; justify-self: end; padding-left: 14px; border-left: 1px solid var(--mh-amber); font: .875rem/1.75 var(--mespy-font-text); color: var(--mh-muted); }
 
 /* Cards: the landing's editorial cards, two by two; the whole card is the link. */
 .mespy-examples .ex-catalog { padding-bottom: 88px; }
@@ -44,8 +44,8 @@
 .mespy-examples .ex-icon-fit { stroke: var(--mh-chart-fit); stroke-width: 2; fill: none; }
 .mespy-examples .ex-icon-dash { stroke: var(--mh-chart-fit); stroke-width: 1.5; stroke-dasharray: 3 3; fill: none; }
 
-.mespy-examples .ex-aside { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 24px; font: .875rem/1.7 var(--mh-mono); color: var(--mh-muted); }
-.mespy-examples .ex-aside .mh-text-link { gap: 10px; color: var(--mh-ink); font-family: var(--mespy-font-text); font-size: .875rem; }
+.mespy-examples .ex-aside { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 24px; font: .875rem/1.7 var(--mespy-font-text); color: var(--mh-muted); }
+.mespy-examples .ex-aside .mh-text-link { gap: 10px; color: var(--mh-ink); font-size: .875rem; }
 
 @media (max-width: 1150px) {
   .mespy-examples .ex-hero { gap: 40px; }

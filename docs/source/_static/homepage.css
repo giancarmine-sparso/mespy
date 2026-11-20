@@ -81,7 +81,7 @@ body.mespy-home #pst-back-to-top { left: auto; top: auto; transform: none; width
 .mespy-home .mh-feature-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 22px 30px; border-bottom: 1px solid var(--mh-line); font: .875rem var(--mh-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--mh-muted); }
 .mespy-home .mh-feature-top code { font-size: .875rem; text-transform: none; letter-spacing: 0; color: var(--mh-blue); }
 .mespy-home .mh-feature-plot { padding: 26px 30px 18px; }
-.mespy-home .mh-feature-plot figcaption { margin-top: 12px; font: .875rem/1.65 var(--mh-mono); color: var(--mh-muted); min-height: 3.3em; }
+.mespy-home .mh-feature-plot figcaption { margin-top: 12px; font: .875rem/1.65 var(--mespy-font-text); color: var(--mh-muted); min-height: 3.3em; }
 .mespy-home .mh-feature-copy { display: flex; flex-direction: column; flex: 1; padding: 12px 32px 30px; }
 .mespy-home .mh-feature-copy > p { color: var(--mh-muted); margin-top: 18px; }
 .mespy-home .mh-feature-copy > p { margin-bottom: 24px; }
