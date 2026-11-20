@@ -23,13 +23,13 @@ html[data-theme] {
   color-scheme: light;
   --mh-bg: #f7f3ea;
   --mh-panel: #fffdf7;
-  --mh-ink: #242a2d;
-  --mh-muted: #555f63;
-  --mh-faint: #646d71;          /* decorative numbers and separators */
-  --mh-subtle: #646d71;         /* line numbers, shell prompts */
+  --mh-ink: #1f1d1a;
+  --mh-muted: #57514a;
+  --mh-faint: #857d72;          /* decorative numbers and separators */
+  --mh-subtle: #716a63;         /* line numbers, shell prompts */
   --mh-line: #d8d0c3;           /* decorative separators */
-  --mh-line-strong: #7e888c;    /* hovered card and link borders */
-  --mh-control-line: #7e888c;   /* borders of buttons, menus and fields */
+  --mh-line-strong: #8d857a;    /* hovered card and link borders */
+  --mh-control-line: #8d857a;   /* borders of buttons, menus and fields */
   --mh-amber: #895000;          /* text and actions */
   --mh-amber-line: #a67b3e;
   --mh-amber-tint: rgb(137 80 0 / .06);
