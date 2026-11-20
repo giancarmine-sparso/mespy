@@ -11,7 +11,7 @@ body.mespy-homepage .mh-hero { display: grid; grid-template-columns: minmax(0, 1
 body.mespy-homepage .mh-hero-copy { max-width: 680px; }
 body.mespy-homepage .mh-hero h1 { font-size: clamp(2.25rem, 3.4vw, 3rem); text-wrap: balance; }
 body.mespy-homepage .mh-hero .mh-lead { max-width: 600px; margin-top: 24px; font-size: clamp(1.05rem, 1.25vw, 1.125rem); }
-body.mespy-homepage .mh-hero-invite { max-width: 600px; margin-top: 16px; color: var(--mh-muted); }
+body.mespy-homepage .mh-hero-invite { max-width: 600px; margin-top: 16px; color: var(--mh-ink); }
 body.mespy-homepage .mh-hero .mh-actions { margin-top: 28px; }
 @media (min-width: 1100px) {
   body.mespy-homepage .mh-hero { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); padding-top: 56px; }
@@ -25,7 +25,7 @@ body.mespy-homepage .mh-features-note { max-width: 680px; margin-top: 28px; colo
 /* The API reference's deep dives: a short note and one link. */
 body.mespy-homepage .mh-reference { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px 56px; align-items: start; padding-block: 40px; border-block: 1px solid var(--mh-line); }
 body.mespy-homepage .mh-reference h2 { font-size: clamp(1.5rem, 2.4vw, 2rem); }
-body.mespy-homepage .mh-reference p { max-width: 680px; color: var(--mh-muted); }
+body.mespy-homepage .mh-reference p { max-width: 680px; color: var(--mh-ink); }
 body.mespy-homepage .mh-reference .mh-text-link,
 body.mespy-homepage .mh-install .mh-button { justify-self: start; }
 body.mespy-homepage .mh-reference .mh-text-link { justify-content: flex-start; gap: 12px; min-height: 44px; }
@@ -37,7 +37,7 @@ body.mespy-homepage .mh-reference .mh-text-link { justify-content: flex-start; g
 /* Closing invitation to install. */
 body.mespy-homepage .mh-install { display: grid; gap: 20px; padding-bottom: 112px; }
 body.mespy-homepage .mh-install h2 { font-size: clamp(2rem, 3vw, 2.5rem); }
-body.mespy-homepage .mh-install p { max-width: 600px; color: var(--mh-muted); }
+body.mespy-homepage .mh-install p { max-width: 600px; color: var(--mh-ink); }
 
 @media (max-width: 900px) {
   body.mespy-homepage .mh-install { padding-bottom: 80px; }

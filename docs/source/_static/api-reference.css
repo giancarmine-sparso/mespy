@@ -3,7 +3,7 @@
 .mespy-api .api-hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 64px; align-items: end; padding-block: 36px 40px; }
 .mespy-api .api-hero .mh-eyebrow { margin-bottom: 16px; }
 .mespy-api .api-hero h1 { font-size: clamp(2.1rem, 2.9vw, 2.6rem); text-wrap: balance; }
-.mespy-api .api-hero .mh-lead { max-width: 600px; margin-top: 14px; color: var(--mh-muted); }
+.mespy-api .api-hero .mh-lead { max-width: 600px; margin-top: 14px; color: var(--mh-ink); }
 .mespy-api .api-hero-note { max-width: 400px; justify-self: end; padding-left: 14px; border-left: 1px solid var(--mh-amber); font: .875rem/1.75 var(--mh-mono); color: var(--mh-muted); }
 .mespy-api .api-catalog { padding-bottom: 88px; }
 .mespy-api .api-section { padding-block: 32px; border-top: 1px solid var(--mh-line); scroll-margin-top: 24px; }
