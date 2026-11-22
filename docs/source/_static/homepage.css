@@ -48,7 +48,6 @@ body.mespy-home #pst-back-to-top { left: auto; top: auto; transform: none; width
 .mespy-home .mh-menu-toggle { display: none; background: transparent; border: 1px solid var(--mh-control-line); border-radius: 3px; color: var(--mh-ink); font: inherit; font-size: .875rem; font-weight: var(--mespy-weight-semibold); padding: 8px 12px; }
 .mespy-home .mh-menu-toggle[hidden] { display: none; }
 .mespy-home .mh-eyebrow { font-family: var(--mh-mono); font-size: .875rem; font-weight: var(--mespy-weight-regular); text-transform: uppercase; letter-spacing: .11em; color: var(--mh-muted); margin-bottom: 26px; }
-.mespy-home .mh-status { display: inline-block; width: 7px; height: 7px; background: var(--mh-amber); margin-right: 9px; }
 .mespy-home .mh-lead { font-size: clamp(1.05rem, 1.4vw, 1.2rem); max-width: 510px; margin-top: 24px; }
 .mespy-home .mh-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
 .mespy-home .mh-button { display: inline-flex; align-items: center; justify-content: space-between; gap: 30px; border: 1px solid var(--mh-control-line); border-radius: 3px; padding: 14px 22px; font-weight: var(--mespy-weight-semibold); font-size: .9rem; transition: transform .2s, background-color .2s, border-color .2s; }
@@ -103,7 +102,6 @@ body.mespy-home #pst-back-to-top { left: auto; top: auto; transform: none; width
 .mespy-home .mh-footer-main nav { display: flex; flex-wrap: wrap; gap: 24px; margin-left: auto; font-size: .875rem; }
 .mespy-home .mh-footer-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font: .875rem/1.8 var(--mh-mono); color: var(--mh-muted); margin-top: 40px; }
 .mespy-home .mh-footer-meta span > span { padding-inline: 8px; }
-.mespy-home .mh-footer-pixel { color: var(--mh-amber); }
 
 /* Section strip (components/section-nav.html): a section's landing and its pages.
    Used by guide.html, examples.html and api-reference.html. One row on wide
@@ -232,7 +230,6 @@ body.mespy-home #pst-back-to-top:hover { background: var(--mh-amber); color: var
   .mespy-home .mh-language .version-switcher__button { padding: 8px; }
   .mespy-home .mh-menu-toggle { padding: 8px; gap: 6px; }
   .mespy-home .mh-eyebrow { margin-bottom: 24px; }
-  .mespy-home .mh-lead { font-size: 1.05rem; margin-top: 24px; }
   .mespy-home .mh-actions { gap: 10px; }
   .mespy-home .mh-button { font-size: .875rem; padding: 13px 16px; gap: 20px; }
   .mespy-home .mh-hero-meta > span { margin-inline: 5px; }

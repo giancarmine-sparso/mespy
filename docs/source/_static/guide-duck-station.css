@@ -2,8 +2,9 @@
    and homepage-duck.css, only on guide pages with "station": "duck" in
    GUIDE_PAGES. The block's layout is shared, in guide.css. */
 .mespy-guide .gd-station--duck {
-  /* Station hardware: the dark theme's greys, between its --mh-line and
-     --mh-muted, in both themes. Only the floor follows the page. */
+  /* Station hardware: fixed greys, the same in both themes and independent
+     of the palette, so the scene looks alike on any page. Only the floor
+     follows the page. */
   --gd-station-case: #4b5357;
   --gd-station-case-top: #68737a;
   --gd-station-case-shade: #353b3e;

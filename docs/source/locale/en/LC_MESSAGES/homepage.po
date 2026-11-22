@@ -626,11 +626,8 @@ msgstr "Your browser can’t play this video: download it"
 msgid "Demo simulata · Senza audio · I tempi reali di installazione possono variare."
 msgstr "Simulated demo · No audio · Real installation times may vary."
 
-msgid "Impara MesPy"
-msgstr "Learn MesPy"
-
-msgid "con gli esempi."
-msgstr "through examples."
+msgid "Impara MesPy con gli esempi."
+msgstr "Learn MesPy through examples."
 
 msgid ""
 "Esempi pratici ed eseguibili di analisi dei dati sperimentali: leggi il "

@@ -127,7 +127,7 @@ docs-it: venv
 	@$(SPHINX) -W -D nb_execution_mode=off -b html -D language=it "$(SPHINX_SOURCE_DIR)" "$(SPHINX_HTML_IT_DIR)"
 
 docs-serve: docs
-	@cd "$(SPHINX_HTML_DIR)" && "$(VENV_PYTHON)" -m http.server 8000
+	@"$(VENV_PYTHON)" scripts/serve_docs.py "$(SPHINX_HTML_DIR)"
 
 docs-clean:
 	@rm -rf "$(SPHINX_BUILD_DIR)"

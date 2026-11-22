@@ -6,17 +6,32 @@
 
 /* Hero: one column (introduction, editor, results) below 1100px; from there
    the introduction and a wider editor side by side, the results of a run
-   below both (.mh-fit-results spans the grid, homepage.css). */
-body.mespy-homepage .mh-hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px 56px; align-items: start; padding-block: 48px 72px; }
+   below both (.mh-fit-results spans the grid, homepage.css). The vertical
+   padding grows with the width, from 32/48px on phones to 56/72px. */
+body.mespy-homepage .mh-hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px 56px; align-items: start; padding-block: clamp(2rem, 1.25rem + 2.2vw, 3.5rem) clamp(3rem, 2rem + 3vw, 4.5rem); }
 body.mespy-homepage .mh-hero-copy { max-width: 680px; }
-body.mespy-homepage .mh-hero h1 { font-size: clamp(2.25rem, 3.4vw, 3rem); text-wrap: balance; }
+/* One continuous size, 32px on phones to 48px from about 1450px, with a rem
+   part that follows the browser zoom. The first term keeps the single-column
+   title near 35px on tablets; the second keeps it on two lines in the
+   narrow two-column introduction (405px wide at 1100px, 410px at 1151px). */
+body.mespy-homepage .mh-hero h1 { font-size: clamp(2rem, max(1.6rem + 1.2vw, 0.5rem + 2.75vw), 3rem); text-wrap: balance; }
 body.mespy-homepage .mh-hero .mh-lead { max-width: 600px; margin-top: 24px; font-size: clamp(1.05rem, 1.25vw, 1.125rem); }
 body.mespy-homepage .mh-hero-invite { max-width: 600px; margin-top: 16px; color: var(--mh-ink); }
 body.mespy-homepage .mh-hero .mh-actions { margin-top: 28px; }
 @media (min-width: 1100px) {
-  body.mespy-homepage .mh-hero { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); padding-top: 56px; }
+  body.mespy-homepage .mh-hero { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
   /* The title level with the editor panel's top edge, below the cat's room. */
   body.mespy-homepage .mh-hero-copy { max-width: none; padding-top: var(--mh-cat-room, 0px); }
+}
+/* Short screens (a 1920x1080 laptop at 150% is 1280x720, about 590px of
+   viewport): the actions within the first screen. Both columns move up
+   together, so the title stays level with the editor panel and the cat
+   keeps its room under the header. */
+@media (min-width: 1100px) and (max-height: 800px) {
+  body.mespy-homepage .mh-hero { padding-top: 20px; }
+  body.mespy-homepage .mh-hero .mh-lead { margin-top: 16px; }
+  body.mespy-homepage .mh-hero-invite { margin-top: 12px; }
+  body.mespy-homepage .mh-hero .mh-actions { margin-top: 20px; }
 }
 
 /* What the two functions have in common, under their cards. */
@@ -43,8 +58,6 @@ body.mespy-homepage .mh-install p { max-width: 600px; color: var(--mh-ink); }
   body.mespy-homepage .mh-install { padding-bottom: 80px; }
 }
 @media (max-width: 600px) {
-  body.mespy-homepage .mh-hero { padding-block: 32px 48px; }
-  body.mespy-homepage .mh-hero h1 { font-size: clamp(2rem, 8vw, 2.5rem); }
   body.mespy-homepage .mh-reference { padding-block: 32px; }
   body.mespy-homepage .mh-install { padding-bottom: 64px; }
 }

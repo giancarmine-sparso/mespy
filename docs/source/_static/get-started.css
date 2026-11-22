@@ -7,8 +7,10 @@
    the smaller sizes, mobile ones included, set in homepage.css. */
 .mespy-start .mh-eyebrow { font-size: .875rem; }
 
-/* 01 — Hero: the landing's language, at a smaller scale. */
-.mespy-start .gs-hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 64px; align-items: end; padding-block: 72px 64px; border-bottom: 1px solid var(--mh-line); }
+/* 01 — Hero: the landing's language, at a smaller scale. The top padding
+   matches .api-hero and .ex-hero at every width, and both columns start at
+   the top, so the title sits as far below the bar above as on those pages. */
+.mespy-start .gs-hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 64px; align-items: start; padding-block: 36px 64px; border-bottom: 1px solid var(--mh-line); }
 .mespy-start .gs-hero h1 { font-size: clamp(2.3rem, 3.4vw, 3.1rem); text-wrap: balance; max-width: 640px; }
 .mespy-start .gs-hero .mh-lead { max-width: 540px; color: var(--mh-ink); }
 .mespy-start .gs-hero .mh-hero-meta { font-size: .875rem; }
@@ -92,7 +94,7 @@
   .mespy-start .gs-verify { gap: 48px; }
 }
 @media (max-width: 900px) {
-  .mespy-start .gs-hero { grid-template-columns: 1fr; gap: 40px; padding-block: 56px 48px; }
+  .mespy-start .gs-hero { grid-template-columns: 1fr; gap: 40px; padding-block: 44px 48px; }
   .mespy-start .gs-hero h1 { font-size: clamp(2.2rem, 5.4vw, 3rem); }
   .mespy-start .gs-protocol { max-width: 560px; }
   .mespy-start .gs-version-note { grid-template-columns: minmax(0, 1fr); margin-top: 32px; }
@@ -108,7 +110,7 @@
   .mespy-start .gs-destinations { grid-template-columns: 1fr; gap: 16px; }
 }
 @media (max-width: 600px) {
-  .mespy-start .gs-hero { padding-block: 44px 40px; }
+  .mespy-start .gs-hero { padding-block: 36px 40px; }
   .mespy-start .gs-hero h1 { font-size: clamp(2rem, 8.4vw, 2.6rem); }
   .mespy-start .gs-protocol a { grid-template-columns: 32px minmax(0, 1fr) auto; padding-inline: 16px; font-size: .875rem; }
   .mespy-start .gs-protocol-head { padding-inline: 16px; }
