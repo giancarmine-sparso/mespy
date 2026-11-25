@@ -22,7 +22,7 @@ def test_resolve_style_supports_none_and_bundled_styles():
 
 
 def test_histogram_returns_fig_and_ax():
-    data = np.random.normal(size=100)
+    data = np.random.default_rng(42).normal(size=100)
     fig, ax = histogram(data, bins=10)
     assert isinstance(fig, matplotlib.figure.Figure)
     assert isinstance(ax, matplotlib.axes.Axes)
@@ -39,7 +39,7 @@ def test_histogram_single_point_uses_population_default_ddof():
 
 
 def test_histogram_no_mean_no_band():
-    data = np.random.normal(size=100)
+    data = np.random.default_rng(42).normal(size=100)
     fig, ax = histogram(data, show_mean=False, show_band=False)
     labels = [t.get_text() for t in ax.get_legend().get_texts()]
     assert len(labels) == 1
@@ -140,7 +140,7 @@ def test_histogram_show_band_false_does_not_draw_band():
 
 @pytest.mark.parametrize("stat", STAT_MODES)
 def test_histogram_show_legend_false_hides_legend(stat):
-    data = np.random.normal(size=80)
+    data = np.random.default_rng(42).normal(size=80)
     fig, ax = histogram(data, stat, show_legend=False)
 
     assert ax.get_legend() is None
@@ -149,7 +149,7 @@ def test_histogram_show_legend_false_hides_legend(stat):
 
 @pytest.mark.parametrize("stat", STAT_MODES)
 def test_histogram_save_path(tmp_path, stat):
-    data = np.random.normal(size=100)
+    data = np.random.default_rng(42).normal(size=100)
     path = tmp_path / "hist.png"
     histogram(data, stat, save_path=str(path))
     assert path.exists()
@@ -159,7 +159,7 @@ def test_histogram_save_path(tmp_path, stat):
 @pytest.mark.parametrize("stat", STAT_MODES)
 def test_histogram_external_ax(stat):
     fig_ext, ax_ext = plt.subplots()
-    data = np.random.normal(size=50)
+    data = np.random.default_rng(42).normal(size=50)
     fig, ax = histogram(data, stat, ax=ax_ext)
     assert ax is ax_ext
     assert fig is fig_ext
@@ -167,7 +167,7 @@ def test_histogram_external_ax(stat):
 
 
 def test_histogram_rejects_scalar_axis_limits():
-    data = np.random.normal(size=20)
+    data = np.random.default_rng(42).normal(size=20)
 
     with pytest.raises(ValueError, match="xlim must be a sequence of 2 elements"):
         histogram(data, xlim=1)
@@ -450,7 +450,7 @@ def test_histogram_normalized_autoscaling_and_explicit_limits(stat, expected_hei
 
 
 def test_histogram_rejects_invalid_hist_range():
-    data = np.random.normal(size=20)
+    data = np.random.default_rng(42).normal(size=20)
 
     with pytest.raises(ValueError, match="hist_range must have 2 elements"):
         histogram(data, hist_range=(0.0,))
