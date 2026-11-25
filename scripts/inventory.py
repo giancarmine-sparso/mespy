@@ -362,7 +362,7 @@ def render(modules: dict[str, Module], notes: list[str]) -> str:
     ]
     for module in modules.values():
         entities = list(module.entities.values())
-        count = lambda kinds: sum(e.kind in kinds for e in entities)  # noqa: E731
+        count = lambda kinds: sum(e.kind in kinds for e in entities)  # noqa: E731, B023 — helper usato solo nella riga di tabella di questa iterazione
         public = sum("pubblico" in visibility(e, root_all) for e in entities)
         lines.append(
             f"| `{module.name}` | {len(module.path.read_text(encoding='utf-8').splitlines())} "

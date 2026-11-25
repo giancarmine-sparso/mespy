@@ -156,7 +156,7 @@ def leggi_contatore(file_input: str | Path) -> Acquisizione:
         riga = riga.strip()
 
         def segnala(descrizione: str) -> None:
-            anomalie.append(Anomalia(secondo, descrizione, riga))
+            anomalie.append(Anomalia(secondo, descrizione, riga))  # noqa: B023 — chiamata solo in questa iterazione, mai dopo il ciclo
 
         m = _RIGA.fullmatch(riga)
         if m is None:
