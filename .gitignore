@@ -22,7 +22,7 @@ env/
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 ref.ipynb
-
+demo/
 # Claude - Codex
 .claude
 .codex
