@@ -7,7 +7,6 @@ from types import SimpleNamespace
 import pytest
 from jinja2 import Environment, FileSystemLoader
 
-
 ROOT = Path(__file__).resolve().parents[1]
 DOCS_SOURCE = ROOT / "docs" / "source"
 SWITCHER_JS = DOCS_SOURCE / "_static" / "language-switcher.js"

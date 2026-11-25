@@ -1,13 +1,14 @@
 """Integration checks for the adapter used unchanged by the Pyodide worker."""
 import importlib.util
 import json
-from pathlib import Path
 import tempfile
-import tomllib
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
+import tomllib
+
 import mespy
 
 ROOT = Path(__file__).resolve().parents[1]

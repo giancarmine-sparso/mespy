@@ -1,14 +1,12 @@
 import ast
 import re
 import runpy
-import tomllib
 from pathlib import Path
 
 import pytest
-
+import tomllib
 from babel.messages.pofile import read_po
 from jinja2 import Environment, nodes
-
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS_SOURCE = ROOT / "docs" / "source"
@@ -253,9 +251,11 @@ def test_homepage_hero_hosts_the_only_demo_and_keeps_the_anchors():
 
 def test_homepage_initial_example_runs_with_public_lin_fit():
     import json
-    import mespy
-    import numpy as np
+
     import matplotlib.pyplot as plt
+    import numpy as np
+
+    import mespy
 
     source = (DOCS_SOURCE / "_static/homepage-example.py").read_text()
     adapter = runpy.run_path(str(DOCS_SOURCE / "_static/homepage-fit.py"))

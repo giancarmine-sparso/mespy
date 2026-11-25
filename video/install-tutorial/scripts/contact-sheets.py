@@ -1,5 +1,6 @@
 """Optional: assemble decoded QA frames at their native 800-pixel width (Pillow)."""
 from pathlib import Path
+
 from PIL import Image, ImageDraw
 
 for folder in sorted(Path('out/qa').glob('mespy-install-*')):

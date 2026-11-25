@@ -1,13 +1,12 @@
 from pathlib import Path
-import tomllib
+from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
+import tomllib
 from docutils import nodes
-from sphinx.locale import get_translation
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
-from zipfile import ZipFile, ZIP_DEFLATED, ZipInfo
-
+from sphinx.locale import get_translation
 
 SUPPORTED_LANGUAGES = [
     {"code": "en", "label": "English"},

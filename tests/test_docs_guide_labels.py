@@ -9,7 +9,6 @@ from babel.messages.pofile import read_po
 from docutils import nodes
 from docutils.utils import new_document
 
-
 ROOT = Path(__file__).resolve().parents[1]
 DOCS_SOURCE = ROOT / "docs" / "source"
 LABEL = "mx-block__label"

@@ -6,10 +6,11 @@ This module runs unchanged in Pyodide and in the documentation integration tests
 import ast
 import io
 import json
-from pathlib import Path
 import tempfile
-import tomllib
 import warnings
+from pathlib import Path
+
+import tomllib
 
 MAX_SOURCE = 20000
 MAX_POINTS = 1000
