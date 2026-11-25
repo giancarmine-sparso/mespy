@@ -255,10 +255,14 @@ def _fit_local_axis(
     largest = float(np.max(np.abs(differences)))
     exponent = math.frexp(largest)[1] if largest else 0
     offsets = np.ldexp(differences, -exponent)
-    mean = math.fsum(float(w * v) for w, v in zip(weights, offsets)) / sum_weights
+    mean = (
+        math.fsum(float(w * v) for w, v in zip(weights, offsets, strict=True))
+        / sum_weights
+    )
     centered = offsets - mean
     correction = (
-        math.fsum(float(w * v) for w, v in zip(weights, centered)) / sum_weights
+        math.fsum(float(w * v) for w, v in zip(weights, centered, strict=True))
+        / sum_weights
     )
     centered -= correction
     return _FitLocalAxis(
@@ -448,7 +452,7 @@ def _solve_linear_fit(
         local_slope = 0.0
     else:
         moment_xy = math.fsum(
-            float(a * b) for a, b in zip(scaled_x, weighted_y / largest_y)
+            float(a * b) for a, b in zip(scaled_x, weighted_y / largest_y, strict=True)
         )
         local_slope = _fit_scaled_value(
             "local slope", moment_xy, largest_y, divisors=(largest_x, moment_xx)
@@ -570,7 +574,7 @@ def _effective_fit_sigma(data: _LinearFitData, slope: float) -> FloatVector:
     assert data.sigma_x is not None and data.sigma_y is not None
     slope_part, slope_power = math.frexp(abs(slope))
     effective = []
-    for sy, sx in zip(data.sigma_y, data.sigma_x):
+    for sy, sx in zip(data.sigma_y, data.sigma_x, strict=True):
         y_part, y_power = math.frexp(float(sy))
         x_part, x_power = math.frexp(float(sx))
         product = slope_part * x_part

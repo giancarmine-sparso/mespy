@@ -182,7 +182,7 @@ def leggi_contatore(file_input: str | Path) -> Acquisizione:
 
         if any(t >= US_PER_S for t in micro):
             segnala("tempo >= 1 s: l'evento cade fuori dal suo secondo")
-        if any(a >= b for a, b in zip(micro, micro[1:])):
+        if any(a >= b for a, b in zip(micro, micro[1:], strict=False)):
             segnala("tempi non strettamente crescenti nella riga")
 
         for t, v in eventi:

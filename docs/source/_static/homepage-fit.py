@@ -93,7 +93,7 @@ def validate_example(source):
     call = last.value
     if len(call.args) not in (2, 3) or not {"x", "y"} <= assigned:
         raise ExampleError("call")
-    for node, name in zip(call.args, ("x", "y", "sigma_y")):
+    for node, name in zip(call.args, ("x", "y", "sigma_y"), strict=False):
         if not isinstance(node, ast.Name) or node.id != name or name not in assigned:
             raise ExampleError("call")
     keywords = set()
