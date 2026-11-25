@@ -3,12 +3,12 @@
 import dataclasses
 import inspect
 import math
+import tomllib
 import warnings
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
-import tomllib
 from matplotlib.collections import PolyCollection
 from matplotlib.container import ErrorbarContainer
 from scipy.optimize import root

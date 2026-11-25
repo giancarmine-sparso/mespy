@@ -1,7 +1,7 @@
+import tomllib
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
-import tomllib
 from docutils import nodes
 from pygments import highlight
 from pygments.formatters import HtmlFormatter

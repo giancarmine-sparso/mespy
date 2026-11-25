@@ -8,10 +8,9 @@ import ast
 import io
 import json
 import tempfile
+import tomllib
 import warnings
 from pathlib import Path
-
-import tomllib
 
 MAX_SOURCE = 20000
 MAX_POINTS = 1000

@@ -1,10 +1,10 @@
 import ast
 import re
 import runpy
+import tomllib
 from pathlib import Path
 
 import pytest
-import tomllib
 from babel.messages.pofile import read_po
 from jinja2 import Environment, nodes
 

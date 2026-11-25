@@ -3,12 +3,12 @@
 import importlib.util
 import json
 import tempfile
+import tomllib
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
-import tomllib
 
 import mespy
 

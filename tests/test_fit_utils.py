@@ -6,6 +6,7 @@ import os
 import re
 import subprocess
 import sys
+import tomllib
 import warnings
 from contextlib import contextmanager
 from dataclasses import FrozenInstanceError
@@ -16,7 +17,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
-import tomllib
 from matplotlib.collections import PolyCollection
 from matplotlib.container import ErrorbarContainer
 from scipy import stats
