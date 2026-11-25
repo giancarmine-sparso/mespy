@@ -88,5 +88,7 @@ dev = [
   "sphinx-copybutton>=0.5.2",
   "build>=1.4.2",
   "twine>=6.2.0",
+  "pre-commit>=4.7.0",
+  "commitizen>=4.20.1",
 ]
 docs = ["sphinx-intl>=2.3.2"]
