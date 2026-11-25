@@ -16,8 +16,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.12", "3.13"]
     env:
       MPLBACKEND: Agg
     steps:
@@ -25,5 +26,5 @@ jobs:
       - uses: astral-sh/setup-uv@v6
         with:
           python-version: ${{ matrix.python-version }}
-      - run: uv sync --extra dev
+      - run: uv sync
       - run: uv run pytest

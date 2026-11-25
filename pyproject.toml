@@ -55,7 +55,6 @@ members = ["demo"]
 
 [tool.ruff]
 line-length = 88
-target-version = "py310"
 extend-exclude = ["docs/_build"]
 
 [tool.ruff.lint]
@@ -90,5 +89,7 @@ dev = [
   "twine>=6.2.0",
   "pre-commit>=4.7.0",
   "commitizen>=4.20.1",
+  "ruff>=0.17.6",
+  "pytest>=9.0.2",
 ]
 docs = ["sphinx-intl>=2.3.2"]
