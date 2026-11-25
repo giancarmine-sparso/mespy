@@ -107,7 +107,9 @@ def test_histogram_uses_mespy_style_by_default_and_can_disable_it(stat):
             show_legend=False,
         )
 
-    assert ax_default.get_facecolor() == pytest.approx(matplotlib.colors.to_rgba("white"))
+    assert ax_default.get_facecolor() == pytest.approx(
+        matplotlib.colors.to_rgba("white")
+    )
     assert ax_none.get_facecolor() == pytest.approx(
         matplotlib.colors.to_rgba(custom_facecolor)
     )
@@ -276,7 +278,9 @@ def test_histogram_binning_matches_numpy(stat, bins):
         {"bin_width": 1, "hist_range": (0, 3)},
     ],
 )
-def test_histogram_no_included_observations_has_zero_bars_without_warnings(stat, kwargs):
+def test_histogram_no_included_observations_has_zero_bars_without_warnings(
+    stat, kwargs
+):
     with warnings.catch_warnings():
         warnings.simplefilter("error", RuntimeWarning)
         fig, ax = histogram([4, 5], stat, show_mean=False, show_band=False, **kwargs)
@@ -350,15 +354,15 @@ def test_histogram_custom_ylabel_and_bar_styles(stat):
             matplotlib.colors.to_rgba("black", 0.4)
         )
     assert [t.get_text() for t in ax.get_legend().get_texts()] == ["Misure"]
-    assert all(
-        line.get_alpha() == pytest.approx(0.2) for line in ax.get_ygridlines()
-    )
+    assert all(line.get_alpha() == pytest.approx(0.2) for line in ax.get_ygridlines())
     plt.close(fig)
 
 
 @pytest.mark.parametrize("stat", STAT_MODES)
 @pytest.mark.parametrize("grid_axis", ("x", "y", "both"))
-def test_histogram_show_grid_enables_style_axes_even_when_grid_is_disabled(stat, grid_axis):
+def test_histogram_show_grid_enables_style_axes_even_when_grid_is_disabled(
+    stat, grid_axis
+):
     with plt.rc_context({"axes.grid": False, "axes.grid.axis": grid_axis}):
         fig, ax = plt.subplots()
         histogram([0, 1, 2], stat, ax=ax, style=None, show_grid=True)
@@ -387,7 +391,9 @@ def test_histogram_show_grid_false_disables_existing_major_and_minor_grids():
 
 
 @pytest.mark.parametrize("stat", ["probability", "density"])
-def test_histogram_normalized_bars_preserve_mespy_style_and_full_sample_statistics(stat):
+def test_histogram_normalized_bars_preserve_mespy_style_and_full_sample_statistics(
+    stat,
+):
     data = [-2, 0, 0.5, 1, 2.5, 3, 9]
     fig_count, ax_count = histogram(data, bins=[0, 1, 3], ddof=1)
     fig, ax = histogram(data, stat, bins=[0, 1, 3], ddof=1)
@@ -421,11 +427,16 @@ def test_histogram_default_count_matches_explicit_count():
     plt.close(fig_count)
 
 
-@pytest.mark.parametrize("stat, expected_height", [("probability", 0.75), ("density", 25)])
+@pytest.mark.parametrize(
+    "stat, expected_height", [("probability", 0.75), ("density", 25)]
+)
 def test_histogram_normalized_autoscaling_and_explicit_limits(stat, expected_height):
     fig, ax = histogram(
-        [0, 0.01, 0.02, 0.03], stat, bins=[0, 0.01, 0.04],
-        show_mean=False, show_band=False,
+        [0, 0.01, 0.02, 0.03],
+        stat,
+        bins=[0, 0.01, 0.04],
+        show_mean=False,
+        show_band=False,
     )
     assert max(bar.get_height() for bar in ax.containers[0]) == pytest.approx(
         expected_height
@@ -433,9 +444,7 @@ def test_histogram_normalized_autoscaling_and_explicit_limits(stat, expected_hei
     assert ax.get_ylim()[1] > expected_height
     assert ax.get_ylim()[1] < 1.1 * expected_height
     plt.close(fig)
-    fig, ax = histogram(
-        [0, 0.01, 0.02, 0.03], stat, bins=[0, 0.01, 0.04], ylim=(0, 50)
-    )
+    fig, ax = histogram([0, 0.01, 0.02, 0.03], stat, bins=[0, 0.01, 0.04], ylim=(0, 50))
     assert ax.get_ylim() == pytest.approx((0, 50))
     plt.close(fig)
 

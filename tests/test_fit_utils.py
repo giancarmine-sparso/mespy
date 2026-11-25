@@ -2382,9 +2382,9 @@ def test_lin_fit_output_keeps_dotted_base_names(tmp_path, relative, as_path, plo
     result = lin_fit(
         [0, 1, 2], [0, 1, 3], 1, plot=plot, output=base if as_path else str(base)
     )
-    expected = [base.name + ".pdf", base.name + ".toml"] if plot else [
-        base.name + ".toml"
-    ]
+    expected = (
+        [base.name + ".pdf", base.name + ".toml"] if plot else [base.name + ".toml"]
+    )
     assert sorted(path.name for path in base.parent.iterdir()) == sorted(expected)
     document = _read_toml(base.parent / (base.name + ".toml"))
     assert document["fit"]["slope"] == result.slope
@@ -2396,9 +2396,7 @@ def test_lin_fit_output_keeps_dotted_base_names(tmp_path, relative, as_path, plo
     "name",
     ["fit.pdf", "fit.toml", "fit.PDF", "fit.Toml", "fit.png", "fit.svg", "fit.csv"],
 )
-def test_lin_fit_output_rejects_file_extensions_without_double_suffixes(
-    tmp_path, name
-):
+def test_lin_fit_output_rejects_file_extensions_without_double_suffixes(tmp_path, name):
     with pytest.raises(ValueError, match=rf"output: .*{re.escape(name[3:])}"):
         lin_fit([0, 1, 2], [0, 1, 3], 1, output=tmp_path / "new" / name)
     assert not list(tmp_path.iterdir())

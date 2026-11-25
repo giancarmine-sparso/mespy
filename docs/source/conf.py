@@ -26,9 +26,12 @@ version = release
 
 templates_path = ["_templates"]
 exclude_patterns = [
-    "_build", "Thumbs.db", ".DS_Store",
+    "_build",
+    "Thumbs.db",
+    ".DS_Store",
     # Installation videos are temporarily withdrawn from the documentation.
-    "**/get-started-install*.mp4", "**/get-started-install*.png",
+    "**/get-started-install*.mp4",
+    "**/get-started-install*.png",
 ]
 
 language = "it"
@@ -92,27 +95,34 @@ html_permalinks = False
 GUIDE_PAGES = {
     "installazione": {},
     "moduli/fit_utils/lin-fit": {
-        "eyebrow": "API Reference / mespy.lin_fit", "reference": "lin_fit",
+        "eyebrow": "API Reference / mespy.lin_fit",
+        "reference": "lin_fit",
     },
     "moduli/fit_utils/linear-fit-result": {
-        "eyebrow": "API Reference / mespy.fit_utils.LinearFitResult", "reference": "lin_fit",
+        "eyebrow": "API Reference / mespy.fit_utils.LinearFitResult",
+        "reference": "lin_fit",
     },
     "moduli/plot_utils/histogram": {
-        "eyebrow": "API Reference / mespy.histogram", "reference": "histogram",
+        "eyebrow": "API Reference / mespy.histogram",
+        "reference": "histogram",
     },
     "moduli/plot_utils/histogram/panoramica": {
-        "eyebrow": "API Reference / mespy.histogram", "reference": "histogram",
+        "eyebrow": "API Reference / mespy.histogram",
+        "reference": "histogram",
     },
     "moduli/plot_utils/histogram/funzionamento": {
-        "eyebrow": "API Reference / mespy.histogram", "reference": "histogram",
+        "eyebrow": "API Reference / mespy.histogram",
+        "reference": "histogram",
     },
     "examples/basic-workflow": {
-        "numbered": "bw-steps", "eyebrow": "mespy.histogram · mespy.lin_fit",
+        "numbered": "bw-steps",
+        "eyebrow": "mespy.histogram · mespy.lin_fit",
         "station": "duck",
     },
     "examples/histogram": {"numbered": "hist-examples", "eyebrow": "mespy.histogram"},
     "examples/plot-style": {
-        "eyebrow": "mespy.histogram · mespy.lin_fit", "station": "painter",
+        "eyebrow": "mespy.histogram · mespy.lin_fit",
+        "station": "painter",
     },
     "examples/linear-fit": {"eyebrow": "mespy.lin_fit", "station": "capybara"},
 }
@@ -122,7 +132,11 @@ GUIDE_PAGES = {
 REFERENCE_SECTIONS = {
     "lin_fit": {
         "pages": [
-            {"doc": "moduli/fit_utils/lin-fit", "title": "lin_fit", "anchor": "lin-fit-reference"},
+            {
+                "doc": "moduli/fit_utils/lin-fit",
+                "title": "lin_fit",
+                "anchor": "lin-fit-reference",
+            },
             {"doc": "moduli/fit_utils/linear-fit-result", "title": "LinearFitResult"},
         ],
     },
@@ -155,25 +169,36 @@ UTILITY_REFERENCES = {
 }
 for _doc, _name in UTILITY_REFERENCES.items():
     REFERENCE_SECTIONS[_name] = {
-        "pages": [{"doc": _doc}, {"doc": f"{_doc}/panoramica"}, {"doc": f"{_doc}/funzionamento"}],
+        "pages": [
+            {"doc": _doc},
+            {"doc": f"{_doc}/panoramica"},
+            {"doc": f"{_doc}/funzionamento"},
+        ],
     }
     for _page in REFERENCE_SECTIONS[_name]["pages"]:
         GUIDE_PAGES[_page["doc"]] = {
-            "eyebrow": f"API Reference / mespy.{_name}", "reference": _name,
+            "eyebrow": f"API Reference / mespy.{_name}",
+            "reference": _name,
         }
 
 for _page in REFERENCE_SECTIONS["modules"]["pages"]:
     _module = _page["doc"].split("/")[1]
     GUIDE_PAGES[_page["doc"]] = {
-        "eyebrow": f"API Reference / mespy.{_module}", "reference": "modules",
+        "eyebrow": f"API Reference / mespy.{_module}",
+        "reference": "modules",
     }
 
 # Private references retain their own hierarchy and are not listed as public API.
 CHECK_REFERENCES = {
     "stats_utils": ("as-float-vector", "validate-weights"),
     "plot_utils": (
-        "validate-axis-limits", "validate-figsize", "validate-decimals",
-        "resolve-style", "in-ipython", "display-new-figures", "style-context",
+        "validate-axis-limits",
+        "validate-figsize",
+        "validate-decimals",
+        "resolve-style",
+        "in-ipython",
+        "display-new-figures",
+        "style-context",
     ),
 }
 REFERENCE_SECTIONS["checks"] = {
@@ -190,7 +215,8 @@ for _module, _helpers in CHECK_REFERENCES.items():
     }
     for _page in REFERENCE_SECTIONS[_family]["pages"]:
         GUIDE_PAGES[_page["doc"]] = {
-            "eyebrow": f"mespy.{_module}", "reference": _family,
+            "eyebrow": f"mespy.{_module}",
+            "reference": _family,
         }
 
 # Pages whose text is concatenated into llms-full.txt, in reading order: the
@@ -198,11 +224,16 @@ for _module, _helpers in CHECK_REFERENCES.items():
 DOCS_URL = "https://giancarmine-sparso.github.io/mespy/"
 LLMS_FULL_PAGES = [
     "getting-started",
-    "examples/basic-workflow", "examples/plot-style",
-    "examples/histogram", "examples/linear-fit",
+    "examples/basic-workflow",
+    "examples/plot-style",
+    "examples/histogram",
+    "examples/linear-fit",
     "moduli/index",
-    *(page["doc"] for name in ("lin_fit", "histogram", *UTILITY_REFERENCES.values())
-      for page in REFERENCE_SECTIONS[name]["pages"]),
+    *(
+        page["doc"]
+        for name in ("lin_fit", "histogram", *UTILITY_REFERENCES.values())
+        for page in REFERENCE_SECTIONS[name]["pages"]
+    ),
     "installazione",
 ]
 
@@ -218,7 +249,11 @@ GUIDE_STATIONS = {
     # bare patch of the page (Plot styling).
     "painter": {
         "css": ["homepage-duck.css", "guide-painter-station.css"],
-        "js": ["homepage-pixel.js", "homepage-duck-frames.js", "guide-painter-station.js"],
+        "js": [
+            "homepage-pixel.js",
+            "homepage-duck-frames.js",
+            "guide-painter-station.js",
+        ],
     },
     # A capybara sliding down the fitted line and climbing back up (Linear fit).
     "capybara": {
@@ -254,7 +289,9 @@ nb_execution_raise_on_error = True
 # its bundled default font (-nofont) and pinned to the version of that data.
 # mathjax-config.js sets the font on top of MyST's mathjax3_config.
 MATHJAX_VERSION = "4.1.3"
-mathjax_path = f"https://cdn.jsdelivr.net/npm/mathjax@{MATHJAX_VERSION}/tex-mml-chtml-nofont.js"
+mathjax_path = (
+    f"https://cdn.jsdelivr.net/npm/mathjax@{MATHJAX_VERSION}/tex-mml-chtml-nofont.js"
+)
 mathjax_config_path = "mathjax-config.js"
 
 
@@ -300,13 +337,17 @@ def add_language_switcher_context(app, pagename, templatename, context, doctree)
     context["supported_languages"] = []
     for item in SUPPORTED_LANGUAGES:
         home_href = f"{site_root}{item['code']}/index.html"
-        context["supported_languages"].append({
-            **item,
-            "home_href": home_href,
-            "page_href": home_href if is_fallback else f"{site_root}{item['code']}/{page_href}",
-            "is_current": item["code"] == current_language,
-            "is_fallback": is_fallback,
-        })
+        context["supported_languages"].append(
+            {
+                **item,
+                "home_href": home_href,
+                "page_href": home_href
+                if is_fallback
+                else f"{site_root}{item['code']}/{page_href}",
+                "is_current": item["code"] == current_language,
+                "is_fallback": is_fallback,
+            }
+        )
 
 
 def set_search_bar_text(app, config):
@@ -377,9 +418,13 @@ def mark_guide_doctree(app, doctree, docname):
             continue
         for number, example in enumerate(_child_sections(group), start=1):
             example["classes"].append("mx-guide-example")
-            example[0].insert(0, nodes.inline("", f"{number:02d}", classes=["mx-guide-num"]))
+            example[0].insert(
+                0, nodes.inline("", f"{number:02d}", classes=["mx-guide-num"])
+            )
     for figure in doctree.findall(nodes.figure):
-        captions = [child for child in figure.children if isinstance(child, nodes.caption)]
+        captions = [
+            child for child in figure.children if isinstance(child, nodes.caption)
+        ]
         if captions:
             for image in figure.findall(nodes.image):
                 image["alt"] = captions[0].astext()
@@ -397,7 +442,9 @@ GUIDE_BLOCK_CLASSES = {
     "mx-block-project": "File di progetto",
     "mx-block-saved": "File salvati",
 }
-GUIDE_BLOCK_LANGUAGES = dict.fromkeys(("bash", "console", "shell", "sh", "zsh"), "Shell")
+GUIDE_BLOCK_LANGUAGES = dict.fromkeys(
+    ("bash", "console", "shell", "sh", "zsh"), "Shell"
+)
 GUIDE_OUTPUT_LABEL = "Risultato"
 GUIDE_LABEL_CLASS = "mx-block__label"
 
@@ -421,7 +468,9 @@ def _guide_label(text):
 def _in_cell_or_block(node) -> bool:
     node = node.parent
     while node is not None:
-        if str(node.get("nb_element", "")).startswith("cell_code") or "mx-block" in node.get("classes", []):
+        if str(node.get("nb_element", "")).startswith(
+            "cell_code"
+        ) or "mx-block" in node.get("classes", []):
             return True
         node = node.parent
     return False
@@ -436,12 +485,15 @@ def label_guide_blocks(doctree, translate):
     never copies it. Already labelled blocks and outputs are left alone.
     """
     outputs = [
-        node for node in doctree.findall(nodes.container)
+        node
+        for node in doctree.findall(nodes.container)
         if node.get("nb_element") == "cell_code_output"
     ]
     for output in outputs:
         first = output.children[0] if output.children else None
-        if not (isinstance(first, nodes.Element) and GUIDE_LABEL_CLASS in first["classes"]):
+        if not (
+            isinstance(first, nodes.Element) and GUIDE_LABEL_CLASS in first["classes"]
+        ):
             output.insert(0, _guide_label(translate(GUIDE_OUTPUT_LABEL)))
     for block in list(doctree.findall(nodes.literal_block)):
         if _in_cell_or_block(block):
@@ -460,7 +512,14 @@ def _guide_section(app, pagename, english, parent=None):
     that contains *pagename*."""
     env = app.env
     if parent is None:
-        parent = next((doc for doc, children in env.toctree_includes.items() if pagename in children), None)
+        parent = next(
+            (
+                doc
+                for doc, children in env.toctree_includes.items()
+                if pagename in children
+            ),
+            None,
+        )
     if parent is None:
         return None
     pages = [
@@ -493,9 +552,23 @@ def add_guide_context(app, pagename, templatename, context, doctree):
     for group in _child_sections(page):
         entries = []
         for entry in _child_sections(group):
-            number = next((n.astext() for n in entry[0].children if _is_example_number(n)), "")
-            entries.append({"id": _anchor(entry, doctree), "title": _section_title(entry), "num": number})
-        groups.append({"id": _anchor(group, doctree), "title": _section_title(group), "entries": entries})
+            number = next(
+                (n.astext() for n in entry[0].children if _is_example_number(n)), ""
+            )
+            entries.append(
+                {
+                    "id": _anchor(entry, doctree),
+                    "title": _section_title(entry),
+                    "num": number,
+                }
+            )
+        groups.append(
+            {
+                "id": _anchor(group, doctree),
+                "title": _section_title(group),
+                "entries": entries,
+            }
+        )
     english = (app.config.language or language).startswith("en")
     context["guide_nav"] = groups
     reference = GUIDE_PAGES[pagename].get("reference", False)
@@ -505,30 +578,47 @@ def add_guide_context(app, pagename, templatename, context, doctree):
     eyebrow = GUIDE_PAGES[pagename].get("eyebrow")
     if eyebrow and not english:
         eyebrow = eyebrow.replace("API Reference", "Riferimento API")
-    context["guide_eyebrow"] = eyebrow if reference else " / ".join(filter(None, [section and section["title"], eyebrow]))
+    context["guide_eyebrow"] = (
+        eyebrow
+        if reference
+        else " / ".join(filter(None, [section and section["title"], eyebrow]))
+    )
     if reference:
         reference_section = REFERENCE_SECTIONS[reference]
-        reference_language = reference_section.get("language", app.config.language or language)
+        reference_language = reference_section.get(
+            "language", app.config.language or language
+        )
         reference_english = reference_language.startswith("en")
         reference_root = reference_section.get("root", "moduli/index")
-        context["guide_nav_title"] = "On this page" if reference_english else "In questa pagina"
-        context["guide_nav_label"] = "Reference sections" if reference_english else "Sezioni del riferimento"
+        context["guide_nav_title"] = (
+            "On this page" if reference_english else "In questa pagina"
+        )
+        context["guide_nav_label"] = (
+            "Reference sections" if reference_english else "Sezioni del riferimento"
+        )
         reference_pages = []
         for item in reference_section["pages"]:
             href = app.builder.get_relative_uri(pagename, item["doc"]) or ""
             if item.get("anchor"):
                 href += f"#{item['anchor']}"
-            reference_pages.append({
-                "title": item.get("title") or app.env.titles[item["doc"]].astext(),
-                "href": href or "#",
-                "current": item["doc"] == pagename,
-            })
+            reference_pages.append(
+                {
+                    "title": item.get("title") or app.env.titles[item["doc"]].astext(),
+                    "href": href or "#",
+                    "current": item["doc"] == pagename,
+                }
+            )
         context["guide_section"] = {
             "title": app.env.titles[reference_root].astext(),
             "href": app.builder.get_relative_uri(pagename, reference_root) or "#",
             "current": reference_root == pagename,
-            "label": ("Section navigation" if reference_english else "Navigazione della sezione")
-            if reference_section.get("root") else ("API navigation" if reference_english else "Navigazione API"),
+            "label": (
+                "Section navigation"
+                if reference_english
+                else "Navigazione della sezione"
+            )
+            if reference_section.get("root")
+            else ("API navigation" if reference_english else "Navigazione API"),
             "lang": reference_language,
             "pages": reference_pages,
         }
@@ -581,32 +671,56 @@ def add_api_reference_context(app, pagename, templatename, context, doctree):
     context["home"] = get_translation("homepage")
     section = _guide_section(app, pagename, english, parent=pagename)
     modules = [
-        {**page, "entries": _guide_section(app, pagename, english, parent=page["doc"])["pages"]}
+        {
+            **page,
+            "entries": _guide_section(app, pagename, english, parent=page["doc"])[
+                "pages"
+            ],
+        }
         for page in section["pages"]
     ]
     entries = {
         entry["doc"]: {**entry, "module": module}
-        for module in modules for entry in module["entries"]
+        for module in modules
+        for entry in module["entries"]
     }
     # Short canonical names for the core cards and the section strip; the
     # documents keep their own titles (lin-fit.md is `mespy.lin_fit`).
-    core_docs = {"moduli/plot_utils/histogram": "histogram", "moduli/fit_utils/lin-fit": "lin_fit"}
-    context["api_core"] = [{**entries[doc], "name": name} for doc, name in core_docs.items()]
+    core_docs = {
+        "moduli/plot_utils/histogram": "histogram",
+        "moduli/fit_utils/lin-fit": "lin_fit",
+    }
+    context["api_core"] = [
+        {**entries[doc], "name": name} for doc, name in core_docs.items()
+    ]
     context["api_utilities"] = [
-        {**module, "entries": [entry for entry in module["entries"] if entry["doc"] not in core_docs]}
+        {
+            **module,
+            "entries": [
+                entry for entry in module["entries"] if entry["doc"] not in core_docs
+            ],
+        }
         for module in modules
         if any(entry["doc"] not in core_docs for entry in module["entries"])
     ]
     context["guide_section"] = {
         "title": "API Reference" if english else "Riferimento API",
-        "href": "#api-title", "current": True,
+        "href": "#api-title",
+        "current": True,
         "label": "API navigation" if english else "Navigazione API",
         "lang": app.config.language or language,
         "pages": [
             {"title": entry["name"], "href": f"#{entry['doc'].rsplit('/', 1)[-1]}"}
             for entry in context["api_core"]
-        ] + [{"title": "Additional utilities" if english else "Altre funzioni di utilità",
-               "href": "#additional-utilities"}],
+        ]
+        + [
+            {
+                "title": "Additional utilities"
+                if english
+                else "Altre funzioni di utilità",
+                "href": "#additional-utilities",
+            }
+        ],
     }
     app.add_css_file("homepage.css")
     app.add_css_file("api-reference.css")
@@ -618,9 +732,12 @@ def add_homepage_context(app, pagename, templatename, context, doctree):
     if pagename != "index":
         return None
     context["home"] = get_translation("homepage")
-    context["fit_example"] = (Path(__file__).parent / "_static/homepage-example.py").read_text().rstrip()
+    context["fit_example"] = (
+        (Path(__file__).parent / "_static/homepage-example.py").read_text().rstrip()
+    )
     context["fit_example_html"] = highlight(
-        context["fit_example"], get_lexer_by_name("python"),
+        context["fit_example"],
+        get_lexer_by_name("python"),
         HtmlFormatter(nowrap=True, classprefix="mh-syntax-"),
     )
     app.add_css_file("homepage.css")
@@ -639,7 +756,8 @@ def add_homepage_context(app, pagename, templatename, context, doctree):
 
 def _highlight_python(code: str) -> str:
     return highlight(
-        code, get_lexer_by_name("python"),
+        code,
+        get_lexer_by_name("python"),
         HtmlFormatter(nowrap=True, classprefix="mh-syntax-"),
     ).rstrip("\n")
 
@@ -672,13 +790,22 @@ def bundle_homepage_runtime(app, exception):
     static = Path(app.outdir) / "_static"
     static.mkdir(parents=True, exist_ok=True)
     package = Path(__file__).resolve().parents[2] / "src/mespy"
-    entries = [(p.relative_to(package.parent).as_posix(), p.read_bytes())
-               for p in sorted(package.rglob("*"))
-               if p.is_file() and (p.suffix in {".py", ".mplstyle"} or p.name == "py.typed")]
+    entries = [
+        (p.relative_to(package.parent).as_posix(), p.read_bytes())
+        for p in sorted(package.rglob("*"))
+        if p.is_file() and (p.suffix in {".py", ".mplstyle"} or p.name == "py.typed")
+    ]
     metadata = f"Metadata-Version: 2.1\nName: mespy\nVersion: {release}\n"
     entries.append((f"mespy-{release}.dist-info/METADATA", metadata.encode()))
-    entries.append(("homepage_fit.py", (Path(__file__).parent / "_static/homepage-fit.py").read_bytes()))
-    with ZipFile(static / "mespy-runtime.zip", "w", compression=ZIP_DEFLATED) as archive:
+    entries.append(
+        (
+            "homepage_fit.py",
+            (Path(__file__).parent / "_static/homepage-fit.py").read_bytes(),
+        )
+    )
+    with ZipFile(
+        static / "mespy-runtime.zip", "w", compression=ZIP_DEFLATED
+    ) as archive:
         for name, content in entries:
             info = ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
             info.compress_type = ZIP_DEFLATED
@@ -700,19 +827,35 @@ def _inline_markdown(node) -> str:
 
 def _markdown_blocks(node, depth: int) -> list[str]:
     """Markdown blocks for a doctree node; images, raw HTML and comments are dropped."""
-    if isinstance(node, (nodes.image, nodes.raw, nodes.comment, nodes.target,
-                         nodes.system_message, nodes.substitution_definition)):
+    if isinstance(
+        node,
+        (
+            nodes.image,
+            nodes.raw,
+            nodes.comment,
+            nodes.target,
+            nodes.system_message,
+            nodes.substitution_definition,
+        ),
+    ):
         return []
     if isinstance(node, nodes.section):
         title, *body = node.children
         heading = f"{'#' * min(depth, 6)} {_inline_markdown(title).strip()}"
-        return [heading] + [b for child in body for b in _markdown_blocks(child, depth + 1)]
+        return [heading] + [
+            b for child in body for b in _markdown_blocks(child, depth + 1)
+        ]
     if isinstance(node, nodes.literal_block):
         text = node.astext().rstrip()
         if all(line.startswith("<Figure size ") for line in text.splitlines()):
             return []  # Notebook repr of a figure whose image is dropped.
         language = node.get("language", "")
-        language = {"ipython3": "python", "myst-ansi": "text", "default": "", "none": ""}.get(language, language)
+        language = {
+            "ipython3": "python",
+            "myst-ansi": "text",
+            "default": "",
+            "none": "",
+        }.get(language, language)
         return [f"```{language}\n{text}\n```"]
     if isinstance(node, nodes.math_block):
         return [f"$$\n{node.astext().strip()}\n$$"]
@@ -720,18 +863,24 @@ def _markdown_blocks(node, depth: int) -> list[str]:
         items = []
         for number, item in enumerate(node.children, start=1):
             marker = f"{number}. " if isinstance(node, nodes.enumerated_list) else "- "
-            text = "\n\n".join(b for child in item.children for b in _markdown_blocks(child, depth))
+            text = "\n\n".join(
+                b for child in item.children for b in _markdown_blocks(child, depth)
+            )
             items.append(marker + text.replace("\n", "\n" + " " * len(marker)))
         return ["\n".join(items)]
     if isinstance(node, nodes.definition_list):
         return [
             f"- **{_inline_markdown(item[0]).strip()}**: "
-            + " ".join(b for child in item[-1].children for b in _markdown_blocks(child, depth))
+            + " ".join(
+                b for child in item[-1].children for b in _markdown_blocks(child, depth)
+            )
             for item in node.children
         ]
     if isinstance(node, nodes.table):
-        cells = [[" ".join(_inline_markdown(entry).split()) for entry in row.children]
-                 for row in node.findall(nodes.row)]
+        cells = [
+            [" ".join(_inline_markdown(entry).split()) for entry in row.children]
+            for row in node.findall(nodes.row)
+        ]
         rows = ["| " + " | ".join(row) + " |" for row in cells]
         if rows:
             rows.insert(1, "|" + " --- |" * len(cells[0]))
@@ -751,26 +900,36 @@ def write_llms_full(app, exception):
     site = f"{DOCS_URL}{current_language}/"
     parts = [
         "# MesPy",
-        "> " + (
+        "> "
+        + (
             "MesPy is an educational Python library for data analysis in physics "
             "laboratories, aimed at students in the first years of university."
-            if english else
-            "MesPy è una libreria Python didattica per l'analisi dei dati nei laboratori "
+            if english
+            else "MesPy è una libreria Python didattica per l'analisi dei dati nei laboratori "
             "di fisica, rivolta agli studenti dei primi anni di università."
         ),
         (
             f"Full text of the main documentation pages. Index: {DOCS_URL}llms.txt"
-            if english else
-            f"Testo completo delle pagine principali della documentazione. Indice: {site}llms.txt"
+            if english
+            else f"Testo completo delle pagine principali della documentazione. Indice: {site}llms.txt"
         ),
     ]
     for docname in LLMS_FULL_PAGES:
         doctree = app.env.get_doctree(docname)
-        blocks = [b for child in doctree.children for b in _markdown_blocks(child, depth=2)]
-        parts += ["---", *blocks[:1], f"{'Source' if english else 'Fonte'}: {site}{docname}.html", *blocks[1:]]
+        blocks = [
+            b for child in doctree.children for b in _markdown_blocks(child, depth=2)
+        ]
+        parts += [
+            "---",
+            *blocks[:1],
+            f"{'Source' if english else 'Fonte'}: {site}{docname}.html",
+            *blocks[1:],
+        ]
     if not english:
         (Path(app.outdir) / "llms.txt").write_text(
             (Path(__file__).parent / "locale/llms-it.txt").read_text(encoding="utf-8"),
             encoding="utf-8",
         )
-    (Path(app.outdir) / "llms-full.txt").write_text("\n\n".join(parts) + "\n", encoding="utf-8")
+    (Path(app.outdir) / "llms-full.txt").write_text(
+        "\n\n".join(parts) + "\n", encoding="utf-8"
+    )

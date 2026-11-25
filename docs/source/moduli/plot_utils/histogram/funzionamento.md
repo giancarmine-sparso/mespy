@@ -31,8 +31,7 @@ values = _as_float_vector("x", x)
 
 if not isinstance(stat, str) or stat not in ("count", "probability", "density"):
     raise ValueError(
-        "'stat' must be 'count', 'probability' or 'density' "
-        f"| got {stat!r}"
+        f"'stat' must be 'count', 'probability' or 'density' | got {stat!r}"
     )
 
 decimals = _validate_decimals(decimals)
@@ -153,9 +152,7 @@ else:
         bar_kwargs["color"] = bar_color
     if edgecolor is not None:
         bar_kwargs["edgecolor"] = edgecolor
-    bars = ax.bar(
-        bin_edges[:-1], heights, width=widths, align="edge", **bar_kwargs
-    )
+    bars = ax.bar(bin_edges[:-1], heights, width=widths, align="edge", **bar_kwargs)
     if bars:
         # Match ax.hist's legend order by labelling the first patch.
         bars[0].set_label(label)

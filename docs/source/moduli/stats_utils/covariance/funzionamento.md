@@ -33,7 +33,10 @@ def covariance(x: ArrayLike, y: ArrayLike, w: ArrayLike | None = None) -> float:
     dx = x_values - float(np.sum(weights * x_values) / w_sum)
     dy = y_values - float(np.sum(weights * y_values) / w_sum)
     return float(
-        (np.sum(weights * dx * dy) - np.sum(weights * dx) * np.sum(weights * dy) / w_sum)
+        (
+            np.sum(weights * dx * dy)
+            - np.sum(weights * dx) * np.sum(weights * dy) / w_sum
+        )
         / w_sum
     )
 ```
@@ -91,8 +94,8 @@ x = [1.0, 2.0, 3.0]
 y = [2.0, 4.0, 6.0]
 w = [1.0, 1.0, 2.0]
 
-print(covariance(x, y))      # medie semplici
-print(covariance(x, y, w))   # medie pesate
+print(covariance(x, y))  # medie semplici
+print(covariance(x, y, w))  # medie pesate
 ```
 
 Le due chiamate condividono la stessa formula, ma cambiano il modo in cui vengono costruite le medie e la normalizzazione finale.

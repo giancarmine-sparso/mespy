@@ -1,4 +1,5 @@
 """Integration checks for the adapter used unchanged by the Pyodide worker."""
+
 import importlib.util
 import json
 import tempfile
@@ -13,23 +14,31 @@ import mespy
 
 ROOT = Path(__file__).resolve().parents[1]
 STATIC = ROOT / "docs/source/_static"
-spec = importlib.util.spec_from_file_location("homepage_fit", STATIC / "homepage-fit.py")
+spec = importlib.util.spec_from_file_location(
+    "homepage_fit", STATIC / "homepage-fit.py"
+)
 adapter = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(adapter)
 EXAMPLE = (STATIC / "homepage-example.py").read_text()
 
 
-def test_edited_inputs_update_figure_and_toml_from_one_public_api_call(monkeypatch, tmp_path):
+def test_edited_inputs_update_figure_and_toml_from_one_public_api_call(
+    monkeypatch, tmp_path
+):
     calls = []
     original = mespy.lin_fit
+
     def record(*args, **kwargs):
         result = original(*args, **kwargs)
         calls.append(result)
         return result
+
     monkeypatch.setattr(mespy, "lin_fit", record)
     monkeypatch.setattr(tempfile, "tempdir", str(tmp_path))
     first = json.loads(adapter.execute_fit(EXAMPLE))
-    edited = EXAMPLE.replace("[0.57, 1.13, 1.28, 1.89, 2.17, 2.77]", "[1, 3, 5, 7, 9, 11]")
+    edited = EXAMPLE.replace(
+        "[0.57, 1.13, 1.28, 1.89, 2.17, 2.77]", "[1, 3, 5, 7, 9, 11]"
+    )
     second = json.loads(adapter.execute_fit(edited))
     assert first["ok"] and second["ok"]
     assert len(calls) == 2
@@ -44,7 +53,9 @@ def test_edited_inputs_update_figure_and_toml_from_one_public_api_call(monkeypat
         points = main.lines[0]
         np.testing.assert_array_equal(points.get_xdata(), document["data"]["x"])
         np.testing.assert_array_equal(points.get_ydata(), document["data"]["y"])
-        np.testing.assert_allclose(residual.lines[0].get_ydata(), document["residuals"]["values"])
+        np.testing.assert_allclose(
+            residual.lines[0].get_ydata(), document["residuals"]["values"]
+        )
         # The example asks for the report style.
         assert main.yaxis.label.get_fontfamily() == ["serif"]
         assert main.get_facecolor() == (1, 1, 1, 1)
@@ -54,18 +65,31 @@ def test_edited_inputs_update_figure_and_toml_from_one_public_api_call(monkeypat
     assert not plt.get_fignums()
 
 
-@pytest.mark.parametrize("code", [
-    "import os\nos.system('echo unsafe')",
-    EXAMPLE.replace("[0, 1, 2, 3, 4, 5]", "list(range(6))"),
-    EXAMPLE.replace("[0, 1, 2, 3, 4, 5]", "[i for i in range(6)]"),
-    EXAMPLE.replace("[0, 1, 2, 3, 4, 5]", "[0] * 100000000"),
-    EXAMPLE.replace("[0, 1, 2, 3, 4, 5]", "__import__('js').fetch('https://example.com')"),
-    EXAMPLE.replace('lin_fit(x, y, sigma_y=sigma_y, style="report")', "lin_fit(x, y, output='/other/file')"),
-    EXAMPLE.replace('lin_fit(x, y, sigma_y=sigma_y, style="report")', "lin_fit(x, y, plot=False)"),
-    EXAMPLE.replace("from mespy import lin_fit", "from mespy import lin_fit as fit"),
-    EXAMPLE + "\nwhile True: pass",
-    EXAMPLE + "\nprint(open('/file').read())",
-])
+@pytest.mark.parametrize(
+    "code",
+    [
+        "import os\nos.system('echo unsafe')",
+        EXAMPLE.replace("[0, 1, 2, 3, 4, 5]", "list(range(6))"),
+        EXAMPLE.replace("[0, 1, 2, 3, 4, 5]", "[i for i in range(6)]"),
+        EXAMPLE.replace("[0, 1, 2, 3, 4, 5]", "[0] * 100000000"),
+        EXAMPLE.replace(
+            "[0, 1, 2, 3, 4, 5]", "__import__('js').fetch('https://example.com')"
+        ),
+        EXAMPLE.replace(
+            'lin_fit(x, y, sigma_y=sigma_y, style="report")',
+            "lin_fit(x, y, output='/other/file')",
+        ),
+        EXAMPLE.replace(
+            'lin_fit(x, y, sigma_y=sigma_y, style="report")',
+            "lin_fit(x, y, plot=False)",
+        ),
+        EXAMPLE.replace(
+            "from mespy import lin_fit", "from mespy import lin_fit as fit"
+        ),
+        EXAMPLE + "\nwhile True: pass",
+        EXAMPLE + "\nprint(open('/file').read())",
+    ],
+)
 def test_editor_does_not_accept_unbounded_or_unrelated_python(code):
     with pytest.raises(adapter.ExampleError):
         adapter.validate_example(code)
@@ -79,13 +103,16 @@ def test_point_and_source_limits():
         adapter.validate_example(code)
 
 
-@pytest.mark.parametrize("edited, error", [
-    (EXAMPLE.replace("[0, 1, 2, 3, 4, 5]", "[0, 1]"), "ValueError"),
-    (EXAMPLE.replace("[0.10, 0.12, 0.10, 0.15, 0.12, 0.10]", "-1"), "ValueError"),
-    (EXAMPLE.replace("[0, 1, 2, 3, 4, 5]", "[1, 1, 1, 1, 1, 1]"), "ValueError"),
-    (EXAMPLE.replace("sigma_y =", "sigma_y =="), None),
-    (EXAMPLE.replace("x = [", "x = [,"), "SyntaxError"),
-])
+@pytest.mark.parametrize(
+    "edited, error",
+    [
+        (EXAMPLE.replace("[0, 1, 2, 3, 4, 5]", "[0, 1]"), "ValueError"),
+        (EXAMPLE.replace("[0.10, 0.12, 0.10, 0.15, 0.12, 0.10]", "-1"), "ValueError"),
+        (EXAMPLE.replace("[0, 1, 2, 3, 4, 5]", "[1, 1, 1, 1, 1, 1]"), "ValueError"),
+        (EXAMPLE.replace("sigma_y =", "sigma_y =="), None),
+        (EXAMPLE.replace("x = [", "x = [,"), "SyntaxError"),
+    ],
+)
 def test_failures_return_no_stale_artifacts_and_close_figures(edited, error):
     response = json.loads(adapter.execute_fit(edited))
     assert not response["ok"]

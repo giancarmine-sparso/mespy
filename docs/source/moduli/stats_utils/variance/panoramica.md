@@ -27,7 +27,7 @@ from mespy import variance
 
 x = [2.0, 4.0, 4.0, 4.0, 5.0, 5.0, 7.0, 9.0]
 
-print(variance(x))          # 4.0
+print(variance(x))  # 4.0
 print(variance(x, ddof=1))  # correzione di Bessel
 ```
 

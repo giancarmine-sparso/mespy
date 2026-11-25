@@ -6,7 +6,9 @@ from numpy.typing import ArrayLike, NDArray
 FloatVector = NDArray[np.float64]
 
 
-def _as_float_vector(name: str, values: ArrayLike, *, allow_empty: bool = False) -> FloatVector:
+def _as_float_vector(
+    name: str, values: ArrayLike, *, allow_empty: bool = False
+) -> FloatVector:
     """Convert *values* into a finite, one-dimensional float64 array."""
     vector = np.asarray(values, dtype=float)
 
@@ -142,9 +144,7 @@ def variance(x: ArrayLike, w: ArrayLike | None = None, ddof: int | float = 0) ->
         n = values.size
         denom = n - ddof
         if denom <= 0:
-            raise ValueError(
-                f"non-positive denominator: len(x) - ddof = {n} - {ddof}"
-            )
+            raise ValueError(f"non-positive denominator: len(x) - ddof = {n} - {ddof}")
 
         dx = values - float(np.mean(values))
         # Two-pass corretto (Chan-Golub-LeVeque): il termine sottratto è zero
@@ -155,9 +155,7 @@ def variance(x: ArrayLike, w: ArrayLike | None = None, ddof: int | float = 0) ->
     w_sum = float(np.sum(weights))
     denom = w_sum - ddof
     if denom <= 0:
-        raise ValueError(
-            f"non-positive denominator: sum(w) - ddof = {w_sum} - {ddof}"
-        )
+        raise ValueError(f"non-positive denominator: sum(w) - ddof = {w_sum} - {ddof}")
 
     dx = values - float(np.sum(weights * values) / w_sum)
     return float(
@@ -215,7 +213,10 @@ def covariance(x: ArrayLike, y: ArrayLike, w: ArrayLike | None = None) -> float:
     # Two-pass corretto: il termine sottratto è zero in aritmetica esatta e
     # compensa l'errore di arrotondamento delle medie.
     return float(
-        (np.sum(weights * dx * dy) - np.sum(weights * dx) * np.sum(weights * dy) / w_sum)
+        (
+            np.sum(weights * dx * dy)
+            - np.sum(weights * dx) * np.sum(weights * dy) / w_sum
+        )
         / w_sum
     )
 

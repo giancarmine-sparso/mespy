@@ -99,7 +99,9 @@ class Acquisizione:
         """Tempi di attesa tra eventi consecutivi, in µs interi (esatti)."""
         return np.diff(self.tempi_us)
 
-    def conteggi_per_intervallo(self, dt_s: float, durata_s: float | None = None) -> np.ndarray:
+    def conteggi_per_intervallo(
+        self, dt_s: float, durata_s: float | None = None
+    ) -> np.ndarray:
         """Numero di eventi in ciascun intervallo ``[k*dt, (k+1)*dt)``.
 
         Si considerano solo gli intervalli completi entro ``durata_s`` (default:
@@ -197,7 +199,9 @@ def leggi_contatore(file_input: str | Path) -> Acquisizione:
     )
 
 
-def converti_hex(file_input: str | Path, file_output: str | Path | None = None) -> Acquisizione:
+def converti_hex(
+    file_input: str | Path, file_output: str | Path | None = None
+) -> Acquisizione:
     """Legge il file grezzo e, se ``file_output`` è dato, scrive il ``_dec.txt``."""
     acq = leggi_contatore(file_input)
     if file_output is not None:
@@ -206,7 +210,9 @@ def converti_hex(file_input: str | Path, file_output: str | Path | None = None) 
 
 
 def main(argv: list[str] | None = None) -> None:
-    parser = argparse.ArgumentParser(description="Converte i file grezzi del contatore in <nome>_dec.txt.")
+    parser = argparse.ArgumentParser(
+        description="Converte i file grezzi del contatore in <nome>_dec.txt."
+    )
     parser.add_argument("file", nargs="+", type=Path, help="file grezzi (esadecimali)")
     parser.add_argument(
         "-o",

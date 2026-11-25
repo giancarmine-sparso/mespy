@@ -33,14 +33,19 @@ def _languages(context):
     return {item["code"]: item for item in context["supported_languages"]}
 
 
-@pytest.mark.parametrize("pagename,site_root", [
-    ("index", "../"),
-    ("examples/histogram", "../../"),
-    ("moduli/fit_utils/lin-fit", "../../../"),
-    ("search", "../"),
-    ("genindex", "../"),
-])
-def test_available_pages_link_to_the_same_page_in_each_language(config, pagename, site_root):
+@pytest.mark.parametrize(
+    "pagename,site_root",
+    [
+        ("index", "../"),
+        ("examples/histogram", "../../"),
+        ("moduli/fit_utils/lin-fit", "../../../"),
+        ("search", "../"),
+        ("genindex", "../"),
+    ],
+)
+def test_available_pages_link_to_the_same_page_in_each_language(
+    config, pagename, site_root
+):
     languages = _languages(_switcher_context(config, pagename))
 
     for code, item in languages.items():
@@ -70,7 +75,12 @@ def test_switcher_keeps_existing_language_fields(config):
     assert languages["it"]["is_current"] and not languages["en"]["is_current"]
     assert languages["en"]["label"] == "English"
     assert set(languages["en"]) == {
-        "code", "label", "home_href", "page_href", "is_current", "is_fallback",
+        "code",
+        "label",
+        "home_href",
+        "page_href",
+        "is_current",
+        "is_fallback",
     }
 
 
@@ -93,12 +103,17 @@ def _render_switcher(context):
     return {link["data-language-code"]: link for link in collector.links}
 
 
-@pytest.mark.parametrize("pagename,fallback", [
-    ("examples/histogram", "false"),
-    ("search", "false"),
-    ("py-modindex", "true"),
-])
-def test_switcher_template_renders_final_href_and_fallback_flag(config, pagename, fallback):
+@pytest.mark.parametrize(
+    "pagename,fallback",
+    [
+        ("examples/histogram", "false"),
+        ("search", "false"),
+        ("py-modindex", "true"),
+    ],
+)
+def test_switcher_template_renders_final_href_and_fallback_flag(
+    config, pagename, fallback
+):
     context = _switcher_context(config, pagename)
     links = _render_switcher(context)
 
@@ -115,6 +130,13 @@ def test_switcher_script_makes_no_request_and_keeps_native_links():
     script = SWITCHER_JS.read_text(encoding="utf-8")
     code = re.sub(r"//[^\n]*", "", script)
 
-    for forbidden in ("fetch", "HEAD", "XMLHttpRequest", "preventDefault", "location.assign", "languageHome"):
+    for forbidden in (
+        "fetch",
+        "HEAD",
+        "XMLHttpRequest",
+        "preventDefault",
+        "location.assign",
+        "languageHome",
+    ):
         assert forbidden not in code, forbidden
     assert "data-language-fallback='true'" in code

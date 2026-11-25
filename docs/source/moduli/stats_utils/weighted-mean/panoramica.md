@@ -27,7 +27,7 @@ from mespy import weighted_mean
 x = [1.0, 2.0, 3.0]
 w = [3.0, 1.0, 1.0]
 
-print(weighted_mean(x))     # 2.0
+print(weighted_mean(x))  # 2.0
 print(weighted_mean(x, w))  # 1.6
 ```
 

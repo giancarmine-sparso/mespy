@@ -27,7 +27,13 @@ PACKAGE = ROOT / "src" / "mespy"
 OUTPUT = ROOT / "docs" / "_diagrams" / "inventory.md"
 
 # Decorator che non registrano nulla: non rendono ambigua la mappa.
-KNOWN_DECORATORS = {"dataclass", "property", "contextmanager", "staticmethod", "classmethod"}
+KNOWN_DECORATORS = {
+    "dataclass",
+    "property",
+    "contextmanager",
+    "staticmethod",
+    "classmethod",
+}
 DYNAMIC_CALLS = {"import_module", "__import__", "eval", "exec"}
 
 
@@ -58,7 +64,9 @@ class Module:
     entities: dict[str, Entity] = field(default_factory=dict)
     # nome locale -> (modulo MesPy, nome originale)
     imports: dict[str, tuple[str, str]] = field(default_factory=dict)
-    fields: dict[str, dict[str, str]] = field(default_factory=dict)  # classe -> campo -> tipo
+    fields: dict[str, dict[str, str]] = field(
+        default_factory=dict
+    )  # classe -> campo -> tipo
     all_names: list[str] = field(default_factory=list)
     module_calls: list[str] = field(default_factory=list)
     constants: list[str] = field(default_factory=list)
@@ -88,8 +96,12 @@ def collect(module: Module) -> None:
         elif isinstance(node, ast.Assign):
             for target in node.targets:
                 if isinstance(target, ast.Name):
-                    if target.id == "__all__" and isinstance(node.value, (ast.List, ast.Tuple)):
-                        module.all_names = [ast.literal_eval(e) for e in node.value.elts]
+                    if target.id == "__all__" and isinstance(
+                        node.value, (ast.List, ast.Tuple)
+                    ):
+                        module.all_names = [
+                            ast.literal_eval(e) for e in node.value.elts
+                        ]
                     elif target.id.lstrip("_").isupper():
                         module.constants.append(target.id)
                     elif not target.id.startswith("__"):
@@ -113,7 +125,11 @@ def add_function(
     for child in direct_statements(node):
         if isinstance(child, ast.FunctionDef):
             add_function(
-                module, child, f"{qualname}.<locals>.{child.name}", "funzione annidata", qualname
+                module,
+                child,
+                f"{qualname}.<locals>.{child.name}",
+                "funzione annidata",
+                qualname,
             )
 
 
@@ -127,7 +143,9 @@ def add_class(module: Module, node: ast.ClassDef) -> None:
         if isinstance(child, ast.AnnAssign) and isinstance(child.target, ast.Name):
             module.fields[node.name][child.target.id] = ast.unparse(child.annotation)
         elif isinstance(child, ast.FunctionDef):
-            add_function(module, child, f"{node.name}.{child.name}", "metodo", node.name)
+            add_function(
+                module, child, f"{node.name}.{child.name}", "metodo", node.name
+            )
 
 
 def direct_statements(func: ast.FunctionDef):
@@ -145,7 +163,10 @@ class Resolver:
     def __init__(self, modules: dict[str, Module]) -> None:
         self.modules = modules
         self.classes = {
-            e.qualname: e for m in modules.values() for e in m.entities.values() if e.kind == "classe"
+            e.qualname: e
+            for m in modules.values()
+            for e in m.entities.values()
+            if e.kind == "classe"
         }
         self.class_names = set(self.classes)
         for module in modules.values():
@@ -160,7 +181,11 @@ class Resolver:
             return module.entities[name]
         if name in module.imports:
             source, original = module.imports[name]
-            return self.modules[source].entities.get(original) if source in self.modules else None
+            return (
+                self.modules[source].entities.get(original)
+                if source in self.modules
+                else None
+            )
         return None
 
     def field_type(self, cls: str, attr: str) -> str | None:
@@ -171,7 +196,9 @@ class Resolver:
         found = sorted(_names(annotation) & self.class_names)
         return found[0] if found else None
 
-    def expr_type(self, module: Module, env: dict[str, str], node: ast.expr) -> str | None:
+    def expr_type(
+        self, module: Module, env: dict[str, str], node: ast.expr
+    ) -> str | None:
         """Classe MesPy di un'espressione, quando e' deducibile sintatticamente."""
         if isinstance(node, ast.Name):
             return env.get(node.id)
@@ -179,14 +206,18 @@ class Resolver:
             base = self.expr_type(module, env, node.value)
             return self.field_type(base, node.attr) if base else None
         if isinstance(node, ast.IfExp):
-            return self.expr_type(module, env, node.body) or self.expr_type(module, env, node.orelse)
+            return self.expr_type(module, env, node.body) or self.expr_type(
+                module, env, node.orelse
+            )
         if isinstance(node, ast.Call):
             if isinstance(node.func, ast.Name):
                 if node.func.id == "replace" and node.args:  # dataclasses.replace
                     return self.expr_type(module, env, node.args[0])
                 target = self.lookup(module, node.func.id)
                 if target is not None:
-                    return target.qualname if target.kind == "classe" else target.returns
+                    return (
+                        target.qualname if target.kind == "classe" else target.returns
+                    )
         return None
 
     def analyse(self, module: Module, entity: Entity, notes: list[str]) -> None:
@@ -208,11 +239,20 @@ class Resolver:
             env[all_args[0].arg] = entity.owner or ""
 
         nested = {
-            e.name: e for e in module.entities.values() if e.owner == entity.qualname and e.kind == "funzione annidata"
+            e.name: e
+            for e in module.entities.values()
+            if e.owner == entity.qualname and e.kind == "funzione annidata"
         }
-        statements = sorted(direct_statements(func), key=lambda n: (getattr(n, "lineno", 0), getattr(n, "col_offset", 0)))
+        statements = sorted(
+            direct_statements(func),
+            key=lambda n: (getattr(n, "lineno", 0), getattr(n, "col_offset", 0)),
+        )
         for node in statements:  # tipi delle variabili locali
-            if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+            if (
+                isinstance(node, ast.Assign)
+                and len(node.targets) == 1
+                and isinstance(node.targets[0], ast.Name)
+            ):
                 inferred = self.expr_type(module, env, node.value)
                 if inferred:
                     env.setdefault(node.targets[0].id, inferred)
@@ -223,7 +263,11 @@ class Resolver:
 
         for node in statements:
             if isinstance(node, (ast.Import, ast.ImportFrom)):
-                names = [node.module] if isinstance(node, ast.ImportFrom) and node.module else [a.name for a in node.names]
+                names = (
+                    [node.module]
+                    if isinstance(node, ast.ImportFrom) and node.module
+                    else [a.name for a in node.names]
+                )
                 for name in names:
                     if name not in entity.lazy_imports:
                         entity.lazy_imports.append(name)
@@ -232,7 +276,9 @@ class Resolver:
             callee = node.func
             if isinstance(callee, ast.Name):
                 if callee.id in DYNAMIC_CALLS:
-                    notes.append(f"`{module.name}.{entity.qualname}` (riga {node.lineno}): chiamata dinamica `{callee.id}`")
+                    notes.append(
+                        f"`{module.name}.{entity.qualname}` (riga {node.lineno}): chiamata dinamica `{callee.id}`"
+                    )
                 if callee.id in nested:
                     record(nested[callee.id].qualname)
                 elif callee.id in callable_params:
@@ -240,10 +286,14 @@ class Resolver:
                 elif callee.id not in params:
                     target = self.lookup(module, callee.id)
                     if target is not None:
-                        record(target.qualname + ("()" if target.kind == "classe" else ""))
+                        record(
+                            target.qualname + ("()" if target.kind == "classe" else "")
+                        )
             elif isinstance(callee, ast.Attribute):
                 if callee.attr in DYNAMIC_CALLS:
-                    notes.append(f"`{module.name}.{entity.qualname}` (riga {node.lineno}): chiamata dinamica `{ast.unparse(callee)}`")
+                    notes.append(
+                        f"`{module.name}.{entity.qualname}` (riga {node.lineno}): chiamata dinamica `{ast.unparse(callee)}`"
+                    )
                 receiver = self.expr_type(module, env, callee.value)
                 if receiver:
                     owner = self.modules[self.classes[receiver].module]
@@ -253,7 +303,12 @@ class Resolver:
             # funzioni annidate passate come argomento (callback)
             for value in list(node.args) + [k.value for k in node.keywords]:
                 for sub in ast.walk(value):
-                    if isinstance(sub, ast.Name) and sub.id in nested and isinstance(callee, ast.Name) and callee.id not in nested:
+                    if (
+                        isinstance(sub, ast.Name)
+                        and sub.id in nested
+                        and isinstance(callee, ast.Name)
+                        and callee.id not in nested
+                    ):
                         notes.append(
                             f"`{module.name}.{entity.qualname}` (riga {node.lineno}): passa la funzione annidata "
                             f"`{sub.id}` come callback a `{callee.id}`"
@@ -267,7 +322,11 @@ class Resolver:
 
 
 def _names(annotation: str) -> set[str]:
-    return {n.id for n in ast.walk(ast.parse(annotation, mode="eval")) if isinstance(n, ast.Name)}
+    return {
+        n.id
+        for n in ast.walk(ast.parse(annotation, mode="eval"))
+        if isinstance(n, ast.Name)
+    }
 
 
 def visibility(entity: Entity, root_all: list[str]) -> str:
@@ -313,38 +372,65 @@ def render(modules: dict[str, Module], notes: list[str]) -> str:
     lines += ["", f"`mespy.__all__` = `{root_all}`", ""]
 
     for module in modules.values():
-        lines += [f"## `mespy.{module.name}`" if module.name != "__init__" else "## `mespy` (`__init__.py`)", ""]
+        lines += [
+            f"## `mespy.{module.name}`"
+            if module.name != "__init__"
+            else "## `mespy` (`__init__.py`)",
+            "",
+        ]
         if module.imports:
             grouped: dict[str, list[str]] = {}
             for local, (source, _) in module.imports.items():
                 grouped.setdefault(source, []).append(local)
             lines.append(
                 "Importa da MesPy: "
-                + "; ".join(f"`{src}` → {', '.join(f'`{n}`' for n in names)}" for src, names in grouped.items())
+                + "; ".join(
+                    f"`{src}` → {', '.join(f'`{n}`' for n in names)}"
+                    for src, names in grouped.items()
+                )
                 + "."
             )
             lines.append("")
         if module.constants:
-            lines += ["Costanti di modulo: " + ", ".join(f"`{c}`" for c in module.constants) + ".", ""]
+            lines += [
+                "Costanti di modulo: "
+                + ", ".join(f"`{c}`" for c in module.constants)
+                + ".",
+                "",
+            ]
         if module.aliases:
-            lines += ["Alias di tipo: " + ", ".join(f"`{a}`" for a in module.aliases) + ".", ""]
+            lines += [
+                "Alias di tipo: " + ", ".join(f"`{a}`" for a in module.aliases) + ".",
+                "",
+            ]
         if module.module_calls:
             lines += [
-                "Chiamate eseguite all'import: " + ", ".join(f"`{c}()`" for c in module.module_calls) + ".",
+                "Chiamate eseguite all'import: "
+                + ", ".join(f"`{c}()`" for c in module.module_calls)
+                + ".",
                 "",
             ]
         if not module.entities:
             lines += ["_Nessuna funzione o classe._", ""]
             continue
-        lines += ["| Riga | Nome | Tipo | Visibilità | Chiama (MesPy) | Note |", "|---:|---|---|---|---|---|"]
+        lines += [
+            "| Riga | Nome | Tipo | Visibilità | Chiama (MesPy) | Note |",
+            "|---:|---|---|---|---|---|",
+        ]
         for entity in sorted(module.entities.values(), key=lambda e: e.line):
             remarks = []
             if entity.decorators:
-                remarks.append("decorator: " + ", ".join(f"`@{d}`" for d in entity.decorators))
+                remarks.append(
+                    "decorator: " + ", ".join(f"`@{d}`" for d in entity.decorators)
+                )
             if entity.callbacks:
-                remarks.append("invoca callback: " + ", ".join(f"`{c}`" for c in entity.callbacks))
+                remarks.append(
+                    "invoca callback: " + ", ".join(f"`{c}`" for c in entity.callbacks)
+                )
             if entity.lazy_imports:
-                remarks.append("import locale: " + ", ".join(f"`{i}`" for i in entity.lazy_imports))
+                remarks.append(
+                    "import locale: " + ", ".join(f"`{i}`" for i in entity.lazy_imports)
+                )
             calls = ", ".join(f"`{c}`" for c in entity.calls) or "—"
             lines.append(
                 f"| {entity.line} | `{entity.qualname}` | {entity.kind} | {visibility(entity, root_all)} "
@@ -377,7 +463,9 @@ def main() -> None:
                 )
             resolver.analyse(module, entity, notes)
         for call in module.module_calls:
-            notes.append(f"`{module.name}`: `{call}()` viene eseguita all'import del modulo (effetto collaterale)")
+            notes.append(
+                f"`{module.name}`: `{call}()` viene eseguita all'import del modulo (effetto collaterale)"
+            )
         if module.name != "__init__" and module.all_names:
             notes.append(f"`{module.name}` definisce un proprio `__all__`")
 
@@ -390,7 +478,8 @@ def main() -> None:
     for name, owners in methods.items():
         if len(owners) > 1:
             notes.append(
-                f"metodo omonimo `{name}` in " + ", ".join(f"`{o}`" for o in owners)
+                f"metodo omonimo `{name}` in "
+                + ", ".join(f"`{o}`" for o in owners)
                 + ": risolto tramite il tipo annotato del ricevente"
             )
 

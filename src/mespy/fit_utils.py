@@ -59,7 +59,9 @@ def _real_fit_array(name: str, values: ArrayLike) -> FloatVector:
             f"{name}: boolean values are not allowed; integer or floating-point numbers are required"
         )
     if raw.dtype.kind not in "iuf":
-        raise TypeError(f"{name}: real numbers are required, not complex numbers or other types")
+        raise TypeError(
+            f"{name}: real numbers are required, not complex numbers or other types"
+        )
     try:
         with np.errstate(over="ignore", invalid="ignore"):
             result = np.array(raw, dtype=np.float64, copy=True)
@@ -96,9 +98,7 @@ def _validate_linear_fit_data(
                 "sigma_y: a scalar or a vector with the same length as x is required"
             )
         if np.any(sigma_values <= 0):
-            raise ValueError(
-                "sigma_y: uncertainties must be strictly positive"
-            )
+            raise ValueError("sigma_y: uncertainties must be strictly positive")
 
     minimum = 3 if sigma_values is None else 2
     if x_values.size < minimum:
@@ -233,9 +233,7 @@ class _FitLocalAxis:
                     self.origin, -self.exponent
                 )
         if not np.all(np.isfinite(local)):
-            raise FloatingPointError(
-                "lin_fit: prediction x outside the local scale"
-            )
+            raise FloatingPointError("lin_fit: prediction x outside the local scale")
         return local
 
     def deviations(self, values: FloatVector) -> FloatVector:
@@ -519,9 +517,7 @@ def _solve_linear_fit(
     )
     intercept_std = math.hypot(center_std, offset_std)
     if not math.isfinite(intercept_std):
-        raise FloatingPointError(
-            "lin_fit: intercept_std not representable in float64"
-        )
+        raise FloatingPointError("lin_fit: intercept_std not representable in float64")
     covariance = _fit_scaled_value(
         "covariance", -x_mean, slope_std, slope_std, exponent=x_mean_exponent
     )
@@ -852,15 +848,15 @@ def _validate_fit_flag(name: str, value: object) -> bool:
     return bool(value)
 
 
-def _validate_fit_label(name: str, value: object, *, optional: bool = False) -> str | None:
+def _validate_fit_label(
+    name: str, value: object, *, optional: bool = False
+) -> str | None:
     """Accept text labels only; None is allowed (and omitted in TOML) for title."""
     if value is None and optional:
         return None
     if not isinstance(value, str):
         hint = "or None" if optional else '(use "" for no label)'
-        raise TypeError(
-            f"{name}: expected a string {hint}, got {type(value).__name__}"
-        )
+        raise TypeError(f"{name}: expected a string {hint}, got {type(value).__name__}")
     return str(value)
 
 
@@ -890,9 +886,7 @@ def _validate_fit_output(output: str | Path) -> Path:
         raise ValueError("output: expected a file base path, not a directory")
     path = Path(output)
     if path.name in ("", ".", "..") or "\x00" in str(path) or path.is_dir():
-        raise ValueError(
-            "output: expected a valid file base path, not a directory"
-        )
+        raise ValueError("output: expected a valid file base path, not a directory")
     if path.name.endswith("."):
         raise ValueError("output: the base path cannot end with a dot")
     if path.suffix.lower() in _FIT_OUTPUT_EXTENSIONS:

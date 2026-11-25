@@ -3,6 +3,7 @@
 Accept a small editable fitting example, not a general-purpose Python shell.
 This module runs unchanged in Pyodide and in the documentation integration tests.
 """
+
 import ast
 import io
 import json
@@ -21,14 +22,30 @@ class ExampleError(ValueError):
 
 
 def _literal(node):
-    if not all(isinstance(part, (ast.Constant, ast.List, ast.Tuple, ast.UnaryOp,
-                                 ast.UAdd, ast.USub, ast.Load)) for part in ast.walk(node)):
+    if not all(
+        isinstance(
+            part,
+            (
+                ast.Constant,
+                ast.List,
+                ast.Tuple,
+                ast.UnaryOp,
+                ast.UAdd,
+                ast.USub,
+                ast.Load,
+            ),
+        )
+        for part in ast.walk(node)
+    ):
         raise ExampleError("literals")
     value = ast.literal_eval(node)
     if isinstance(value, (list, tuple)):
         if len(value) > MAX_POINTS:
             raise ExampleError("points")
-        if any(not isinstance(item, (int, float)) or isinstance(item, bool) for item in value):
+        if any(
+            not isinstance(item, (int, float)) or isinstance(item, bool)
+            for item in value
+        ):
             raise ExampleError("numbers")
     elif not isinstance(value, (int, float, str, bool, type(None))):
         raise ExampleError("literals")
@@ -43,14 +60,22 @@ def validate_example(source):
     if not statements:
         raise ExampleError("structure")
     first = statements[0]
-    if not (isinstance(first, ast.ImportFrom) and first.module == "mespy"
-            and first.level == 0 and len(first.names) == 1
-            and first.names[0].name == "lin_fit" and first.names[0].asname is None):
+    if not (
+        isinstance(first, ast.ImportFrom)
+        and first.module == "mespy"
+        and first.level == 0
+        and len(first.names) == 1
+        and first.names[0].name == "lin_fit"
+        and first.names[0].asname is None
+    ):
         raise ExampleError("import")
     assigned = set()
     for statement in statements[1:-1]:
-        if not (isinstance(statement, ast.Assign) and len(statement.targets) == 1
-                and isinstance(statement.targets[0], ast.Name)):
+        if not (
+            isinstance(statement, ast.Assign)
+            and len(statement.targets) == 1
+            and isinstance(statement.targets[0], ast.Name)
+        ):
             raise ExampleError("structure")
         name = statement.targets[0].id
         if name not in {"x", "y", "sigma_y"} or name in assigned:
@@ -58,8 +83,12 @@ def validate_example(source):
         assigned.add(name)
         _literal(statement.value)
     last = statements[-1]
-    if not (isinstance(last, ast.Expr) and isinstance(last.value, ast.Call)
-            and isinstance(last.value.func, ast.Name) and last.value.func.id == "lin_fit"):
+    if not (
+        isinstance(last, ast.Expr)
+        and isinstance(last.value, ast.Call)
+        and isinstance(last.value.func, ast.Name)
+        and last.value.func.id == "lin_fit"
+    ):
         raise ExampleError("call")
     call = last.value
     if len(call.args) not in (2, 3) or not {"x", "y"} <= assigned:
@@ -69,7 +98,18 @@ def validate_example(source):
             raise ExampleError("call")
     keywords = set()
     for keyword in call.keywords:
-        if keyword.arg not in {"sigma_y", "xlabel", "ylabel", "title", "style", "normalize_residuals"} or keyword.arg in keywords:
+        if (
+            keyword.arg
+            not in {
+                "sigma_y",
+                "xlabel",
+                "ylabel",
+                "title",
+                "style",
+                "normalize_residuals",
+            }
+            or keyword.arg in keywords
+        ):
             raise ExampleError("call")
         keywords.add(keyword.arg)
         if keyword.arg == "sigma_y" and isinstance(keyword.value, ast.Name):
@@ -79,17 +119,24 @@ def validate_example(source):
             value = _literal(keyword.value)
             if keyword.arg == "style" and value not in ("report", "mespy"):
                 raise ExampleError("style")
-            if keyword.arg in {"xlabel", "ylabel", "title"} and (not isinstance(value, str) or len(value) > 100):
+            if keyword.arg in {"xlabel", "ylabel", "title"} and (
+                not isinstance(value, str) or len(value) > 100
+            ):
                 raise ExampleError("labels")
     # Capture the value of the actual final lin_fit call, without wrapping or
     # replacing it. The user-visible source remains independently executable.
-    tree.body[-1] = ast.copy_location(ast.Assign(
-        targets=[ast.Name(id="_homepage_result", ctx=ast.Store())], value=call), last)
+    tree.body[-1] = ast.copy_location(
+        ast.Assign(
+            targets=[ast.Name(id="_homepage_result", ctx=ast.Store())], value=call
+        ),
+        last,
+    )
     return ast.fix_missing_locations(tree)
 
 
 def execute_fit(source):
     import matplotlib
+
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
@@ -109,14 +156,24 @@ def execute_fit(source):
             style = tomllib.loads(toml_path.read_text())["plot"].get("style", "report")
             with plt.style.context(style):
                 result.figure.savefig(svg, format="svg")
-            return json.dumps({"ok": True, "svg": svg.getvalue(),
-                               "toml": toml_path.read_text(encoding="utf-8"),
-                               "warnings": [str(w.message) for w in recorded
-                                            if issubclass(w.category, UserWarning)]})
+            return json.dumps(
+                {
+                    "ok": True,
+                    "svg": svg.getvalue(),
+                    "toml": toml_path.read_text(encoding="utf-8"),
+                    "warnings": [
+                        str(w.message)
+                        for w in recorded
+                        if issubclass(w.category, UserWarning)
+                    ],
+                }
+            )
     except ExampleError as error:
         return json.dumps({"ok": False, "code": str(error)})
     except (SyntaxError, ValueError, TypeError, FloatingPointError) as error:
         line = f" (line {error.lineno})" if isinstance(error, SyntaxError) else ""
-        return json.dumps({"ok": False, "error": f"{type(error).__name__}{line}: {error}"})
+        return json.dumps(
+            {"ok": False, "error": f"{type(error).__name__}{line}: {error}"}
+        )
     finally:
         plt.close("all")

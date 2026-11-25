@@ -91,8 +91,7 @@ def _validate_decimals(decimals: int) -> int:
         raise ValueError(f"'decimals' must be >= 0 | got {value}")
     if value > 20:
         raise ValueError(
-            f"'decimals' must be <= 20 to avoid unreadable labels "
-            f"| got {value}"
+            f"'decimals' must be <= 20 to avoid unreadable labels | got {value}"
         )
     return value
 
@@ -390,8 +389,7 @@ def histogram(
 
     if not isinstance(stat, str) or stat not in ("count", "probability", "density"):
         raise ValueError(
-            "'stat' must be 'count', 'probability' or 'density' "
-            f"| got {stat!r}"
+            f"'stat' must be 'count', 'probability' or 'density' | got {stat!r}"
         )
 
     decimals = _validate_decimals(decimals)
