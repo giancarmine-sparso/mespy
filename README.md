@@ -6,21 +6,11 @@
   </picture>
 </p>
 <p align="center">
-  <a href="https://github.com/giancarmine-sparso/mespy/actions/workflows/ci.yml">
-       <img src="https://github.com/giancarmine-sparso/mespy/actions/workflows/ci.yml/badge.svg" alt="CI">
-  </a>
-  <a href="https://pypi.org/project/mespy/">
-    <img src="https://img.shields.io/pypi/v/mespy?label=pypi" alt="PyPI version">
-  </a>
-  <a href="https://pypi.org/project/mespy/">
-    <img src="https://img.shields.io/pypi/pyversions/mespy?label=python" alt="Python versions">
-  </a>
-  <a href="LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
-  </a>
-  <a href="https://giancarmine-sparso.github.io/mespy/">
-    <img src="https://img.shields.io/badge/docs-GitHub%20Pages-blue" alt="Documentation">
-  </a>
+  <a href="https://github.com/giancarmine-sparso/mespy/actions/workflows/ci.yml"><img src="https://github.com/giancarmine-sparso/mespy/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://pypi.org/project/mespy/"><img src="https://img.shields.io/pypi/v/mespy?label=pypi" alt="PyPI version"></a>
+  <a href="https://pypi.org/project/mespy/"><img src="https://img.shields.io/pypi/pyversions/mespy?label=python" alt="Python versions"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
+  <a href="https://giancarmine-sparso.github.io/mespy/"><img src="https://img.shields.io/badge/docs-GitHub%20Pages-blue" alt="Documentation"></a>
 </p>
 <p align="center">
   <em>Small Python toolbox for mechanics laboratory data analysis.</em>
