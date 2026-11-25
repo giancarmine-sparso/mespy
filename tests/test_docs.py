@@ -454,7 +454,7 @@ def test_asset_macros_drop_only_font_awesome_from_the_installed_theme():
         in local
     )
     for name in ("head_pre_assets", "body_post"):
-        assert _macro_body(local, name) == "{{ theme_assets.%s() }}" % name
+        assert _macro_body(local, name) == f"{{{{ theme_assets.{name}() }}}}"
     # The preloads are the theme's, digest included; only the Font Awesome
     # script and its comment are gone.
     theme_preload = _macro_body(theme, "head_js_preload").splitlines()
