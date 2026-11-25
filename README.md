@@ -6,6 +6,9 @@
   </picture>
 </p>
 <p align="center">
+  <a href="https://github.com/giancarmine-sparso/mespy/actions/workflows/ci.yml">
+       <img src="https://github.com/giancarmine-sparso/mespy/actions/workflows/ci.yml/badge.svg" alt="CI">
+  </a>
   <a href="https://pypi.org/project/mespy/">
     <img src="https://img.shields.io/pypi/v/mespy?label=pypi" alt="PyPI version">
   </a>
